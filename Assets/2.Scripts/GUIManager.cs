@@ -12,20 +12,23 @@ public class GUIManager : MonoBehaviour
 
 	public Text scoreTxt;
 	public Text moveCounterTxt;
+	public Text comboCounterTxt;
+	public Text limitTimeTxt;
 
 	private int score = 0;
 	private int moveCounter;
+    private int comboCounter;
+	private float limitTime;
 
-	//프로퍼티
-	public int Score
+    //프로퍼티
+    public int Score
 	{	get => score;
 		set
 		{
 			score = value;
-			scoreTxt.text = score.ToString();
+			scoreTxt.text = ScoreManager.instance.ScoreWithComma(score);
 		}
 	}
-
 	public int MoveCounter
 	{
 		get => moveCounter;
@@ -35,26 +38,67 @@ public class GUIManager : MonoBehaviour
 			if (moveCounter <= 0)
 			{
 				moveCounter = 0;
-				StartCoroutine(WaitForShifting());
+				//StartCoroutine(WaitForShifting()); //GameOver
 			}
 			moveCounterTxt.text = moveCounter.ToString();
 		}
 	}
 
+    public int ComboCounter { get => comboCounter;
+        set
+        {
+			comboCounter = value;
+            comboCounterTxt.text = "Combo " + comboCounter.ToString();
+		}
+	}
 
-	void Awake()
+    public float LimitTime { get => limitTime; 
+		set
+		{
+			limitTime = value;
+            if (GameManager.instance.isGameOver)
+            {
+				limitTime = 0;
+            }
+			limitTimeTxt.text = Mathf.Round(limitTime).ToString();
+		}
+	}
+
+
+	//초기화함수
+    public void Init()
 	{
 		instance = GetComponent<GUIManager>();
 		moveCounter = 5;
+		comboCounter = 0;
+		limitTime = 3;
 		moveCounterTxt.text = moveCounter.ToString();
+		comboCounterTxt.text = comboCounter.ToString();
+		limitTimeTxt.text = limitTime.ToString();
 	}
 
-	// 게임오버가 되면 게임 오버 패널을 액티브
-	public void GameOver()
-	{
-		GameManager.instance.gameOver = true;
+    private void Update()
+    {
+		LimitTime -= Time.deltaTime;
+		//SetActiveComboText();
+	}
 
-		gameOverPanel.SetActive(true);
+	private void SetActiveComboText()
+    {
+		if(ComboCounter >= 2)
+        {
+			comboCounterTxt.gameObject.SetActive(true);
+        }
+		else
+			comboCounterTxt.gameObject.SetActive(false);
+	}
+
+    // 게임오버가 되면 게임 오버 패널을 액티브
+    public void GameOverPanel()
+	{
+		StopAllCoroutines();
+
+		gameOverPanel.SetActive(true);		
 
 		if (score > PlayerPrefs.GetInt("HighScore"))
 		{
@@ -68,12 +112,12 @@ public class GUIManager : MonoBehaviour
 		yourScoreTxt.text = score.ToString();
 	}
 
+
 	//게임 오버 전에 대기 시간을 주는 코루틴
-	private IEnumerator WaitForShifting()
+	public IEnumerator WaitForShifting()
 	{
 		yield return new WaitUntil(() => !BoardManager.instance.IsShifting);
 		yield return new WaitForSeconds(.25f);
-		GameOver();
+		GameOverPanel(); //GUI GameOver Panel
 	}
-
 }

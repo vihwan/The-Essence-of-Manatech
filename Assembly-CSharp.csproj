@@ -66,11 +66,10 @@
   <ItemGroup>
     <Compile Include="Assets\2.Scripts\BoardManager.cs" />
     <Compile Include="Assets\2.Scripts\GUIManager.cs" />
-    <Compile Include="Assets\2.Scripts\GUISizePingPong.cs" />
     <Compile Include="Assets\2.Scripts\GameManager.cs" />
+    <Compile Include="Assets\2.Scripts\ScoreManager.cs" />
     <Compile Include="Assets\2.Scripts\SoundManager.cs" />
     <Compile Include="Assets\2.Scripts\Tile.cs" />
-    <None Include="Assets\Audio\Music\Attribution.txt" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.22f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

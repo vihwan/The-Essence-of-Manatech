@@ -12,12 +12,14 @@ public class BoardManager : MonoBehaviour
     private GameObject[,] tiles;
     public bool IsShifting { get; set; }    
 
-    void Start()
+    public void Init()
     {
         instance = GetComponent<BoardManager>(); //싱글톤
 
         Vector2 offset = tilePrefab.GetComponent<SpriteRenderer>().bounds.size;
         CreateBoard(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
+        SoundManager.instance.PlayBGM("데바스타르");
+        SoundManager.instance.audioSourceBGM.volume = 0.7f;
     }
 
 
@@ -27,6 +29,7 @@ public class BoardManager : MonoBehaviour
         tiles = new GameObject[xSize, ySize];
 
         //BoardManager 위치에 따라 시작점이 달라짐
+        //왼쪽 하단 꼭짓점이 영점.
         float startX = transform.position.x;     
         float startY = transform.position.y;
 
@@ -108,7 +111,7 @@ public class BoardManager : MonoBehaviour
 
         for (int i = 0; i < nullCount; i++)
         {
-            GUIManager.instance.Score += 50;
+            ScoreManager.instance.PlusScore();
             yield return new WaitForSeconds(shiftDelay);
             for (int k = 0; k < renders.Count - 1; k++)
             { 
@@ -120,7 +123,7 @@ public class BoardManager : MonoBehaviour
     }
 
 
-    //빈 자리가 생겨 타일이 내려갈 때, 새로운 타일을 생성하는 함수
+    //빈 자리가 생겨 타일이 내려갈 때, 새로운 스프라이트를 생성하는 함수
     private Sprite GetNewSprite(int x, int y)
     {
         List<Sprite> possibleCharacters = new List<Sprite>();
