@@ -279,7 +279,8 @@ MonoBehaviour:
   tilePrefab: {fileID: 4094097880995458974, guid: 8330da92507ef66458fd116717e3747c,
     type: 3}
   xSize: 8
-  ySize: 12
+  ySize: 13
+  coroutineTime: 0
 --- !u!4 &467530646
 Transform:
   m_ObjectHideFlags: 0
@@ -3127,5 +3128,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   faderObj: {fileID: 1938889261}
   faderImg: {fileID: 1933547233}
-  gameOver: 0
+  isGameOver: 0
   fadeSpeed: 0.02

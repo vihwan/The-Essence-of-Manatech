@@ -1,17 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
 public class BoardManager : MonoBehaviour
 {
-    public static BoardManager instance;    
+    //Singleton
+    public static BoardManager instance;   
+    
     public List<Sprite> characters = new List<Sprite>(); //캐릭터들을 저장하는 리스트
     public GameObject tilePrefab;  //Tile Prefab
     public int xSize, ySize;     
 
     private GameObject[,] tiles;
-    public bool IsShifting { get; set; }    
 
+    private int matchFoundCount  = 0 ;
+    public float coroutineTime = 0f; 
+
+    //Property
+    public bool IsShifting { get; set; }
+    public int MatchFoundCount { get => matchFoundCount; set => matchFoundCount = value; }
+
+    //초기화함수
     public void Init()
     {
         instance = GetComponent<BoardManager>(); //싱글톤
@@ -21,7 +31,6 @@ public class BoardManager : MonoBehaviour
         SoundManager.instance.PlayBGM("데바스타르");
         SoundManager.instance.audioSourceBGM.volume = 0.7f;
     }
-
 
     //게임 보드 생성
     private void CreateBoard(float xOffset, float yOffset)
@@ -65,7 +74,7 @@ public class BoardManager : MonoBehaviour
 
 
     //비어있는 타일 자리를 찾는 코루틴
-    public IEnumerator FindNullTiles()
+    public void FindNullTiles()
     {
         for (int x = 0; x < xSize; x++)
         {
@@ -74,10 +83,13 @@ public class BoardManager : MonoBehaviour
                 //비어있는 자리를 찾으면
                 if (tiles[x, y].GetComponent<SpriteRenderer>().sprite == null)
                 {
-                    //타일 내리기 코루틴 실행
-                    yield return StartCoroutine(ShiftTilesDown(x, y));
+                    //타일 내리기 코루틴 실행 및 대기
+                    ShiftTilesDown(x, y);
                     break;
                 }
+                else
+                   MatchFoundCount = 0;
+                
             }
         }
 
@@ -93,38 +105,50 @@ public class BoardManager : MonoBehaviour
     }
 
     //타일 내리기 코루틴
-    private IEnumerator ShiftTilesDown(int x, int yStart, float shiftDelay = .03f) //딜레이시간 
-    {
+    private void ShiftTilesDown(int x, int yStart, float shiftDelay = .03f) //딜레이시간 
+    {       
         IsShifting = true;
-        List<SpriteRenderer> renders = new List<SpriteRenderer>();
+        List<SpriteRenderer> rendersList = new List<SpriteRenderer>();
         int nullCount = 0;
+
 
         for (int y = yStart; y < ySize; y++)
         {  
+            //매칭된 타일의 y좌표가 동일한(같은 열에 있는) 타일들을 전부 대입하는 과정.
             SpriteRenderer render = tiles[x, y].GetComponent<SpriteRenderer>();
             if (render.sprite == null)
-            { 
+            {  //타일의 스프라이트가 비어있다면 nullcount++
                 nullCount++;
             }
-            renders.Add(render);
+            rendersList.Add(render); //renders 리스트에 추가
         }
 
+        //nullcount만큼 루프
         for (int i = 0; i < nullCount; i++)
-        {
-            ScoreManager.instance.PlusScore();
-            yield return new WaitForSeconds(shiftDelay);
-            for (int k = 0; k < renders.Count - 1; k++)
+        {          
+            ScoreManager.instance.PlusScore(); //임시 배치
+            Invoke(nameof(MovingTile),shiftDelay); //대기시간
+
+            //renders 리스트의 count-1만큼 루프
+            for (int k = 0; k < rendersList.Count - 1; k++)
             { 
-                renders[k].sprite = renders[k + 1].sprite;
-                renders[k + 1].sprite = GetNewSprite(x, ySize - 1);
+                //
+                rendersList[k].sprite = rendersList[k + 1].sprite;
+                rendersList[k + 1].sprite = GetNewSprite(x, ySize - 1);
             }
         }
         IsShifting = false;
     }
 
+    private void MovingTile()
+
+    {
+    }
+
 
     //빈 자리가 생겨 타일이 내려갈 때, 새로운 스프라이트를 생성하는 함수
-    private Sprite GetNewSprite(int x, int y)
+    //새로 생성한 스프라이트가 좌,우,아래에 존재하는 스프라이트와 같지 않도록 생성
+    private Sprite GetNewSprite(int x, int y) // x는 tile의 x좌표, y는 ysize -1
     {
         List<Sprite> possibleCharacters = new List<Sprite>();
         possibleCharacters.AddRange(characters);
@@ -145,4 +169,7 @@ public class BoardManager : MonoBehaviour
         return possibleCharacters[Random.Range(0, possibleCharacters.Count)];
     }
 
+
+    //타일 내리기 실행이 끝마친 이후에 다시 검사를 해서 비어있는 타일이 있는지를 검사
+    //비어있는 자리를 찾으면 타일 내리기 실행
 }

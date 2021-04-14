@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class Tile : MonoBehaviour
 {
     private static Color selectedColor = new Color(.5f, .5f, .5f, 1.0f);
     private static Tile previousSelected = null;
-    private int matchFoundCount = 0;
+
 
     //상태변수
     private bool isSelected = false;
@@ -73,11 +74,8 @@ public class Tile : MonoBehaviour
                     if (GetAllAdjacentTiles().Contains(previousSelected.gameObject))
                     {
                         SwapSprite(previousSelected.render);
-                        previousSelected.ClearAllMatches();
-                        previousSelected.Deselect();
-                        ClearAllMatches();
-                        if (matchFoundCount == 0)
-                            GUIManager.instance.ComboCounter = 0;
+                        Matching();
+                        BoardManager.instance.FindNullTiles();
                     }
                     else //그렇지 않으면
                     {
@@ -87,6 +85,15 @@ public class Tile : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void Matching()
+    {
+        previousSelected.ClearAllMatches();
+        previousSelected.Deselect();
+        ClearAllMatches();
+        if (BoardManager.instance.MatchFoundCount == 0)
+            GUIManager.instance.ComboCounter = 0;
     }
 
 
@@ -159,7 +166,7 @@ public class Tile : MonoBehaviour
         }
 
         if (matchingTiles.Count >= 2)
-        {
+        {         
             for (int i = 0; i < matchingTiles.Count; i++)
             {
                 matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
@@ -176,17 +183,23 @@ public class Tile : MonoBehaviour
 
         ClearMatch(new Vector3[2] { Vector3.left, Vector3.right });
         ClearMatch(new Vector3[2] { Vector3.up, Vector3.down });
+
         if (matchFound)
         {
             render.sprite = null;
-            matchFound = false;
-            matchFoundCount++;
+            matchFound = false;       
+            //???
+            //ShiftDelay가 너무 짧아서 코루틴 실행이 다 안된건가?
+            //아니면 또다른 매칭이 이루어져서 코루틴이 멈춰버린 것인가? ★
+            //StopCoroutine(BoardManager.instance.FindNullTiles());
 
-            StopCoroutine(BoardManager.instance.FindNullTiles());
-            StartCoroutine(BoardManager.instance.FindNullTiles());
+            //비어있는 타일을 검색
+            BoardManager.instance.FindNullTiles(); 
             SoundManager.instance.PlaySE("Clear");
-            GUIManager.instance.MoveCounter--;
+
             GUIManager.instance.ComboCounter++;
+            BoardManager.instance.MatchFoundCount++;
+
         }
     }
 }

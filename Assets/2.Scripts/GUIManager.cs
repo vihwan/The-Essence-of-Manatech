@@ -29,20 +29,6 @@ public class GUIManager : MonoBehaviour
 			scoreTxt.text = ScoreManager.instance.ScoreWithComma(score);
 		}
 	}
-	public int MoveCounter
-	{
-		get => moveCounter;
-		set
-		{
-			moveCounter = value;
-			if (moveCounter <= 0)
-			{
-				moveCounter = 0;
-				//StartCoroutine(WaitForShifting()); //GameOver
-			}
-			moveCounterTxt.text = moveCounter.ToString();
-		}
-	}
 
     public int ComboCounter { get => comboCounter;
         set
@@ -71,7 +57,7 @@ public class GUIManager : MonoBehaviour
 		instance = GetComponent<GUIManager>();
 		moveCounter = 5;
 		comboCounter = 0;
-		limitTime = 3;
+		limitTime = 600;
 		moveCounterTxt.text = moveCounter.ToString();
 		comboCounterTxt.text = comboCounter.ToString();
 		limitTimeTxt.text = limitTime.ToString();
@@ -80,7 +66,6 @@ public class GUIManager : MonoBehaviour
     private void Update()
     {
 		LimitTime -= Time.deltaTime;
-		//SetActiveComboText();
 	}
 
 	private void SetActiveComboText()
