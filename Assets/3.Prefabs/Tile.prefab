@@ -8,11 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4094097880995458968}
+  - component: {fileID: 1191378127484172810}
   - component: {fileID: 4094097880995458975}
   - component: {fileID: -7604216623637521122}
-  - component: {fileID: -5454149363392584643}
-  - component: {fileID: -2699977139218749022}
+  - component: {fileID: -4548177860501854333}
+  - component: {fileID: 9007449316085086081}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -20,8 +20,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4094097880995458968
-Transform:
+--- !u!224 &1191378127484172810
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -34,6 +34,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 2.56, y: 2.56}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &4094097880995458975
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -96,23 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69709ceab4acfe745a8b4b0b9f41ac04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!54 &-5454149363392584643
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4094097880995458974}
-  serializedVersion: 2
-  m_Mass: 0.01
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 116
-  m_CollisionDetection: 0
---- !u!65 &-2699977139218749022
+--- !u!65 &-4548177860501854333
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,3 +114,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.56, y: 2.56, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!222 &9007449316085086081
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094097880995458974}
+  m_CullTransparentMesh: 0

@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class Tile : MonoBehaviour
+public class Tile : MonoBehaviour,IPointerDownHandler, IPointerUpHandler,IDragHandler
 {
     private static Color selectedColor = new Color(.5f, .5f, .5f, 1.0f);
     private static Tile previousSelected = null;
@@ -11,27 +13,68 @@ public class Tile : MonoBehaviour
 
     //상태변수
     private bool isSelected = false;
+    private bool isDragging = false;
     private bool matchFound = false;
     //  public static bool isContinuousMatch = false;
+
+
+    const float DRAG_SPEED = 0.2f;
+    const float DRAG_RANGE = 0.8f;
+    const float DRAG_RANGE_DIV = 1.6f;
+    const float DROP_SPEED = 0.08f;
+    const float DROP_TIME = 0.01f;
+
+    private float verticalSpeed;
+    private float horizontalSpeed;
+    private Vector3 originPos;
+
 
     private Vector3[] adjacentDirections = new Vector3[] { Vector3.left, Vector3.right, Vector3.up, Vector3.down };
 
     //필요한 컴포넌트
-    private SpriteRenderer render;
+    private Image image;
 
     private void Awake()
     {
-        render = GetComponent<SpriteRenderer>();
+        image = GetComponent<Image>();
+        originPos = transform.position;
     }
 
     private void Update()
     {
         if (GameManager.instance.isGameOver)
         {
-            render = null;
+            image = null;
             return;
         }
     }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        Select();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        Deselect();
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+
+        transform.position = eventData.position;
+
+
+        #region 이동거리 제한
+        Vector2 dir = eventData.position - new Vector2(originPos.x,originPos.y);
+        if(dir.magnitude > gameObject.GetComponent<Image>().rectTransform.rect.width)
+        {
+            dir.Normalize();
+            transform.position = new Vector2(originPos.x,originPos.y) + dir * gameObject.GetComponent<Image>().rectTransform.rect.width;
+        }
+        #endregion
+    }
+
 
 
     //타일을 선택할 경우
@@ -40,7 +83,7 @@ public class Tile : MonoBehaviour
     private void Select()
     {
         isSelected = true;
-        render.color = selectedColor;
+        image.color = selectedColor;
         previousSelected = gameObject.GetComponent<Tile>();
         SoundManager.instance.PlaySE("Select");
     }
@@ -48,44 +91,10 @@ public class Tile : MonoBehaviour
     private void Deselect()
     {
         isSelected = false;
-        render.color = Color.white;
+        image.color = Color.white;
         previousSelected = null;
     }
 
-    void OnMouseDown()
-    {
-        if (!GameManager.instance.isGameOver)
-        {
-            //스프라이트가 없거나, 이동중인 상태, 혹은 인스턴스가 없는 상태라면 실행 불가능
-            if (render.sprite == null || BoardManager.instance.IsShifting)
-                return;
-
-            //선택된 상태에서 다시 누르면 비선택 실행
-            if (isSelected)
-                Deselect();
-            else //선택된 상태가 아니라면
-            {
-                //이전 스프라이트가 선택된게 없다면
-                if (previousSelected == null)
-                    Select(); //새로 선택
-                else //이전 스프라이트가 선택된것이 있다면
-                {
-                    // 인접한타일이 이전타일을 포함하고 있다면 매칭
-                    if (GetAllAdjacentTiles().Contains(previousSelected.gameObject))
-                    {
-                        SwapSprite(previousSelected.render);
-                        Matching();
-                        BoardManager.instance.FindNullTiles();
-                    }
-                    else //그렇지 않으면
-                    {
-                        previousSelected.GetComponent<Tile>().Deselect();
-                        Select();
-                    }
-                }
-            }
-        }
-    }
 
     private void Matching()
     {
@@ -100,13 +109,13 @@ public class Tile : MonoBehaviour
     //타일 위치 서로 바꾸기
     public void SwapSprite(SpriteRenderer render2)
     {
-        if (render.sprite == render2.sprite)
+        if (image.sprite == render2.sprite)
             return;
 
         //위치바꾸기 알고리즘
         Sprite tempSprite = render2.sprite;
-        render2.sprite = render.sprite;
-        render.sprite = tempSprite;
+        render2.sprite = image.sprite;
+        image.sprite = tempSprite;
         SoundManager.instance.PlaySE("Swap"); //바꾸기 소리 실행
     }
 
@@ -147,7 +156,7 @@ public class Tile : MonoBehaviour
         bool isMatch = Physics.Raycast(transform.position, castDir, out hitInfo);
         if (isMatch)
         {
-            while (hitInfo.collider != null && hitInfo.collider.GetComponent<SpriteRenderer>().sprite == render.sprite)
+            while (hitInfo.collider != null && hitInfo.collider.GetComponent<SpriteRenderer>().sprite == image.sprite)
             {
                 matchingTiles.Add(hitInfo.collider.gameObject);
                 Physics.Raycast(hitInfo.collider.transform.position, castDir, out hitInfo);
@@ -178,7 +187,7 @@ public class Tile : MonoBehaviour
     //모든 매칭들을 클리어
     public void ClearAllMatches()
     {
-        if (render.sprite == null)
+        if (image.sprite == null)
             return;
 
         ClearMatch(new Vector3[2] { Vector3.left, Vector3.right });
@@ -186,7 +195,7 @@ public class Tile : MonoBehaviour
 
         if (matchFound)
         {
-            render.sprite = null;
+            image.sprite = null;
             matchFound = false;       
             //???
             //ShiftDelay가 너무 짧아서 코루틴 실행이 다 안된건가?
@@ -202,4 +211,6 @@ public class Tile : MonoBehaviour
 
         }
     }
+
+
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class BoardManager : MonoBehaviour
 {
@@ -26,7 +28,7 @@ public class BoardManager : MonoBehaviour
     {
         instance = GetComponent<BoardManager>(); //싱글톤
 
-        Vector2 offset = tilePrefab.GetComponent<SpriteRenderer>().bounds.size;
+        Vector2 offset = tilePrefab.GetComponent<RectTransform>().rect.size;
         CreateBoard(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
         SoundManager.instance.PlayBGM("데바스타르");
         SoundManager.instance.audioSourceBGM.volume = 0.7f;
@@ -38,7 +40,7 @@ public class BoardManager : MonoBehaviour
         tiles = new GameObject[xSize, ySize];
 
         //BoardManager 위치에 따라 시작점이 달라짐
-        //왼쪽 하단 꼭짓점이 영점.
+        //왼쪽 하단을 기준으로.
         float startX = transform.position.x;     
         float startY = transform.position.y;
 
@@ -51,10 +53,12 @@ public class BoardManager : MonoBehaviour
             {
                 GameObject newTile = Instantiate(tilePrefab, 
                                                 new Vector3(startX + (xOffset * x), 
-                                                startY + (yOffset * y), 0), 
+                                                startY + (yOffset * y), transform.position.z), 
                                                 tilePrefab.transform.rotation);
                 tiles[x, y] = newTile;
-                newTile.transform.parent = transform;
+                tiles[x, y].gameObject.name = "Tile [" + x + ", " + y + "]";
+                newTile.transform.SetParent(transform);
+                
 
                 #region 처음 보드를 생성할 때, 바로 3개가 연결되어 나오지 않도록 방지하는 코드
                 List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
@@ -65,7 +69,7 @@ public class BoardManager : MonoBehaviour
                 #endregion
 
                 Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
-                newTile.GetComponent<SpriteRenderer>().sprite = newSprite; //생성된 타일에 대입한다.
+                newTile.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
                 previousLeft[y] = newSprite;
                 previousBelow = newSprite;
             }
@@ -81,7 +85,7 @@ public class BoardManager : MonoBehaviour
             for (int y = 0; y < ySize; y++)
             {
                 //비어있는 자리를 찾으면
-                if (tiles[x, y].GetComponent<SpriteRenderer>().sprite == null)
+                if (tiles[x, y].GetComponent<Image>().sprite == null)
                 {
                     //타일 내리기 코루틴 실행 및 대기
                     ShiftTilesDown(x, y);
@@ -108,14 +112,14 @@ public class BoardManager : MonoBehaviour
     private void ShiftTilesDown(int x, int yStart, float shiftDelay = .03f) //딜레이시간 
     {       
         IsShifting = true;
-        List<SpriteRenderer> rendersList = new List<SpriteRenderer>();
+        List<Image> rendersList = new List<Image>();
         int nullCount = 0;
 
 
         for (int y = yStart; y < ySize; y++)
-        {  
+        {
             //매칭된 타일의 y좌표가 동일한(같은 열에 있는) 타일들을 전부 대입하는 과정.
-            SpriteRenderer render = tiles[x, y].GetComponent<SpriteRenderer>();
+            Image render = tiles[x, y].GetComponent<Image>();
             if (render.sprite == null)
             {  //타일의 스프라이트가 비어있다면 nullcount++
                 nullCount++;
@@ -155,19 +159,21 @@ public class BoardManager : MonoBehaviour
 
         if (x > 0)
         {
-            possibleCharacters.Remove(tiles[x - 1, y].GetComponent<SpriteRenderer>().sprite);
+            possibleCharacters.Remove(tiles[x - 1, y].GetComponent<Image>().sprite);
         }
         if (x < xSize - 1)
         {
-            possibleCharacters.Remove(tiles[x + 1, y].GetComponent<SpriteRenderer>().sprite);
+            possibleCharacters.Remove(tiles[x + 1, y].GetComponent<Image>().sprite);
         }
         if (y > 0)
         {
-            possibleCharacters.Remove(tiles[x, y - 1].GetComponent<SpriteRenderer>().sprite);
+            possibleCharacters.Remove(tiles[x, y - 1].GetComponent<Image>().sprite);
         }
 
         return possibleCharacters[Random.Range(0, possibleCharacters.Count)];
     }
+
+   
 
 
     //타일 내리기 실행이 끝마친 이후에 다시 검사를 해서 비어있는 타일이 있는지를 검사
