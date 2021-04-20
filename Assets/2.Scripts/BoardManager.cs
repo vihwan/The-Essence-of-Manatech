@@ -56,7 +56,8 @@ public class BoardManager : MonoBehaviour
                                                 startY + (yOffset * y), transform.position.z), 
                                                 tilePrefab.transform.rotation);
                 tiles[x, y] = newTile;
-                tiles[x, y].gameObject.name = "Tile [" + x + ", " + y + "]";
+                tiles[x, y].gameObject.name = SetTileName(x, y);
+                tiles[x, y].gameObject.GetComponentInChildren<Tile>().SetArrNumber(x, y);
                 newTile.transform.SetParent(transform);
                 
 
@@ -75,6 +76,17 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
+
+    public GameObject GetTile(int x, int y)
+    {
+        return tiles[x,y];
+    }
+
+    public string SetTileName(int x, int y)
+    {
+        return "Tile [" + x + ", " + y + "]";
+    }
+
 
 
     //비어있는 타일 자리를 찾는 코루틴
