@@ -14,10 +14,13 @@ public class BoardManager : MonoBehaviour
     public GameObject tilePrefab;  //Tile Prefab
     public int xSize, ySize;     
 
-    private GameObject[,] tiles;
+    public GameObject[,] tiles;
 
     private int matchFoundCount  = 0 ;
-    public float coroutineTime = 0f; 
+    public float coroutineTime = 0f;
+
+    public bool canFindNullTiles = false;
+
 
     //Property
     public bool IsShifting { get; set; }
@@ -31,8 +34,16 @@ public class BoardManager : MonoBehaviour
         Vector2 offset = tilePrefab.GetComponent<RectTransform>().rect.size;
         CreateBoard(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
         SoundManager.instance.PlayBGM("데바스타르");
-        SoundManager.instance.audioSourceBGM.volume = 0.7f;
+        SoundManager.instance.audioSourceBGM.volume = 0.2f;
     }
+
+
+    private void Update()
+    {
+        if(canFindNullTiles)
+            FindNullTiles();
+    }
+
 
     //게임 보드 생성
     private void CreateBoard(float xOffset, float yOffset)
@@ -57,7 +68,7 @@ public class BoardManager : MonoBehaviour
                                                 tilePrefab.transform.rotation);
                 tiles[x, y] = newTile;
                 tiles[x, y].gameObject.name = SetTileName(x, y);
-                tiles[x, y].gameObject.GetComponentInChildren<Tile>().SetArrNumber(x, y);
+                tiles[x, y].gameObject.GetComponentInChildren<Tile>().SetArrNumber(x,y);
                 newTile.transform.SetParent(transform);
                 
 
@@ -77,9 +88,10 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public GameObject GetTile(int x, int y)
+
+    public GameObject[,] GetTile()
     {
-        return tiles[x,y];
+        return tiles;
     }
 
     public string SetTileName(int x, int y)
@@ -97,10 +109,12 @@ public class BoardManager : MonoBehaviour
             for (int y = 0; y < ySize; y++)
             {
                 //비어있는 자리를 찾으면
-                if (tiles[x, y].GetComponent<Image>().sprite == null)
+                if (tiles[x, y] == null)
                 {
+                    Debug.Log("비어있는 타일 : " + x + ", " + y);
+
                     //타일 내리기 코루틴 실행 및 대기
-                    ShiftTilesDown(x, y);
+                  // ShiftTilesDown(x, y);
                     break;
                 }
                 else
@@ -108,8 +122,9 @@ public class BoardManager : MonoBehaviour
                 
             }
         }
+        canFindNullTiles = false;
 
-        //타일을 내렸을 때 매칭이 성립되면 매칭 함수를 계속 실행
+/*        //타일을 내렸을 때 매칭이 성립되면 매칭 함수를 계속 실행
         //콤보시스템
         for (int x = 0; x < xSize; x++)
         {
@@ -117,7 +132,7 @@ public class BoardManager : MonoBehaviour
             {
                 tiles[x, y].GetComponent<Tile>().ClearAllMatches();
             }
-        }
+        }*/
     }
 
     //타일 내리기 코루틴
@@ -127,6 +142,7 @@ public class BoardManager : MonoBehaviour
         List<Image> rendersList = new List<Image>();
         int nullCount = 0;
 
+        //GameObject refillTile = Instantiate(tilePrefab,)
 
         for (int y = yStart; y < ySize; y++)
         {
