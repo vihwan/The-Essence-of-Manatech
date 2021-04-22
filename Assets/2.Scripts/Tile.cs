@@ -16,7 +16,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private float swapAngle;
 
     //상태변수
-    private bool matchFound = false;
+    public bool isMatched = false;
     private bool isSwapping = false;
 
     private Vector2 firstTouchPosition;
@@ -25,6 +25,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     //필요한 컴포넌트
     private Image image;
+
+    public int Row { get => row; set => row = value; }
+    public int Col { get => col; set => col = value; }
 
 
     #endregion
@@ -43,12 +46,13 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             return;
         }
 
+
         if (isSwapping)
             SwapAnimation();
         else
         {
-            BoardManager.instance.tiles[row, col] = this.gameObject;
-            gameObject.name = BoardManager.instance.SetTileName(row, col);
+            BoardManager.instance.tiles[Row, Col] = this.gameObject;
+            gameObject.name = BoardManager.instance.SetTileName(Row, Col);
         }
     }
 
@@ -62,11 +66,12 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             secondTile.transform.position = Vector2.Lerp(secondTile.transform.position, originPos, .3f);
         }
         else
-        {
+        {   //타일 위치 이동 완료
+            //타일 위치의 변화가 일어날때마다 타일의 매치를 검사합니다.
             transform.position = secondTile.GetComponent<Tile>().originPos;
             secondTile.transform.position = originPos;
             ReInitOriginPos(); //각 타일의 OriginPos를 초기화           
-            Matching();
+            CheckMatching();
             isSwapping = false;
         }
     }
@@ -80,6 +85,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         firstTouchPosition = eventData.pointerCurrentRaycast.gameObject.transform.position;
+        SoundManager.instance.PlaySE("Select");
+        Debug.Log("선택한 타일 : " + eventData.pointerCurrentRaycast.gameObject);
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -103,46 +110,45 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         swapAngle = Mathf.Atan2(secondTouchPosition.y - firstTouchPosition.y, secondTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
     }
 
-    private void Matching()
+    private void CheckMatching()
     {
-
-        gameObject.GetComponent<Tile>().ClearAllMatches();
+        FindAllMatchingTiles();
+        secondTile.GetComponent<Tile>().FindAllMatchingTiles();
         if (BoardManager.instance.MatchFoundCount == 0)
             GUIManager.instance.ComboCounter = 0;
-
     }
 
 
     //타일 위치 서로 바꾸기
     public void SwapTile()
     {
-        if (swapAngle > -45 && swapAngle <= 45 && row + 1 < BoardManager.instance.xSize)
+        if (swapAngle > -45 && swapAngle <= 45 && Row + 1 < BoardManager.instance.width)
         {
             //오른쪽 타일과 교체
-            secondTile = BoardManager.instance.GetTile()[row + 1, col];
-            secondTile.GetComponent<Tile>().row -= 1;
-            row += 1;
+            secondTile = BoardManager.instance.GetTile()[Row + 1, Col];
+            secondTile.GetComponent<Tile>().Row -= 1;
+            Row += 1;
         }
-        else if (swapAngle > 45 && swapAngle <= 135 && col + 1 < BoardManager.instance.ySize)
+        else if (swapAngle > 45 && swapAngle <= 135 && Col + 1 < BoardManager.instance.height)
         {
             //위쪽 타일과 교체
-            secondTile = BoardManager.instance.GetTile()[row, col + 1];
-            secondTile.GetComponent<Tile>().col -= 1;
-            col += 1;
+            secondTile = BoardManager.instance.GetTile()[Row, Col + 1];
+            secondTile.GetComponent<Tile>().Col -= 1;
+            Col += 1;
         }
-        else if ((swapAngle > 135 || swapAngle <= -135) && (row - 1) >= 0)
+        else if ((swapAngle > 135 || swapAngle <= -135) && (Row - 1) >= 0)
         {
             //왼쪽 타일과 교체
-            secondTile = BoardManager.instance.GetTile()[row - 1, col];
-            secondTile.GetComponent<Tile>().row += 1;
-            row -= 1;
+            secondTile = BoardManager.instance.GetTile()[Row - 1, Col];
+            secondTile.GetComponent<Tile>().Row += 1;
+            Row -= 1;
         }
-        else if (swapAngle < -45 && swapAngle >= -135 && (col - 1) >= 0)
+        else if (swapAngle < -45 && swapAngle >= -135 && (Col - 1) >= 0)
         {
             //아래쪽 타일과 교체
-            secondTile = BoardManager.instance.GetTile()[row, col - 1];
-            secondTile.GetComponent<Tile>().col += 1;
-            col -= 1;
+            secondTile = BoardManager.instance.GetTile()[Row, Col - 1];
+            secondTile.GetComponent<Tile>().Col += 1;
+            Col -= 1;
         }
         else
             return;
@@ -153,14 +159,38 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 
 
-    //매칭이 되었는지를 검사하는 함수
-    private List<GameObject> FindMatch(Vector3 castDir)
+    //매칭조건을 만족하는 모든 타일을 검색하는 함수
+    public void FindAllMatchingTiles()
+    {
+        if (image.sprite == null)
+            return;
+
+        CheckCountMatchTiles(new Vector3[2] { Vector3.left, Vector3.right });
+        CheckCountMatchTiles(new Vector3[2] { Vector3.up, Vector3.down });
+
+        if (isMatched) //매칭된 타일을 찾으면
+        {           
+            BoardManager.instance.FindDestroyMatches(); // 매칭된 타일을 파괴
+
+            SoundManager.instance.PlaySE("Clear"); //매칭 성공 효과음
+            GUIManager.instance.ComboCounter++;     //콤보 카운터가 올라감
+            BoardManager.instance.MatchFoundCount++; //매치카운트 증가
+
+            if (gameObject != null)
+                Destroy(gameObject);
+        }
+    }
+
+
+    //자신과 인접한 타일을 검사하는 함수
+    private List<GameObject> FindAdjacentTiles(Vector3 castDir)
     {
         List<GameObject> matchingTiles = new List<GameObject>();
         RaycastHit hitInfo;
         bool isMatch = Physics.Raycast(transform.position, castDir, out hitInfo);
         if (isMatch)
         {
+            //TODO : 나중엔 태그로 비교하기
             while (hitInfo.collider != null && hitInfo.collider.GetComponent<Image>().sprite == image.sprite)
             {
                 matchingTiles.Add(hitInfo.collider.gameObject);
@@ -170,53 +200,35 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         return matchingTiles;
     }
 
-    //매칭타일을 클리어
-    private void ClearMatch(Vector3[] paths)
+    //인접한 타일이 매칭이 성립되는 타일인지 체크하는 함수
+    private void CheckCountMatchTiles(Vector3[] paths)
     {
         List<GameObject> matchingTiles = new List<GameObject>();
         for (int i = 0; i < paths.Length; i++)
         {
-            matchingTiles.AddRange(FindMatch(paths[i]));
+            matchingTiles.AddRange(FindAdjacentTiles(paths[i]));
         }
 
         if (matchingTiles.Count >= 2)
-        {
+        {       
             for (int i = 0; i < matchingTiles.Count; i++)
             {
-               Destroy(matchingTiles[i].GetComponent<Image>().gameObject);
+                //자신을 제외한 나머지 매칭이 된 타일의 색상을 변경 (임시)
+                matchingTiles[i].GetComponent<Image>().color = new Color(.5f, .5f, .5f, 1f);
+                matchingTiles[i].GetComponent<Tile>().isMatched = true;
             }
-            matchFound = true;
 
+            image.color = new Color(.5f, .5f, .5f, 1f); //본인의 타일 색상도 변경
+            isMatched = true; //매칭되는 타일을 찾음
         }
     }
 
-    //모든 매칭들을 클리어
-    public void ClearAllMatches()
-    {
-        if (image.sprite == null)
-            return;
-
-        ClearMatch(new Vector3[2] { Vector3.left, Vector3.right });
-        ClearMatch(new Vector3[2] { Vector3.up, Vector3.down });
-
-        if (matchFound)
-        {     
-            BoardManager.instance.canFindNullTiles = true;
-
-            //비어있는 타일을 검색
-           // BoardManager.instance.FindNullTiles();
-            SoundManager.instance.PlaySE("Clear");
-
-            GUIManager.instance.ComboCounter++;
-            BoardManager.instance.MatchFoundCount++;
-            matchFound = false;
-            Destroy(gameObject);
-        }
-    }
+    
 
     public void SetArrNumber(int x, int y)
     {
-        row = x;
-        col = y;
+        Row = x;
+        Col = y;
     }
+
 }

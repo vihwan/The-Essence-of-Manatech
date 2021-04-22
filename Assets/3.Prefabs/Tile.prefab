@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8720826226206644289}
   - component: {fileID: 4223085859411379391}
   - component: {fileID: 1500078995943648647}
+  - component: {fileID: -3425102484540782286}
   m_Layer: 5
   m_Name: Tile
   m_TagString: Untagged
@@ -54,6 +55,7 @@ MonoBehaviour:
   row: 0
   col: 0
   originPos: {x: 0, y: 0, z: 0}
+  isMatched: 0
 --- !u!222 &8720826226206644289
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -104,3 +106,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 80, y: 80, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &-3425102484540782286
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8874649959314379597}
+  serializedVersion: 2
+  m_Mass: 0.01
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 120
+  m_CollisionDetection: 0
