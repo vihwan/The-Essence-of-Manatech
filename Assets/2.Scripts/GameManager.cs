@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
             ReturnToMenu();
         }
 
-        if (!isGameOver && GUIManager.instance.LimitTime <= 0)
+        if (!isGameOver && guiManager.LimitTime <= 0)
         {
             isGameOver = true;
             GameOver();
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
-        StartCoroutine(GUIManager.instance.WaitForShifting());
+        StartCoroutine(guiManager.WaitForShifting());
         SoundManager.instance.StopAllSE();
         SoundManager.instance.StopBGM();
         SoundManager.instance.PlaySE("DungeonResult");

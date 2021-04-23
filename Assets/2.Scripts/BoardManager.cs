@@ -8,19 +8,19 @@ using UnityEngine.EventSystems;
 public class BoardManager : MonoBehaviour
 {
     //Singleton
-    public static BoardManager instance;   
-    
-   
-    
+    public static BoardManager instance;
+
+    public List<Sprite> characters = new List<Sprite>(); //캐릭터들을 저장하는 리스트
+    public GameObject characterTilePrefab;  //Tile Prefab
     public GameObject tileBackgroundPrefab;
     public int width;
-    public int height;     
+    public int height;
 
-    public GameObject[,] tiles;
-    private BackgroundTile[,] backTiles;
+    public GameObject[,] characterTiles;
+    public GameObject[,] backTiles;
 
-    private int matchFoundCount  = 0 ;
-    public float coroutineTime = 0f;
+    private int matchFoundCount = 0;
+
 
     //Property
     public bool IsShifting { get; set; }
@@ -30,30 +30,26 @@ public class BoardManager : MonoBehaviour
     public void Init()
     {
         instance = GetComponent<BoardManager>(); //싱글톤
-        backTiles = new BackgroundTile[width, height];
+        backTiles = new GameObject[width, height];
+        characterTiles = new GameObject[width, height];
 
         Vector2 offset = tileBackgroundPrefab.GetComponent<RectTransform>().rect.size;
         CreateBoard(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
         SoundManager.instance.PlayBGM("데바스타르");
-        SoundManager.instance.audioSourceBGM.volume = 0.2f;
+        SoundManager.instance.audioSourceBGM.volume = 0f;
     }
-
-/*
-    private void Update()
-    {
-        //매칭되는 타일이 있는가?
-        //비어있는 타일이 있는가?
-    }*/
 
 
     //게임 보드 생성
     private void CreateBoard(float xOffset, float yOffset)
     {
-
         //BoardManager 위치에 따라 시작점이 달라짐
         //왼쪽 하단을 기준으로.
-        float startX = transform.position.x;     
+        float startX = transform.position.x;
         float startY = transform.position.y;
+
+        Sprite[] previousLeft = new Sprite[height];
+        Sprite previousBelow = null;
 
         for (int x = 0; x < width; x++)
         {
@@ -65,33 +61,63 @@ public class BoardManager : MonoBehaviour
                                 Quaternion.identity);
                 newBackTile.transform.SetParent(transform);
                 newBackTile.gameObject.name = "Tile Background [" + x + ", " + y + "]";
+                newBackTile.GetComponent<BackgroundTile>().Init(
+                    newBackTile.transform.position.x, newBackTile.transform.position.y);
+                backTiles[x, y] = newBackTile;
+
+                GameObject characterTile = Instantiate(characterTilePrefab,
+                                new Vector3(startX + (xOffset * x),
+                                startY + (yOffset * y), transform.position.z),
+                                Quaternion.identity);
+                characterTile.transform.SetParent(newBackTile.transform);
+                characterTile.gameObject.name = "Character [" + x + ", " + y + "]";
+                characterTile.GetComponent<Tile>().SetArrNumber(x, y);
+                characterTiles[x, y] = characterTile;
+
+
+                #region 처음 보드를 생성할 때, 바로 3개가 연결되어 나오지 않도록 방지하는 코드
+                List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
+                possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
+
+                possibleCharacters.Remove(previousLeft[y]); //이전의 왼쪽에 해당되는 열 리스트들을 전부 삭제
+                possibleCharacters.Remove(previousBelow);   //이전의 아래에 해당되는 캐릭터를 삭제
+                #endregion
+
+                Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
+                characterTile.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
+                previousLeft[y] = newSprite;
+                previousBelow = newSprite;
             }
         }
     }
 
-
-    public GameObject[,] GetTile()
-    {
-        return tiles;
-    }
 
     public string SetTileName(int x, int y)
     {
         return "Tile [" + x + ", " + y + "]";
     }
 
+    public void SetTargetPos(GameObject first, GameObject second)
+    {
+        first.GetComponent<Tile>().targetX = second.GetComponentInParent<BackgroundTile>().positionX;
+        first.GetComponent<Tile>().targetY = second.GetComponentInParent<BackgroundTile>().positionY;
+
+        second.GetComponent<Tile>().targetX = first.GetComponentInParent<BackgroundTile>().positionX;
+        second.GetComponent<Tile>().targetY = first.GetComponentInParent<BackgroundTile>().positionY;
+        second.GetComponent<Tile>().isSwapping = true;
+    }
 
 
-    //
+    //캐릭터 타일을 파괴
     private void DestroyTile(int row, int col)
     {
-        if(tiles[row,col].GetComponent<Tile>().isMatched)
+        if (characterTiles[row, col].GetComponent<Tile>().isMatched)
         {
-            Destroy(tiles[row, col].gameObject);
+            characterTiles[row, col].gameObject.SetActive(false);
         }
     }
 
-    //파괴할 타일을 검색
+    //파괴할 캐릭터 타일을 검색
     //해당되는 타일들을 전부 돌려서 matchFound가 true인 타일들을 전부 찾는다.
     public void FindDestroyMatches()
     {
@@ -99,23 +125,14 @@ public class BoardManager : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if(tiles[i,j] != null)
+                if (characterTiles[i, j] != null)
                 {
                     DestroyTile(i, j);
                 }
             }
         }
+        FindNullTiles();
     }
-
-
-    IEnumerator DecreaseCol()
-    {
-
-
-
-        yield return new WaitForSeconds(.4f);
-    }
-
 
 
     //비어있는 타일 자리를 찾는 코루틴
@@ -126,128 +143,99 @@ public class BoardManager : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 //비어있는 자리를 찾으면
-                if (tiles[x, y] == null)
+                if (characterTiles[x, y].gameObject.activeSelf == false && !IsShifting)
                 {
-                    Debug.Log("비어있는 타일 : " + x + ", " + y);
-
-                    //타일 내리기 코루틴 실행 및 대기
-                  // ShiftTilesDown(x, y);
+                    //타일 내리기 
+                    Debug.Log("빈 타일 찾았따 : " + x + ", " + y);
+                    ShiftTilesDown(x, y);
                     break;
                 }
                 else
-                   MatchFoundCount = 0;
-                
+                    MatchFoundCount = 0;
             }
         }
-
-        /*//타일을 내렸을 때 매칭이 성립되면 매칭 함수를 계속 실행
-        //콤보시스템
-        for (int x = 0; x < xSize; x++)
-        {
-            for (int y = 0; y < ySize; y++)
-            {
-                tiles[x, y].GetComponent<Tile>().FindAllMatchingTiles();
-            }
-        }*/
     }
+
 
     //타일 내리기 코루틴
-/*    private void ShiftTilesDown(int x, int yStart, float shiftDelay = .03f) //딜레이시간 
-    {       
+    private void ShiftTilesDown(int x, int yStart)
+    {
         IsShifting = true;
-        List<Image> rendersList = new List<Image>();
         int nullCount = 0;
-
-        //GameObject refillTile = Instantiate(tilePrefab,)
-
+        //비어있는 타일의 카운트를 세고, 카운트만큼 Col의 값을 깎는다.
         for (int y = yStart; y < height; y++)
         {
-            //매칭된 타일의 y좌표가 동일한(같은 열에 있는) 타일들을 전부 대입하는 과정.
-            Image render = tiles[x, y].GetComponent<Image>();
-            if (render.sprite == null)
-            {  //타일의 스프라이트가 비어있다면 nullcount++
+            Tile shiftTile = characterTiles[x, y].GetComponent<Tile>();
+            if (characterTiles[x, y].GetComponent<Tile>().gameObject.activeSelf == false)
+            {  
                 nullCount++;
+                IsShifting = true;
             }
-            rendersList.Add(render); //renders 리스트에 추가
-        }
-
-        //nullcount만큼 루프
-        for (int i = 0; i < nullCount; i++)
-        {          
-            ScoreManager.instance.PlusScore(); //임시 배치
-            Invoke(nameof(MovingTile),shiftDelay); //대기시간
-
-            //renders 리스트의 count-1만큼 루프
-            for (int k = 0; k < rendersList.Count - 1; k++)
-            { 
-                //
-                rendersList[k].sprite = rendersList[k + 1].sprite;
-                rendersList[k + 1].sprite = GetNewSprite(x, height - 1);
-            }
-        }
-        IsShifting = false;
-    }*/
-
-    public void CreateNewTile()
-    {
-        StartCoroutine(DecreaseRowCol());
-    }
-
-    private IEnumerator DecreaseRowCol()
-    {
-        int nullCount = 0;
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
+            else
             {
-                if(tiles[x,y] == null)
+                for (int i = 0; i < nullCount; i++)
                 {
-                    nullCount++;
+                    shiftTile.Col -= 1;
                 }
-                else if(nullCount > 0)
-                {
-                    tiles[x, y].GetComponent<Tile>().Row -= nullCount;
-                }
-                nullCount = 0;
+                shiftTile.targetX = backTiles[x, y - nullCount].GetComponent<BackgroundTile>().positionX;
+                shiftTile.targetY = backTiles[x, y - nullCount].GetComponent<BackgroundTile>().positionY - (80 * nullCount);
+                shiftTile.isSwapping = true;
             }
         }
-        yield return new WaitForSeconds(.4f);
     }
 
-
-
-    private void MovingTile()
-
+    private IEnumerator ShiftingTileCoroutine(Tile shiftTile)
     {
+        Vector2 tempPosition;
+        //자신과 옮길 목표 위치 사이의 절대값이 0.1 이상이면 계속 Lerp를 실행
+        if (Mathf.Abs(shiftTile.targetX - transform.position.x) > .1 ||
+            Mathf.Abs(shiftTile.targetY - transform.position.y) > .1)
+        {
+            tempPosition = new Vector2(shiftTile.targetX, shiftTile.targetX);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, .03f);
+        }
+        else
+        {   //타일 위치 이동 완료
+            tempPosition = new Vector2(shiftTile.targetX, shiftTile.targetX);
+            transform.position = tempPosition;
+            //옮겨진 타일 오브젝트를 해당 BackTile 오브젝트로 종속시키기
+            shiftTile.gameObject.transform.SetParent(backTiles[shiftTile.Row, shiftTile.Col].transform);
+            //저장되어있는 characterTile의 정보를 바꾸기
+            characterTiles[shiftTile.Row, shiftTile.Col] = shiftTile.gameObject;
+            IsShifting = false;
+        }
+
+        yield return new WaitForSeconds(.3f);
     }
 
 
-/*    //빈 자리가 생겨 타일이 내려갈 때, 새로운 스프라이트를 생성하는 함수
-    //새로 생성한 스프라이트가 좌,우,아래에 존재하는 스프라이트와 같지 않도록 생성
-    private Sprite GetNewSprite(int x, int y) // x는 tile의 x좌표, y는 ysize -1
-    {
-        List<Sprite> possibleCharacters = new List<Sprite>();
-        possibleCharacters.AddRange(characters);
+    /*    //빈 자리가 생겨 타일이 내려갈 때, 새로운 스프라이트를 생성하는 함수
+        //새로 생성한 스프라이트가 좌,우,아래에 존재하는 스프라이트와 같지 않도록 생성
+        private Sprite GetNewSprite(int x, int y) // x는 tile의 x좌표, y는 ysize -1
+        {
+            List<Sprite> possibleCharacters = new List<Sprite>();
+            possibleCharacters.AddRange(characters);
 
-        if (x > 0)
-        {
-            possibleCharacters.Remove(tiles[x - 1, y].GetComponent<Image>().sprite);
-        }
-        if (x < width - 1)
-        {
-            possibleCharacters.Remove(tiles[x + 1, y].GetComponent<Image>().sprite);
-        }
-        if (y > 0)
-        {
-            possibleCharacters.Remove(tiles[x, y - 1].GetComponent<Image>().sprite);
-        }
+            if (x > 0)
+            {
+                possibleCharacters.Remove(tiles[x - 1, y].GetComponent<Image>().sprite);
+            }
+            if (x < width - 1)
+            {
+                possibleCharacters.Remove(tiles[x + 1, y].GetComponent<Image>().sprite);
+            }
+            if (y > 0)
+            {
+                possibleCharacters.Remove(tiles[x, y - 1].GetComponent<Image>().sprite);
+            }
 
-        return possibleCharacters[Random.Range(0, possibleCharacters.Count)];
-    }
-*/
-   
+            return possibleCharacters[Random.Range(0, possibleCharacters.Count)];
+        }
+    */
+
 
 
     //타일 내리기 실행이 끝마친 이후에 다시 검사를 해서 비어있는 타일이 있는지를 검사
     //비어있는 자리를 찾으면 타일 내리기 실행
 }
+

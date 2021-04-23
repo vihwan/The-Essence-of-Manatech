@@ -5,81 +5,168 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+
+public enum CharacterKinds
+{
+    Frost,
+    Pluto,
+    Lantern,
+    Fluore,
+    test1,
+    test2,
+    test3
+}
+
+
+
 public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     #region Field Variable
 
     //고유 정보
+    [Header("Tile Variables")]
     [SerializeField] private int row;
     [SerializeField] private int col;
-    [SerializeField] private Vector3 originPos;
+    public float tilePositionX; //현재 캐릭터 타일의 좌표 X
+    public float tilePositionY; //현재 캐릭터 타일의 좌표 Y
+    public float targetX; //이동시 목표 지점 x좌표
+    public float targetY; //이동시 목표 지점 y좌표
+
     private float swapAngle;
 
     //상태변수
     public bool isMatched = false;
-    private bool isSwapping = false;
+    public bool isSwapping = false;
 
     private Vector2 firstTouchPosition;
     private Vector2 secondTouchPosition;
-    private GameObject secondTile;
+    private Vector2 tempPosition;
+    private GameObject otherCharacterTile;
 
     //필요한 컴포넌트
     private Image image;
 
     public int Row { get => row; set => row = value; }
     public int Col { get => col; set => col = value; }
-
-
     #endregion
+
+
 
     private void Start()
     {
         image = GetComponent<Image>();
-        originPos = transform.position;
+        tilePositionX = GetComponentInParent<BackgroundTile>().positionX;
+        tilePositionY = GetComponentInParent<BackgroundTile>().positionY;
+
+        SetCharacterTileTag();
+    }
+
+    //캐릭터 타일의 태그를 설정해주는 함수
+    private void SetCharacterTileTag()
+    {
+        if (image.sprite.name == "JackFrost")
+        {
+            gameObject.tag = CharacterKinds.Frost.ToString();
+        }
+        else if (image.sprite.name == "JackOLantern")
+        {
+            gameObject.tag = CharacterKinds.Lantern.ToString();
+        }
+        else if (image.sprite.name == "FluoreSang")
+        {
+            gameObject.tag = CharacterKinds.Fluore.ToString();
+        }
+        else if (image.sprite.name == "PlutoNyang")
+        {
+            gameObject.tag = CharacterKinds.Pluto.ToString();
+        }
+        else if (image.sprite.name == "characters_0001")
+        {
+            gameObject.tag = CharacterKinds.test1.ToString();
+        }
+        else if (image.sprite.name == "characters_0003")
+        {
+            gameObject.tag = CharacterKinds.test2.ToString();
+        }
+        else if (image.sprite.name == "characters_0005")
+        {
+            gameObject.tag = CharacterKinds.test3.ToString();
+        }
+        else
+            return;
     }
 
     private void Update()
     {
-        if (GameManager.instance.isGameOver)
-        {
-            image = null;
-            return;
-        }
-
-
         if (isSwapping)
             SwapAnimation();
         else
-        {
-            BoardManager.instance.tiles[Row, Col] = this.gameObject;
-            gameObject.name = BoardManager.instance.SetTileName(Row, Col);
-        }
+            CheckMatching();       
+
+        if (isMatched)
+            BoardManager.instance.FindDestroyMatches();
+
     }
 
+
+    //타일 이동 애니메이션
     private void SwapAnimation()
     {
-        //옮기려는 타일과 옮길 장소의 원래 포지션의 값이 0.1 이상이면 계속 Lerp를 실행
-        if (Mathf.Abs(secondTile.GetComponent<Tile>().originPos.x - transform.position.x) > .1 ||
-            Mathf.Abs(secondTile.GetComponent<Tile>().originPos.y - transform.position.y) > .1)
+
+        //자신과 옮길 목표 위치 사이의 절대값이 0.1 이상이면 계속 Lerp를 실행
+        if (Mathf.Abs(targetX - transform.position.x) > .1 ||
+            Mathf.Abs(targetY - transform.position.y) > .1)
         {
-            transform.position = Vector2.Lerp(transform.position, secondTile.GetComponent<Tile>().originPos, .3f);
-            secondTile.transform.position = Vector2.Lerp(secondTile.transform.position, originPos, .3f);
+            tempPosition = new Vector2(targetX, targetY);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, .1f);
         }
         else
         {   //타일 위치 이동 완료
-            //타일 위치의 변화가 일어날때마다 타일의 매치를 검사합니다.
-            transform.position = secondTile.GetComponent<Tile>().originPos;
-            secondTile.transform.position = originPos;
-            ReInitOriginPos(); //각 타일의 OriginPos를 초기화           
-            CheckMatching();
+            tempPosition = new Vector2(targetX, targetY);
+            transform.position = tempPosition;
+            //옮겨진 타일 오브젝트를 해당 BackTile 오브젝트로 종속시키기
+            gameObject.transform.SetParent(BoardManager.instance.backTiles[Row, Col].transform);
+            //저장되어있는 characterTile의 정보를 바꾸기
+            BoardManager.instance.characterTiles[Row, Col] = gameObject;
+
+   
             isSwapping = false;
         }
     }
 
-    private void ReInitOriginPos()
+
+    //타일의 매칭을 검사하는 함수
+    //서로의 태그를 비교하여 일치하면 isMatched가 true가 된다.
+    //TODO : 2개만 모여도 isMatched가 true가 되는 현상이 있음. 수정요망
+    private void CheckMatching()
     {
-        originPos = transform.position;
-        secondTile.GetComponent<Tile>().originPos = secondTile.transform.position;
+        List<GameObject> matchingTiles = new List<GameObject>();
+        if (Row > 0 && Row < BoardManager.instance.width - 1)
+        {
+            GameObject leftTile = BoardManager.instance.characterTiles[Row - 1, Col];
+            GameObject rightTile = BoardManager.instance.characterTiles[Row + 1, Col];
+
+            if (leftTile.tag == this.gameObject.tag && rightTile.tag == this.gameObject.tag)
+            {
+                leftTile.GetComponent<Tile>().isMatched = true;
+                rightTile.GetComponent<Tile>().isMatched = true;
+                isMatched = true;
+                Debug.Log("매칭 찾음");
+            }
+        }
+        if (Col > 0 && Col < BoardManager.instance.height - 1)
+        {
+            GameObject DownTile = BoardManager.instance.characterTiles[Row, Col - 1];
+            GameObject UpTile = BoardManager.instance.characterTiles[Row, Col + 1];
+
+            if (DownTile.tag == this.gameObject.tag && UpTile.tag == this.gameObject.tag)
+            {
+                DownTile.GetComponent<Tile>().isMatched = true;
+                UpTile.GetComponent<Tile>().isMatched = true;
+                isMatched = true;
+                Debug.Log("매칭 찾음");
+            }
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -92,8 +179,15 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         secondTouchPosition = eventData.position;
+        Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
         CalculateSwapAngle();
         //Debug.Log(swapAngle);
+    }
+
+    private void CalculateSwapAngle()
+    {
+        //라디안값이기 때문에 180 / Mathf.PI 곱해주기
+        swapAngle = Mathf.Atan2(secondTouchPosition.y - firstTouchPosition.y, secondTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
 
         //드래그한 거리가 이미지 파일 가로 크기의 0.6이상이라면
         if ((secondTouchPosition - firstTouchPosition).magnitude > this.gameObject.GetComponent<RectTransform>().rect.size.x * 0.6)
@@ -101,23 +195,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             //타일 바꾸기
             SwapTile();
         }
-
     }
-
-    private void CalculateSwapAngle()
-    {
-        //라디안값이기 때문에 180 / Mathf.PI 곱해주기
-        swapAngle = Mathf.Atan2(secondTouchPosition.y - firstTouchPosition.y, secondTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
-    }
-
-    private void CheckMatching()
-    {
-        FindAllMatchingTiles();
-        secondTile.GetComponent<Tile>().FindAllMatchingTiles();
-        if (BoardManager.instance.MatchFoundCount == 0)
-            GUIManager.instance.ComboCounter = 0;
-    }
-
 
     //타일 위치 서로 바꾸기
     public void SwapTile()
@@ -125,110 +203,45 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (swapAngle > -45 && swapAngle <= 45 && Row + 1 < BoardManager.instance.width)
         {
             //오른쪽 타일과 교체
-            secondTile = BoardManager.instance.GetTile()[Row + 1, Col];
-            secondTile.GetComponent<Tile>().Row -= 1;
+            otherCharacterTile = BoardManager.instance.characterTiles[Row + 1, Col];
+            otherCharacterTile.GetComponent<Tile>().Row -= 1;
             Row += 1;
         }
         else if (swapAngle > 45 && swapAngle <= 135 && Col + 1 < BoardManager.instance.height)
         {
             //위쪽 타일과 교체
-            secondTile = BoardManager.instance.GetTile()[Row, Col + 1];
-            secondTile.GetComponent<Tile>().Col -= 1;
+            otherCharacterTile = BoardManager.instance.characterTiles[Row, Col + 1];
+            otherCharacterTile.GetComponent<Tile>().Col -= 1;
             Col += 1;
         }
         else if ((swapAngle > 135 || swapAngle <= -135) && (Row - 1) >= 0)
         {
             //왼쪽 타일과 교체
-            secondTile = BoardManager.instance.GetTile()[Row - 1, Col];
-            secondTile.GetComponent<Tile>().Row += 1;
+            otherCharacterTile = BoardManager.instance.characterTiles[Row - 1, Col];
+            otherCharacterTile.GetComponent<Tile>().Row += 1;
             Row -= 1;
         }
         else if (swapAngle < -45 && swapAngle >= -135 && (Col - 1) >= 0)
         {
             //아래쪽 타일과 교체
-            secondTile = BoardManager.instance.GetTile()[Row, Col - 1];
-            secondTile.GetComponent<Tile>().Col += 1;
+            otherCharacterTile = BoardManager.instance.characterTiles[Row, Col - 1];
+            otherCharacterTile.GetComponent<Tile>().Col += 1;
             Col -= 1;
         }
         else
             return;
 
         isSwapping = true;
+
+        //목표로 하는 타겟을 설정
+        BoardManager.instance.SetTargetPos(gameObject, otherCharacterTile);
         SoundManager.instance.PlaySE("Swap"); //바꾸기 소리 실행
     }
 
-
-
-    //매칭조건을 만족하는 모든 타일을 검색하는 함수
-    public void FindAllMatchingTiles()
-    {
-        if (image.sprite == null)
-            return;
-
-        CheckCountMatchTiles(new Vector3[2] { Vector3.left, Vector3.right });
-        CheckCountMatchTiles(new Vector3[2] { Vector3.up, Vector3.down });
-
-        if (isMatched) //매칭된 타일을 찾으면
-        {           
-            BoardManager.instance.FindDestroyMatches(); // 매칭된 타일을 파괴
-
-            SoundManager.instance.PlaySE("Clear"); //매칭 성공 효과음
-            GUIManager.instance.ComboCounter++;     //콤보 카운터가 올라감
-            BoardManager.instance.MatchFoundCount++; //매치카운트 증가
-
-            if (gameObject != null)
-                Destroy(gameObject);
-        }
-    }
-
-
-    //자신과 인접한 타일을 검사하는 함수
-    private List<GameObject> FindAdjacentTiles(Vector3 castDir)
-    {
-        List<GameObject> matchingTiles = new List<GameObject>();
-        RaycastHit hitInfo;
-        bool isMatch = Physics.Raycast(transform.position, castDir, out hitInfo);
-        if (isMatch)
-        {
-            //TODO : 나중엔 태그로 비교하기
-            while (hitInfo.collider != null && hitInfo.collider.GetComponent<Image>().sprite == image.sprite)
-            {
-                matchingTiles.Add(hitInfo.collider.gameObject);
-                Physics.Raycast(hitInfo.collider.transform.position, castDir, out hitInfo);
-            }
-        }
-        return matchingTiles;
-    }
-
-    //인접한 타일이 매칭이 성립되는 타일인지 체크하는 함수
-    private void CheckCountMatchTiles(Vector3[] paths)
-    {
-        List<GameObject> matchingTiles = new List<GameObject>();
-        for (int i = 0; i < paths.Length; i++)
-        {
-            matchingTiles.AddRange(FindAdjacentTiles(paths[i]));
-        }
-
-        if (matchingTiles.Count >= 2)
-        {       
-            for (int i = 0; i < matchingTiles.Count; i++)
-            {
-                //자신을 제외한 나머지 매칭이 된 타일의 색상을 변경 (임시)
-                matchingTiles[i].GetComponent<Image>().color = new Color(.5f, .5f, .5f, 1f);
-                matchingTiles[i].GetComponent<Tile>().isMatched = true;
-            }
-
-            image.color = new Color(.5f, .5f, .5f, 1f); //본인의 타일 색상도 변경
-            isMatched = true; //매칭되는 타일을 찾음
-        }
-    }
-
-    
 
     public void SetArrNumber(int x, int y)
     {
         Row = x;
         Col = y;
     }
-
 }
