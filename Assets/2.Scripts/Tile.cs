@@ -16,9 +16,6 @@ public enum CharacterKinds
     test2,
     test3
 }
-
-
-
 public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     #region Field Variable
@@ -101,18 +98,19 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (isSwapping)
             SwapAnimation();
         else
-            CheckMatching();       
-
-        if (isMatched)
-            BoardManager.instance.FindDestroyMatches();
-
+        {
+            if (!BoardManager.instance.CanDropping && !BoardManager.instance.IsShifting)
+            {
+                CheckMatching();
+                if (isMatched)
+                    BoardManager.instance.FindDestroyMatches();
+            }
+        }
     }
-
 
     //타일 이동 애니메이션
     private void SwapAnimation()
     {
-
         //자신과 옮길 목표 위치 사이의 절대값이 0.1 이상이면 계속 Lerp를 실행
         if (Mathf.Abs(targetX - transform.position.x) > .1 ||
             Mathf.Abs(targetY - transform.position.y) > .1)
@@ -122,15 +120,17 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
         else
         {   //타일 위치 이동 완료
-            tempPosition = new Vector2(targetX, targetY);
-            transform.position = tempPosition;
-            //옮겨진 타일 오브젝트를 해당 BackTile 오브젝트로 종속시키기
-            gameObject.transform.SetParent(BoardManager.instance.backTiles[Row, Col].transform);
-            //저장되어있는 characterTile의 정보를 바꾸기
-            BoardManager.instance.characterTiles[Row, Col] = gameObject;
+            transform.position = new Vector2(targetX, targetY);
 
-   
+            //옮겨진 타일 오브젝트를 해당 BackTile 오브젝트로 종속시키기
+            gameObject.transform.SetParent(BoardManager.instance.backTilesBox[Row, Col].transform);
+            //저장되어있는 characterTile의 정보를 바꾸기
+            BoardManager.instance.characterTilesBox[Row, Col] = gameObject;
+            gameObject.name = "S Character [" + Row + ", " + Col + "]";
             isSwapping = false;
+            BoardManager.instance.IsShifting = false;
+            //TODO : 나중에 이 코드 위치 수정
+            BoardManager.instance.currentState = TileMoveState.CANMOVE;
         }
     }
 
@@ -140,11 +140,13 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     //TODO : 2개만 모여도 isMatched가 true가 되는 현상이 있음. 수정요망
     private void CheckMatching()
     {
-        List<GameObject> matchingTiles = new List<GameObject>();
         if (Row > 0 && Row < BoardManager.instance.width - 1)
         {
-            GameObject leftTile = BoardManager.instance.characterTiles[Row - 1, Col];
-            GameObject rightTile = BoardManager.instance.characterTiles[Row + 1, Col];
+            GameObject leftTile = BoardManager.instance.characterTilesBox[Row - 1, Col];
+            GameObject rightTile = BoardManager.instance.characterTilesBox[Row + 1, Col];
+
+            if (leftTile == null || rightTile == null)
+                return;
 
             if (leftTile.tag == this.gameObject.tag && rightTile.tag == this.gameObject.tag)
             {
@@ -156,8 +158,11 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
         if (Col > 0 && Col < BoardManager.instance.height - 1)
         {
-            GameObject DownTile = BoardManager.instance.characterTiles[Row, Col - 1];
-            GameObject UpTile = BoardManager.instance.characterTiles[Row, Col + 1];
+            GameObject DownTile = BoardManager.instance.characterTilesBox[Row, Col - 1];
+            GameObject UpTile = BoardManager.instance.characterTilesBox[Row, Col + 1];
+
+            if (UpTile == null || DownTile == null)
+                return;
 
             if (DownTile.tag == this.gameObject.tag && UpTile.tag == this.gameObject.tag)
             {
@@ -171,9 +176,12 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        firstTouchPosition = eventData.pointerCurrentRaycast.gameObject.transform.position;
-        SoundManager.instance.PlaySE("Select");
-        Debug.Log("선택한 타일 : " + eventData.pointerCurrentRaycast.gameObject);
+        if (BoardManager.instance.currentState == TileMoveState.CANMOVE)
+        {
+            firstTouchPosition = eventData.pointerCurrentRaycast.gameObject.transform.position;
+            SoundManager.instance.PlaySE("Select");
+            Debug.Log("선택한 타일 : " + eventData.pointerCurrentRaycast.gameObject);
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -181,7 +189,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         secondTouchPosition = eventData.position;
         Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
         CalculateSwapAngle();
-        //Debug.Log(swapAngle);
     }
 
     private void CalculateSwapAngle()
@@ -194,6 +201,11 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             //타일 바꾸기
             SwapTile();
+            BoardManager.instance.currentState = TileMoveState.WAIT;
+        }
+        else
+        {
+            BoardManager.instance.currentState = TileMoveState.CANMOVE;
         }
     }
 
@@ -203,28 +215,28 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (swapAngle > -45 && swapAngle <= 45 && Row + 1 < BoardManager.instance.width)
         {
             //오른쪽 타일과 교체
-            otherCharacterTile = BoardManager.instance.characterTiles[Row + 1, Col];
+            otherCharacterTile = BoardManager.instance.characterTilesBox[Row + 1, Col];
             otherCharacterTile.GetComponent<Tile>().Row -= 1;
             Row += 1;
         }
         else if (swapAngle > 45 && swapAngle <= 135 && Col + 1 < BoardManager.instance.height)
         {
             //위쪽 타일과 교체
-            otherCharacterTile = BoardManager.instance.characterTiles[Row, Col + 1];
+            otherCharacterTile = BoardManager.instance.characterTilesBox[Row, Col + 1];
             otherCharacterTile.GetComponent<Tile>().Col -= 1;
             Col += 1;
         }
         else if ((swapAngle > 135 || swapAngle <= -135) && (Row - 1) >= 0)
         {
             //왼쪽 타일과 교체
-            otherCharacterTile = BoardManager.instance.characterTiles[Row - 1, Col];
+            otherCharacterTile = BoardManager.instance.characterTilesBox[Row - 1, Col];
             otherCharacterTile.GetComponent<Tile>().Row += 1;
             Row -= 1;
         }
         else if (swapAngle < -45 && swapAngle >= -135 && (Col - 1) >= 0)
         {
             //아래쪽 타일과 교체
-            otherCharacterTile = BoardManager.instance.characterTiles[Row, Col - 1];
+            otherCharacterTile = BoardManager.instance.characterTilesBox[Row, Col - 1];
             otherCharacterTile.GetComponent<Tile>().Col += 1;
             Col -= 1;
         }
@@ -244,4 +256,17 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         Row = x;
         Col = y;
     }
+
+    // private IEnumerator DropTile(){
+
+    //     while (Col > 0 && BoardManager.instance.characterTilesBox[Row, Col - 1] == null)
+    //     {
+    //         Col--;
+    //         targetX = BoardManager.instance.backTilesBox[Row, Col].GetComponent<BackgroundTile>().positionX;
+    //         targetY = BoardManager.instance.backTilesBox[Row, Col].GetComponent<BackgroundTile>().positionY;
+    //         isSwapping = true;
+    //     }
+
+    //     yield return new WaitForSeconds(0.4f);
+    // }
 }

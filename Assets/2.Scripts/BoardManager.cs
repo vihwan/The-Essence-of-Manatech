@@ -5,6 +5,13 @@ using System.Threading;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+public enum TileMoveState
+{
+    WAIT,
+    CANMOVE
+}
+
+
 public class BoardManager : MonoBehaviour
 {
     //Singleton
@@ -16,28 +23,37 @@ public class BoardManager : MonoBehaviour
     public int width;
     public int height;
 
-    public GameObject[,] characterTiles;
-    public GameObject[,] backTiles;
+    private bool isShifting = false;  //보드에 움직임이 있는가?
+    private bool canDropping = false;  //캐릭터를 내릴 수 있는 상태인가?
+    private bool canRefillTile = false; // 빈 타일에 캐릭터를 채울 수 있는 상태인가?
+    public GameObject[,] characterTilesBox;
+    public GameObject[,] backTilesBox;
 
     private int matchFoundCount = 0;
 
+    public TileMoveState currentState = TileMoveState.CANMOVE;
+
 
     //Property
-    public bool IsShifting { get; set; }
     public int MatchFoundCount { get => matchFoundCount; set => matchFoundCount = value; }
+    public bool IsShifting { get => isShifting; set => isShifting = value; }
+    public bool CanDropping { get => canDropping; set => canDropping = value; }
+
+    public bool CanRefillTile{ get => canRefillTile; set => canRefillTile = value;}
 
     //초기화함수
     public void Init()
     {
         instance = GetComponent<BoardManager>(); //싱글톤
-        backTiles = new GameObject[width, height];
-        characterTiles = new GameObject[width, height];
+        backTilesBox = new GameObject[width, height];
+        characterTilesBox = new GameObject[width, height];
 
         Vector2 offset = tileBackgroundPrefab.GetComponent<RectTransform>().rect.size;
         CreateBoard(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
         SoundManager.instance.PlayBGM("데바스타르");
         SoundManager.instance.audioSourceBGM.volume = 0f;
     }
+
 
 
     //게임 보드 생성
@@ -63,7 +79,7 @@ public class BoardManager : MonoBehaviour
                 newBackTile.gameObject.name = "Tile Background [" + x + ", " + y + "]";
                 newBackTile.GetComponent<BackgroundTile>().Init(
                     newBackTile.transform.position.x, newBackTile.transform.position.y);
-                backTiles[x, y] = newBackTile;
+                backTilesBox[x, y] = newBackTile;
 
                 GameObject characterTile = Instantiate(characterTilePrefab,
                                 new Vector3(startX + (xOffset * x),
@@ -72,7 +88,7 @@ public class BoardManager : MonoBehaviour
                 characterTile.transform.SetParent(newBackTile.transform);
                 characterTile.gameObject.name = "Character [" + x + ", " + y + "]";
                 characterTile.GetComponent<Tile>().SetArrNumber(x, y);
-                characterTiles[x, y] = characterTile;
+                characterTilesBox[x, y] = characterTile;
 
 
                 #region 처음 보드를 생성할 때, 바로 3개가 연결되어 나오지 않도록 방지하는 코드
@@ -92,10 +108,6 @@ public class BoardManager : MonoBehaviour
     }
 
 
-    public string SetTileName(int x, int y)
-    {
-        return "Tile [" + x + ", " + y + "]";
-    }
 
     public void SetTargetPos(GameObject first, GameObject second)
     {
@@ -108,134 +120,155 @@ public class BoardManager : MonoBehaviour
     }
 
 
-    //캐릭터 타일을 파괴
-    private void DestroyTile(int row, int col)
-    {
-        if (characterTiles[row, col].GetComponent<Tile>().isMatched)
-        {
-            characterTiles[row, col].gameObject.SetActive(false);
-        }
-    }
 
     //파괴할 캐릭터 타일을 검색
     //해당되는 타일들을 전부 돌려서 matchFound가 true인 타일들을 전부 찾는다.
+    //매칭이되면 무조건 파괴시킨다.
     public void FindDestroyMatches()
-    {
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                if (characterTiles[i, j] != null)
-                {
-                    DestroyTile(i, j);
-                }
-            }
-        }
-        FindNullTiles();
-    }
-
-
-    //비어있는 타일 자리를 찾는 코루틴
-    public void FindNullTiles()
     {
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                //비어있는 자리를 찾으면
-                if (characterTiles[x, y].gameObject.activeSelf == false && !IsShifting)
+                if (characterTilesBox[x, y] != null)
                 {
-                    //타일 내리기 
-                    Debug.Log("빈 타일 찾았따 : " + x + ", " + y);
-                    ShiftTilesDown(x, y);
+                    if (characterTilesBox[x, y].GetComponent<Tile>().isMatched)
+                    {
+                       // Debug.Log("타일 파괴 : " + characterTilesBox[x, y]);
+                        Destroy(characterTilesBox[x, y].GetComponent<Tile>().gameObject);
+                        characterTilesBox[x, y] = null;
+
+                    }
+                }
+            }
+        }
+        StartCoroutine(FindNullTiles());
+        IsShifting = false;
+    }
+
+
+    //비어있는 타일 자리를 찾는 코루틴
+    public IEnumerator FindNullTiles()
+    {
+        int nullCount = 0;
+        int nonNullX = 0;
+        int nonNullY = 0;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (characterTilesBox[x, y] == null)
+                {
+                    nullCount++;
+                }
+                if (characterTilesBox[x, y] == null && characterTilesBox[x, y + 1] != null)
+                {
+                    nonNullX = x;
+                    nonNullY = y + 1;
+                    CanDropping = true;
                     break;
                 }
-                else
-                    MatchFoundCount = 0;
+
             }
+            if(CanDropping)
+                ShiftingTile(nonNullX,nonNullY,nullCount);
+            nullCount = 0;
         }
+        yield return new WaitForSeconds(.5f);
     }
 
 
-    //타일 내리기 코루틴
-    private void ShiftTilesDown(int x, int yStart)
+    private void ShiftingTile(int nonNullX, int nonNullY, int nullCount)
     {
         IsShifting = true;
-        int nullCount = 0;
-        //비어있는 타일의 카운트를 세고, 카운트만큼 Col의 값을 깎는다.
-        for (int y = yStart; y < height; y++)
-        {
-            Tile shiftTile = characterTiles[x, y].GetComponent<Tile>();
-            if (characterTiles[x, y].GetComponent<Tile>().gameObject.activeSelf == false)
-            {  
-                nullCount++;
-                IsShifting = true;
-            }
-            else
-            {
-                for (int i = 0; i < nullCount; i++)
-                {
-                    shiftTile.Col -= 1;
-                }
-                shiftTile.targetX = backTiles[x, y - nullCount].GetComponent<BackgroundTile>().positionX;
-                shiftTile.targetY = backTiles[x, y - nullCount].GetComponent<BackgroundTile>().positionY - (80 * nullCount);
-                shiftTile.isSwapping = true;
-            }
+        for (int y = nonNullY; y < height; y++)
+        { //아래로 내리기 위해서 해당하는 타일의 속성을 바꿔준다.
+            Tile shiftTile = characterTilesBox[nonNullX, y].GetComponent<Tile>();
+            if(shiftTile == null)
+                return;
+
+            shiftTile.Col -= (1 * nullCount);
+            shiftTile.targetX = backTilesBox[nonNullX, y - nullCount].GetComponent<BackgroundTile>().positionX;
+            shiftTile.targetY = backTilesBox[nonNullX, y - nullCount].GetComponent<BackgroundTile>().positionY;
+            shiftTile.isSwapping = true;
+            Debug.Log("옮길 타일 목표 설정" + shiftTile);   
         }
+        Debug.Log(nullCount + "칸 내림");
+        CanDropping = false;
+        canRefillTile = true;
     }
 
-    private IEnumerator ShiftingTileCoroutine(Tile shiftTile)
+
+    public void RefillCharacterTiles()
     {
-        Vector2 tempPosition;
-        //자신과 옮길 목표 위치 사이의 절대값이 0.1 이상이면 계속 Lerp를 실행
-        if (Mathf.Abs(shiftTile.targetX - transform.position.x) > .1 ||
-            Mathf.Abs(shiftTile.targetY - transform.position.y) > .1)
-        {
-            tempPosition = new Vector2(shiftTile.targetX, shiftTile.targetX);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, .03f);
-        }
-        else
-        {   //타일 위치 이동 완료
-            tempPosition = new Vector2(shiftTile.targetX, shiftTile.targetX);
-            transform.position = tempPosition;
-            //옮겨진 타일 오브젝트를 해당 BackTile 오브젝트로 종속시키기
-            shiftTile.gameObject.transform.SetParent(backTiles[shiftTile.Row, shiftTile.Col].transform);
-            //저장되어있는 characterTile의 정보를 바꾸기
-            characterTiles[shiftTile.Row, shiftTile.Col] = shiftTile.gameObject;
-            IsShifting = false;
-        }
+        Sprite[] previousLeft = new Sprite[height];
+        Sprite previousBelow = null;
 
-        yield return new WaitForSeconds(.3f);
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (characterTilesBox[i, j] == null)
+                {
+                    float xPosition = backTilesBox[i, j].GetComponent<BackgroundTile>().positionX;
+                    float yPosition = backTilesBox[i, j].GetComponent<BackgroundTile>().positionY;
+                    Vector2 tempPosition = new Vector2(xPosition, yPosition);
+                    GameObject refillTile = Instantiate(characterTilePrefab, tempPosition, Quaternion.identity);
+
+                    refillTile.transform.SetParent(backTilesBox[i, j].transform);
+                    refillTile.gameObject.name = "Refilled Character [" + i + ", " + j + "]";
+                    refillTile.GetComponent<Tile>().SetArrNumber(i, j);
+                    characterTilesBox[i, j] = refillTile;
+                    #region 처음 보드를 생성할 때, 바로 3개가 연결되어 나오지 않도록 방지하는 코드
+                    List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
+                    possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
+
+                    possibleCharacters.Remove(previousLeft[j]); //이전의 왼쪽에 해당되는 열 리스트들을 전부 삭제
+                    possibleCharacters.Remove(previousBelow);   //이전의 아래에 해당되는 캐릭터를 삭제
+                    #endregion
+
+                    Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
+                    refillTile.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
+                    previousLeft[j] = newSprite;
+                    previousBelow = newSprite;
+
+                    Debug.Log("리필 완료");                   
+                }
+            }
+        }
     }
 
 
-    /*    //빈 자리가 생겨 타일이 내려갈 때, 새로운 스프라이트를 생성하는 함수
-        //새로 생성한 스프라이트가 좌,우,아래에 존재하는 스프라이트와 같지 않도록 생성
-        private Sprite GetNewSprite(int x, int y) // x는 tile의 x좌표, y는 ysize -1
-        {
-            List<Sprite> possibleCharacters = new List<Sprite>();
-            possibleCharacters.AddRange(characters);
-
-            if (x > 0)
-            {
-                possibleCharacters.Remove(tiles[x - 1, y].GetComponent<Image>().sprite);
-            }
-            if (x < width - 1)
-            {
-                possibleCharacters.Remove(tiles[x + 1, y].GetComponent<Image>().sprite);
-            }
-            if (y > 0)
-            {
-                possibleCharacters.Remove(tiles[x, y - 1].GetComponent<Image>().sprite);
-            }
-
-            return possibleCharacters[Random.Range(0, possibleCharacters.Count)];
-        }
-    */
+    // private bool MatchesOnBoard()
+    // {
+    //     for (int i = 0; i < width; i++)
+    //     {
+    //         for (int j = 0; j < height; j++)
+    //         {
+    //             if (characterTilesBox[i, j] != null)
+    //             {
+    //                 if (characterTilesBox[i, j].GetComponent<Tile>().isMatched)
+    //                 {
+    //                     return true;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
 
 
+    // private IEnumerator FillTileCoroutine()
+    // {
+    //     yield return new WaitForSeconds(1f);
+    //     RefillCharacterTiles();
 
-    //타일 내리기 실행이 끝마친 이후에 다시 검사를 해서 비어있는 타일이 있는지를 검사
-    //비어있는 자리를 찾으면 타일 내리기 실행
+    //     yield return new WaitForSeconds(.5f);
+    //     while (MatchesOnBoard())
+    //     {
+    //         yield return new WaitForSeconds(.5f);
+    //         FindDestroyMatches();
+    //     }
+    // }
 }
 
