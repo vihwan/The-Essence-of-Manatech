@@ -45,6 +45,10 @@ public class GameManager : MonoBehaviour
         if (boardManager != null)
             boardManager.Init();
 
+        CreateBoard createBoard = FindObjectOfType<CreateBoard>();
+        if (createBoard != null)
+            createBoard.Init();
+
         guiManager = FindObjectOfType<GUIManager>();
         if (guiManager != null)
             guiManager.Init();
@@ -71,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
-        StartCoroutine(guiManager.WaitForShifting());
+        //StartCoroutine(guiManager.WaitForShifting());
         SoundManager.instance.StopAllSE();
         SoundManager.instance.StopBGM();
         SoundManager.instance.PlaySE("DungeonResult");

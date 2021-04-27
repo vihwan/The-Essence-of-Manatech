@@ -99,10 +99,10 @@ public class GUIManager : MonoBehaviour
 
 
 	//게임 오버 전에 대기 시간을 주는 코루틴
-	public IEnumerator WaitForShifting()
-	{
-		yield return new WaitUntil(() => !BoardManager.instance.IsShifting);
-		yield return new WaitForSeconds(.25f);
-		GameOverPanel(); //GUI GameOver Panel
-	}
+	// public IEnumerator WaitForShifting()
+	// {
+	// 	yield return new WaitUntil(() => !BoardManager.instance.IsShifting);
+	// 	yield return new WaitForSeconds(.25f);
+	// 	GameOverPanel(); //GUI GameOver Panel
+	// }
 }
