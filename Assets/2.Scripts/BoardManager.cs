@@ -11,25 +11,10 @@ using UnityEngine.EventSystems;
     <BoardState>
 
 	1) WAIT
-	대기 상태. 마우스 입력을 받을 준비가 되어있는 상태
-	이 상태에서도 타일의 매칭여부를 검사한다. 매칭된 타일이 있다면 4)로 넘어감.
+	대기 상태. 보드가 동작이 이루어져 있어 기다려야하는 상태
 	
-	2) SWAP
-	타일의 교환이 이루어지고 있는 상태,
-
-	3) FINDMATCH
-	타일의 매칭 여부를 검사하는 상태. 여기서 매칭된 타일이 없다면 1)로 돌아간다.
-	매칭된 타일이 있다면 4)로 진행
-
-	4) DESTROY
-	매칭된 타일을 파괴하는 상태
-
-	5) DROP
-	파괴되어 생긴 빈 자리를 탐색하고 해당되는 타일을 아래로 옮기는 상태
-
-	6) FILL
-	아래로 옮긴 이후, 빈자리를 탐색하고 새로운 타일을 생성하는 상태
-	이를 모두 마치면 다시 1)로 돌아감.
+	2) MOVE
+    유저가 조작을 할 수 있는 상태
 
     > 1과 3의 차이는 마우스 조작이 가능하냐 불가능하냐의 차이로 해야할듯 싶다. 
 */
@@ -45,24 +30,23 @@ public class BoardManager : MonoBehaviour
     //Singleton
     public static BoardManager instance;
 
-    public List<Sprite> characters = new List<Sprite>(); //캐릭터들을 저장하는 리스트
-    public GameObject characterTilePrefab;  //Tile Prefab
+    [Header("Board Variable")]
     public int width;
     public int height;
 
-    public GameObject[,] characterTilesBox;
+    public List<Sprite> characters = new List<Sprite>(); //외부에서 사용할 캐릭터들을 저장하는 리스트
+    public GameObject characterTilePrefab;  //Tile Prefab
+    public GameObject[,] characterTilesBox; //캐릭터 타일 보관하는 배열
 
     private int matchFoundCount = 0;
-    private bool isRefilling;
-    public bool boardEmpty;
-
     public BoardState currentState = BoardState.MOVE;
-    private bool canDropping = false;
-    private bool canRefillTile = false;
+
     private float nextTime = 0f;
     private float TimeLeft = 3f;
 
+    //필요한 컴포넌트
     private FindMatches findMatches;
+    private CreateBoard createBoard;
 
 
     //Property
@@ -73,12 +57,13 @@ public class BoardManager : MonoBehaviour
     {
         instance = GetComponent<BoardManager>(); //싱글톤
         findMatches = FindObjectOfType<FindMatches>();
+        createBoard = FindObjectOfType<CreateBoard>();
         characterTilesBox = new GameObject[width, height];
 
         Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().rect.size;
         CreateTiles(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
         SoundManager.instance.PlayBGM("데바스타르");
-        SoundManager.instance.audioSourceBGM.volume = 0f;
+        SoundManager.instance.audioSourceBGM.volume = 0.1f;
     }
 
 
@@ -206,21 +191,31 @@ public class BoardManager : MonoBehaviour
         StartCoroutine(FillBoardCoroutine());
     }
 
-
+    //타일 채우기
     private void RefillBoard()
     {
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                if(characterTilesBox[x,y] = null)
+                if(characterTilesBox[x,y] == null)
                 {
                     //TODO : 임시 위치
-
-                    Vector2 newPosition = new Vector2(x,y *2);
+                    float newPositionX = createBoard.backTilesBox[x,y].GetComponent<BackgroundTile>().positionX;
+                    float newPositionY = createBoard.backTilesBox[x,y].GetComponent<BackgroundTile>().positionY;
+                    Vector2 newPosition = new Vector2(newPositionX, newPositionY + characterTilePrefab.GetComponent<RectTransform>().rect.size.y);
                     GameObject newTile = Instantiate(characterTilePrefab, newPosition, Quaternion.identity);
+                    newTile.transform.SetParent(transform);
                     newTile.GetComponent<Tile>().SetArrNumber(x, y);
-                    characterTilesBox[x, y] = newTile;
+                    newTile.GetComponent<Tile>().targetX = newPositionX;
+                    newTile.GetComponent<Tile>().targetY = newPositionY;
+
+                    List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
+                    possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
+                    Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
+                    newTile.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
+
+                    characterTilesBox[x, y] = newTile; //배열에 새 타일을 추가
                     Debug.Log("새 타일 생성");
                 }
             }
@@ -246,6 +241,7 @@ public class BoardManager : MonoBehaviour
         return false;
     }
 
+    //타일 생성하여 보드 채우기 코루틴
     private IEnumerator FillBoardCoroutine()
     {
         RefillBoard();

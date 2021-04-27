@@ -8,7 +8,7 @@ public class CreateBoard : MonoBehaviour
     public int width;
     public int height;
     public GameObject tileBackgroundPrefab;
-    private GameObject[,] backTilesBox;
+    public GameObject[,] backTilesBox;
 
 
     // Start is called before the first frame update
