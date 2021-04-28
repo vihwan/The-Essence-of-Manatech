@@ -31,7 +31,7 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(instance);
@@ -45,10 +45,10 @@ public class SoundManager : MonoBehaviour
         playSoundName = new string[audioSourceEffects.Length];
     }
 
-/*    public void PlaySE(Clip audioClip)
-    {
-        audioSourceEffect[(int)audioClip].Play();
-    }*/
+    /*    public void PlaySE(Clip audioClip)
+        {
+            audioSourceEffect[(int)audioClip].Play();
+        }*/
 
     //일단 임시로 메소드 오버로딩
     public void PlaySE(string _name)

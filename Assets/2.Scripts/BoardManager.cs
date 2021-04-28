@@ -1,22 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Threading;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 /*
 >> Enum 타입의 State 변수를 만들어서 게임의 동작 상태를 제어하는 방식으로 해보자
 
     <BoardState>
-
 	1) WAIT
 	대기 상태. 보드가 동작이 이루어져 있어 기다려야하는 상태
 	
 	2) MOVE
     유저가 조작을 할 수 있는 상태
 
-    > 1과 3의 차이는 마우스 조작이 가능하냐 불가능하냐의 차이로 해야할듯 싶다. 
 */
 public enum BoardState
 {
@@ -35,10 +31,9 @@ public class BoardManager : MonoBehaviour
     public int height;
 
     public List<Sprite> characters = new List<Sprite>(); //외부에서 사용할 캐릭터들을 저장하는 리스트
-    public GameObject characterTilePrefab;  //Tile Prefab
     public GameObject[,] characterTilesBox; //캐릭터 타일 보관하는 배열
+    public GameObject characterTilePrefab;  //Tile Prefab
 
-    private int matchFoundCount = 0;
     public BoardState currentState = BoardState.MOVE;
 
     private float nextTime = 0f;
@@ -46,18 +41,21 @@ public class BoardManager : MonoBehaviour
 
     //필요한 컴포넌트
     private FindMatches findMatches;
-    private CreateBoard createBoard;
-
+    private CreateBackTiles createBoard;
+    private ComboSystem comboSystem;
 
     //Property
-    public int MatchFoundCount { get => matchFoundCount; set => matchFoundCount = value; }
+
 
     //초기화함수
     public void Init()
     {
         instance = GetComponent<BoardManager>(); //싱글톤
+
         findMatches = FindObjectOfType<FindMatches>();
-        createBoard = FindObjectOfType<CreateBoard>();
+        createBoard = FindObjectOfType<CreateBackTiles>();
+        comboSystem = FindObjectOfType<ComboSystem>();
+
         characterTilesBox = new GameObject[width, height];
 
         Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().rect.size;
@@ -109,14 +107,11 @@ public class BoardManager : MonoBehaviour
                 characterTile.GetComponent<Tile>().targetY = startY + (yOffset * y);
                 characterTilesBox[x, y] = characterTile;
 
-
-                #region 처음 보드를 생성할 때, 바로 3개가 연결되어 나오지 않도록 방지하는 코드
                 List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
                 possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
 
                 possibleCharacters.Remove(previousLeft[y]); //이전의 왼쪽에 해당되는 열 리스트들을 전부 삭제
                 possibleCharacters.Remove(previousBelow);   //이전의 아래에 해당되는 캐릭터를 삭제
-                #endregion
 
                 Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
                 characterTile.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
@@ -143,8 +138,16 @@ public class BoardManager : MonoBehaviour
         if (characterTilesBox[row, col].GetComponent<Tile>().isMatched)
         {
             findMatches.currentMatches.Remove(characterTilesBox[row, col]);
+            GameObject flashEffect = Instantiate(Resources.Load<GameObject>("FlashEffect")
+                                                , characterTilesBox[row, col].GetComponent<Tile>().transform.position
+                                                , Quaternion.identity);
+            flashEffect.transform.SetParent(transform);
+            Destroy(flashEffect, .5f);
+
             Destroy(characterTilesBox[row, col].gameObject);
             characterTilesBox[row, col] = null;
+
+            ScoreManager.instance.PlusScore();
             Debug.Log("파괴 완료");
         }
     }
@@ -155,12 +158,13 @@ public class BoardManager : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                if(characterTilesBox[x,y] != null)
+                if (characterTilesBox[x, y] != null)
                 {
                     DestroyMatchesAt(x, y);
                 }
             }
         }
+        comboSystem.ComboCounter++;
         StartCoroutine(DecreaseColCoroutine());
     }
 
@@ -172,12 +176,12 @@ public class BoardManager : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                if(characterTilesBox[x,y] == null)
+                if (characterTilesBox[x, y] == null)
                 {
                     nullCount++;
                     Debug.Log("카운트 세는중");
                 }
-                else if(nullCount > 0)
+                else if (nullCount > 0)
                 {
                     characterTilesBox[x, y].GetComponent<Tile>().Col -= nullCount;
                     characterTilesBox[x, y].GetComponent<Tile>().targetY -= (80 * nullCount);
@@ -194,28 +198,36 @@ public class BoardManager : MonoBehaviour
     //타일 채우기
     private void RefillBoard()
     {
+        Sprite[] previousLeft = new Sprite[height];
+        Sprite previousBelow = null;
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                if(characterTilesBox[x,y] == null)
+                if (characterTilesBox[x, y] == null)
                 {
                     //TODO : 임시 위치
-                    float newPositionX = createBoard.backTilesBox[x,y].GetComponent<BackgroundTile>().positionX;
-                    float newPositionY = createBoard.backTilesBox[x,y].GetComponent<BackgroundTile>().positionY;
+                    float newPositionX = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionX;
+                    float newPositionY = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
                     Vector2 newPosition = new Vector2(newPositionX, newPositionY + characterTilePrefab.GetComponent<RectTransform>().rect.size.y);
                     GameObject newTile = Instantiate(characterTilePrefab, newPosition, Quaternion.identity);
                     newTile.transform.SetParent(transform);
                     newTile.GetComponent<Tile>().SetArrNumber(x, y);
                     newTile.GetComponent<Tile>().targetX = newPositionX;
                     newTile.GetComponent<Tile>().targetY = newPositionY;
+                    characterTilesBox[x, y] = newTile; //배열에 새 타일을 추가
+
 
                     List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
                     possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
+
+                    possibleCharacters.Remove(previousLeft[y]); //이전의 왼쪽에 해당되는 열 리스트들을 전부 삭제
+                    possibleCharacters.Remove(previousBelow);   //이전의 아래에 해당되는 캐릭터를 삭제
+
                     Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
                     newTile.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
 
-                    characterTilesBox[x, y] = newTile; //배열에 새 타일을 추가
                     Debug.Log("새 타일 생성");
                 }
             }
@@ -253,7 +265,16 @@ public class BoardManager : MonoBehaviour
             DestroyMatches();
         }
         yield return new WaitForSeconds(.5f);
-        currentState = BoardState.MOVE;
+        //currentState = BoardState.MOVE;
+    }
+
+    public bool IsMoveState()
+    {
+        if (currentState == BoardState.WAIT)
+        {
+            return false;
+        }
+        return true;
     }
 }
 

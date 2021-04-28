@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 
 public enum CharacterKinds
@@ -25,30 +23,30 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private int row;
     [SerializeField] private int col;
 
-
     public float targetX; //이동시 목표 지점 x좌표
     public float targetY; //이동시 목표 지점 y좌표
-    private int previousRow;
-    private int previousCol;
-
-    private float swapAngle;
+    private int previousRow; //타일 이동시 이전 Row 임시저장
+    private int previousCol; //타일 이동시 이전 Col 임시저장
+    private float swapAngle; //마우스 조작 방향
 
     //상태변수
     public bool isMatched = false;
     public bool isSwapping = false;
-    private bool isDropping = false;
 
+    //Vector
     private Vector2 firstTouchPosition;
     private Vector2 secondTouchPosition;
     private Vector2 tempPosition;
     private GameObject otherCharacterTile;
 
-    //필요한 컴포넌트
+
+    //Component
     private Image image;
     private FindMatches findMatches;
+    private ComboSystem comboSystem;
 
 
-
+    //Property
     public int Row { get => row; set => row = value; }
     public int Col { get => col; set => col = value; }
     #endregion
@@ -58,11 +56,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private void Start()
     {
         image = GetComponent<Image>();
-        /*        targetX = (int)transform.position.x;
-                targetY = (int)transform.position.y;*/
-/*        previousRow = row;
-        previousCol = col;*/
         findMatches = FindObjectOfType<FindMatches>();
+        comboSystem = FindObjectOfType<ComboSystem>();
+
         SetCharacterTileTag();
         isMatched = false;
     }
@@ -127,6 +123,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (BoardManager.instance.currentState == BoardState.MOVE)
         {
+            BoardManager.instance.currentState = BoardState.WAIT; //유저 조작 대기 상태
             secondTouchPosition = eventData.position;
             Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
             CalculateSwapAngle();
@@ -142,7 +139,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             swapAngle = Mathf.Atan2(secondTouchPosition.y - firstTouchPosition.y, secondTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
             //타일 바꾸기
             SwapTile();
-            BoardManager.instance.currentState = BoardState.WAIT; //유저 조작 대기 상태
         }
         else
         {
@@ -210,18 +206,18 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 Row = previousRow;
                 Col = previousCol;
                 BoardManager.instance.SetTargetPos(gameObject, otherCharacterTile);
+                comboSystem.PlayComboFailAnimation();
                 yield return new WaitForSeconds(.5f);
                 BoardManager.instance.currentState = BoardState.MOVE;
+                comboSystem.ComboCounter = 0;
             }
             else
             {
                 BoardManager.instance.DestroyMatches();
-
             }
             otherCharacterTile = null;
         }
     }
-
 
 
     //타일 이동 애니메이션
@@ -232,6 +228,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (Mathf.Abs(targetX - transform.position.x) > .1 ||
             Mathf.Abs(targetY - transform.position.y) > .1)
         {
+            BoardManager.instance.currentState = BoardState.WAIT;
             tempPosition = new Vector2(targetX, targetY);
             transform.position = Vector2.Lerp(transform.position, tempPosition, .1f);
             if (BoardManager.instance.characterTilesBox[Row, Col] != this.gameObject)
@@ -246,6 +243,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             //저장되어있는 characterTile의 정보를 바꾸기
             BoardManager.instance.characterTilesBox[Row, Col] = gameObject;
             gameObject.name = "S Character [" + Row + ", " + Col + "]";
+            BoardManager.instance.currentState = BoardState.MOVE;
         }
     }
 

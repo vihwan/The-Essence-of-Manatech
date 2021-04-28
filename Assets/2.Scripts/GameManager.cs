@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
-using System;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +22,8 @@ public class GameManager : MonoBehaviour
     private BoardManager boardManager;
     private GUIManager guiManager;
     private ScoreManager scoreManager;
+    private CreateBackTiles createBoard;
+    private ComboSystem comboSystem;
 
     void Awake()
     {
@@ -45,7 +46,7 @@ public class GameManager : MonoBehaviour
         if (boardManager != null)
             boardManager.Init();
 
-        CreateBoard createBoard = FindObjectOfType<CreateBoard>();
+        createBoard = FindObjectOfType<CreateBackTiles>();
         if (createBoard != null)
             createBoard.Init();
 
@@ -56,6 +57,10 @@ public class GameManager : MonoBehaviour
         scoreManager = FindObjectOfType<ScoreManager>();
         if (scoreManager != null)
             scoreManager.Init();
+
+        comboSystem = FindObjectOfType<ComboSystem>();
+        if (comboSystem != null)
+            comboSystem.Init();
     }
 
 
@@ -75,7 +80,7 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
-        //StartCoroutine(guiManager.WaitForShifting());
+        StartCoroutine(guiManager.WaitForShifting());
         SoundManager.instance.StopAllSE();
         SoundManager.instance.StopBGM();
         SoundManager.instance.PlaySE("DungeonResult");

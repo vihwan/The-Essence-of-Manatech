@@ -1,20 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance;
 
+
+    private ComboSystem comboSystem;
+
     public void Init()
     {
         instance = GetComponent<ScoreManager>();
+        comboSystem = FindObjectOfType<ComboSystem>();
     }
 
     public void PlusScore()
     {
         //타일 한 개당 기본점수 : 50
-        GUIManager.instance.Score += 50 * (GUIManager.instance.ComboCounter + 1);
+        GUIManager.instance.Score += 50 * (comboSystem.ComboCounter + 1);
         //현재 Combo 1이라면
         //50 + 100 + 100 = 250 점이 오른다.
     }
