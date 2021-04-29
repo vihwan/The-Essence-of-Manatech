@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-
 public enum CharacterKinds
 {
     Frost,
@@ -12,8 +11,10 @@ public enum CharacterKinds
     Fluore,
     test1,
     test2,
-    test3
+    test3,
+    bomb
 }
+
 public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     #region Field Variable
@@ -21,6 +22,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     //고유 정보
     [Header("Tile Variables")]
     [SerializeField] private int row;
+
     [SerializeField] private int col;
 
     public float targetX; //이동시 목표 지점 x좌표
@@ -31,27 +33,28 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     //상태변수
     public bool isMatched = false;
+
     public bool isSwapping = false;
 
     //Vector
     private Vector2 firstTouchPosition;
+
     private Vector2 secondTouchPosition;
     private Vector2 tempPosition;
     private GameObject otherCharacterTile;
 
-
     //Component
     private Image image;
+
     private FindMatches findMatches;
     private ComboSystem comboSystem;
 
-
     //Property
     public int Row { get => row; set => row = value; }
+
     public int Col { get => col; set => col = value; }
-    #endregion
 
-
+    #endregion Field Variable
 
     private void Start()
     {
@@ -94,6 +97,10 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             gameObject.tag = CharacterKinds.test3.ToString();
         }
+        else if (image.sprite.name == "bomb")
+        {
+            gameObject.tag = CharacterKinds.bomb.ToString();
+        }
         else
             return;
     }
@@ -107,16 +114,22 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         MoveTileAnimation();
     }
 
-
     public void OnPointerDown(PointerEventData eventData)
     {
         if (BoardManager.instance.currentState == BoardState.MOVE)
         {
+            //만약 클릭한 타일이 폭탄이라면 폭탄 실행
+            if (eventData.pointerCurrentRaycast.gameObject.CompareTag("bomb"))
+            {
+                BoardManager.instance.JackBombIsMatched(Row, Col);
+                BoardManager.instance.DestroyMatches();
+                BoardManager.instance.currentState = BoardState.WAIT;
+                return;
+            }
             firstTouchPosition = eventData.pointerCurrentRaycast.gameObject.transform.position;
             SoundManager.instance.PlaySE("Select");
-            Debug.Log("선택한 타일 : " + eventData.pointerCurrentRaycast.gameObject);
+            //Debug.Log("선택한 타일 : " + eventData.pointerCurrentRaycast.gameObject);
         }
-
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -125,7 +138,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             BoardManager.instance.currentState = BoardState.WAIT; //유저 조작 대기 상태
             secondTouchPosition = eventData.position;
-            Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
+            //Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
             CalculateSwapAngle();
         }
     }
@@ -139,6 +152,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             swapAngle = Mathf.Atan2(secondTouchPosition.y - firstTouchPosition.y, secondTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
             //타일 바꾸기
             SwapTile();
+            BoardManager.instance.currentState = BoardState.WAIT;
         }
         else
         {
@@ -208,7 +222,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 BoardManager.instance.SetTargetPos(gameObject, otherCharacterTile);
                 comboSystem.PlayComboFailAnimation();
                 yield return new WaitForSeconds(.5f);
-                BoardManager.instance.currentState = BoardState.MOVE;
                 comboSystem.ComboCounter = 0;
             }
             else
@@ -218,7 +231,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             otherCharacterTile = null;
         }
     }
-
 
     //타일 이동 애니메이션
     //목표로 하는 지점이 바뀔 때 마다 애니메이션이 실행된다.

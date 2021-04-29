@@ -76,6 +76,7 @@
     <Compile Include="Assets\2.Scripts\ScoreManager.cs" />
     <Compile Include="Assets\2.Scripts\SkillGauge.cs" />
     <Compile Include="Assets\2.Scripts\SkillManager.cs" />
+    <Compile Include="Assets\2.Scripts\SkillUse.cs" />
     <Compile Include="Assets\2.Scripts\SoundManager.cs" />
     <Compile Include="Assets\2.Scripts\Tile.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -648,14 +649,14 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>H:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>H:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>H:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>H:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>H:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup></ItemGroup>

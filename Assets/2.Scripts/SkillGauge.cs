@@ -6,7 +6,6 @@ using TMPro;
 
 public class SkillGauge : MonoBehaviour
 {
-
     private float currentSkillMana;
     private float totalSkillMana;
 

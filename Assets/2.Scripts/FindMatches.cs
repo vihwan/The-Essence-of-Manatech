@@ -32,19 +32,16 @@ public class FindMatches : MonoBehaviour
                                 if (!currentMatches.Contains(leftTile))
                                 {
                                     currentMatches.Add(leftTile);
-
                                 }
                                 leftTile.GetComponent<Tile>().isMatched = true;
                                 if (!currentMatches.Contains(rightTile))
                                 {
                                     currentMatches.Add(rightTile);
-
                                 }
                                 rightTile.GetComponent<Tile>().isMatched = true;
                                 if (!currentMatches.Contains(currentTile))
                                 {
                                     currentMatches.Add(currentTile);
-
                                 }
                                 currentTile.GetComponent<Tile>().isMatched = true;
                             }
@@ -72,7 +69,6 @@ public class FindMatches : MonoBehaviour
                                 if (!currentMatches.Contains(currentTile))
                                 {
                                     currentMatches.Add(currentTile);
-
                                 }
                                 currentTile.GetComponent<Tile>().isMatched = true;
                             }

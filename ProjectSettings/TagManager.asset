@@ -11,6 +11,7 @@ TagManager:
   - test1
   - test2
   - test3
+  - bomb
   layers:
   - Default
   - TransparentFX

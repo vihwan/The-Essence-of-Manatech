@@ -9,17 +9,17 @@ using UnityEngine.UI;
     <BoardState>
 	1) WAIT
 	대기 상태. 보드가 동작이 이루어져 있어 기다려야하는 상태
-	
+
 	2) MOVE
     유저가 조작을 할 수 있는 상태
 
 */
+
 public enum BoardState
 {
     WAIT,
     MOVE
 }
-
 
 public class BoardManager : MonoBehaviour
 {
@@ -28,6 +28,7 @@ public class BoardManager : MonoBehaviour
 
     [Header("Board Variable")]
     public int width;
+
     public int height;
 
     public List<Sprite> characters = new List<Sprite>(); //외부에서 사용할 캐릭터들을 저장하는 리스트
@@ -40,12 +41,13 @@ public class BoardManager : MonoBehaviour
     private float TimeLeft = 3f;
 
     //필요한 컴포넌트
+
     private FindMatches findMatches;
     private CreateBackTiles createBoard;
     private ComboSystem comboSystem;
+    private SkillManager skillManager;
 
     //Property
-
 
     //초기화함수
     public void Init()
@@ -55,6 +57,7 @@ public class BoardManager : MonoBehaviour
         findMatches = FindObjectOfType<FindMatches>();
         createBoard = FindObjectOfType<CreateBackTiles>();
         comboSystem = FindObjectOfType<ComboSystem>();
+        skillManager = FindObjectOfType<SkillManager>();
 
         characterTilesBox = new GameObject[width, height];
 
@@ -64,22 +67,19 @@ public class BoardManager : MonoBehaviour
         SoundManager.instance.audioSourceBGM.volume = 0.1f;
     }
 
-
     private void Update()
     {
+        // PrintBoardState();
         if (Time.time > nextTime)
         {
             nextTime = Time.time + TimeLeft;
-            //PrintBoardState();
         }
-
     }
 
     private void PrintBoardState()
     {
         Debug.Log(currentState.ToString());
     }
-
 
     //게임 보드 생성
     private void CreateTiles(float xOffset, float yOffset)
@@ -131,12 +131,14 @@ public class BoardManager : MonoBehaviour
         second.GetComponent<Tile>().isSwapping = true;
     }
 
-
-
     private void DestroyMatchesAt(int row, int col)
     {
         if (characterTilesBox[row, col].GetComponent<Tile>().isMatched)
         {
+            skillManager.GainSkillGauge(); //타일 파괴시 스킬 게이지 획득
+
+            #region 파괴 이펙트
+
             findMatches.currentMatches.Remove(characterTilesBox[row, col]);
             GameObject flashEffect = Instantiate(Resources.Load<GameObject>("FlashEffect")
                                                 , characterTilesBox[row, col].GetComponent<Tile>().transform.position
@@ -144,11 +146,13 @@ public class BoardManager : MonoBehaviour
             flashEffect.transform.SetParent(transform);
             Destroy(flashEffect, .5f);
 
+            #endregion 파괴 이펙트
+
             Destroy(characterTilesBox[row, col].gameObject);
             characterTilesBox[row, col] = null;
 
             ScoreManager.instance.PlusScore();
-            Debug.Log("파괴 완료");
+            // Debug.Log("파괴 완료");
         }
     }
 
@@ -164,10 +168,9 @@ public class BoardManager : MonoBehaviour
                 }
             }
         }
-        comboSystem.ComboCounter++;
+        comboSystem.ComboCounter++; //TODO
         StartCoroutine(DecreaseColCoroutine());
     }
-
 
     private IEnumerator DecreaseColCoroutine()
     {
@@ -179,14 +182,14 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[x, y] == null)
                 {
                     nullCount++;
-                    Debug.Log("카운트 세는중");
+                    //  Debug.Log("카운트 세는중");
                 }
                 else if (nullCount > 0)
                 {
                     characterTilesBox[x, y].GetComponent<Tile>().Col -= nullCount;
                     characterTilesBox[x, y].GetComponent<Tile>().targetY -= (80 * nullCount);
                     characterTilesBox[x, y] = null;
-                    Debug.Log("정보 변경");
+                    //  Debug.Log("정보 변경");
                 }
             }
             nullCount = 0;
@@ -218,7 +221,6 @@ public class BoardManager : MonoBehaviour
                     newTile.GetComponent<Tile>().targetY = newPositionY;
                     characterTilesBox[x, y] = newTile; //배열에 새 타일을 추가
 
-
                     List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
                     possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
 
@@ -228,11 +230,10 @@ public class BoardManager : MonoBehaviour
                     Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
                     newTile.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
 
-                    Debug.Log("새 타일 생성");
+                    // Debug.Log("새 타일 생성");
                 }
             }
         }
-
     }
 
     private bool MatchesOnBoard()
@@ -264,6 +265,7 @@ public class BoardManager : MonoBehaviour
             yield return new WaitForSeconds(.5f);
             DestroyMatches();
         }
+        findMatches.currentMatches.Clear();
         yield return new WaitForSeconds(.5f);
         //currentState = BoardState.MOVE;
     }
@@ -276,5 +278,49 @@ public class BoardManager : MonoBehaviour
         }
         return true;
     }
-}
 
+    public void CreateJackBomb()
+    {
+        int createCount = 0;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                GameObject jack = characterTilesBox[x, y].GetComponent<Tile>().gameObject;
+                if (jack.CompareTag("Lantern"))
+                {
+                    // 바꿀 타일이 랜덤하면 좋겠네
+                    GameObject newJackBomb = Instantiate(characterTilePrefab, jack.transform.position, Quaternion.identity);
+                    newJackBomb.GetComponent<Tile>().SetArrNumber(x, y);
+                    newJackBomb.GetComponent<Tile>().targetX = jack.transform.position.x;
+                    newJackBomb.GetComponent<Tile>().targetY = jack.transform.position.y;
+                    newJackBomb.transform.SetParent(transform);
+                    newJackBomb.gameObject.name = "Bomb [" + x + ", " + y + "]";
+                    newJackBomb.GetComponent<Image>().sprite = Resources.Load<Sprite>("bomb");
+                    characterTilesBox[x, y] = newJackBomb;
+
+                    Destroy(jack.gameObject);
+                    characterTilesBox[x, y] = null;
+                    createCount++;
+
+                    if (createCount >= 3)
+                        return;
+                }
+            }
+        }
+    }
+
+    public void JackBombIsMatched(int row, int col)
+    {
+        for (int i = 0; i <= 2; i++)
+        {
+            for (int j = 0; j <= 2; j++)
+            {
+                if ((row - 1 + i) < 0 || (row - 1 + i) > width - 1 || (col - 1 + j) < 0 || (col - 1 + j) > height - 1)
+                    break;
+
+                characterTilesBox[row - 1 + i, col - 1 + j].GetComponent<Tile>().isMatched = true;
+            }
+        }
+    }
+}
