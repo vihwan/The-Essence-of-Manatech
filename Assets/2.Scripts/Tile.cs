@@ -12,7 +12,8 @@ public enum CharacterKinds
     test1,
     test2,
     test3,
-    bomb
+    Bomb,
+    Lolipop
 }
 
 public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -33,8 +34,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     //상태변수
     public bool isMatched = false;
-
-    public bool isSwapping = false;
 
     //Vector
     private Vector2 firstTouchPosition;
@@ -97,9 +96,13 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             gameObject.tag = CharacterKinds.test3.ToString();
         }
-        else if (image.sprite.name == "bomb")
+        else if (image.sprite.name == "Bomb")
         {
-            gameObject.tag = CharacterKinds.bomb.ToString();
+            gameObject.tag = CharacterKinds.Bomb.ToString();
+        }
+        else if (image.sprite.name == "Lolipop")
+        {
+            gameObject.tag = CharacterKinds.Lolipop.ToString();
         }
         else
             return;
@@ -119,9 +122,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (BoardManager.instance.currentState == BoardState.MOVE)
         {
             //만약 클릭한 타일이 폭탄이라면 폭탄 실행
-            if (eventData.pointerCurrentRaycast.gameObject.CompareTag("bomb"))
+            if (eventData.pointerCurrentRaycast.gameObject.CompareTag("Bomb"))
             {
-                BoardManager.instance.JackBombIsMatched(Row, Col);
+                BoardManager.instance.IsMatchedJackBomb(Row, Col);
                 BoardManager.instance.DestroyMatches();
                 BoardManager.instance.currentState = BoardState.WAIT;
                 return;
@@ -130,17 +133,28 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             SoundManager.instance.PlaySE("Select");
             //Debug.Log("선택한 타일 : " + eventData.pointerCurrentRaycast.gameObject);
         }
+        else
+            return;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         if (BoardManager.instance.currentState == BoardState.MOVE)
         {
+            //만약 바꾸고 싶은 타일이 폭탄이라면
+            if (eventData.pointerCurrentRaycast.gameObject.CompareTag("Bomb"))
+            {
+                //옮기지 못한다!!!
+                Debug.Log("<color=#C86200>폭탄은 옮겨지지 않습니다.</color>");
+                return;
+            }
             BoardManager.instance.currentState = BoardState.WAIT; //유저 조작 대기 상태
             secondTouchPosition = eventData.position;
             //Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
             CalculateSwapAngle();
         }
+        else
+            return;
     }
 
     private void CalculateSwapAngle()

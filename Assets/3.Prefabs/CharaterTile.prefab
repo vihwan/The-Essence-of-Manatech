@@ -53,8 +53,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   col: 0
-  tilePositionX: 0
-  tilePositionY: 0
   targetX: 0
   targetY: 0
   isMatched: 0

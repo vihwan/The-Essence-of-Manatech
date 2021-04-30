@@ -21,6 +21,12 @@ public enum BoardState
     MOVE
 }
 
+internal class RC
+{
+    public int row;
+    public int col;
+}
+
 public class BoardManager : MonoBehaviour
 {
     //Singleton
@@ -46,6 +52,8 @@ public class BoardManager : MonoBehaviour
     private CreateBackTiles createBoard;
     private ComboSystem comboSystem;
     private SkillManager skillManager;
+
+    private List<RC> randomSelectList = new List<RC>();
 
     //Property
 
@@ -107,16 +115,7 @@ public class BoardManager : MonoBehaviour
                 characterTile.GetComponent<Tile>().targetY = startY + (yOffset * y);
                 characterTilesBox[x, y] = characterTile;
 
-                List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
-                possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
-
-                possibleCharacters.Remove(previousLeft[y]); //이전의 왼쪽에 해당되는 열 리스트들을 전부 삭제
-                possibleCharacters.Remove(previousBelow);   //이전의 아래에 해당되는 캐릭터를 삭제
-
-                Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
-                characterTile.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
-                previousLeft[y] = newSprite;
-                previousBelow = newSprite;
+                CreateTileSprite(y, characterTile, previousLeft, ref previousBelow);
             }
         }
     }
@@ -125,10 +124,8 @@ public class BoardManager : MonoBehaviour
     {
         first.GetComponent<Tile>().targetX = second.GetComponent<Tile>().transform.position.x;
         first.GetComponent<Tile>().targetY = second.GetComponent<Tile>().transform.position.y;
-
         second.GetComponent<Tile>().targetX = first.GetComponent<Tile>().transform.position.x;
         second.GetComponent<Tile>().targetY = first.GetComponent<Tile>().transform.position.y;
-        second.GetComponent<Tile>().isSwapping = true;
     }
 
     private void DestroyMatchesAt(int row, int col)
@@ -210,7 +207,6 @@ public class BoardManager : MonoBehaviour
             {
                 if (characterTilesBox[x, y] == null)
                 {
-                    //TODO : 임시 위치
                     float newPositionX = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionX;
                     float newPositionY = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
                     Vector2 newPosition = new Vector2(newPositionX, newPositionY + characterTilePrefab.GetComponent<RectTransform>().rect.size.y);
@@ -221,16 +217,7 @@ public class BoardManager : MonoBehaviour
                     newTile.GetComponent<Tile>().targetY = newPositionY;
                     characterTilesBox[x, y] = newTile; //배열에 새 타일을 추가
 
-                    List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
-                    possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
-
-                    possibleCharacters.Remove(previousLeft[y]); //이전의 왼쪽에 해당되는 열 리스트들을 전부 삭제
-                    possibleCharacters.Remove(previousBelow);   //이전의 아래에 해당되는 캐릭터를 삭제
-
-                    Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
-                    newTile.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
-
-                    // Debug.Log("새 타일 생성");
+                    CreateTileSprite(y, newTile, previousLeft, ref previousBelow);
                 }
             }
         }
@@ -267,7 +254,6 @@ public class BoardManager : MonoBehaviour
         }
         findMatches.currentMatches.Clear();
         yield return new WaitForSeconds(.5f);
-        //currentState = BoardState.MOVE;
     }
 
     public bool IsMoveState()
@@ -281,46 +267,77 @@ public class BoardManager : MonoBehaviour
 
     public void CreateJackBomb()
     {
-        int createCount = 0;
+        randomSelectList.Clear();
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                GameObject jack = characterTilesBox[x, y].GetComponent<Tile>().gameObject;
+                Tile jack = characterTilesBox[x, y].GetComponent<Tile>();
                 if (jack.CompareTag("Lantern"))
                 {
-                    // 바꿀 타일이 랜덤하면 좋겠네
-                    GameObject newJackBomb = Instantiate(characterTilePrefab, jack.transform.position, Quaternion.identity);
-                    newJackBomb.GetComponent<Tile>().SetArrNumber(x, y);
-                    newJackBomb.GetComponent<Tile>().targetX = jack.transform.position.x;
-                    newJackBomb.GetComponent<Tile>().targetY = jack.transform.position.y;
-                    newJackBomb.transform.SetParent(transform);
-                    newJackBomb.gameObject.name = "Bomb [" + x + ", " + y + "]";
-                    newJackBomb.GetComponent<Image>().sprite = Resources.Load<Sprite>("bomb");
-                    characterTilesBox[x, y] = newJackBomb;
-
-                    Destroy(jack.gameObject);
-                    characterTilesBox[x, y] = null;
-                    createCount++;
-
-                    if (createCount >= 3)
-                        return;
+                    randomSelectList.Add(new RC() { row = jack.Row, col = jack.Col });
                 }
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            int rIndex = Random.Range(0, randomSelectList.Count);
+            int row = randomSelectList[rIndex].row;
+            int col = randomSelectList[rIndex].col;
+            randomSelectList.RemoveAt(rIndex);
+
+            //기존의 잭오랜턴 타일을 삭제
+            Tile jack = characterTilesBox[row, col].GetComponent<Tile>();
+            Destroy(jack.gameObject);
+            characterTilesBox[row, col] = null;
+
+            //랜덤하게 뽑은 잭오랜턴을 폭탄으로 교체
+            float newPositionX = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionX;
+            float newPositionY = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionY;
+            Vector2 newPosition = new Vector2(newPositionX, newPositionY);
+
+            GameObject newJackBomb = Instantiate(characterTilePrefab, newPosition, Quaternion.identity);
+            newJackBomb.GetComponent<Tile>().SetArrNumber(row, col);
+            newJackBomb.GetComponent<Tile>().targetX = newPositionX;
+            newJackBomb.GetComponent<Tile>().targetY = newPositionY;
+            newJackBomb.transform.SetParent(transform);
+            newJackBomb.gameObject.name = "Bomb [" + row + ", " + col + "]";
+            newJackBomb.GetComponent<Image>().sprite = Resources.Load<Sprite>("Bomb");
+            characterTilesBox[row, col] = newJackBomb;
+        }
+    }
+
+    public void IsMatchedJackBomb(int row, int col)
+    {
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (row + i < 0 || row + i > width - 1 || col + j < 0 || col + j > height - 1)
+                    continue;
+
+                characterTilesBox[row + i, col + j].GetComponent<Tile>().isMatched = true;
+
+                //Stack Overflow Exception
+                /*if (characterTilesBox[row + i, col + j].GetComponent<Tile>().CompareTag("bomb"))
+                {
+                    JackBombIsMatched(row + i, col + j);
+                }*/
             }
         }
     }
 
-    public void JackBombIsMatched(int row, int col)
+    private void CreateTileSprite(int col, GameObject gameObject, Sprite[] previousLeft, ref Sprite previousBelow)
     {
-        for (int i = 0; i <= 2; i++)
-        {
-            for (int j = 0; j <= 2; j++)
-            {
-                if ((row - 1 + i) < 0 || (row - 1 + i) > width - 1 || (col - 1 + j) < 0 || (col - 1 + j) > height - 1)
-                    break;
+        List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
+        possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
+        possibleCharacters.Remove(previousLeft[col]); //이전의 왼쪽에 해당되는 열 리스트들을 전부 삭제
+        possibleCharacters.Remove(previousBelow);   //이전의 아래에 해당되는 캐릭터를 삭제
 
-                characterTilesBox[row - 1 + i, col - 1 + j].GetComponent<Tile>().isMatched = true;
-            }
-        }
+        Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
+        gameObject.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
+        previousLeft[col] = newSprite;
+        previousBelow = newSprite;
     }
 }

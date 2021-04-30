@@ -74,9 +74,9 @@
     <Compile Include="Assets\2.Scripts\GameData.cs" />
     <Compile Include="Assets\2.Scripts\GameManager.cs" />
     <Compile Include="Assets\2.Scripts\ScoreManager.cs" />
-    <Compile Include="Assets\2.Scripts\SkillGauge.cs" />
-    <Compile Include="Assets\2.Scripts\SkillManager.cs" />
-    <Compile Include="Assets\2.Scripts\SkillUse.cs" />
+    <Compile Include="Assets\2.Scripts\Skill System\Skill.cs" />
+    <Compile Include="Assets\2.Scripts\Skill System\SkillEffect.cs" />
+    <Compile Include="Assets\2.Scripts\Skill System\SkillManager.cs" />
     <Compile Include="Assets\2.Scripts\SoundManager.cs" />
     <Compile Include="Assets\2.Scripts\Tile.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
