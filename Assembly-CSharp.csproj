@@ -71,9 +71,10 @@
     <Compile Include="Assets\2.Scripts\FindMatches.cs" />
     <Compile Include="Assets\2.Scripts\FlashEffect.cs" />
     <Compile Include="Assets\2.Scripts\GUIManager.cs" />
+    <Compile Include="Assets\2.Scripts\Gacha.cs" />
     <Compile Include="Assets\2.Scripts\GameData.cs" />
     <Compile Include="Assets\2.Scripts\GameManager.cs" />
-    <Compile Include="Assets\2.Scripts\RandomRootTable.cs" />
+    <Compile Include="Assets\2.Scripts\RandomDropTable.cs" />
     <Compile Include="Assets\2.Scripts\ScoreManager.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\Skill.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\SkillEffect.cs" />
