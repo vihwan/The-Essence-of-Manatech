@@ -47,6 +47,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private FindMatches findMatches;
     private ComboSystem comboSystem;
+    private HintManager hintManager;
 
     //Property
     public int Row { get => row; set => row = value; }
@@ -60,6 +61,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         image = GetComponent<Image>();
         findMatches = FindObjectOfType<FindMatches>();
         comboSystem = FindObjectOfType<ComboSystem>();
+        hintManager = FindObjectOfType<HintManager>();
 
         SetCharacterTileTag();
         isMatched = false;
@@ -113,20 +115,26 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (isMatched)
         {
             image.color = new Color(.5f, .5f, .5f, 1.0f);
+            BoardManager.instance.currentState = PlayerState.WAIT;
         }
         MoveTileAnimation();
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (BoardManager.instance.currentState == BoardState.MOVE)
+        if (hintManager != null)
+        {
+            hintManager.DestroyHint();
+        }
+
+        if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
             //만약 클릭한 타일이 폭탄이라면 폭탄 실행
             if (eventData.pointerCurrentRaycast.gameObject.CompareTag("Bomb"))
             {
                 BoardManager.instance.IsMatchedJackBomb(Row, Col);
                 BoardManager.instance.DestroyMatches();
-                BoardManager.instance.currentState = BoardState.WAIT;
+                BoardManager.instance.currentState = PlayerState.WAIT;
                 return;
             }
             firstTouchPosition = eventData.pointerCurrentRaycast.gameObject.transform.position;
@@ -139,7 +147,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (BoardManager.instance.currentState == BoardState.MOVE)
+        if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
             //만약 바꾸고 싶은 타일이 폭탄이라면
             if (eventData.pointerCurrentRaycast.gameObject.CompareTag("Bomb"))
@@ -148,7 +156,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 Debug.Log("<color=#C86200>폭탄은 옮겨지지 않습니다.</color>");
                 return;
             }
-            BoardManager.instance.currentState = BoardState.WAIT; //유저 조작 대기 상태
+            BoardManager.instance.currentState = PlayerState.WAIT; //유저 조작 대기 상태
             secondTouchPosition = eventData.position;
             //Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
             CalculateSwapAngle();
@@ -166,11 +174,11 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             swapAngle = Mathf.Atan2(secondTouchPosition.y - firstTouchPosition.y, secondTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
             //타일 바꾸기
             SwapTile();
-            BoardManager.instance.currentState = BoardState.WAIT;
+            BoardManager.instance.currentState = PlayerState.WAIT;
         }
         else
         {
-            BoardManager.instance.currentState = BoardState.MOVE;
+            BoardManager.instance.currentState = PlayerState.MOVE;
         }
     }
 
@@ -254,7 +262,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (Mathf.Abs(targetX - transform.position.x) > .1 ||
             Mathf.Abs(targetY - transform.position.y) > .1)
         {
-            BoardManager.instance.currentState = BoardState.WAIT;
+            BoardManager.instance.currentState = PlayerState.WAIT;
             tempPosition = new Vector2(targetX, targetY);
             transform.position = Vector2.Lerp(transform.position, tempPosition, .1f);
             if (BoardManager.instance.characterTilesBox[Row, Col] != this.gameObject)
@@ -269,7 +277,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             //저장되어있는 characterTile의 정보를 바꾸기
             BoardManager.instance.characterTilesBox[Row, Col] = gameObject;
             gameObject.name = "S Character [" + Row + ", " + Col + "]";
-            BoardManager.instance.currentState = BoardState.MOVE;
+            BoardManager.instance.currentState = PlayerState.MOVE;
         }
     }
 

@@ -15,7 +15,7 @@ using UnityEngine.UI;
 
 */
 
-public enum BoardState
+public enum PlayerState
 {
     WAIT,
     MOVE
@@ -41,10 +41,11 @@ public class BoardManager : MonoBehaviour
     public GameObject[,] characterTilesBox; //캐릭터 타일 보관하는 배열
     public GameObject characterTilePrefab;  //Tile Prefab
 
-    public BoardState currentState = BoardState.MOVE;
+    public PlayerState currentState = PlayerState.MOVE;
 
     private float nextTime = 0f;
     private float TimeLeft = 3f;
+    public Text stateText;
 
     //필요한 컴포넌트
 
@@ -77,16 +78,12 @@ public class BoardManager : MonoBehaviour
 
     private void Update()
     {
-        // PrintBoardState();
-        if (Time.time > nextTime)
-        {
-            nextTime = Time.time + TimeLeft;
-        }
+        PrintBoardState();
     }
 
     private void PrintBoardState()
     {
-        Debug.Log(currentState.ToString());
+        stateText.text = "PlayerState : " + currentState;
     }
 
     //게임 보드 생성
@@ -217,7 +214,20 @@ public class BoardManager : MonoBehaviour
                     newTile.GetComponent<Tile>().targetY = newPositionY;
                     characterTilesBox[x, y] = newTile; //배열에 새 타일을 추가
 
-                    CreateTileSprite(y, newTile, previousLeft, ref previousBelow);
+                    // 일정 확률로 비터스 캔디바 타일이 생성되도록 추가
+                    float randomNum = Random.Range(0.0f, 100.1f);
+
+                    if (randomNum > 3)
+                    {
+                        //일반 타일 생성
+                        CreateTileSprite(y, newTile, previousLeft, ref previousBelow);
+                    }
+                    else
+                    {
+                        //캔디바타일 생성
+                        newTile.gameObject.name = "Candy [" + x + ", " + y + "]";
+                        newTile.GetComponent<Image>().sprite = Resources.Load<Sprite>("Lolipop");
+                    }
                 }
             }
         }
@@ -258,7 +268,7 @@ public class BoardManager : MonoBehaviour
 
     public bool IsMoveState()
     {
-        if (currentState == BoardState.WAIT)
+        if (currentState == PlayerState.WAIT)
         {
             return false;
         }
@@ -339,5 +349,162 @@ public class BoardManager : MonoBehaviour
         gameObject.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
         previousLeft[col] = newSprite;
         previousBelow = newSprite;
+    }
+
+    internal bool SwitchAndCheck(int x, int y)
+    {
+        if (characterTilesBox[x, y] != null)
+        {
+            //1
+            if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x - 1, y - 2].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //2
+            else if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //3
+            else if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x - 1, y + 2].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //4
+            else if (characterTilesBox[x - 2, y - 1].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //5
+            else if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //6
+            else if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x + 2, y - 1].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //7
+            else if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x + 1, y - 2].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //8
+            else if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //9
+            else if (characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //10
+            else if (characterTilesBox[x - 2, y + 1].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //11
+            else if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //12
+            else if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
+                && characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag)
+                return true;
+
+            //1
+            /*                    if (characterTilesBox[x - 1, y - 1] != null && characterTilesBox[x - 1, y - 2] != null)
+                                {
+                                    if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x - 1, y - 2].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }
+                                //2
+                                else if (characterTilesBox[x - 1, y - 1] != null && characterTilesBox[x - 1, y + 1] != null)
+                                {
+                                    if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }
+                                //3
+                                if (characterTilesBox[x - 1, y + 1] != null && characterTilesBox[x - 1, y + 2] != null)
+                                {
+                                    if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x - 1, y + 2].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }
+                                //4
+                                if (characterTilesBox[x - 2, y - 1] != null && characterTilesBox[x - 1, y - 1] != null)
+                                {
+                                    if (characterTilesBox[x - 2, y - 1].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }
+                                //5
+                                if (characterTilesBox[x - 1, y - 1] != null && characterTilesBox[x + 1, y - 1] != null)
+                                {
+                                    if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }
+                                //6
+                                if (characterTilesBox[x + 1, y - 1] != null && characterTilesBox[x + 2, y - 1] != null)
+                                {
+                                    if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x + 2, y - 1].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }
+                                //7
+                                if (characterTilesBox[x + 1, y - 1] != null && characterTilesBox[x + 1, y - 2] != null)
+                                {
+                                    if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x + 1, y - 2].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }
+                                //8
+                                if (characterTilesBox[x + 1, y + 1] != null && characterTilesBox[x + 1, y - 1] != null)
+                                {
+                                    if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }
+                                //9
+                                if (characterTilesBox[x + 1, y + 2] != null && characterTilesBox[x + 1, y + 1] != null)
+                                {
+                                    if (characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }
+                                //10
+                                if (characterTilesBox[x - 2, y + 1] != null && characterTilesBox[x - 1, y + 1] != null)
+                                {
+                                    if (characterTilesBox[x - 2, y + 1].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }
+                                //11
+                                if (characterTilesBox[x - 1, y + 1] != null && characterTilesBox[x + 1, y + 1] != null)
+                                {
+                                    if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }
+                                //12
+                                if (characterTilesBox[x + 1, y + 1] != null && characterTilesBox[x + 1, y + 2] != null)
+                                {
+                                    if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
+                                        && characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag)
+                                        return true;
+                                }*/
+        }
+
+        return false;
+    }
+
+    private void CanMovePlayerState()
+    {
     }
 }

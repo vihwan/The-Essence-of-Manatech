@@ -3,15 +3,17 @@
 public class SkillEffect : MonoBehaviour
 {
     private SkillManager skillManager;
+    private HintManager hintManager;
 
     public void Init()
     {
         skillManager = GetComponent<SkillManager>();
+        hintManager = FindObjectOfType<HintManager>();
     }
 
     private void Update()
     {
-        if (BoardManager.instance.currentState == BoardState.MOVE)
+        if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
             UseSkill();
         }
@@ -22,9 +24,8 @@ public class SkillEffect : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("첫번째 스킬 사용");
-            if (skillManager.UseSkillGauge(20))
-            {
-            }
+            if (skillManager.UseSkillGauge(0))
+                Skill_Chain_Fluore();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -51,7 +52,19 @@ public class SkillEffect : MonoBehaviour
 
     private void Skill_Chain_Fluore()
     {
-        //1번 스킬
+        //1번 스킬 : 체인 플로레
+        // 힌트 스킬
+        if (hintManager.currentHintEffect == null)
+        {
+            hintManager.MarkHint();
+        }
+        else
+        {
+            Debug.Log("이미 사용중");
+            return;
+        }
+        //스킬 보이스 출력
+        //스킬 이펙트 출력
     }
 
     private void Skill_Flapper()

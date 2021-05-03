@@ -17,15 +17,16 @@ public class GameManager : MonoBehaviour
     private string currentScene;
     private AsyncOperation async;
 
-
     //제어하는 컴포넌트
     private BoardManager boardManager;
+
     private GUIManager guiManager;
     private ScoreManager scoreManager;
     private CreateBackTiles createBoard;
     private ComboSystem comboSystem;
+    private HintManager hintManager;
 
-    void Awake()
+    private void Awake()
     {
         // Only 1 Game Manager can exist at a time
         if (instance == null)
@@ -61,10 +62,13 @@ public class GameManager : MonoBehaviour
         comboSystem = FindObjectOfType<ComboSystem>();
         if (comboSystem != null)
             comboSystem.Init();
+
+        hintManager = FindObjectOfType<HintManager>();
+        if (hintManager != null)
+            hintManager.Init();
     }
 
-
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -107,7 +111,7 @@ public class GameManager : MonoBehaviour
     }
 
     //Iterate the fader transparency to 100%
-    IEnumerator FadeOut(GameObject faderObject, Image fader)
+    private IEnumerator FadeOut(GameObject faderObject, Image fader)
     {
         faderObject.SetActive(true);
         while (fader.color.a < 1)
@@ -119,7 +123,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Iterate the fader transparency to 0%
-    IEnumerator FadeIn(GameObject faderObject, Image fader)
+    private IEnumerator FadeIn(GameObject faderObject, Image fader)
     {
         while (fader.color.a > 0)
         {
@@ -130,7 +134,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Begin loading a scene with a specified string asynchronously
-    IEnumerator Load(string sceneName)
+    private IEnumerator Load(string sceneName)
     {
         async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;
@@ -169,6 +173,7 @@ public class GameManager : MonoBehaviour
     }
 
     private bool isReturning = false;
+
     public void ReturnToMenu()
     {
         if (isReturning)
