@@ -35,6 +35,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     //상태변수
     public bool isMatched = false;
 
+    public bool isShifting = false;
+
     //Vector
     private Vector2 firstTouchPosition;
 
@@ -65,6 +67,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         SetCharacterTileTag();
         isMatched = false;
+        isShifting = false;
     }
 
     //캐릭터 타일의 태그를 설정해주는 함수
@@ -134,7 +137,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             {
                 BoardManager.instance.IsMatchedJackBomb(Row, Col);
                 BoardManager.instance.DestroyMatches();
-                BoardManager.instance.currentState = PlayerState.WAIT;
                 return;
             }
             firstTouchPosition = eventData.pointerCurrentRaycast.gameObject.transform.position;
@@ -262,7 +264,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (Mathf.Abs(targetX - transform.position.x) > .1 ||
             Mathf.Abs(targetY - transform.position.y) > .1)
         {
-            BoardManager.instance.currentState = PlayerState.WAIT;
+            isShifting = true;
             tempPosition = new Vector2(targetX, targetY);
             transform.position = Vector2.Lerp(transform.position, tempPosition, .1f);
             if (BoardManager.instance.characterTilesBox[Row, Col] != this.gameObject)
@@ -277,7 +279,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             //저장되어있는 characterTile의 정보를 바꾸기
             BoardManager.instance.characterTilesBox[Row, Col] = gameObject;
             gameObject.name = "S Character [" + Row + ", " + Col + "]";
-            BoardManager.instance.currentState = PlayerState.MOVE;
+            isShifting = false;
         }
     }
 

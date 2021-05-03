@@ -78,6 +78,7 @@ public class BoardManager : MonoBehaviour
 
     private void Update()
     {
+        CanMovePlayerState();
         PrintBoardState();
     }
 
@@ -290,6 +291,8 @@ public class BoardManager : MonoBehaviour
             }
         }
 
+        //randomSelectList.Count < JackBomb 생성 가능 갯수(3) 라면,
+        //jackBomb 생성가능 갯수 = randomSelectList.Count
         for (int i = 0; i < 3; i++)
         {
             int rIndex = Random.Range(0, randomSelectList.Count);
@@ -353,158 +356,89 @@ public class BoardManager : MonoBehaviour
 
     internal bool SwitchAndCheck(int x, int y)
     {
-        if (characterTilesBox[x, y] != null)
-        {
-            //1
-            if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x - 1, y - 2].tag == characterTilesBox[x, y].tag)
-                return true;
+        if (x - 2 < 0 || x + 2 > BoardManager.instance.width - 1 || y - 2 < 0 || y + 2 > BoardManager.instance.height - 1)
+            return false;
 
-            //2
-            else if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
-                return true;
+        //1
+        if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x - 1, y - 2].tag == characterTilesBox[x, y].tag)
+            return true;
 
-            //3
-            else if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x - 1, y + 2].tag == characterTilesBox[x, y].tag)
-                return true;
+        //2
+        else if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
+            return true;
 
-            //4
-            else if (characterTilesBox[x - 2, y - 1].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag)
-                return true;
+        //3
+        else if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x - 1, y + 2].tag == characterTilesBox[x, y].tag)
+            return true;
 
-            //5
-            else if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
-                return true;
+        //4
+        else if (characterTilesBox[x - 2, y - 1].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag)
+            return true;
 
-            //6
-            else if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x + 2, y - 1].tag == characterTilesBox[x, y].tag)
-                return true;
+        //5
+        else if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
+            return true;
 
-            //7
-            else if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x + 1, y - 2].tag == characterTilesBox[x, y].tag)
-                return true;
+        //6
+        else if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x + 2, y - 1].tag == characterTilesBox[x, y].tag)
+            return true;
 
-            //8
-            else if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
-                return true;
+        //7
+        else if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x + 1, y - 2].tag == characterTilesBox[x, y].tag)
+            return true;
 
-            //9
-            else if (characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
-                return true;
+        //8
+        else if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
+            return true;
 
-            //10
-            else if (characterTilesBox[x - 2, y + 1].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
-                return true;
+        //9
+        else if (characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
+            return true;
 
-            //11
-            else if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
-                return true;
+        //10
+        else if (characterTilesBox[x - 2, y + 1].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
+            return true;
 
-            //12
-            else if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
-                && characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag)
-                return true;
+        //11
+        else if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
+            return true;
 
-            //1
-            /*                    if (characterTilesBox[x - 1, y - 1] != null && characterTilesBox[x - 1, y - 2] != null)
-                                {
-                                    if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x - 1, y - 2].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }
-                                //2
-                                else if (characterTilesBox[x - 1, y - 1] != null && characterTilesBox[x - 1, y + 1] != null)
-                                {
-                                    if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }
-                                //3
-                                if (characterTilesBox[x - 1, y + 1] != null && characterTilesBox[x - 1, y + 2] != null)
-                                {
-                                    if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x - 1, y + 2].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }
-                                //4
-                                if (characterTilesBox[x - 2, y - 1] != null && characterTilesBox[x - 1, y - 1] != null)
-                                {
-                                    if (characterTilesBox[x - 2, y - 1].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }
-                                //5
-                                if (characterTilesBox[x - 1, y - 1] != null && characterTilesBox[x + 1, y - 1] != null)
-                                {
-                                    if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }
-                                //6
-                                if (characterTilesBox[x + 1, y - 1] != null && characterTilesBox[x + 2, y - 1] != null)
-                                {
-                                    if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x + 2, y - 1].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }
-                                //7
-                                if (characterTilesBox[x + 1, y - 1] != null && characterTilesBox[x + 1, y - 2] != null)
-                                {
-                                    if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x + 1, y - 2].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }
-                                //8
-                                if (characterTilesBox[x + 1, y + 1] != null && characterTilesBox[x + 1, y - 1] != null)
-                                {
-                                    if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }
-                                //9
-                                if (characterTilesBox[x + 1, y + 2] != null && characterTilesBox[x + 1, y + 1] != null)
-                                {
-                                    if (characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }
-                                //10
-                                if (characterTilesBox[x - 2, y + 1] != null && characterTilesBox[x - 1, y + 1] != null)
-                                {
-                                    if (characterTilesBox[x - 2, y + 1].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }
-                                //11
-                                if (characterTilesBox[x - 1, y + 1] != null && characterTilesBox[x + 1, y + 1] != null)
-                                {
-                                    if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }
-                                //12
-                                if (characterTilesBox[x + 1, y + 1] != null && characterTilesBox[x + 1, y + 2] != null)
-                                {
-                                    if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
-                                        && characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag)
-                                        return true;
-                                }*/
-        }
+        //12
+        else if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
+            && characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag)
+            return true;
 
         return false;
     }
 
     private void CanMovePlayerState()
     {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (characterTilesBox[x, y] != null)
+                {
+                    Tile movingTile = characterTilesBox[x, y].GetComponent<Tile>();
+                    if (movingTile.isShifting == true)
+                    {
+                        currentState = PlayerState.WAIT;
+                        return;
+                    }
+                }
+            }
+        }
+        currentState = PlayerState.MOVE;
     }
 }

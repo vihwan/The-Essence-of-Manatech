@@ -37,21 +37,14 @@ public class HintManager : MonoBehaviour
             {
                 if (BoardManager.instance.characterTilesBox[x, y] != null)
                 {
-                    if (x - 2 < 0 || x + 2 > BoardManager.instance.width - 1 || y - 2 < 0 || y + 2 > BoardManager.instance.height - 1)
-                        continue;
-                    if (x < BoardManager.instance.width - 1)
+                    if (BoardManager.instance.SwitchAndCheck(x, y))
                     {
-                        if (BoardManager.instance.SwitchAndCheck(x, y))
-                        {
-                            possibleMoves.Add(BoardManager.instance.characterTilesBox[x, y]);
-                        }
+                        possibleMoves.Add(BoardManager.instance.characterTilesBox[x, y]);
                     }
-                    if (y < BoardManager.instance.height - 1)
+
+                    if (BoardManager.instance.SwitchAndCheck(x, y))
                     {
-                        if (BoardManager.instance.SwitchAndCheck(x, y))
-                        {
-                            possibleMoves.Add(BoardManager.instance.characterTilesBox[x, y]);
-                        }
+                        possibleMoves.Add(BoardManager.instance.characterTilesBox[x, y]);
                     }
                 }
             }
