@@ -43,8 +43,8 @@ public class BoardManager : MonoBehaviour
 
     public PlayerState currentState = PlayerState.MOVE;
 
-    private float nextTime = 0f;
-    private float TimeLeft = 3f;
+    //private float nextTime = 0f;
+    //private float TimeLeft = 3f;
     public Text stateText;
 
     //필요한 컴포넌트
@@ -153,6 +153,7 @@ public class BoardManager : MonoBehaviour
 
     public void DestroyMatches()
     {
+        currentState = PlayerState.WAIT;
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -266,19 +267,11 @@ public class BoardManager : MonoBehaviour
         findMatches.currentMatches.Clear();
         yield return new WaitForSeconds(.5f);
 
-        if (isDeadlocked())
+        if (IsDeadlocked())
         {
-            Debug.Log("<color=#A90000> DeadLock!!!</color>");
+            Invoke(nameof(ShuffleBoard), .8f);
+            Debug.Log("<color=#FF6534> DeadLock 발생 </color> 타일들을 섞습니다.");
         }
-    }
-
-    public bool IsMoveState()
-    {
-        if (currentState == PlayerState.WAIT)
-        {
-            return false;
-        }
-        return true;
     }
 
     public void CreateJackBomb()
@@ -326,7 +319,8 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void IsMatchedJackBomb(int row, int col)
+    //4번 스킬로 폭탄 주변의 타일을 전부 IsMatched = true로 바꾸는 함수
+    public void JackBombIsMatch(int row, int col)
     {
         for (int i = -1; i <= 1; i++)
         {
@@ -338,14 +332,15 @@ public class BoardManager : MonoBehaviour
                 characterTilesBox[row + i, col + j].GetComponent<Tile>().isMatched = true;
 
                 //Stack Overflow Exception
-                /*if (characterTilesBox[row + i, col + j].GetComponent<Tile>().CompareTag("bomb"))
+                if (characterTilesBox[row + i, col + j].GetComponent<Tile>().CompareTag("Bomb"))
                 {
-                    JackBombIsMatched(row + i, col + j);
-                }*/
+                    JackBombIsMatch(row + i, col + j);
+                }
             }
         }
     }
 
+    //타일의 스프라이트를 입혀주는 함수. 스프라이트에 따라 타일의 속성(태그)가 바뀐다. (Tile Class)
     private void CreateTileSprite(int col, GameObject gameObject, Sprite[] previousLeft, ref Sprite previousBelow)
     {
         List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
@@ -359,6 +354,7 @@ public class BoardManager : MonoBehaviour
         previousBelow = newSprite;
     }
 
+    //가상으로 옮긴 타일을 교환하는 함수
     private void SwitchPieces(int row, int col, Vector2 direction)
     {
         GameObject holder = characterTilesBox[row + (int)direction.x, col + (int)direction.y];
@@ -366,6 +362,7 @@ public class BoardManager : MonoBehaviour
         characterTilesBox[row, col] = holder;
     }
 
+    //가상으로 옮긴 타일과 나머지 타일들의 매칭 여부를 확인하는 함수
     private bool CheckForMatches()
     {
         for (int x = 0; x < width; x++)
@@ -378,8 +375,8 @@ public class BoardManager : MonoBehaviour
                     {
                         if (characterTilesBox[x + 1, y] != null && characterTilesBox[x + 2, y] != null)
                         {
-                            if (characterTilesBox[x + 1, y].tag == characterTilesBox[x, y].tag &&
-                                characterTilesBox[x + 2, y].tag == characterTilesBox[x, y].tag)
+                            if (characterTilesBox[x, y].CompareTag(characterTilesBox[x + 1, y].tag) &&
+                                characterTilesBox[x, y].CompareTag(characterTilesBox[x + 2, y].tag))
                             {
                                 return true;
                             }
@@ -389,8 +386,8 @@ public class BoardManager : MonoBehaviour
                     {
                         if (characterTilesBox[x, y + 1] != null && characterTilesBox[x, y + 2] != null)
                         {
-                            if (characterTilesBox[x, y + 1].tag == characterTilesBox[x, y].tag &&
-                                characterTilesBox[x, y + 2].tag == characterTilesBox[x, y].tag)
+                            if (characterTilesBox[x, y].CompareTag(characterTilesBox[x, y + 1].tag) &&
+                                characterTilesBox[x, y].CompareTag(characterTilesBox[x, y + 2].tag))
                             {
                                 return true;
                             }
@@ -403,6 +400,7 @@ public class BoardManager : MonoBehaviour
         return false;
     }
 
+    //방향값으로 타일을 가상으로 옮겨보고 매칭여부를 확인하는 함수
     internal bool SwitchingAndCheck(int row, int col, Vector2 direction)
     {
         SwitchPieces(row, col, direction);
@@ -415,7 +413,8 @@ public class BoardManager : MonoBehaviour
         return false;
     }
 
-    private bool isDeadlocked()
+    //데드락이 걸렸는 지 확인하는 함수
+    private bool IsDeadlocked()
     {
         for (int x = 0; x < width; x++)
         {
@@ -440,99 +439,54 @@ public class BoardManager : MonoBehaviour
         return true;
     }
 
-    /*  internal bool SwitchAndCheck(int row, int col)
-      {
-          for (int i = -3; i <= 3; i++)
-          {
-              for (int j = -3; j <= 3; j++)
-              {
-                  if (row + i < 0 || row + i > width - 1 || col + j < 0 || col + j > height - 1)
-                      continue;
+    //데드락이 걸렸을 때 타일들을 섞어주는 함수
+    private void ShuffleBoard()
+    {
+        //사운드 재생 : 반중력 기동장치
 
-                  //1
-                  if (characterTilesBox[row - 1, col - 1].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row - 1, col - 2].tag == characterTilesBox[row, col].tag)
-                      return true;
+        List<GameObject> newBoard = new List<GameObject>();
 
-                  //2
-                  else if (characterTilesBox[row - 1, col - 1].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row - 1, col + 1].tag == characterTilesBox[row, col].tag)
-                      return true;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (characterTilesBox[x, y] != null)
+                {
+                    newBoard.Add(characterTilesBox[x, y]);
+                }
+            }
+        }
 
-                  //3
-                  else if (characterTilesBox[row - 1, col + 1].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row - 1, col + 2].tag == characterTilesBox[row, col].tag)
-                      return true;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                float newPositionX = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionX;
+                float newPositionY = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
 
-                  //4
-                  else if (characterTilesBox[row - 2, col - 1].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row - 1, col - 1].tag == characterTilesBox[row, col].tag)
-                      return true;
+                int randomNum = Random.Range(0, newBoard.Count);
+                Tile tile = newBoard[randomNum].GetComponent<Tile>();
+                tile.transform.SetParent(transform);
+                tile.GetComponent<Tile>().SetArrNumber(x, y);
+                tile.GetComponent<Tile>().targetX = newPositionX;
+                tile.GetComponent<Tile>().targetY = newPositionY;
 
-                  //5
-                  else if (characterTilesBox[row - 1, col - 1].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row + 1, col - 1].tag == characterTilesBox[row, col].tag)
-                      return true;
+                characterTilesBox[x, y] = newBoard[randomNum];
+                newBoard.Remove(newBoard[randomNum]);
+            }
+        }
 
-                  //6
-                  else if (characterTilesBox[row + 1, col - 1].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row + 2, col - 1].tag == characterTilesBox[row, col].tag)
-                      return true;
+        //타일을 섞어줘도 데드락이면 한번 더 실행
+        if (IsDeadlocked())
+        {
+            Invoke(nameof(ShuffleBoard), .8f);
+        }
+        //아니면 매칭된 타일 파괴 한번 하기
+        else
+            DestroyMatches();
+    }
 
-                  //7
-                  else if (characterTilesBox[row + 1, col - 1].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row + 1, col - 2].tag == characterTilesBox[row, col].tag)
-                      return true;
-
-                  //8
-                  else if (characterTilesBox[row + 1, col + 1].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row + 1, col - 1].tag == characterTilesBox[row, col].tag)
-                      return true;
-
-                  //9
-                  else if (characterTilesBox[row + 1, col + 2].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row + 1, col + 1].tag == characterTilesBox[row, col].tag)
-                      return true;
-
-                  //10
-                  else if (characterTilesBox[row - 2, col + 1].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row - 1, col + 1].tag == characterTilesBox[row, col].tag)
-                      return true;
-
-                  //11
-                  else if (characterTilesBox[row - 1, col + 1].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row + 1, col + 1].tag == characterTilesBox[row, col].tag)
-                      return true;
-
-                  //12
-                  else if (characterTilesBox[row + 1, col + 1].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row + 1, col + 2].tag == characterTilesBox[row, col].tag)
-                      return true;
-
-                  //13
-                  else if (characterTilesBox[row - 3, col].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row - 2, col].tag == characterTilesBox[row, col].tag)
-                      return true;
-
-                  //14
-                  else if (characterTilesBox[row + 3, col].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row + 2, col].tag == characterTilesBox[row, col].tag)
-                      return true;
-
-                  //15
-                  else if (characterTilesBox[row, col - 3].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row, col - 2].tag == characterTilesBox[row, col].tag)
-                      return true;
-
-                  //16
-                  else if (characterTilesBox[row, col + 3].tag == characterTilesBox[row, col].tag
-                      && characterTilesBox[row, col + 2].tag == characterTilesBox[row, col].tag)
-                      return true;
-              }
-          }
-          return false;
-      }*/
-
+    //타일들의 상태가 하나라도 Shifting이면 PlayerState는 WAIT인 함수
     private void CanMovePlayerState()
     {
         for (int x = 0; x < width; x++)
@@ -551,5 +505,14 @@ public class BoardManager : MonoBehaviour
             }
         }
         currentState = PlayerState.MOVE;
+    }
+
+    public bool IsMoveState()
+    {
+        if (currentState == PlayerState.WAIT)
+        {
+            return false;
+        }
+        return true;
     }
 }

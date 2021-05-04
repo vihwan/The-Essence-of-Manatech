@@ -64,8 +64,6 @@ public class GameManager : MonoBehaviour
             comboSystem.Init();
 
         hintManager = FindObjectOfType<HintManager>();
-        if (hintManager != null)
-            hintManager.Init();
     }
 
     private void Update()

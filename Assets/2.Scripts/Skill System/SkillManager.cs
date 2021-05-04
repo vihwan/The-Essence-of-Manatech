@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,10 +17,14 @@ public class SkillManager : MonoBehaviour
     [SerializeField] private Image skiiGaugeImage;
 
     //Component
-    private SkillEffect skillEffect;
+
+    private SkillUse skillEffect;
     private FindMatches findMatches;
 
+    public List<Skill> skillAllList = new List<Skill>();
+
     //Property
+
     public TMP_Text SkillGaugeText { get => skillGaugeText; set => skillGaugeText = value; }
     public Image SkiiGaugeImage { get => skiiGaugeImage; set => skiiGaugeImage = value; }
     public float CurrentSkillMana { get => currentSkillMana; set => currentSkillMana = value; }
@@ -29,7 +34,7 @@ public class SkillManager : MonoBehaviour
 
     private void Start()
     {
-        skillEffect = GetComponent<SkillEffect>();
+        skillEffect = GetComponent<SkillUse>();
         if (skillEffect != null)
         {
             skillEffect.Init();

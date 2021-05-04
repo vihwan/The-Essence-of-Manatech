@@ -4,28 +4,10 @@ using UnityEngine;
 
 public class HintManager : MonoBehaviour
 {
-    public float hintDelay;
-    public float hintDelaySeconds;
     public GameObject hintEffectPrefab;
     public GameObject currentHintEffect;
 
     //Component
-
-    //초기화 함수
-    public void Init()
-    {
-        hintDelaySeconds = hintDelay;
-    }
-
-    private void Update()
-    {
-        /*        hintDelaySeconds = Time.deltaTime;
-                if (hintDelaySeconds <= 0 && currentHintEffect != null)
-                {
-                    MarkHint();
-                    hintDelaySeconds = hintDelay;
-                }*/
-    }
 
     private List<GameObject> FindAllMatches()
     {
@@ -37,6 +19,9 @@ public class HintManager : MonoBehaviour
             {
                 if (BoardManager.instance.characterTilesBox[x, y] != null)
                 {
+                    if (BoardManager.instance.characterTilesBox[x, y].CompareTag("Bomb"))
+                        continue;
+
                     if (x < BoardManager.instance.width - 1)
                     {
                         if (BoardManager.instance.SwitchingAndCheck(x, y, Vector2.right))
@@ -91,7 +76,6 @@ public class HintManager : MonoBehaviour
         {
             Destroy(currentHintEffect);
             currentHintEffect = null;
-            hintDelaySeconds = hintDelay;
         }
     }
 }

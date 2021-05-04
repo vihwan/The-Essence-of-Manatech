@@ -135,7 +135,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             //만약 클릭한 타일이 폭탄이라면 폭탄 실행
             if (eventData.pointerCurrentRaycast.gameObject.CompareTag("Bomb"))
             {
-                BoardManager.instance.IsMatchedJackBomb(Row, Col);
+                BoardManager.instance.JackBombIsMatch(Row, Col);
                 BoardManager.instance.DestroyMatches();
                 return;
             }
@@ -151,20 +151,22 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
-            //만약 바꾸고 싶은 타일이 폭탄이라면
-            if (eventData.pointerCurrentRaycast.gameObject.CompareTag("Bomb"))
+            if (eventData.pointerCurrentRaycast.gameObject != null)
             {
-                //옮기지 못한다!!!
-                Debug.Log("<color=#C86200>폭탄은 옮겨지지 않습니다.</color>");
-                return;
+                //만약 바꾸고 싶은 타일이 폭탄이라면
+                if (eventData.pointerCurrentRaycast.gameObject.CompareTag("Bomb"))
+                {
+                    //옮기지 못한다!!!
+                    Debug.Log("<color=#C86200>폭탄은 옮겨지지 않습니다.</color>");
+                    return;
+                }
+
+                BoardManager.instance.currentState = PlayerState.WAIT; //유저 조작 대기 상태
+                secondTouchPosition = eventData.position;
+                //Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
+                CalculateSwapAngle();
             }
-            BoardManager.instance.currentState = PlayerState.WAIT; //유저 조작 대기 상태
-            secondTouchPosition = eventData.position;
-            //Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
-            CalculateSwapAngle();
         }
-        else
-            return;
     }
 
     private void CalculateSwapAngle()
@@ -251,6 +253,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             else
             {
                 BoardManager.instance.DestroyMatches();
+                BoardManager.instance.currentState = PlayerState.WAIT;
             }
             otherCharacterTile = null;
         }
@@ -271,7 +274,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             {
                 BoardManager.instance.characterTilesBox[Row, Col] = this.gameObject;
             }
-            findMatches.FindAllMatches();
         }
         else
         {   //타일 위치 이동 완료
@@ -280,6 +282,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             BoardManager.instance.characterTilesBox[Row, Col] = gameObject;
             gameObject.name = "S Character [" + Row + ", " + Col + "]";
             isShifting = false;
+            findMatches.FindAllMatches();
         }
     }
 

@@ -30,108 +30,73 @@ public class FindMatches : MonoBehaviour
                     {
                         GameObject leftTile = BoardManager.instance.characterTilesBox[x - 1, y];
                         GameObject rightTile = BoardManager.instance.characterTilesBox[x + 1, y];
-                        if (leftTile != null && rightTile != null)
-                        {
-                            // 1. 현재 타일이 롤리팝 타일이면
-                            if (currentTile.CompareTag("Lolipop"))
-                            {
-                                //비교하는 타일중에 롤리팝이 또 있다면
-                                if (leftTile.CompareTag("Lolipop") || rightTile.CompareTag("Lolipop"))
-                                {
-                                    AddMatching(currentTile, leftTile, rightTile);
-                                    LolipopCount += 2;
-                                }
-                                else if (leftTile.tag == rightTile.tag)
-                                {
-                                    AddMatching(currentTile, leftTile, rightTile);
-                                    LolipopCount++;
-                                }
-                            }
-                            // 2. 현재 타일이 롤리팝이 아니지만
-                            else if (!currentTile.CompareTag("Lolipop"))
-                            {
-                                // 내 옆의 타일 중 하나가 롤리팝이라면
-                                if (leftTile.CompareTag("Lolipop") || rightTile.CompareTag("Lolipop"))
-                                {
-                                    //자신하고 나머지 타일이 서로 같아야한다.
-                                    if (leftTile.CompareTag(currentTile.tag))
-                                    {
-                                        AddMatching(currentTile, leftTile, rightTile);
-                                        LolipopCount++;
-                                    }
-                                    else if (rightTile.CompareTag(currentTile.tag))
-                                    {
-                                        AddMatching(currentTile, leftTile, rightTile);
-                                        LolipopCount++;
-                                    }
-                                }
-                                // 3. 타일 3개가 전부 캔디가 아닐 때
-                                else
-                                {
-                                    //3개의 타일이 서로 같아야한다.
-                                    if (currentTile.CompareTag(leftTile.tag) && currentTile.CompareTag(rightTile.tag))
-                                    {
-                                        AddMatching(currentTile, leftTile, rightTile);
-                                    }
-                                }
-                            }
-                        }
+
+                        CompareTile(currentTile, leftTile, rightTile);
                     }
 
                     if (y > 0 && y < BoardManager.instance.height - 1)
                     {
                         GameObject downTile = BoardManager.instance.characterTilesBox[x, y - 1];
                         GameObject upTile = BoardManager.instance.characterTilesBox[x, y + 1];
-                        if (downTile != null && upTile != null)
-                        {
-                            // 1. 현재 타일이 롤리팝 타일이면
-                            if (currentTile.CompareTag("Lolipop"))
-                            {
-                                if (downTile.CompareTag("Lolipop") || upTile.CompareTag("Lolipop"))
-                                {
-                                    AddMatching(currentTile, downTile, upTile);
-                                    LolipopCount += 2;
-                                }
-                                else if (downTile.tag == upTile.tag)
-                                {
-                                    AddMatching(currentTile, downTile, upTile);
-                                    LolipopCount++;
-                                }
-                            }
-                            // 2. 현재 타일이 롤리팝이 아니지만
-                            else if (!currentTile.CompareTag("Lolipop"))
-                            {
-                                // 내 옆의 타일 중 하나가 롤리팝이라면
-                                if (downTile.CompareTag("Lolipop") || upTile.CompareTag("Lolipop"))
-                                {
-                                    //자신하고 나머지 타일이 서로 같아야한다.
-                                    if (downTile.CompareTag(currentTile.tag))
-                                    {
-                                        AddMatching(currentTile, downTile, upTile);
-                                        LolipopCount++;
-                                    }
-                                    else if (upTile.CompareTag(currentTile.tag))
-                                    {
-                                        AddMatching(currentTile, downTile, upTile);
-                                        LolipopCount++;
-                                    }
-                                }
-                                // 3. 타일 3개가 전부 캔디가 아닐 때
-                                else
-                                {
-                                    //3개의 타일이 서로 같아야한다.
-                                    if (currentTile.CompareTag(downTile.tag) && currentTile.CompareTag(upTile.tag))
-                                    {
-                                        AddMatching(currentTile, downTile, upTile);
-                                    }
-                                }
-                            }
-                        }
+
+                        CompareTile(currentTile, downTile, upTile);
                     }
                 }
             }
         }
     }//coroutine
+
+    private void CompareTile(GameObject currentTile, GameObject firstTile, GameObject secondTile)
+    {
+        if (firstTile != null && secondTile != null)
+        {
+            // 1. 현재 타일이 롤리팝 타일이면
+            if (currentTile.CompareTag("Lolipop"))
+            {
+                //비교하는 타일중에 롤리팝이 또 있다면
+                if (firstTile.CompareTag("Lolipop") || secondTile.CompareTag("Lolipop"))
+                {
+                    AddMatching(currentTile, firstTile, secondTile);
+                    LolipopCount += 2;
+                }
+                else if (firstTile.tag == secondTile.tag)
+                {
+                    AddMatching(currentTile, firstTile, secondTile);
+                    LolipopCount++;
+                }
+            }
+            // 2. 현재 타일이 롤리팝이 아니지만
+            else if (!currentTile.CompareTag("Lolipop"))
+            {
+                // 내 옆의 타일 중 하나가 롤리팝이라면
+                if (firstTile.CompareTag("Lolipop"))
+                {
+                    if (secondTile.CompareTag(currentTile.tag))
+                    {
+                        AddMatching(currentTile, firstTile, secondTile);
+                        LolipopCount++;
+                    }
+                }
+                else if (secondTile.CompareTag("Lolipop"))
+                {
+                    if (firstTile.CompareTag(currentTile.tag))
+                    {
+                        AddMatching(currentTile, firstTile, secondTile);
+                        LolipopCount++;
+                    }
+                }
+                // 3. 타일 3개가 전부 캔디가 아닐 때
+                else
+                {
+                    //3개의 타일이 서로 같아야한다.
+                    if (currentTile.CompareTag(firstTile.tag) && currentTile.CompareTag(secondTile.tag))
+                    {
+                        AddMatching(currentTile, firstTile, secondTile);
+                    }
+                }
+            }
+        }
+    }
 
     private void AddMatching(GameObject currentTile, GameObject firstTile, GameObject secondTile)
     {
