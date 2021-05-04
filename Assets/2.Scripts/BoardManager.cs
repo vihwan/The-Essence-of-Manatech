@@ -265,6 +265,11 @@ public class BoardManager : MonoBehaviour
         }
         findMatches.currentMatches.Clear();
         yield return new WaitForSeconds(.5f);
+
+        if (isDeadlocked())
+        {
+            Debug.Log("<color=#A90000> DeadLock!!!</color>");
+        }
     }
 
     public bool IsMoveState()
@@ -354,73 +359,179 @@ public class BoardManager : MonoBehaviour
         previousBelow = newSprite;
     }
 
-    internal bool SwitchAndCheck(int x, int y)
+    private void SwitchPieces(int row, int col, Vector2 direction)
     {
-        if (x - 2 < 0 || x + 2 > BoardManager.instance.width - 1 || y - 2 < 0 || y + 2 > BoardManager.instance.height - 1)
-            return false;
+        GameObject holder = characterTilesBox[row + (int)direction.x, col + (int)direction.y];
+        characterTilesBox[row + (int)direction.x, col + (int)direction.y] = characterTilesBox[row, col];
+        characterTilesBox[row, col] = holder;
+    }
 
-        //1
-        if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x - 1, y - 2].tag == characterTilesBox[x, y].tag)
-            return true;
-
-        //2
-        else if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
-            return true;
-
-        //3
-        else if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x - 1, y + 2].tag == characterTilesBox[x, y].tag)
-            return true;
-
-        //4
-        else if (characterTilesBox[x - 2, y - 1].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag)
-            return true;
-
-        //5
-        else if (characterTilesBox[x - 1, y - 1].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
-            return true;
-
-        //6
-        else if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x + 2, y - 1].tag == characterTilesBox[x, y].tag)
-            return true;
-
-        //7
-        else if (characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x + 1, y - 2].tag == characterTilesBox[x, y].tag)
-            return true;
-
-        //8
-        else if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x + 1, y - 1].tag == characterTilesBox[x, y].tag)
-            return true;
-
-        //9
-        else if (characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
-            return true;
-
-        //10
-        else if (characterTilesBox[x - 2, y + 1].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag)
-            return true;
-
-        //11
-        else if (characterTilesBox[x - 1, y + 1].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag)
-            return true;
-
-        //12
-        else if (characterTilesBox[x + 1, y + 1].tag == characterTilesBox[x, y].tag
-            && characterTilesBox[x + 1, y + 2].tag == characterTilesBox[x, y].tag)
-            return true;
+    private bool CheckForMatches()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (characterTilesBox[x, y] != null)
+                {
+                    if (x < width - 2)
+                    {
+                        if (characterTilesBox[x + 1, y] != null && characterTilesBox[x + 2, y] != null)
+                        {
+                            if (characterTilesBox[x + 1, y].tag == characterTilesBox[x, y].tag &&
+                                characterTilesBox[x + 2, y].tag == characterTilesBox[x, y].tag)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                    if (y < height - 2)
+                    {
+                        if (characterTilesBox[x, y + 1] != null && characterTilesBox[x, y + 2] != null)
+                        {
+                            if (characterTilesBox[x, y + 1].tag == characterTilesBox[x, y].tag &&
+                                characterTilesBox[x, y + 2].tag == characterTilesBox[x, y].tag)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         return false;
     }
+
+    internal bool SwitchingAndCheck(int row, int col, Vector2 direction)
+    {
+        SwitchPieces(row, col, direction);
+        if (CheckForMatches())
+        {
+            SwitchPieces(row, col, direction);
+            return true;
+        }
+        SwitchPieces(row, col, direction);
+        return false;
+    }
+
+    private bool isDeadlocked()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (x < width - 1)
+                {
+                    if (SwitchingAndCheck(x, y, Vector2.right))
+                    {
+                        return false;
+                    }
+                }
+                if (y < height - 1)
+                {
+                    if (SwitchingAndCheck(x, y, Vector2.up))
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /*  internal bool SwitchAndCheck(int row, int col)
+      {
+          for (int i = -3; i <= 3; i++)
+          {
+              for (int j = -3; j <= 3; j++)
+              {
+                  if (row + i < 0 || row + i > width - 1 || col + j < 0 || col + j > height - 1)
+                      continue;
+
+                  //1
+                  if (characterTilesBox[row - 1, col - 1].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row - 1, col - 2].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //2
+                  else if (characterTilesBox[row - 1, col - 1].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row - 1, col + 1].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //3
+                  else if (characterTilesBox[row - 1, col + 1].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row - 1, col + 2].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //4
+                  else if (characterTilesBox[row - 2, col - 1].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row - 1, col - 1].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //5
+                  else if (characterTilesBox[row - 1, col - 1].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row + 1, col - 1].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //6
+                  else if (characterTilesBox[row + 1, col - 1].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row + 2, col - 1].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //7
+                  else if (characterTilesBox[row + 1, col - 1].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row + 1, col - 2].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //8
+                  else if (characterTilesBox[row + 1, col + 1].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row + 1, col - 1].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //9
+                  else if (characterTilesBox[row + 1, col + 2].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row + 1, col + 1].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //10
+                  else if (characterTilesBox[row - 2, col + 1].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row - 1, col + 1].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //11
+                  else if (characterTilesBox[row - 1, col + 1].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row + 1, col + 1].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //12
+                  else if (characterTilesBox[row + 1, col + 1].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row + 1, col + 2].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //13
+                  else if (characterTilesBox[row - 3, col].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row - 2, col].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //14
+                  else if (characterTilesBox[row + 3, col].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row + 2, col].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //15
+                  else if (characterTilesBox[row, col - 3].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row, col - 2].tag == characterTilesBox[row, col].tag)
+                      return true;
+
+                  //16
+                  else if (characterTilesBox[row, col + 3].tag == characterTilesBox[row, col].tag
+                      && characterTilesBox[row, col + 2].tag == characterTilesBox[row, col].tag)
+                      return true;
+              }
+          }
+          return false;
+      }*/
 
     private void CanMovePlayerState()
     {
