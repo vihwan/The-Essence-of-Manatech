@@ -34,8 +34,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     //상태변수
     public bool isMatched = false;
-
-    public bool isShifting = false;
+    public bool canShifting = false;
 
     //Vector
     private Vector2 firstTouchPosition;
@@ -67,7 +66,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         SetCharacterTileTag();
         isMatched = false;
-        isShifting = false;
+        canShifting = true;
     }
 
     //캐릭터 타일의 태그를 설정해주는 함수
@@ -120,7 +119,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             image.color = new Color(.5f, .5f, .5f, 1.0f);
             BoardManager.instance.currentState = PlayerState.WAIT;
         }
-        MoveTileAnimation();
+
+        if(canShifting == true)
+            MoveTileAnimation();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -267,13 +268,13 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (Mathf.Abs(targetX - transform.position.x) > .1 ||
             Mathf.Abs(targetY - transform.position.y) > .1)
         {
-            isShifting = true;
             tempPosition = new Vector2(targetX, targetY);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, .1f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, .2f);
             if (BoardManager.instance.characterTilesBox[Row, Col] != this.gameObject)
             {
                 BoardManager.instance.characterTilesBox[Row, Col] = this.gameObject;
             }
+            findMatches.FindAllMatches();
         }
         else
         {   //타일 위치 이동 완료
@@ -281,8 +282,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             //저장되어있는 characterTile의 정보를 바꾸기
             BoardManager.instance.characterTilesBox[Row, Col] = gameObject;
             gameObject.name = "S Character [" + Row + ", " + Col + "]";
-            isShifting = false;
-            findMatches.FindAllMatches();
+
+            canShifting = false;
         }
     }
 

@@ -41,7 +41,7 @@ public class BoardManager : MonoBehaviour
     public GameObject[,] characterTilesBox; //캐릭터 타일 보관하는 배열
     public GameObject characterTilePrefab;  //Tile Prefab
 
-    public PlayerState currentState = PlayerState.MOVE;
+    public PlayerState currentState = PlayerState.WAIT;
 
     //private float nextTime = 0f;
     //private float TimeLeft = 3f;
@@ -73,7 +73,9 @@ public class BoardManager : MonoBehaviour
         Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().rect.size;
         CreateTiles(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
         SoundManager.instance.PlayBGM("데바스타르");
-        SoundManager.instance.audioSourceBGM.volume = 0.1f;
+        SoundManager.instance.audioSourceBGM.mute = true;
+        SoundManager.instance.audioSourceBGM.volume = .1f;
+
     }
 
     private void Update()
@@ -124,6 +126,9 @@ public class BoardManager : MonoBehaviour
         first.GetComponent<Tile>().targetY = second.GetComponent<Tile>().transform.position.y;
         second.GetComponent<Tile>().targetX = first.GetComponent<Tile>().transform.position.x;
         second.GetComponent<Tile>().targetY = first.GetComponent<Tile>().transform.position.y;
+
+        first.GetComponent<Tile>().canShifting = true;
+        second.GetComponent<Tile>().canShifting = true;
     }
 
     private void DestroyMatchesAt(int row, int col)
@@ -178,14 +183,15 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[x, y] == null)
                 {
                     nullCount++;
-                    //  Debug.Log("카운트 세는중");
+                    Debug.Log("카운트 세는중");
                 }
                 else if (nullCount > 0)
                 {
                     characterTilesBox[x, y].GetComponent<Tile>().Col -= nullCount;
                     characterTilesBox[x, y].GetComponent<Tile>().targetY -= (80 * nullCount);
+                    characterTilesBox[x, y].GetComponent<Tile>().canShifting = true;
                     characterTilesBox[x, y] = null;
-                    //  Debug.Log("정보 변경");
+                    Debug.Log("정보 변경");
                 }
             }
             nullCount = 0;
@@ -331,11 +337,11 @@ public class BoardManager : MonoBehaviour
 
                 characterTilesBox[row + i, col + j].GetComponent<Tile>().isMatched = true;
 
-                //Stack Overflow Exception
+/*                //Stack Overflow Exception
                 if (characterTilesBox[row + i, col + j].GetComponent<Tile>().CompareTag("Bomb"))
                 {
                     JackBombIsMatch(row + i, col + j);
-                }
+                }*/
             }
         }
     }
@@ -496,7 +502,7 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[x, y] != null)
                 {
                     Tile movingTile = characterTilesBox[x, y].GetComponent<Tile>();
-                    if (movingTile.isShifting == true)
+                    if (movingTile.canShifting || movingTile.isMatched)
                     {
                         currentState = PlayerState.WAIT;
                         return;
