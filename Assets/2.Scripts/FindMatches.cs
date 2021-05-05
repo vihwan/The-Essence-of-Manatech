@@ -59,7 +59,7 @@ public class FindMatches : MonoBehaviour
                     AddMatching(currentTile, firstTile, secondTile);
                     LolipopCount += 2;
                 }
-                else if (firstTile.tag == secondTile.tag)
+                else if (secondTile.CompareTag(firstTile.tag))
                 {
                     AddMatching(currentTile, firstTile, secondTile);
                     LolipopCount++;

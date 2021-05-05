@@ -34,6 +34,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     //상태변수
     public bool isMatched = false;
+    public bool isShifting = false;
     public bool canShifting = false;
 
     //Vector
@@ -66,6 +67,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         SetCharacterTileTag();
         isMatched = false;
+        isShifting = false;
         canShifting = true;
     }
 
@@ -237,7 +239,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public IEnumerator CheckMoveCoroutine()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.7f);
         if (otherCharacterTile != null)
         {
             if (!isMatched && !otherCharacterTile.GetComponent<Tile>().isMatched)
@@ -268,6 +270,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (Mathf.Abs(targetX - transform.position.x) > .1 ||
             Mathf.Abs(targetY - transform.position.y) > .1)
         {
+            isShifting = true;
             tempPosition = new Vector2(targetX, targetY);
             transform.position = Vector2.Lerp(transform.position, tempPosition, .2f);
             if (BoardManager.instance.characterTilesBox[Row, Col] != this.gameObject)
@@ -282,7 +285,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             //저장되어있는 characterTile의 정보를 바꾸기
             BoardManager.instance.characterTilesBox[Row, Col] = gameObject;
             gameObject.name = "S Character [" + Row + ", " + Col + "]";
-
+            isShifting = false;
             canShifting = false;
         }
     }

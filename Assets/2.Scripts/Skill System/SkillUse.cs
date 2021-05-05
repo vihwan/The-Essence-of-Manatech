@@ -55,7 +55,7 @@ public class SkillUse : MonoBehaviour
         {
             //쿨타임도 고려
             Debug.Log("네번째 스킬 사용");
-            if (skillManager.UseSkillGauge(10))
+            if (skillManager.UseSkillGauge(0))
                 Skill_Jack_O_Halloween();
         }
     }

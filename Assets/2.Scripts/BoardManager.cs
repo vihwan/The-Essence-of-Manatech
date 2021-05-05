@@ -335,13 +335,18 @@ public class BoardManager : MonoBehaviour
                 if (row + i < 0 || row + i > width - 1 || col + j < 0 || col + j > height - 1)
                     continue;
 
-                characterTilesBox[row + i, col + j].GetComponent<Tile>().isMatched = true;
+                if (characterTilesBox[row + i,col + j].GetComponent<Tile>().isMatched)
+                    continue;
+                else
+                    characterTilesBox[row + i, col + j].GetComponent<Tile>().isMatched = true;
 
-/*                //Stack Overflow Exception
+
+                //폭탄 폭발범위 내에 다른 폭탄이 있다면 연쇄폭발
                 if (characterTilesBox[row + i, col + j].GetComponent<Tile>().CompareTag("Bomb"))
                 {
                     JackBombIsMatch(row + i, col + j);
-                }*/
+                    continue;
+                }
             }
         }
     }
@@ -476,6 +481,7 @@ public class BoardManager : MonoBehaviour
                 tile.GetComponent<Tile>().SetArrNumber(x, y);
                 tile.GetComponent<Tile>().targetX = newPositionX;
                 tile.GetComponent<Tile>().targetY = newPositionY;
+                tile.GetComponent<Tile>().canShifting = true;
 
                 characterTilesBox[x, y] = newBoard[randomNum];
                 newBoard.Remove(newBoard[randomNum]);
@@ -502,7 +508,7 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[x, y] != null)
                 {
                     Tile movingTile = characterTilesBox[x, y].GetComponent<Tile>();
-                    if (movingTile.canShifting || movingTile.isMatched)
+                    if (movingTile.isShifting || movingTile.isMatched)
                     {
                         currentState = PlayerState.WAIT;
                         return;
