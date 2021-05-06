@@ -56,6 +56,7 @@ public class HintManager : MonoBehaviour
         else
         {
             Debug.Log("옮길 수 있는 타일이 없습니다!!");
+            
         }
         return null;
     }

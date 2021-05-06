@@ -17,6 +17,7 @@ public class GUIManager : MonoBehaviour
     private int score = 0;
     private float limitTime;
 
+    private AlertText alertText;
 
     //프로퍼티
     public int Score
@@ -50,6 +51,10 @@ public class GUIManager : MonoBehaviour
         instance = GetComponent<GUIManager>();
         limitTime = 600;
         limitTimeTxt.text = limitTime.ToString();
+
+        alertText = FindObjectOfType<AlertText>();
+        if (alertText != null)
+            alertText.Init();
     }
 
     private void Update()

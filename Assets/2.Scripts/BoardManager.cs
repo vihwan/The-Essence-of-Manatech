@@ -52,7 +52,7 @@ public class BoardManager : MonoBehaviour
     private FindMatches findMatches;
     private CreateBackTiles createBoard;
     private ComboSystem comboSystem;
-    private SkillManager skillManager;
+    private SkillGauge skillGauge;
 
     private List<RC> randomSelectList = new List<RC>();
 
@@ -66,15 +66,15 @@ public class BoardManager : MonoBehaviour
         findMatches = FindObjectOfType<FindMatches>();
         createBoard = FindObjectOfType<CreateBackTiles>();
         comboSystem = FindObjectOfType<ComboSystem>();
-        skillManager = FindObjectOfType<SkillManager>();
+        skillGauge = FindObjectOfType<SkillGauge>();
 
         characterTilesBox = new GameObject[width, height];
 
         Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().rect.size;
         CreateTiles(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
         SoundManager.instance.PlayBGM("데바스타르");
-        SoundManager.instance.audioSourceBGM.mute = true;
-        SoundManager.instance.audioSourceBGM.volume = .1f;
+        //SoundManager.instance.audioSourceBGM.mute = true;
+        SoundManager.instance.audioSourceBGM.volume = .3f;
 
     }
 
@@ -135,7 +135,7 @@ public class BoardManager : MonoBehaviour
     {
         if (characterTilesBox[row, col].GetComponent<Tile>().isMatched)
         {
-            skillManager.GainSkillGauge(); //타일 파괴시 스킬 게이지 획득
+            skillGauge.GainSkillGauge(); //타일 파괴시 스킬 게이지 획득
 
             #region 파괴 이펙트
 
@@ -183,7 +183,7 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[x, y] == null)
                 {
                     nullCount++;
-                    Debug.Log("카운트 세는중");
+                  //  Debug.Log("카운트 세는중");
                 }
                 else if (nullCount > 0)
                 {
@@ -191,7 +191,7 @@ public class BoardManager : MonoBehaviour
                     characterTilesBox[x, y].GetComponent<Tile>().targetY -= (80 * nullCount);
                     characterTilesBox[x, y].GetComponent<Tile>().canShifting = true;
                     characterTilesBox[x, y] = null;
-                    Debug.Log("정보 변경");
+                  //  Debug.Log("정보 변경");
                 }
             }
             nullCount = 0;
@@ -262,6 +262,8 @@ public class BoardManager : MonoBehaviour
     //타일 생성하여 보드 채우기 코루틴
     private IEnumerator FillBoardCoroutine()
     {
+        currentState = PlayerState.WAIT;
+
         RefillBoard();
         yield return new WaitForSeconds(.5f);
 
@@ -277,6 +279,7 @@ public class BoardManager : MonoBehaviour
         {
             Invoke(nameof(ShuffleBoard), .8f);
             Debug.Log("<color=#FF6534> DeadLock 발생 </color> 타일들을 섞습니다.");
+            AlertText.instance.ActiveText("Deadlock 발생 타일을 섞습니다.");
         }
     }
 
@@ -455,6 +458,7 @@ public class BoardManager : MonoBehaviour
     {
         //사운드 재생 : 반중력 기동장치
 
+
         List<GameObject> newBoard = new List<GameObject>();
 
         for (int x = 0; x < width; x++)
@@ -508,7 +512,7 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[x, y] != null)
                 {
                     Tile movingTile = characterTilesBox[x, y].GetComponent<Tile>();
-                    if (movingTile.isShifting || movingTile.isMatched)
+                    if (movingTile.isShifting || movingTile.isMatched || movingTile.canShifting)
                     {
                         currentState = PlayerState.WAIT;
                         return;

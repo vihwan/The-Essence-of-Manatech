@@ -1,22 +1,44 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
 public class SkillCooldown : MonoBehaviour
 {
-    [SerializeField] private Image cooldownEffect;
-    [SerializeField] private Text cooldownText;
+    [SerializeField] private Transform t;
 
-    private bool isCooldown = false;
-    private float cooldownTime = 10.0f;
+    [SerializeField] private TMP_Text cooldownText;
+    [SerializeField] private Image cooldownEffect;
+    [SerializeField] private Image cooldownSkillImage;
+
+    [SerializeField] internal bool isCooldown = false;
+    private float cooldownTime;
     private float cooldownTimer = 0.0f;
 
-    private void Start()
+    public void Init()
     {
-        cooldownText.gameObject.SetActive(false);
-        cooldownEffect.fillAmount = 0.0f;
+        t = transform.Find("cool_Image");
+        if (t != null)
+        {
+            cooldownSkillImage = t.GetComponent<Image>();
+            if (cooldownSkillImage != null)
+            {
+                cooldownSkillImage.gameObject.SetActive(false);
+            }
+        }
+
+        t = transform.Find("cooldownEffect");
+        if (t != null)
+        {
+            cooldownEffect = t.GetComponent<Image>();
+            if (cooldownEffect != null)
+            {
+                cooldownEffect.fillAmount = 0.0f;
+            }
+        }
+
+        cooldownText = GetComponentInChildren<TMP_Text>();
+        if (cooldownText != null)
+            cooldownText.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -31,9 +53,10 @@ public class SkillCooldown : MonoBehaviour
     {
         cooldownTimer -= Time.deltaTime;
 
-        if (cooldownTimer < 0.0f)
+        if (cooldownTimer <= 0.0f)
         {
             isCooldown = false;
+            cooldownSkillImage.gameObject.SetActive(false);
             cooldownText.gameObject.SetActive(false);
             cooldownEffect.fillAmount = 0.0f;
         }
@@ -44,7 +67,7 @@ public class SkillCooldown : MonoBehaviour
         }
     }
 
-    public bool UseSpell()
+    public bool UseSpell(float skillCoolDownTime)
     {
         if (isCooldown)
         {
@@ -53,8 +76,10 @@ public class SkillCooldown : MonoBehaviour
         else
         {
             isCooldown = true;
+            cooldownSkillImage.gameObject.SetActive(true);
             cooldownText.gameObject.SetActive(true);
-            cooldownTimer = cooldownTime;
+            cooldownTimer = skillCoolDownTime;
+            cooldownTime = skillCoolDownTime;
             return true;
         }
     }

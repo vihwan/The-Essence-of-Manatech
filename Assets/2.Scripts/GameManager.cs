@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     private ScoreManager scoreManager;
     private CreateBackTiles createBoard;
     private ComboSystem comboSystem;
-    private HintManager hintManager;
+    private SkillManager skillManager;
 
     private void Awake()
     {
@@ -63,7 +63,9 @@ public class GameManager : MonoBehaviour
         if (comboSystem != null)
             comboSystem.Init();
 
-        hintManager = FindObjectOfType<HintManager>();
+        skillManager = FindObjectOfType<SkillManager>();
+        if (skillManager != null)
+            skillManager.Init();
     }
 
     private void Update()

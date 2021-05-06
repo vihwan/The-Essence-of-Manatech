@@ -1,82 +1,156 @@
 ﻿using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class SkillManager : MonoBehaviour
 {
-    /*  1. 스킬 게이지의 상태를 관리
-        2. 사용자의 스킬 사용 기능
-     */
-
-    #region Variable
-
-    private float currentSkillMana;
-    private float totalSkillMana;
-    [SerializeField] private TMP_Text skillGaugeText;
-    [SerializeField] private Image skiiGaugeImage;
+    public static SkillManager instance;
 
     //Component
 
-    private SkillUse skillEffect;
-    private FindMatches findMatches;
+    private SkillGauge skillGauge;
+    private HintManager hintManager;
+    [SerializeField] private SkillCooldown[] skillCooldownList;
 
     public List<Skill> skillAllList = new List<Skill>();
 
-    //Property
-
-    public TMP_Text SkillGaugeText { get => skillGaugeText; set => skillGaugeText = value; }
-    public Image SkiiGaugeImage { get => skiiGaugeImage; set => skiiGaugeImage = value; }
-    public float CurrentSkillMana { get => currentSkillMana; set => currentSkillMana = value; }
-    public float TotalSkillMana { get => totalSkillMana; set => totalSkillMana = value; }
-
-    #endregion Variable
-
-    private void Start()
+    public void Init()
     {
-        skillEffect = GetComponent<SkillUse>();
-        if (skillEffect != null)
-        {
-            skillEffect.Init();
-        }
-        findMatches = FindObjectOfType<FindMatches>();
+        instance = GetComponent<SkillManager>();
 
-        CurrentSkillMana = 0f; //시작시 마나는 0으로 설정
-        TotalSkillMana = 200f; //총 마나 양을 200으로 설정
+        skillGauge = GetComponent<SkillGauge>();
+        if (skillGauge != null)
+        {
+            skillGauge.Init();
+        }
+        hintManager = FindObjectOfType<HintManager>();
+
+        skillCooldownList = FindObjectsOfType<SkillCooldown>();
+        if (skillCooldownList != null)
+        {
+            foreach (var item in skillCooldownList)
+            {
+                item.Init();
+            }
+        }
     }
 
     private void Update()
     {
-        //매 프레임마다 게이지 상태를 갱신
-        SkillGaugeStatus();
-    }
-
-    private void SkillGaugeStatus()
-    {
-        SkillGaugeText.text = Mathf.Round(CurrentSkillMana).ToString() + " / 200";
-        SkiiGaugeImage.fillAmount = CurrentSkillMana / TotalSkillMana;
-    }
-
-    //타일을 파괴할 때 마다 스킬 게이지가 증가
-    public void GainSkillGauge()
-    {
-        if (CurrentSkillMana >= TotalSkillMana)
+        if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
-            CurrentSkillMana = TotalSkillMana;
+            UseSkill();
+        }
+    }
+
+    private void UseSkill()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Debug.Log("첫번째 스킬 사용");
+            if (hintManager.currentHintEffect == null)
+            {
+                if (skillGauge.UseSkillGauge(skillAllList[0].necessaryMana))
+                    Skill_Chain_Fluore();
+            }
+            else
+            {
+                AlertText.instance.ActiveText("이미 사용중 입니다.");
+                return;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Debug.Log("두번째 스킬 사용");
+            AlertText.instance.ActiveText("미구현 스킬 입니다.");
+            return;
+
+            if (skillGauge.UseSkillGauge(30))
+            {
+                AlertText.instance.ActiveText("미구현 스킬 입니다.");
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Debug.Log("세번째 스킬 사용");
+            AlertText.instance.ActiveText("미구현 스킬 입니다.");
+            return;
+
+            if (skillGauge.UseSkillGauge(50))
+            {
+                AlertText.instance.ActiveText("미구현 스킬 입니다.");
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            //쿨타임도 고려
+            Debug.Log("네번째 스킬 사용");
+            if (skillGauge.UseSkillGauge(skillAllList[3].necessaryMana))
+                Skill_Jack_O_Halloween();
+        }
+    }
+
+    private void Skill_Chain_Fluore()
+    {
+        //1번 스킬 : 체인 플로레
+        // 힌트 스킬
+        if (skillCooldownList[3].UseSpell(skillAllList[0].cooldownTime))
+        {
+            hintManager.MarkHint();
+        }
+        else
+        {
+            AlertText.instance.ActiveText("<color=#B75500>스킬 쿨타임</color> 입니다.");
             return;
         }
-        CurrentSkillMana += (1f * findMatches.currentMatches.Count);
+
+        //스킬 보이스 출력
+        //스킬 이펙트 출력
     }
 
-    public bool UseSkillGauge(int useMana)
+    private void Skill_Flapper()
     {
-        if (CurrentSkillMana < useMana)
+        //2번 스킬
+        if (skillCooldownList[2].UseSpell(skillAllList[1].cooldownTime))
         {
-            Debug.Log("<color=#00C7FF>마나</color> 부족 ");
-            return false;
+            //스킬 함수
+            
+        }
+        else
+        {
+            AlertText.instance.ActiveText("<color=#B75500>스킬 쿨타임</color> 입니다.");
+            return;
+        }
+    }
+
+    private void Skill_Jack_Frost_ShavedIce()
+    {
+        //3번 스킬
+        if (skillCooldownList[1].UseSpell(skillAllList[2].cooldownTime))
+        {
+            //스킬 함수
+        }
+        else
+        {
+            AlertText.instance.ActiveText("<color=#B75500>스킬 쿨타임</color> 입니다.");
+            return;
+        }
+    }
+
+    private void Skill_Jack_O_Halloween()
+    {
+        //4번 스킬
+        if (skillCooldownList[0].UseSpell(skillAllList[3].cooldownTime))
+        {
+            BoardManager.instance.CreateJackBomb();
+            
+        }
+        else
+        {
+            AlertText.instance.ActiveText("<color=#B75500>스킬 쿨타임</color> 입니다.");
+            return;
         }
 
-        CurrentSkillMana -= useMana;
-        return true;
+        //스킬 보이스 출력
+        //스킬 이펙트 출력
     }
 }
