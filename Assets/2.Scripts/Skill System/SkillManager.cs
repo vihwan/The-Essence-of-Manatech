@@ -9,7 +9,9 @@ public class SkillManager : MonoBehaviour
     //Variale
 
     [SerializeField] private List<SkillButton> skillBtns = new List<SkillButton>();
-    [SerializeField] private List<ActiveSkill> skillAllList = new List<ActiveSkill>();
+    [SerializeField] private List<ActiveSkill> ASkillList = new List<ActiveSkill>();
+    [SerializeField] private List<PassiveSkill> PSkillList = new List<PassiveSkill>();
+
 
     //Component
 
@@ -23,7 +25,11 @@ public class SkillManager : MonoBehaviour
 
         saveAndLoad = FindObjectOfType<SaveAndLoad>();
         if (saveAndLoad != null)
-            saveAndLoad.LoadData(skillAllList);
+        {
+           saveAndLoad.LoadData<ActiveSkill>(ASkillList);
+           saveAndLoad.LoadData<PassiveSkill>(PSkillList);
+        }
+ 
 
         skillGauge = GetComponent<SkillGauge>();
         if (skillGauge != null)
@@ -36,7 +42,7 @@ public class SkillManager : MonoBehaviour
         for (int i = 0; i < skillBtns.Count; i++)
         {
             skillBtns[i].Init();
-            skillBtns[i].skillInfo = skillAllList[i];
+            skillBtns[i].skillInfo = ASkillList[i];
         }
 
         hintManager = FindObjectOfType<HintManager>();
@@ -72,10 +78,10 @@ public class SkillManager : MonoBehaviour
             AlertText.instance.ActiveText("미구현 스킬 입니다.");
             return;
 
-            if (skillGauge.UseSkillGauge(30))
+/*            if (skillGauge.UseSkillGauge(30))
             {
                 AlertText.instance.ActiveText("미구현 스킬 입니다.");
-            }
+            }*/
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
@@ -83,10 +89,10 @@ public class SkillManager : MonoBehaviour
             AlertText.instance.ActiveText("미구현 스킬 입니다.");
             return;
 
-            if (skillGauge.UseSkillGauge(50))
+/*            if (skillGauge.UseSkillGauge(50))
             {
                 AlertText.instance.ActiveText("미구현 스킬 입니다.");
-            }
+            }*/
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
@@ -118,7 +124,7 @@ public class SkillManager : MonoBehaviour
     private void Skill_Flapper()
     {
         //2번 스킬
-        if (skillBtns[2].UseSpell(skillAllList[1].cooldownTime))
+        if (skillBtns[2].UseSpell(ASkillList[1].cooldownTime))
         {
             //스킬 함수
         }
@@ -132,7 +138,7 @@ public class SkillManager : MonoBehaviour
     private void Skill_Jack_Frost_ShavedIce()
     {
         //3번 스킬
-        if (skillBtns[1].UseSpell(skillAllList[2].cooldownTime))
+        if (skillBtns[1].UseSpell(ASkillList[2].cooldownTime))
         {
             //스킬 함수
         }
@@ -162,7 +168,7 @@ public class SkillManager : MonoBehaviour
 
     public void LoadToSkillInfo()
     {
-        for (int i = 0; i < skillAllList.Count; i++)
+        for (int i = 0; i < ASkillList.Count; i++)
         {
         }
     }
