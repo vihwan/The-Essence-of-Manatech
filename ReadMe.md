@@ -10,7 +10,6 @@ YAGNI = You Ain't Gonna Need It - 지금 당장 필요없는 것을 미리 만�
 
 ## 확인된 버그 & 개선이 필요한 것
 
-
 + **해상도가 바뀌면 타일의 위치가 이상하게 옮겨지는 버그**
 + 타일이 스왑 애니메이션이 실행되는 동안 추가적인 마우스 조작이 되는 버그
 + 타일 매칭 조건을 동시에 여러개를 만족했을 때 콤보가 하나밖에 올라가지 않는 버그
@@ -19,6 +18,13 @@ YAGNI = You Ain't Gonna Need It - 지금 당장 필요없는 것을 미리 만�
 
 * UI 이미지 개선
 * 스킬 사용 시 음성 및 스프라이트 효과 추가
+
+## 다음 목표는..
+
+* 힌트 이펙트를 오브젝트 풀링으로 구현
+이 과정에서 다른 이펙트들도 같은 메소드를 공용하여 사용할 수 있도록 리팩토링을 하자.
+
+* 패시브 스킬 설정 및 스킬 레벨 상승에 따라 효과가 달라지게 하기
 ---------------------------------
 
 ## 추출해야할 것
@@ -54,8 +60,53 @@ Json파일로 저장하도록 만들었다. 그리고 이를 다시 불러들여
 
 코드의 간략화를 위함. 우선, Transform.Find를 사용할 경우, 쉽게 한줄로 요약하게 해주는 코드를 작성
 
+3. SaveAndLoad 함수의 대중화
 
-3. (진행중) 오브젝트 풀링을 이용해서, 타일 파괴 이펙트와 힌트 이펙트에 적용시켜보자
+여러 데이터들을 대상으로 각각 데이터들을 로드하는 메소드들을 만들면,\
+메소드 오버로딩이 발생할 수 있으며, 코드가 간결해지지 않는다.
+
+```c#
+	public void LoadData<T>(List<T> tList) where T : class
+    {
+        if (File.Exists(SAVE_DATA_DIRECTORY + SAVE_FILENAME))
+        {
+            // 전체 읽어오기
+            string loadJson = File.ReadAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME);
+            //Json역직렬화
+            saveData = JsonUtility.FromJson<SaveData>(loadJson);
+
+            Type listType = typeof(T);
+
+            if (listType == typeof(ActiveSkill))
+            {
+                for (int i = 0; i < saveData.AskillList.Count; i++)
+                {
+                    //명시적 캐스팅을 해주지 않으면 에러
+                    tList.Add(saveData.AskillList[i] as T);
+                }
+            }
+            else if (listType == typeof(PassiveSkill))
+            {
+                for (int i = 0; i < saveData.PskillList.Count; i++)
+                {
+                    //명시적 캐스팅을 해주지 않으면 에러
+                    tList.Add(saveData.PskillList[i] as T);
+                }
+            }
+        }
+    }
+
+   //이하 생략
+```
+위의 함수 처럼 여러 데이터들을 로드하는 과정을 하나의 메소드로 처리하도록 Generic Function을 만들어보았다.
+꽤 어렵고 힘든 작업이었지만, 성공하니 뿌듯하다.
+
+
+3. (완료) 오브젝트 풀링을 이용해서, 타일 파괴 이펙트와 힌트 이펙트에 적용시켜보자
+
+ObjectPool Class를 생성하여, 오브젝트 풀링을 적용하려는 gameObject들을 관리하도록 함.\
+우선 타일 파괴 이펙트만을 구현. 힌트 이펙트를 구현할 때, 메소드 오버로딩이 되지 않도록\
+잘 리팩토링 해가며 구현하자.
 
 
 4. (Bug Fix) SkillData를 Load할 때, ArgumentOutofRange Exception 오류 현상을 수정

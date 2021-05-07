@@ -66,6 +66,7 @@ public class HintManager : MonoBehaviour
         GameObject move = PickUpRandom();
         if (move != null)
         {
+            //TODO : Object Pool Test
             currentHintEffect = Instantiate(hintEffectPrefab, move.transform.position, Quaternion.identity);
             currentHintEffect.transform.SetParent(transform);
         }

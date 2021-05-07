@@ -139,11 +139,16 @@ public class BoardManager : MonoBehaviour
             #region 파괴 이펙트
 
             findMatches.currentMatches.Remove(characterTilesBox[row, col]);
-            GameObject flashEffect = Instantiate(Resources.Load<GameObject>("FlashEffect")
-                                                , characterTilesBox[row, col].GetComponent<Tile>().transform.position
-                                                , Quaternion.identity);
-            flashEffect.transform.SetParent(transform);
-            Destroy(flashEffect, .5f);
+            //GameObject flashEffect = Instantiate(Resources.Load<GameObject>("FlashEffect")
+            //                                    , characterTilesBox[row, col].GetComponent<Tile>().transform.position
+            //                                    , Quaternion.identity);
+            //flashEffect.transform.SetParent(transform);
+            //Destroy(flashEffect, .5f);
+
+            //TODO : ObjectPool Test
+            FlashEffect flashEffect = ObjectPool.GetFlashEffectObject(transform);
+            flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
+            flashEffect.RemoveEffect();
 
             #endregion 파괴 이펙트
 
@@ -151,7 +156,6 @@ public class BoardManager : MonoBehaviour
             characterTilesBox[row, col] = null;
 
             ScoreManager.instance.PlusScore();
-            // Debug.Log("파괴 완료");
         }
     }
 

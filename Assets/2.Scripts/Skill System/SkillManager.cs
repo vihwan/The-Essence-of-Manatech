@@ -26,8 +26,8 @@ public class SkillManager : MonoBehaviour
         saveAndLoad = FindObjectOfType<SaveAndLoad>();
         if (saveAndLoad != null)
         {
-           saveAndLoad.LoadData<ActiveSkill>(ASkillList);
-           saveAndLoad.LoadData<PassiveSkill>(PSkillList);
+            saveAndLoad.LoadData<ActiveSkill>(ASkillList);
+            saveAndLoad.LoadData<PassiveSkill>(PSkillList);
         }
  
 

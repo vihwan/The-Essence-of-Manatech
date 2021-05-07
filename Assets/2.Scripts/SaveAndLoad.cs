@@ -40,6 +40,7 @@ public class SaveAndLoad : MonoBehaviour
         Debug.Log(json);
     }
 
+
     //LoadData를 여러 속성의 List들이 쓸 수 있도록 Refactoring
     public void LoadData<T>(List<T> tList) where T : class
     {
@@ -50,11 +51,27 @@ public class SaveAndLoad : MonoBehaviour
             //Json역직렬화
             saveData = JsonUtility.FromJson<SaveData>(loadJson);
 
-            for (int i = 0; i < saveData.PskillList.Count; i++)
+            Type listType = typeof(T);
+
+            if (listType == typeof(ActiveSkill))
             {
-                //명시적 캐스팅을 해주지 않으면 에러
-                tList.Add(saveData.PskillList[i] as T);
+                for (int i = 0; i < saveData.AskillList.Count; i++)
+                {
+                    //명시적 캐스팅을 해주지 않으면 에러
+                    tList.Add(saveData.AskillList[i] as T);
+                }
             }
+            else if (listType == typeof(PassiveSkill))
+            {
+                for (int i = 0; i < saveData.PskillList.Count; i++)
+                {
+                    //명시적 캐스팅을 해주지 않으면 에러
+                    tList.Add(saveData.PskillList[i] as T);
+                }
+            }
+            else
+                Debug.Log("정보를 가져오는데 실패했습니다");
+
 
             Debug.Log("스킬 데이터 로드 완료");
         }
