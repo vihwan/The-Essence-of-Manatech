@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -255,11 +255,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b2623c775af6147936b2ebd789ef3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  t: {fileID: 0}
   cooldownText: {fileID: 0}
   cooldownEffect: {fileID: 0}
   cooldownSkillImage: {fileID: 0}
   isCooldown: 0
+  skillInfo:
+    name: 
+    description: 
+    icon: {fileID: 0}
+    level: 0
+    necessaryMana: 0
+    cooldownTime: 0
 --- !u!1 &105954128
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,36 +653,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e59e5eed4a9a2524289f381c0bf95afa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCooldownList: []
+  skillBtns: []
   skillAllList:
-  - id: 0
-    name: "\uCCB4\uC778 \uD50C\uB85C\uB808"
-    description: "\uD78C\uD2B8 \uAE30\uB2A5"
-    icon: {fileID: 0}
-    level: 0
-    necessaryMana: 0
-    cooldownTime: 10
-  - id: 1
-    name: "\uBCC0\uC774 \uD30C\uB9AC\uCC44"
-    description: "\uBBF8\uAD6C\uD604 \uC2A4\uD0AC"
+  - name: 
+    description: 
     icon: {fileID: 0}
     level: 0
     necessaryMana: 0
     cooldownTime: 0
-  - id: 2
-    name: "\uC7AD\uD504\uB85C\uC2A4\uD2B8 \uBE59\uC218"
-    description: "\uBBF8\uAD6C\uD604 \uC2A4\uD0AC"
+  - name: 
+    description: 
     icon: {fileID: 0}
     level: 0
     necessaryMana: 0
     cooldownTime: 0
-  - id: 3
-    name: "\uC7AD \uC624 \uD560\uB85C\uC708"
-    description: "\uD3ED\uD0C4 \uC0DD\uC131"
+  - name: 
+    description: 
     icon: {fileID: 0}
     level: 0
     necessaryMana: 0
-    cooldownTime: 30
+    cooldownTime: 0
+  - name: 
+    description: 
+    icon: {fileID: 0}
+    level: 0
+    necessaryMana: 0
+    cooldownTime: 0
 --- !u!1 &367463665
 GameObject:
   m_ObjectHideFlags: 0
@@ -1408,11 +1410,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b2623c775af6147936b2ebd789ef3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  t: {fileID: 0}
   cooldownText: {fileID: 0}
   cooldownEffect: {fileID: 0}
   cooldownSkillImage: {fileID: 0}
   isCooldown: 0
+  skillInfo:
+    name: 
+    description: 
+    icon: {fileID: 0}
+    level: 0
+    necessaryMana: 0
+    cooldownTime: 0
 --- !u!1 &689413548
 GameObject:
   m_ObjectHideFlags: 0
@@ -2445,6 +2453,74 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &869446684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 869446686}
+  - component: {fileID: 869446685}
+  m_Layer: 0
+  m_Name: DataSaver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &869446685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869446684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e090d162578e8747b6c991fd9ea969d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actSkills:
+  - name: 
+    description: 
+    icon: {fileID: 0}
+    level: 0
+    necessaryMana: 0
+    cooldownTime: 0
+  - name: 
+    description: 
+    icon: {fileID: 0}
+    level: 0
+    necessaryMana: 0
+    cooldownTime: 0
+  - name: 
+    description: 
+    icon: {fileID: 0}
+    level: 0
+    necessaryMana: 0
+    cooldownTime: 0
+  - name: 
+    description: 
+    icon: {fileID: 0}
+    level: 0
+    necessaryMana: 0
+    cooldownTime: 0
+--- !u!4 &869446686
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869446684}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1249.2937, y: 576.5147, z: -99.05411}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &902998631
 GameObject:
   m_ObjectHideFlags: 0
@@ -3423,11 +3499,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b2623c775af6147936b2ebd789ef3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  t: {fileID: 0}
   cooldownText: {fileID: 0}
   cooldownEffect: {fileID: 0}
   cooldownSkillImage: {fileID: 0}
   isCooldown: 0
+  skillInfo:
+    name: 
+    description: 
+    icon: {fileID: 0}
+    level: 0
+    necessaryMana: 0
+    cooldownTime: 0
 --- !u!1 &1402664379
 GameObject:
   m_ObjectHideFlags: 0
@@ -5425,11 +5507,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b2623c775af6147936b2ebd789ef3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  t: {fileID: 0}
   cooldownText: {fileID: 0}
   cooldownEffect: {fileID: 0}
   cooldownSkillImage: {fileID: 0}
   isCooldown: 0
+  skillInfo:
+    name: 
+    description: 
+    icon: {fileID: 0}
+    level: 0
+    necessaryMana: 0
+    cooldownTime: 0
 --- !u!1 &2126976265
 GameObject:
   m_ObjectHideFlags: 0

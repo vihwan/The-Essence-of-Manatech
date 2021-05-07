@@ -74,8 +74,7 @@ public class BoardManager : MonoBehaviour
         CreateTiles(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
         SoundManager.instance.PlayBGM("데바스타르");
         //SoundManager.instance.audioSourceBGM.mute = true;
-        SoundManager.instance.audioSourceBGM.volume = .3f;
-
+        SoundManager.instance.audioSourceBGM.volume = .15f;
     }
 
     private void Update()
@@ -183,7 +182,7 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[x, y] == null)
                 {
                     nullCount++;
-                  //  Debug.Log("카운트 세는중");
+                    //  Debug.Log("카운트 세는중");
                 }
                 else if (nullCount > 0)
                 {
@@ -191,7 +190,7 @@ public class BoardManager : MonoBehaviour
                     characterTilesBox[x, y].GetComponent<Tile>().targetY -= (80 * nullCount);
                     characterTilesBox[x, y].GetComponent<Tile>().canShifting = true;
                     characterTilesBox[x, y] = null;
-                  //  Debug.Log("정보 변경");
+                    //  Debug.Log("정보 변경");
                 }
             }
             nullCount = 0;
@@ -338,11 +337,10 @@ public class BoardManager : MonoBehaviour
                 if (row + i < 0 || row + i > width - 1 || col + j < 0 || col + j > height - 1)
                     continue;
 
-                if (characterTilesBox[row + i,col + j].GetComponent<Tile>().isMatched)
+                if (characterTilesBox[row + i, col + j].GetComponent<Tile>().isMatched)
                     continue;
                 else
                     characterTilesBox[row + i, col + j].GetComponent<Tile>().isMatched = true;
-
 
                 //폭탄 폭발범위 내에 다른 폭탄이 있다면 연쇄폭발
                 if (characterTilesBox[row + i, col + j].GetComponent<Tile>().CompareTag("Bomb"))
@@ -457,7 +455,6 @@ public class BoardManager : MonoBehaviour
     private void ShuffleBoard()
     {
         //사운드 재생 : 반중력 기동장치
-
 
         List<GameObject> newBoard = new List<GameObject>();
 
