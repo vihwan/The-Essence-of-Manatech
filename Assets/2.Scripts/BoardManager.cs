@@ -282,7 +282,7 @@ public class BoardManager : MonoBehaviour
         {
             Invoke(nameof(ShuffleBoard), .8f);
             Debug.Log("<color=#FF6534> DeadLock 발생 </color> 타일들을 섞습니다.");
-            AlertText.instance.ActiveText("Deadlock 발생 타일을 섞습니다.");
+            SkillManager.instance.appearText("Deadlock 발생 타일을 섞습니다.");
         }
     }
 

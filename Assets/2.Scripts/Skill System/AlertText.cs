@@ -6,16 +6,17 @@ using TMPro;
 
 public class AlertText : MonoBehaviour
 {
-    public static AlertText instance;
-
     private TMP_Text textContents;
     private Animator animator;
+    private SkillManager skillManager;
+
 
     public void Init()
     {
-        instance = GetComponent<AlertText>();
         textContents = GetComponent<TMP_Text>();
         animator = GetComponent<Animator>();
+        skillManager = FindObjectOfType<SkillManager>();
+        skillManager.appearText += ActiveText;
     }
 
     public void ActiveText(string _text)

@@ -6,6 +6,10 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager instance;
 
+    public delegate void CantSkill(string text);
+    public CantSkill appearText;
+
+
     //Variale
 
     [SerializeField] private List<SkillButton> skillBtns = new List<SkillButton>();
@@ -75,14 +79,14 @@ public class SkillManager : MonoBehaviour
             }
             else
             {
-                AlertText.instance.ActiveText("이미 사용중 입니다.");
+                appearText("이미 사용중 입니다.");
                 return;
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             Debug.Log("2번 스킬 사용");
-            AlertText.instance.ActiveText("미구현 스킬 입니다.");
+            appearText("미구현 스킬 입니다.");
             return;
 
 /*            if (skillGauge.UseSkillGauge(30))
@@ -93,7 +97,7 @@ public class SkillManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Debug.Log("3번 스킬 사용");
-            AlertText.instance.ActiveText("미구현 스킬 입니다.");
+            appearText("미구현 스킬 입니다.");
             return;
 
 /*            if (skillGauge.UseSkillGauge(50))
@@ -170,7 +174,7 @@ public class SkillManager : MonoBehaviour
         }
         else
         {
-            AlertText.instance.ActiveText("<color=#B75500>스킬 쿨타임</color> 입니다.");
+            appearText("<color=#B75500>스킬 쿨타임</color> 입니다.");
             return;
         }
 
@@ -187,7 +191,7 @@ public class SkillManager : MonoBehaviour
         }
         else
         {
-            AlertText.instance.ActiveText("<color=#B75500>스킬 쿨타임</color> 입니다.");
+            appearText("<color=#B75500>스킬 쿨타임</color> 입니다.");
             return;
         }
     }
@@ -201,7 +205,7 @@ public class SkillManager : MonoBehaviour
         }
         else
         {
-            AlertText.instance.ActiveText("<color=#B75500>스킬 쿨타임</color> 입니다.");
+            appearText("<color=#B75500>스킬 쿨타임</color> 입니다.");
             return;
         }
     }
@@ -215,7 +219,7 @@ public class SkillManager : MonoBehaviour
         }
         else
         {
-            AlertText.instance.ActiveText("<color=#B75500>스킬 쿨타임</color> 입니다.");
+            appearText("<color=#B75500>스킬 쿨타임</color> 입니다.");
             return;
         }
 
