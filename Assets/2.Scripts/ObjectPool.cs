@@ -27,11 +27,14 @@ public class ObjectPool : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            flashEffect_OP.Enqueue(CreateNewObject());
+            flashEffect_OP.Enqueue(CreateNewFlashObject());
+           // hintEffect_OP.Enqueue(CreateNewHintObject());
         }
     }
 
-    private FlashEffect CreateNewObject()
+
+    //폭발 이펙트 생성
+    private FlashEffect CreateNewFlashObject()
     {
         FlashEffect newObj = Instantiate(Resources.Load<FlashEffect>("FlashEffect"), 
                                  transform.position, 
@@ -42,6 +45,19 @@ public class ObjectPool : MonoBehaviour
         return newObj;
     }
 
+    private HintEffect CreateNewHintObject()
+    {
+        HintEffect newObj = Instantiate(Resources.Load<HintEffect>("HintEffect"),
+                                transform.position,
+                                Quaternion.identity)
+                    .GetComponent<HintEffect>();
+        newObj.gameObject.SetActive(false);
+        newObj.transform.SetParent(transform);
+        return newObj;
+    }
+
+
+
     public static FlashEffect GetFlashEffectObject(Transform t)
     {
         //오브젝트 풀에 잔여 오브젝트가 있으면
@@ -51,24 +67,49 @@ public class ObjectPool : MonoBehaviour
             var obj = Instance.flashEffect_OP.Dequeue();
             obj.gameObject.SetActive(true);
             obj.transform.SetParent(t);
-            obj.GetComponent<Animator>().SetTrigger("flash");
+            obj.GetComponent<Animator>().SetTrigger("active");
             return obj;
         }
         else
         //없으면 새로 만들어서 가져다쓰기
         {
-            var newObj = Instance.CreateNewObject();
+            var newObj = Instance.CreateNewFlashObject();
             newObj.gameObject.SetActive(true);
             newObj.transform.SetParent(t);
-            newObj.GetComponent<Animator>().SetTrigger("flash");
+            newObj.GetComponent<Animator>().SetTrigger("active");
             return newObj;
         }
     }
 
-    public static void ReturnObject(FlashEffect obj)
+
+    public static HintEffect GetHintEffectObject(Transform t)
+    {
+        //오브젝트 풀에 잔여 오브젝트가 있으면
+        //그대로 가져다 쓰기
+        if (Instance.hintEffect_OP.Count > 0)
+        {
+            var obj = Instance.hintEffect_OP.Dequeue();
+            obj.gameObject.SetActive(true);
+            obj.transform.SetParent(t);
+            obj.GetComponent<Animator>().SetTrigger("active");
+            return obj;
+        }
+        else
+        //없으면 새로 만들어서 가져다쓰기
+        {
+            var newObj = Instance.CreateNewHintObject();
+            newObj.gameObject.SetActive(true);
+            newObj.transform.SetParent(t);
+            newObj.GetComponent<Animator>().SetTrigger("active");
+            return newObj;
+        }
+    }
+
+
+    public static void ReturnObject(GameObject obj)
     {
         obj.gameObject.SetActive(false);
         obj.transform.SetParent(Instance.transform);
-        Instance.flashEffect_OP.Enqueue(obj);
+        Instance.flashEffect_OP.Enqueue(obj.GetComponent<FlashEffect>());
     }
 }

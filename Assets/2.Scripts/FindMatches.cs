@@ -8,15 +8,20 @@ public class FindMatches : MonoBehaviour
 
     private int lolipopCount = 0;
 
+    //코루틴의 동작을 제어하는 상태변수
+    private bool isUpdate = false;
+
     public int LolipopCount { get => lolipopCount; set => lolipopCount = value; }
 
     public void FindAllMatches()
     {
-        StartCoroutine(FindAllMatchesCoroutine());
+        if (!isUpdate)
+            StartCoroutine(FindAllMatchesCoroutine());
     }
 
     private IEnumerator FindAllMatchesCoroutine()
     {
+        isUpdate = true;
         LolipopCount = 0;
         yield return new WaitForSeconds(.2f);
         for (int x = 0; x < BoardManager.instance.width; x++)
@@ -44,6 +49,7 @@ public class FindMatches : MonoBehaviour
                 }
             }
         }
+        isUpdate = false;
     }//coroutine
 
     private void CompareTile(GameObject currentTile, GameObject firstTile, GameObject secondTile)

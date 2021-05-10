@@ -13,7 +13,7 @@ public class SkillButton : MonoBehaviour
     private float cooldownTime;
     private float cooldownTimer;
 
-    public ActiveSkill skillInfo;
+    //public ActiveSkill skillInfo;
 
     public void Init()
     {

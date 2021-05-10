@@ -21,10 +21,7 @@ YAGNI = You Ain't Gonna Need It - 지금 당장 필요없는 것을 미리 만�
 
 ## 다음 목표는..
 
-* 힌트 이펙트를 오브젝트 풀링으로 구현
-이 과정에서 다른 이펙트들도 같은 메소드를 공용하여 사용할 수 있도록 리팩토링을 하자.
 
-* 패시브 스킬 설정 및 스킬 레벨 상승에 따라 효과가 달라지게 하기
 ---------------------------------
 
 ## 추출해야할 것
@@ -38,80 +35,21 @@ YAGNI = You Ain't Gonna Need It - 지금 당장 필요없는 것을 미리 만�
 
 ## Last Update
 
-### 2021.05.07 (금)
+### 2021.05.10 (월)
 
-1. (완료) 스킬 리스트와 동작해야할 버튼들이 서로 연결이 올바르게 안되는 문제
+1. 힌트 이펙트를 오브젝트 풀링으로 구현
+이 과정에서 다른 이펙트들도 같은 메소드를 공용하여 사용할 수 있도록 리팩토링을 하자.
 
-SkillCooldown Class의 역할을 명확하게 한 뒤, SkillManager에서 List<SkillButton> skillBtns 을 선언\
-이후 GetComponentsInChildren<SkillButton>(true); 을 통해 버튼들을 가져와 AddRange로 추가
+> 근데 굳이 해야하나 싶기도 하고... 일단 미루기로 하자.
 
+2. 스킬 레벨 상승에 따라 효과가 달라지게 하기
 
-2. (완료) 스킬 매니저 개선
+* 버튼을 누르면, 해당 스킬의 레벨이 오르는 것을 구현
+* SkillManager 컴포넌트에서 스킬 레벨이 오를 때, 스킬 속성이 달라지게 하는 VariationEffect() 함수를 구현
 
-* 스킬 내용들을 json으로 직렬화
-
-에디터에서 데이터를 직접 정해두면, 어제처럼 데이터가 날아가서 끔찍한 일이 생길 수 있다.\
-이를 위해 나중에 데이터를 보존하고 쉽게 패치하기 위해, 자동화를 시켰다.\
-Json파일을 직접 작성할 수는 없으니, SaveAndLoad Class를 생성하고 데이터를 직접 집어넣어
-Json파일로 저장하도록 만들었다. 그리고 이를 다시 불러들여, SkillManager의 리스트 안에 값이 \
-들어가도록 LoadData 메소드를 만들었다.
-
-* UtilHelper 컴포넌트를 만들어서 Find 함수를 간단하게 사용할 수 있도록 개선
-
-코드의 간략화를 위함. 우선, Transform.Find를 사용할 경우, 쉽게 한줄로 요약하게 해주는 코드를 작성
-
-3. SaveAndLoad 함수의 대중화
-
-여러 데이터들을 대상으로 각각 데이터들을 로드하는 메소드들을 만들면,\
-메소드 오버로딩이 발생할 수 있으며, 코드가 간결해지지 않는다.
-
-```c#
-	public void LoadData<T>(List<T> tList) where T : class
-    {
-        if (File.Exists(SAVE_DATA_DIRECTORY + SAVE_FILENAME))
-        {
-            // 전체 읽어오기
-            string loadJson = File.ReadAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME);
-            //Json역직렬화
-            saveData = JsonUtility.FromJson<SaveData>(loadJson);
-
-            Type listType = typeof(T);
-
-            if (listType == typeof(ActiveSkill))
-            {
-                for (int i = 0; i < saveData.AskillList.Count; i++)
-                {
-                    //명시적 캐스팅을 해주지 않으면 에러
-                    tList.Add(saveData.AskillList[i] as T);
-                }
-            }
-            else if (listType == typeof(PassiveSkill))
-            {
-                for (int i = 0; i < saveData.PskillList.Count; i++)
-                {
-                    //명시적 캐스팅을 해주지 않으면 에러
-                    tList.Add(saveData.PskillList[i] as T);
-                }
-            }
-        }
-    }
-
-   //이하 생략
-```
-위의 함수 처럼 여러 데이터들을 로드하는 과정을 하나의 메소드로 처리하도록 Generic Function을 만들어보았다.
-꽤 어렵고 힘든 작업이었지만, 성공하니 뿌듯하다.
+> 잘 동작은 하나 아직은 보완해야할 점이 많음. 위의 기능들은 이후 메인메뉴 씬에서 많이 활용될 것이다.
 
 
-3. (완료) 오브젝트 풀링을 이용해서, 타일 파괴 이펙트와 힌트 이펙트에 적용시켜보자
-
-ObjectPool Class를 생성하여, 오브젝트 풀링을 적용하려는 gameObject들을 관리하도록 함.\
-우선 타일 파괴 이펙트만을 구현. 힌트 이펙트를 구현할 때, 메소드 오버로딩이 되지 않도록\
-잘 리팩토링 해가며 구현하자.
-
-
-4. (Bug Fix) SkillData를 Load할 때, ArgumentOutofRange Exception 오류 현상을 수정
-
-> List의 크기가 0인 상태에서 대입을 하려니까 생긴 문제. Add로 추가해줘야한다.
 ---------------------------------------------
 
 ### 개발 플로우 차트
@@ -148,9 +86,10 @@ ObjectPool Class를 생성하여, 오브젝트 풀링을 적용하려는 gameObj
 	* 스킬 게이지는 Tile을 맞출 수록 게이지가 차오른다.
 	* 스킬을 사용 시, 일정 게이지를 소모하고 특수 효과를 사용할 수 있다.
 
-10. 각 스킬들의 특수 효과들을 구현한다.
+10. ▶ 각 스킬들의 특수 효과들을 구현한다.
 	* 스킬의 동작 베이스는 윗부분을 참고
 	* 작업량이 많고 여러 함수들을 구현해야할듯
+	* 액티브, 패시브 스킬들을 만들고, 각각 레벨에 따라 효과가 조금씩 달라지도록 구현
 	※ 가장 어려운 부분이 아닐까 생각 
 
 11. AI와 대전하는 모드를 만든다
@@ -187,6 +126,84 @@ ObjectPool Class를 생성하여, 오브젝트 풀링을 적용하려는 gameObj
 --------------------------------------------------
 
 ### 이전 개발 일지
+
+### 2021.05.07 (금)
+
+1. (완료) 스킬 리스트와 동작해야할 버튼들이 서로 연결이 올바르게 안되는 문제
+
+SkillCooldown Class의 역할을 명확하게 한 뒤, SkillManager에서 List<SkillButton> skillBtns 을 선언\
+이후 GetComponentsInChildren<SkillButton>(true); 을 통해 버튼들을 가져와 AddRange로 추가
+
+
+2. (완료) 스킬 매니저 개선
+
+* 스킬 내용들을 json으로 직렬화
+
+에디터에서 데이터를 직접 정해두면, 어제처럼 데이터가 날아가서 끔찍한 일이 생길 수 있다.\
+이를 위해 나중에 데이터를 보존하고 쉽게 패치하기 위해, 자동화를 시켰다.\
+Json파일을 직접 작성할 수는 없으니, SaveAndLoad Class를 생성하고 데이터를 직접 집어넣어
+Json파일로 저장하도록 만들었다. 그리고 이를 다시 불러들여, SkillManager의 리스트 안에 값이 \
+들어가도록 LoadData 메소드를 만들었다.
+
+* UtilHelper 컴포넌트를 만들어서 Find 함수를 간단하게 사용할 수 있도록 개선
+
+코드의 간략화를 위함. 우선, Transform.Find를 사용할 경우, 쉽게 한줄로 요약하게 해주는 코드를 작성
+
+3. SaveAndLoad 함수의 대중화
+
+여러 데이터들을 대상으로 각각 데이터들을 로드하는 메소드들을 만들면,\
+메소드 오버로딩이 발생할 수 있으며, 코드가 간결해지지 않는다.
+
+```c#
+public void LoadData<T>(List<T> tList) where T : class
+{
+    if (File.Exists(SAVE_DATA_DIRECTORY + SAVE_FILENAME))
+    {
+        // 전체 읽어오기
+        string loadJson = File.ReadAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME);
+        //Json역직렬화
+        saveData = JsonUtility.FromJson<SaveData>(loadJson);
+
+        Type listType = typeof(T);
+
+        if (listType == typeof(ActiveSkill))
+        {
+            for (int i = 0; i < saveData.AskillList.Count; i++)
+            {
+                //명시적 캐스팅을 해주지 않으면 에러
+                tList.Add(saveData.AskillList[i] as T);
+            }
+        }
+        else if (listType == typeof(PassiveSkill))
+        {
+            for (int i = 0; i < saveData.PskillList.Count; i++)
+            {
+                //명시적 캐스팅을 해주지 않으면 에러
+                tList.Add(saveData.PskillList[i] as T);
+            }
+        }
+    }
+}
+
+   //이하 생략
+```
+위의 함수 처럼 여러 데이터들을 로드하는 과정을 하나의 메소드로 처리하도록 Generic Function을 만들어보았다.
+꽤 어렵고 힘든 작업이었지만, 성공하니 뿌듯하다. DRY를 지켰다!
+
+
+3. (완료) 오브젝트 풀링을 이용해서, 타일 파괴 이펙트와 힌트 이펙트에 적용시켜보자
+
+ObjectPool Class를 생성하여, 오브젝트 풀링을 적용하려는 gameObject들을 관리하도록 함.\
+우선 타일 파괴 이펙트만을 구현. 힌트 이펙트를 구현할 때, 메소드 오버로딩이 되지 않도록\
+잘 리팩토링 해가며 구현하자.
+
+
+4. (Bug Fix) SkillData를 Load할 때, ArgumentOutofRange Exception 오류 현상을 수정
+
+> List의 크기가 0인 상태에서 대입을 하려니까 생긴 문제. Add로 추가해줘야한다.
+
+
+
 
 ### 2021.05.06 (목)
 

@@ -63,7 +63,7 @@ public class SkillGauge : MonoBehaviour
     {
         if (CurrentSkillMana < useMana)
         {
-            AlertText.instance.ActiveText("<color=#00C7FF>마나</color>가 부족합니다.");
+            AlertText.instance.ActiveText("<color=#00C7FF>마나</color>가 부족합니다.\n" + useMana +"만큼 마나가 필요합니다.");
             return false;
         }
 
