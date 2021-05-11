@@ -13,8 +13,8 @@ public class SkillManager : MonoBehaviour
     //Variale
 
     [SerializeField] private List<SkillButton> skillBtns = new List<SkillButton>();
-    [SerializeField] public List<ActiveSkill> ASkillList = new List<ActiveSkill>();
-    [SerializeField] public List<PassiveSkill> PSkillList = new List<PassiveSkill>();
+    [SerializeField] public Dictionary<string, ActiveSkill> ActSkillDic = new Dictionary<string, ActiveSkill>();
+    [SerializeField] public Dictionary<string, PassiveSkill> PasSkillDic = new Dictionary<string, PassiveSkill>();
 
 
     //Component
@@ -23,6 +23,7 @@ public class SkillManager : MonoBehaviour
     private HintManager hintManager;
     private SaveAndLoad saveAndLoad;
     private TestSkillLevelText testSkillLevelText;
+    private SkillLevelSystem skillLevelSystem;
 
     public void Init()
     {
@@ -31,8 +32,8 @@ public class SkillManager : MonoBehaviour
         saveAndLoad = FindObjectOfType<SaveAndLoad>();
         if (saveAndLoad != null)
         {
-            saveAndLoad.LoadData<ActiveSkill>(ASkillList);
-            saveAndLoad.LoadData<PassiveSkill>(PSkillList);
+            saveAndLoad.LoadData(ActSkillDic);
+            saveAndLoad.LoadData(PasSkillDic);
         }
  
 
@@ -57,6 +58,13 @@ public class SkillManager : MonoBehaviour
         {
             testSkillLevelText.Init();
         }
+
+        skillLevelSystem = FindObjectOfType<SkillLevelSystem>();
+        if(skillLevelSystem != null)
+        {
+            skillLevelSystem.Init();
+        }
+
     }
 
     private void Update()
@@ -74,7 +82,7 @@ public class SkillManager : MonoBehaviour
             Debug.Log("1번 스킬 사용");
             if (hintManager.currentHintEffect == null)
             {
-                if (skillGauge.UseSkillGauge(ASkillList[0].necessaryMana))
+                if (skillGauge.UseSkillGauge(ActSkillDic["체인 플로레"].Mana))
                     Skill_Chain_Fluore();
             }
             else
@@ -109,66 +117,16 @@ public class SkillManager : MonoBehaviour
         {
             //쿨타임도 고려
             Debug.Log("4번 스킬 사용");
-            if (skillGauge.UseSkillGauge(ASkillList[3].necessaryMana))
+            if (skillGauge.UseSkillGauge(ActSkillDic["잭 오 할로윈"].Mana))
                 Skill_Jack_O_Halloween();
         }
     }
-
-    public void SkillLevelUpAct(int i)
-    {
-        if(ASkillList[i].level == 3)
-        {
-            Debug.Log("스킬이 만렙입니다.");
-            return;
-        }
-
-        ASkillList[i].level++;
-        VariationSkill(i);
-    }
-
-    public void SkillLevelUpPass(int i)
-    {
-        PSkillList[i].level++;
-    }
-
-    private void VariationSkill(int i)
-    {
-        if(ASkillList[i].name.Equals("체인 플로레")){    
-            if(ASkillList[i].level == 2)
-            {
-                ASkillList[i].necessaryMana = 20;
-                ASkillList[i].cooldownTime = 8; 
-            }
-            else if(ASkillList[i].level == 3)
-            {
-                ASkillList[i].necessaryMana = 10;
-                ASkillList[i].cooldownTime = 6;
-            }
-        }
-        else if (ASkillList[i].name.Equals("잭 오 할로윈"))
-        {
-            if (ASkillList[i].level == 2)
-            {
-                ASkillList[i].necessaryMana = 60;
-                ASkillList[i].cooldownTime = 25;
-            }
-            else if (ASkillList[i].level == 3)
-            {
-                ASkillList[i].necessaryMana = 40;
-                ASkillList[i].cooldownTime = 20;
-            }
-        }
-        else
-            return;
-    }
-
-
 
     private void Skill_Chain_Fluore()
     {
         //1번 스킬 : 체인 플로레
         // 힌트 스킬
-        if (skillBtns[0].UseSpell(ASkillList[0].cooldownTime))
+        if (skillBtns[0].UseSpell(ActSkillDic["체인 플로레"].CoolTime))
         {
             hintManager.MarkHint();
         }
@@ -185,7 +143,7 @@ public class SkillManager : MonoBehaviour
     private void Skill_Flapper()
     {
         //2번 스킬
-        if (skillBtns[2].UseSpell(ASkillList[1].cooldownTime))
+        if (skillBtns[2].UseSpell(ActSkillDic["변이 파리채"].CoolTime))
         {
             //스킬 함수
         }
@@ -199,7 +157,7 @@ public class SkillManager : MonoBehaviour
     private void Skill_Jack_Frost_ShavedIce()
     {
         //3번 스킬
-        if (skillBtns[1].UseSpell(ASkillList[2].cooldownTime))
+        if (skillBtns[1].UseSpell(ActSkillDic["잭 프로스트 빙수"].CoolTime))
         {
             //스킬 함수
         }
@@ -213,7 +171,7 @@ public class SkillManager : MonoBehaviour
     private void Skill_Jack_O_Halloween()
     {
         //4번 스킬
-        if (skillBtns[3].UseSpell(ASkillList[3].cooldownTime))
+        if (skillBtns[3].UseSpell(ActSkillDic["잭 오 할로윈"].CoolTime))
         {
             BoardManager.instance.CreateJackBomb();
         }
@@ -226,6 +184,4 @@ public class SkillManager : MonoBehaviour
         //스킬 보이스 출력
         //스킬 이펙트 출력
     }
-
-
 }

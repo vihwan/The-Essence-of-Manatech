@@ -14,13 +14,13 @@ public class GUIManager : MonoBehaviour
     public Text comboCounterTxt;
     public Text limitTimeTxt;
 
-    private int score = 0;
+    private float score = 0;
     private float limitTime;
 
     private AlertText alertText;
 
     //프로퍼티
-    public int Score
+    public float Score
     {
         get => score;
         set
@@ -73,7 +73,7 @@ public class GUIManager : MonoBehaviour
 
         if (score > PlayerPrefs.GetInt("HighScore"))
         {
-            PlayerPrefs.SetInt("HighScore", score);
+            PlayerPrefs.SetInt("HighScore", (int)score);
             highScoreTxt.text = "New Best: " + PlayerPrefs.GetInt("HighScore").ToString();
         }
         else

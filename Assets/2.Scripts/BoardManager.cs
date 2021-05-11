@@ -228,7 +228,7 @@ public class BoardManager : MonoBehaviour
                     // 일정 확률로 비터스 캔디바 타일이 생성되도록 추가
                     float randomNum = Random.Range(0.0f, 100.1f);
 
-                    if (randomNum > 3)
+                    if (randomNum > SkillManager.instance.PasSkillDic["붉은 사탕"].EigenValue)
                     {
                         //일반 타일 생성
                         CreateTileSprite(y, newTile, previousLeft, ref previousBelow);
@@ -280,8 +280,8 @@ public class BoardManager : MonoBehaviour
 
         if (IsDeadlocked())
         {
-            Invoke(nameof(ShuffleBoard), .8f);
             Debug.Log("<color=#FF6534> DeadLock 발생 </color> 타일들을 섞습니다.");
+            Invoke(nameof(ShuffleBoard), 1f);
             SkillManager.instance.appearText("Deadlock 발생 타일을 섞습니다.");
         }
     }
@@ -303,7 +303,7 @@ public class BoardManager : MonoBehaviour
 
         //randomSelectList.Count < JackBomb 생성 가능 갯수(3) 라면,
         //jackBomb 생성가능 갯수 = randomSelectList.Count
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < SkillManager.instance.ActSkillDic["잭 오 할로윈"].EigenValue ; i++)
         {
             int rIndex = Random.Range(0, randomSelectList.Count);
             int row = randomSelectList[rIndex].row;
@@ -496,7 +496,8 @@ public class BoardManager : MonoBehaviour
         //타일을 섞어줘도 데드락이면 한번 더 실행
         if (IsDeadlocked())
         {
-            Invoke(nameof(ShuffleBoard), .8f);
+
+            Invoke(nameof(ShuffleBoard), 1f);
         }
         //아니면 매칭된 타일 파괴 한번 하기
         else

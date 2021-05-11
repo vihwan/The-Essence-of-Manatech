@@ -4,21 +4,22 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 using System;
+using Newtonsoft.Json;
 
+[System.Serializable]
 public class SaveData
 {
-    public List<ActiveSkill> AskillList = new List<ActiveSkill>();
-    public List<PassiveSkill> PskillList = new List<PassiveSkill>();
+    public Dictionary<string, ActiveSkill> AskillDic = new Dictionary<string, ActiveSkill>();
+    public Dictionary<string, PassiveSkill> PskillDic = new Dictionary<string, PassiveSkill>();
 }
 
+[System.Serializable]
 public class SaveAndLoad : MonoBehaviour
 {
     private string SAVE_DATA_DIRECTORY;  // 저장할 폴더 경로
     private string SAVE_FILENAME = "/SkillData.txt"; // 파일 이름
 
     private SaveData saveData = new SaveData();
-    private ActiveSkill[] actSkills = new ActiveSkill[4];
-    private PassiveSkill[] pasSkills = new PassiveSkill[4];
 
     //Save Skill Data
     private void Start()
@@ -32,17 +33,61 @@ public class SaveAndLoad : MonoBehaviour
         SetPassiveSkill();
 
         //Json직렬화
-        string json = JsonUtility.ToJson(saveData);
+        string savejson = JsonConvert.SerializeObject(saveData);
 
-        File.WriteAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME, json);
+        File.WriteAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME, savejson);
 
         Debug.Log("저장 완료");
-        Debug.Log(json);
+        Debug.Log(savejson);
     }
 
 
-    //LoadData를 여러 속성의 List들이 쓸 수 있도록 Refactoring
-    public void LoadData<T>(List<T> tList) where T : class
+
+    public void LoadData<T> (Dictionary<string, T> aDic) where T : class
+    {
+        if (File.Exists(SAVE_DATA_DIRECTORY + SAVE_FILENAME))
+        {
+            // 전체 읽어오기
+            string loadJson = File.ReadAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME);
+            //Json역직렬화
+            saveData = JsonConvert.DeserializeObject<SaveData>(loadJson);
+
+            Type valueType = typeof(T);
+
+            if(valueType == typeof(ActiveSkill))
+            {
+                foreach (var item in saveData.AskillDic)
+                {
+                    string name = item.Key;
+                    var value = item.Value;
+
+                    aDic.Add(name, value as T);
+                }
+            }
+            else if(valueType == typeof(PassiveSkill))
+            {
+                foreach (var item in saveData.PskillDic)
+                {
+                    string name = item.Key;
+                    var value = item.Value;
+
+                    aDic.Add(name, value as T);
+                }
+            }
+
+            Debug.Log("스킬 데이터 로드 완료");
+        }
+        else
+            Debug.Log("스킬 데이터 파일이 없습니다.");
+    }
+
+
+
+
+
+
+   /* //LoadData를 여러 속성의 List들이 쓸 수 있도록 Refactoring
+    public void LoadData<T>(Dictionary<string,T> tDic) where T : class
     {
         if (File.Exists(SAVE_DATA_DIRECTORY + SAVE_FILENAME))
         {
@@ -55,19 +100,11 @@ public class SaveAndLoad : MonoBehaviour
 
             if (listType == typeof(ActiveSkill))
             {
-                for (int i = 0; i < saveData.AskillList.Count; i++)
-                {
-                    //명시적 캐스팅을 해주지 않으면 에러
-                    tList.Add(saveData.AskillList[i] as T);
-                }
+                tDic.Keys = saveData.AskillDic.Keys;
             }
             else if (listType == typeof(PassiveSkill))
             {
-                for (int i = 0; i < saveData.PskillList.Count; i++)
-                {
-                    //명시적 캐스팅을 해주지 않으면 에러
-                    tList.Add(saveData.PskillList[i] as T);
-                }
+                tDic = saveData.PskillDic as T;
             }
             else
                 Debug.Log("정보를 가져오는데 실패했습니다");
@@ -77,88 +114,81 @@ public class SaveAndLoad : MonoBehaviour
         }
         else
             Debug.Log("스킬 데이터 파일이 없습니다.");
-    }
+    }*/
 
     private void SetActiveSkill()
     {
-        //skill 안에 있는 변수
-        //name, description, icon, level, necessaryMana, cooldownTime
         //image타입도 저장이 될까? 안되네 역시
+        string name;
 
-        actSkills[0] = new ActiveSkill
-        {
-            name = "체인 플로레",
-            description = "사용할 경우, 옮길 수 있는 타일의 위치를 알려줍니다.",
-            level = 1,
-            necessaryMana = 30,
-            cooldownTime = 10
-        };
-        actSkills[1] = new ActiveSkill
-        {
+        ///param
+        ///name, description, level, mana, coolTime, eigenValue
+        name = "체인 플로레";
+        saveData.AskillDic.Add(name, new ActiveSkill(name,
+                                                    "사용할 경우, 옮길 수 있는 타일의 위치를 알려줍니다.",
+                                                    1,
+                                                    30,
+                                                    10f,
+                                                    0));
 
-            name = "변이 파리채",
-            description = "미구현 스킬입니다.",
-            level = 1,
-            necessaryMana = 30,
-            cooldownTime = 10
-        };
-        actSkills[2] = new ActiveSkill
-        {
+        name = "변이 파리채";
+        saveData.AskillDic.Add(name, new ActiveSkill(name,
+                                                    "미구현 스킬입니다.",
+                                                    1,
+                                                    30,
+                                                    10f,
+                                                    4));
 
-            name = "잭프로스트 빙수",
-            description = "미구현 스킬입니다.",
-            level = 1,
-            necessaryMana = 30,
-            cooldownTime = 10
-        };
-        actSkills[3] = new ActiveSkill
-        {
+        name = "잭프로스트 빙수";
+        saveData.AskillDic.Add(name, new ActiveSkill(name,
+                                                    "미구현입니다.",
+                                                    1,
+                                                    30,
+                                                    10f,
+                                                    10));
 
-            name = "잭 오 할로윈",
-            description = "사용할 경우, 잭오랜턴 타일들 중 랜덤하게 잭오할로윈 타일로 바뀝니다. \n" +
-                          "잭오할로윈 타일을 클릭하면, 그 타일을 중심으로 3X3 범위 내의 타일이 파괴됩니다.",
-            level = 1,
-            necessaryMana = 75,
-            cooldownTime = 30
-        };
-
-
-        for (int i = 0; i < actSkills.Length; i++)
-        {
-            saveData.AskillList.Add(actSkills[i]);
-        }
+        name = "잭 오 할로윈";
+        saveData.AskillDic.Add(name, new ActiveSkill(name,
+                                                    "사용할 경우, 잭오랜턴 타일을 랜덤하게 잭오 할로윈 타일로 바꿉니다. \n " +
+                                                    "클릭할 경우, 3x3범위의 타일을 파괴합니다.",
+                                                    1,
+                                                    75,
+                                                    30f,
+                                                    3));
     }
 
     private void SetPassiveSkill()
     {
-        pasSkills[0] = new PassiveSkill
-        {
-            name = "고대의 도서관",
-            description = "처음 시작 시, 주어지는 제한 시간을 소폭 상승 시킨다.",
-            level = 1
-        };
-        pasSkills[1] = new PassiveSkill
-        {
-            name = "쇼타임",
-            description = "제한 시간이 30초 이하로 남았을 경우 발동. 모든 점수 획득량이 증가한다.",
-            level = 1
-        };
-        pasSkills[2] = new PassiveSkill
-        {
-            name = "현자의 돌",
-            description = "퍼즐을 완성할 때 마다, 획득하는 점수가 상승한다.",
-            level = 1
-        };
-        pasSkills[3] = new PassiveSkill
-        {
-            name = "붉은 사탕",
-            description = "스위트 캔디바 타일의 등장 확률이 상승하고, 스위트 캔디바 타일과 매칭 시 점수 획득량이 크게 상승한다.",
-            level = 1
-        };
 
-        for (int i = 0; i < pasSkills.Length; i++)
-        {
-            saveData.PskillList.Add(pasSkills[i]);
-        }
+        string name;
+
+
+        ///param
+        ///name, description, level, eigenValue
+
+        name = "고대의 도서관";
+        saveData.PskillDic.Add(name, new PassiveSkill(name,
+                                                    "처음 시작 시, 주어지는 제한 시간을 소폭 상승 시킨다.",
+                                                    1,
+                                                    10f));
+
+        name = "쇼타임";
+        saveData.PskillDic.Add(name, new PassiveSkill(name,
+                                                    "제한 시간이 30초 이하로 남았을 경우 발동. 모든 점수 획득량이 증가한다",
+                                                    1,
+                                                    1.0f));
+
+        name = "현자의 돌";
+        saveData.PskillDic.Add(name, new PassiveSkill(name,
+                                                    "퍼즐을 완성할 때 마다, 획득하는 점수가 상승한다.",
+                                                    1,
+                                                    1.0f));
+
+        name = "붉은 사탕";
+        saveData.PskillDic.Add(name, new PassiveSkill(name,
+                                                    "스위트 캔디바 타일의 등장 확률이 상승하고, " +
+                                                    "스위트 캔디바 타일과 매칭 시 점수 획득량이 크게 상승한다.",
+                                                    1,
+                                                    10f));
     }
 }

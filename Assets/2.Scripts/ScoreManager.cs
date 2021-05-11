@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -9,23 +11,26 @@ public class ScoreManager : MonoBehaviour
 
     private FindMatches findMatches;
 
+    private List<PassiveSkill> passiveSkills;
+
     public void Init()
     {
         instance = GetComponent<ScoreManager>();
         comboSystem = FindObjectOfType<ComboSystem>();
         findMatches = FindObjectOfType<FindMatches>();
+
     }
 
     public void PlusScore()
     {
-        //타일 한 개당 기본점수 : 50
-        //현재 Combo 1이라면
-        //50 + 100 + 100 = 250 점이 오른다.
-        GUIManager.instance.Score += (20 * (comboSystem.ComboCounter + 1)) + (50 * ((int)findMatches.LolipopCount / 3));
+        passiveSkills = SkillManager.instance.PasSkillDic.Values.ToList();
+        GUIManager.instance.Score += ((20 * (comboSystem.ComboCounter + 1) * passiveSkills[2].EigenValue) 
+                                      + (50 * ((int)findMatches.LolipopCount / 3) * passiveSkills[3].EigenValue)
+                                      * passiveSkills[1].EigenValue);
     }
 
     //점수를 3자리마다 ,를 넣어주는 함수
-    public string ScoreWithComma(int score)
+    public string ScoreWithComma(float score)
     {
         string withCommaString = string.Format("{0:#,0}", score);
         return withCommaString;

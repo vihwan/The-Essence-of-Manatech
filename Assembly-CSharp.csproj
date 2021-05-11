@@ -83,13 +83,10 @@
     <Compile Include="Assets\2.Scripts\Skill System\ActiveSkill.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\AlertText.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\PassiveSkill.cs" />
-    <Compile Include="Assets\2.Scripts\Skill System\Skill\ChainFluore.cs" />
-    <Compile Include="Assets\2.Scripts\Skill System\Skill\Flapper.cs" />
-    <Compile Include="Assets\2.Scripts\Skill System\Skill\JackFrost.cs" />
-    <Compile Include="Assets\2.Scripts\Skill System\Skill\JackOHalloween.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\SkillButton.cs" />
+    <Compile Include="Assets\2.Scripts\Skill System\SkillConversion.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\SkillGauge.cs" />
-    <Compile Include="Assets\2.Scripts\Skill System\SkillLevelUp.cs" />
+    <Compile Include="Assets\2.Scripts\Skill System\SkillLevelSystem.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\SkillManager.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\TestSkillLevelText.cs" />
     <Compile Include="Assets\2.Scripts\SoundManager.cs" />
@@ -101,6 +98,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\JsonDotNet\link.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
@@ -299,6 +297,9 @@
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>C:/Program Files/Unity/2019.4.23f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/2019.4.23f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
