@@ -71,7 +71,7 @@ YAGNI = You Ain't Gonna Need It - 지금 당장 필요없는 것을 미리 만�
 
 ## 2021.05.11 (화)
 
-0. 스킬 자료구조 변경
+**0. 스킬 자료구조 변경**
 
 **List에서 Dictionary로 변경**
 
@@ -91,7 +91,7 @@ Dictionary를 직렬화, 역직렬화하기 위해서 Asset의 JSON.NET을 활�
 위와 같이 ToList를 사용하기 위해서는, using Linq를 첨부해야한다.
 
 
-1. 스킬 레벨업 버튼이 먹히지 않는다.
+__1. 스킬 레벨업 버튼이 먹히지 않는다.__
 
 * AddListener를 직접 추가해주는 방식으로 하니 우선 잘 된다.
 
@@ -108,7 +108,7 @@ https://stackoverflow.com/questions/271440/captured-variable-in-a-loop-in-c-shar
 ```
 
 
-2. 스킬 레벨업에 따른 스킬 속성 다르게 하기
+__2. 스킬 레벨업에 따른 스킬 속성 다르게 하기__
 
 SkillConversion Class를 생성. 할줄 몰라서 우선 하드코딩으로 마무리
 
