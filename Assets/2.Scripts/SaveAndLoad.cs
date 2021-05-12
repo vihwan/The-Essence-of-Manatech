@@ -81,41 +81,6 @@ public class SaveAndLoad : MonoBehaviour
             Debug.Log("스킬 데이터 파일이 없습니다.");
     }
 
-
-
-
-
-
-   /* //LoadData를 여러 속성의 List들이 쓸 수 있도록 Refactoring
-    public void LoadData<T>(Dictionary<string,T> tDic) where T : class
-    {
-        if (File.Exists(SAVE_DATA_DIRECTORY + SAVE_FILENAME))
-        {
-            // 전체 읽어오기
-            string loadJson = File.ReadAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME);
-            //Json역직렬화
-            saveData = JsonUtility.FromJson<SaveData>(loadJson);
-
-            Type listType = typeof(T);
-
-            if (listType == typeof(ActiveSkill))
-            {
-                tDic.Keys = saveData.AskillDic.Keys;
-            }
-            else if (listType == typeof(PassiveSkill))
-            {
-                tDic = saveData.PskillDic as T;
-            }
-            else
-                Debug.Log("정보를 가져오는데 실패했습니다");
-
-
-            Debug.Log("스킬 데이터 로드 완료");
-        }
-        else
-            Debug.Log("스킬 데이터 파일이 없습니다.");
-    }*/
-
     private void SetActiveSkill()
     {
         //image타입도 저장이 될까? 안되네 역시
@@ -133,7 +98,7 @@ public class SaveAndLoad : MonoBehaviour
 
         name = "변이 파리채";
         saveData.AskillDic.Add(name, new ActiveSkill(name,
-                                                    "미구현 스킬입니다.",
+                                                    "사용할 경우, 플루토 타일들을 다른 랜덤 타일들로 바꿉니다.",
                                                     1,
                                                     50,
                                                     20f,
@@ -143,9 +108,9 @@ public class SaveAndLoad : MonoBehaviour
         saveData.AskillDic.Add(name, new ActiveSkill(name,
                                                     "미구현입니다.",
                                                     1,
-                                                    30,
-                                                    10f,
-                                                    10));
+                                                    75,
+                                                    40f,
+                                                    5));
 
         name = "잭 오 할로윈";
         saveData.AskillDic.Add(name, new ActiveSkill(name,

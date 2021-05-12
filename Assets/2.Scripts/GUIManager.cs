@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,7 @@ public class GUIManager : MonoBehaviour
 
     private float score = 0;
     private float limitTime;
+    public bool isPauseTime = false;
 
     private AlertText alertText;
 
@@ -59,7 +61,26 @@ public class GUIManager : MonoBehaviour
 
     private void Update()
     {
-        LimitTime -= Time.deltaTime;
+        if(!isPauseTime)
+            LimitTime -= Time.deltaTime;
+    }
+
+
+    // 3번 스킬 : 잭프로스트 빙수 - 제한시간을 일정시간동안 멈추게하기
+    public void OnPauseTime(float skillTime)
+    {
+        isPauseTime = true;
+
+        Debug.Log("멈춰!");
+        //딜레이를 주기위한 선언
+        Invoke(nameof(Wait), skillTime);
+    }
+
+    //멈춰!!
+    private void Wait()
+    {
+        Debug.Log("멈춰 끝");
+        isPauseTime = false;
     }
 
 

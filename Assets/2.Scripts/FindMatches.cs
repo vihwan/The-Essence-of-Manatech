@@ -9,7 +9,7 @@ public class FindMatches : MonoBehaviour
     private int lolipopCount = 0;
 
     //코루틴의 동작을 제어하는 상태변수
-    private bool isUpdate = false;
+    public bool isUpdate = false;
 
     public int LolipopCount { get => lolipopCount; set => lolipopCount = value; }
 

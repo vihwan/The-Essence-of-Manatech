@@ -37,16 +37,18 @@ public class SkillConversion
             activeSkills[1].EigenValue = 10;
         }
 
-        //"체인 플로레"
+        //"잭프로스트 빙수"
         if (activeSkills[2].Level == 2)
         {
-            activeSkills[2].Mana = 25;
-            activeSkills[2].CoolTime = 8;
+            activeSkills[2].Mana = 70;
+            activeSkills[2].CoolTime = 35;
+            activeSkills[2].EigenValue = 7;
         }
         else if (activeSkills[2].Level == 3)
         {
-            activeSkills[2].Mana = 20;
-            activeSkills[2].CoolTime = 6;
+            activeSkills[2].Mana = 50;
+            activeSkills[2].CoolTime = 30;
+            activeSkills[2].EigenValue = 10;
         }
 
         //"잭 오 할로윈"

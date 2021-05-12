@@ -60,6 +60,7 @@ public class SkillButton : MonoBehaviour
     {
         if (isCooldown)
         {
+            SkillManager.instance.appearText("<color=#B75500>스킬 쿨타임</color> 입니다.");
             return false;
         }
         else

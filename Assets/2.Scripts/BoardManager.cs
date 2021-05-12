@@ -354,9 +354,16 @@ public class BoardManager : MonoBehaviour
 
         //타일이 전부 바뀌면 매칭 검사를 한번 한다.
         findMatches.FindAllMatches();
-        if(findMatches.currentMatches.Count > 0)
+        Invoke(nameof(WaitFindCoroutine), 1f);
+
+    }
+
+    private void WaitFindCoroutine()
+    {
+        if (!findMatches.isUpdate)
         {
-            DestroyMatches();
+            if (MatchesOnBoard())
+                DestroyMatches();
         }
     }
 

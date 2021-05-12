@@ -50,10 +50,11 @@ public class SkillLevelSystem : MonoBehaviour
     {
         if (activeSkills[index].Level >= 3)
         {
-            Debug.Log("스킬이 만렙입니다.");
+            SkillManager.instance.appearText("<color=#B31405>더이상 스킬을 올릴 수 없습니다.</color>");
             return;
         }
 
+        SkillManager.instance.appearText("<color=#B31405>스킬 레벨업</color>");
         activeSkills[index].Level++;
         passiveSkills[index].Level++;
         skillConversion.ConvertActiveSkill();
