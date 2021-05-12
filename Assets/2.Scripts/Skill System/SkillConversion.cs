@@ -9,8 +9,6 @@ public class SkillConversion
     List<ActiveSkill> activeSkills = SkillManager.instance.ActSkillDic.Values.ToList();
     List<PassiveSkill> passiveSkills = SkillManager.instance.PasSkillDic.Values.ToList();
 
-    private float CandyScoreMag;
-
     public void ConvertActiveSkill()
     {
         //"체인 플로레"
@@ -30,11 +28,13 @@ public class SkillConversion
         {
             activeSkills[1].Mana = 40;
             activeSkills[1].CoolTime = 8;
+            activeSkills[1].EigenValue = 7;
         }
         else if (activeSkills[1].Level == 3)
         {
             activeSkills[1].Mana = 20;
             activeSkills[1].CoolTime = 6;
+            activeSkills[1].EigenValue = 10;
         }
 
         //"체인 플로레"
@@ -79,14 +79,14 @@ public class SkillConversion
             passiveSkills[0].EigenValue = 30;
         }
 
-        //"쇼타임" - 점수 배율
+        //"쇼타임" - 점수 추가 배율
         if (passiveSkills[1].Level == 2)
         {
-            passiveSkills[1].EigenValue = 1.2f;
+            passiveSkills[1].EigenValue = 0.5f;
         }
         else if (passiveSkills[1].Level == 3)
         {
-            passiveSkills[1].EigenValue = 1.5f;
+            passiveSkills[1].EigenValue = 1f;
         }
 
         //"현자의 돌" - 점수 추가 배율
@@ -103,12 +103,10 @@ public class SkillConversion
         if (passiveSkills[3].Level == 2)
         {
             passiveSkills[3].EigenValue = 6f;
-            CandyScoreMag = 1.5f;
         }
         else if (passiveSkills[3].Level == 3)
         {
-            passiveSkills[3].EigenValue = 10f;
-            CandyScoreMag = 2f;
+            passiveSkills[3].EigenValue = 9f;
         }
     }
 }

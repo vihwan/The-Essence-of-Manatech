@@ -14,47 +14,14 @@ YAGNI = You Ain't Gonna Need It - 지금 당장 필요없는 것을 미리 만�
 + 타일이 스왑 애니메이션이 실행되는 동안 추가적인 마우스 조작이 되는 버그
 + 타일 매칭 조건을 동시에 여러개를 만족했을 때 콤보가 하나밖에 올라가지 않는 버그
 + 캔디바 타일이 혼자 파괴되는 버그 
-+ 폭탄 타일을 생성할 때, 필요한 랜턴 타일의 갯수가 적을 때가 있어 ArgumentException 버그가 생김
+
 
 * UI 이미지 개선
 * 스킬 사용 시 음성 및 스프라이트 효과 추가
 
+
 ## 다음 목표는..
 
-스킬 레벨에 따른 스킬 속성 다르게하기 끝까지 만들자.
-
-고려해야할점
-
-<액티브>
-1. 체인플로레
-	* 소모 마나 (30/25/20)
-	* 스킬 쿨타임 (15/13/10)
-2. 변이파리채
-	* 소모 마나 (50/40/30)
-	* 스킬 쿨타임 (20/18/15)
-	* 바꿀 타일 갯수 (5/7/10)
-3. 잭프로스트 빙수
-	* 소모 마나 (75/70/50)
-	* 스킬 쿨타임 (40/35/30)
-	* 홀딩 시간 (5/7/10)
-4. 잭오할로윈
-	* 소모 마나 (100/90/70)
-	* 스킬 쿨타임 (60/55/50)
-	* 폭탄 변신 갯수 (3/4/5)
-
-<패시브>
-1. 고대의 도서관
-	* 지속시간 (10/20/30)
-2. 쇼타임
-	* 점수 배율 (1.0/1.2/1.5)
-3. 현자의 돌
-	* 퍼즐 완성 시, 점수 추가 배율 (1.0/1.2/1.5)
-4. 붉은 사탕
-	* 캔디바 등장 확률 (3/6/10)
-	* 캔디바 매칭 점수 배율 (1.0/1.5/2)
-
-
-> 이걸 좀 수정하기 편하게 코드 상에서 따로 정리할 수 있으면 좋을텐데...
 
 ---------------------------------
 
@@ -69,49 +36,45 @@ YAGNI = You Ain't Gonna Need It - 지금 당장 필요없는 것을 미리 만�
 
 ## Last Update
 
-## 2021.05.11 (화)
-
-**0. 스킬 자료구조 변경**
-
-**List에서 Dictionary로 변경**
-
-* saveData를 Dictionary로 변경
-Dictionary를 직렬화, 역직렬화하기 위해서 Asset의 JSON.NET을 활용.
-세이브 로드 기능복구 완료
-
-* Button Text 마다 Dictionary ActSkills의 레벨을 연결
-이를 위해서 Dictionary를 List로 변경해줄 필요가 있었음.
-
-변경 시, Dictionary를 List로 바꿀 때, KeyList와 ValueList 즉 2개를 따로 만들어야한다.
-
-또한
-```c#
- activeSkills = SkillManager.instance.ActSkillDic.Values.ToList();
-```
-위와 같이 ToList를 사용하기 위해서는, using Linq를 첨부해야한다.
+## 2021.05.12 (수)
 
 
-__1. 스킬 레벨업 버튼이 먹히지 않는다.__
+1. (완료) 플레이어 데이터를 관리하는 class생성
 
-* AddListener를 직접 추가해주는 방식으로 하니 우선 잘 된다.
+> PlayerPref을 사용하면 간단하겠으나, 보안상의 문제로 좋지 않을듯
+  이번 프로젝트에서는 JSON으로 관리해보자.
 
-* for문으로 AddListener를 추가할 때, Closure 문제를 주의하자.
-https://stackoverflow.com/questions/271440/captured-variable-in-a-loop-in-c-sharp
+- 플레이어가 사용할 수 있는 sp를 저장하는 변수
+- 플레이어의 최고기록
 
-```c#
-
-    for (int i = 0; i < buttons.Length; i++)
-    {
-        int temp = i;
-        buttons[temp].onClick.AddListener(() => ActSkillLevelUp(temp));
-    }
-```
+차후 필요할때마다 추가 예정
 
 
-__2. 스킬 레벨업에 따른 스킬 속성 다르게 하기__
+2. (진행중) 2번, 3번 스킬 구현
 
-SkillConversion Class를 생성. 할줄 몰라서 우선 하드코딩으로 마무리
+(완료)
+<변이 파리채>
+플루토 타일을 다른 랜덤한 타일로 바꾼다.
 
+(진행중)
+<잭프로스트 빙수>
+(일반 모드) 일정시간동안 제한시간을 멈추게 한다. 
+(AI 대전모드) - 일정시간동안 AI의 움직임을 멈춘다.
+
+
+3. 스킬 사용 가능 체크 함수
+
+	<고려해야할 점>
+	1. 마나
+	2. 쿨타임
+	3. 이미 사용중인가?
+
+
+4. AI 대전 부분 설계
+
+
+5. (Bug Fix) 폭탄 타일을 생성할 때, 필요한 랜턴 타일의 갯수가 적을 때가 있어 
+ArgumentException 이 발생하는 오류를 수정
 
 ---------------------------------------------
 
@@ -189,6 +152,53 @@ SkillConversion Class를 생성. 할줄 몰라서 우선 하드코딩으로 마�
 --------------------------------------------------
 
 ### 이전 개발 일지
+
+### 2021.05.11 (화)
+
+0. (완료) 스킬 자료구조 변경
+
+**List에서 Dictionary로 변경**
+
+* saveData를 Dictionary로 변경
+Dictionary를 직렬화, 역직렬화하기 위해서 Asset의 JSON.NET을 활용.
+세이브 로드 기능복구 완료
+
+* Button Text 마다 Dictionary ActSkills의 레벨을 연결
+이를 위해서 Dictionary를 List로 변경해줄 필요가 있었음.
+
+변경 시, Dictionary를 List로 바꿀 때, KeyList와 ValueList 즉 2개를 따로 만들어야한다.
+
+또한
+```c#
+ activeSkills = SkillManager.instance.ActSkillDic.Values.ToList();
+```
+위와 같이 ToList를 사용하기 위해서는, using Linq를 첨부해야한다.
+
+
+1. (완료) 스킬 레벨업 버튼이 먹히지 않는다.
+
+* AddListener를 직접 추가해주는 방식으로 하니 우선 잘 된다.
+
+* for문으로 AddListener를 추가할 때, Closure 문제를 주의하자.
+https://stackoverflow.com/questions/271440/captured-variable-in-a-loop-in-c-sharp
+
+```c#
+
+    for (int i = 0; i < buttons.Length; i++)
+    {
+        int temp = i;
+        buttons[temp].onClick.AddListener(() => ActSkillLevelUp(temp));
+    }
+```
+
+
+2. (완료) 스킬 레벨업에 따른 스킬 속성 다르게 하기
+
+SkillConversion Class를 생성. 할줄 몰라서 우선 하드코딩으로 마무리
+
+
+
+
 
 ### 2021.05.10 (월)
 

@@ -20,6 +20,6 @@ public class PassiveSkill
         this.Name = name;
         this.Description = description;
         this.Level = level;
-        this.eigenValue = eigenValue;
+        this.EigenValue = eigenValue;
     }
 }

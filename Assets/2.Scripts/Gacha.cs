@@ -55,12 +55,6 @@ public class Gacha : MonoBehaviour
                 GetLegendary();
             }     
         }
-
-        //Debug.Log("커먼 : " + commonCount);
-        //Debug.Log("언커먼 : " + uncommonCount);
-        //Debug.Log("레어 : " + rareCount);
-        //Debug.Log("유니크 : " + uniqueCount);
-        //Debug.Log("레전더리 : " + legendaryCount);
     }
 
     public void GetCommon()

@@ -130,15 +130,16 @@ public class BoardManager : MonoBehaviour
         second.GetComponent<Tile>().canShifting = true;
     }
 
+
+
     private void DestroyMatchesAt(int row, int col)
     {
         if (characterTilesBox[row, col].GetComponent<Tile>().isMatched)
         {
             skillGauge.GainSkillGauge(); //타일 파괴시 스킬 게이지 획득
+            findMatches.currentMatches.Remove(characterTilesBox[row, col]);
 
             #region 파괴 이펙트
-
-            findMatches.currentMatches.Remove(characterTilesBox[row, col]);
             //GameObject flashEffect = Instantiate(Resources.Load<GameObject>("FlashEffect")
             //                                    , characterTilesBox[row, col].GetComponent<Tile>().transform.position
             //                                    , Quaternion.identity);
@@ -286,6 +287,82 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+
+    // 2번 변이파리채 함수
+    public void ChangeTile()
+    {
+        randomSelectList.Clear();
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Tile pluto = characterTilesBox[x, y].GetComponent<Tile>();
+                if (pluto.CompareTag("Pluto"))
+                {
+                    randomSelectList.Add(new RC() { row = pluto.Row, col = pluto.Col });
+                }
+            }
+        }
+
+        //randomSelectList.Count < 변환 가능 갯수(3) 라면,
+        //pluto 변환가능 갯수 = randomSelectList.Count
+        int ableChangeTileCount = SkillManager.instance.ActSkillDic["변이 파리채"].EigenValue;
+        if (randomSelectList.Count <= ableChangeTileCount)
+        {
+            ableChangeTileCount = randomSelectList.Count;
+        }
+
+        List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
+        possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
+
+        for (int i = 0; i < ableChangeTileCount; i++)
+        {
+            int rIndex = Random.Range(0, randomSelectList.Count);
+            int row = randomSelectList[rIndex].row;
+            int col = randomSelectList[rIndex].col;
+            randomSelectList.RemoveAt(rIndex);
+
+            //기존의 플루토 타일을 삭제
+            Tile pluto = characterTilesBox[row, col].GetComponent<Tile>();
+            Destroy(pluto.gameObject);
+            characterTilesBox[row, col] = null;
+
+            //랜덤하게 뽑은 잭오랜턴을 폭탄으로 교체
+            float newPositionX = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionX;
+            float newPositionY = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionY;
+            Vector2 newPosition = new Vector2(newPositionX, newPositionY);
+
+            GameObject newChangeTile = Instantiate(characterTilePrefab, newPosition, Quaternion.identity);
+            newChangeTile.GetComponent<Tile>().SetArrNumber(row, col);
+            newChangeTile.GetComponent<Tile>().targetX = newPositionX;
+            newChangeTile.GetComponent<Tile>().targetY = newPositionY;
+            newChangeTile.transform.SetParent(transform);
+            newChangeTile.gameObject.name = "ChangeTile [" + row + ", " + col + "]";
+            characterTilesBox[row, col] = newChangeTile;
+
+
+            #region 타일 변환 확인 이펙트 (디버그)
+            FlashEffect flashEffect = ObjectPool.GetFlashEffectObject(transform);
+            flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
+            flashEffect.RemoveEffect();
+            #endregion
+
+
+            Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
+            newChangeTile.gameObject.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
+        }
+
+        //타일이 전부 바뀌면 매칭 검사를 한번 한다.
+        findMatches.FindAllMatches();
+        if(findMatches.currentMatches.Count > 0)
+        {
+            DestroyMatches();
+        }
+    }
+
+
+
+    // 4번 스킬 함수 - 잭오할로윈 타일을 생성
     public void CreateJackBomb()
     {
         randomSelectList.Clear();
@@ -301,9 +378,15 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        //randomSelectList.Count < JackBomb 생성 가능 갯수(3) 라면,
+        //randomSelectList.Count < JackBomb 생성 가능 갯수 이라면,
         //jackBomb 생성가능 갯수 = randomSelectList.Count
-        for (int i = 0; i < SkillManager.instance.ActSkillDic["잭 오 할로윈"].EigenValue ; i++)
+        int ableCreateBombCount = SkillManager.instance.ActSkillDic["잭 오 할로윈"].EigenValue;
+        if(randomSelectList.Count <= ableCreateBombCount)
+        {
+            ableCreateBombCount = randomSelectList.Count;
+        }
+
+        for (int i = 0; i < ableCreateBombCount; i++)
         {
             int rIndex = Random.Range(0, randomSelectList.Count);
             int row = randomSelectList[rIndex].row;
@@ -503,6 +586,10 @@ public class BoardManager : MonoBehaviour
         else
             DestroyMatches();
     }
+
+
+
+
 
     //타일들의 상태가 하나라도 Shifting이면 PlayerState는 WAIT인 함수
     private void CanMovePlayerState()

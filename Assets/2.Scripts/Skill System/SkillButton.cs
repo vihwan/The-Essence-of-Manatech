@@ -13,7 +13,7 @@ public class SkillButton : MonoBehaviour
     private float cooldownTime;
     private float cooldownTimer;
 
-    //public ActiveSkill skillInfo;
+    //[SerializeField] public ActiveSkill skillInfo; //디버그용
 
     public void Init()
     {

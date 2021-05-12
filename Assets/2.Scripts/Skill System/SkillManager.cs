@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class SkillManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class SkillManager : MonoBehaviour
     public CantSkill appearText;
 
 
-    //Variale
+    //Variable
 
     [SerializeField] private List<SkillButton> skillBtns = new List<SkillButton>();
     [SerializeField] public Dictionary<string, ActiveSkill> ActSkillDic = new Dictionary<string, ActiveSkill>();
@@ -48,7 +49,7 @@ public class SkillManager : MonoBehaviour
         for (int i = 0; i < skillBtns.Count; i++)
         {
             skillBtns[i].Init();
-           // skillBtns[i].skillInfo = ASkillList[i];
+            //skillBtns[i].skillInfo = ActSkillDic.Values.ToList()[i]; //디버그용
         }
 
         hintManager = FindObjectOfType<HintManager>();
@@ -94,24 +95,21 @@ public class SkillManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             Debug.Log("2번 스킬 사용");
-            appearText("미구현 스킬 입니다.");
-            return;
-
-/*            if (skillGauge.UseSkillGauge(30))
+            if (skillGauge.UseSkillGauge(ActSkillDic["변이 파리채"].Mana))
             {
-                AlertText.instance.ActiveText("미구현 스킬 입니다.");
-            }*/
+                Skill_Flapper();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Debug.Log("3번 스킬 사용");
-            appearText("미구현 스킬 입니다.");
             return;
 
-/*            if (skillGauge.UseSkillGauge(50))
+
+            if (skillGauge.UseSkillGauge(ActSkillDic["잭프로스트 빙수"].Mana))
             {
-                AlertText.instance.ActiveText("미구현 스킬 입니다.");
-            }*/
+                Skill_Jack_Frost_ShavedIce();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
@@ -143,9 +141,9 @@ public class SkillManager : MonoBehaviour
     private void Skill_Flapper()
     {
         //2번 스킬
-        if (skillBtns[2].UseSpell(ActSkillDic["변이 파리채"].CoolTime))
+        if (skillBtns[1].UseSpell(ActSkillDic["변이 파리채"].CoolTime))
         {
-            //스킬 함수
+            BoardManager.instance.ChangeTile();
         }
         else
         {
@@ -157,7 +155,7 @@ public class SkillManager : MonoBehaviour
     private void Skill_Jack_Frost_ShavedIce()
     {
         //3번 스킬
-        if (skillBtns[1].UseSpell(ActSkillDic["잭 프로스트 빙수"].CoolTime))
+        if (skillBtns[2].UseSpell(ActSkillDic["잭 프로스트 빙수"].CoolTime))
         {
             //스킬 함수
         }

@@ -135,9 +135,9 @@ public class SaveAndLoad : MonoBehaviour
         saveData.AskillDic.Add(name, new ActiveSkill(name,
                                                     "미구현 스킬입니다.",
                                                     1,
-                                                    30,
-                                                    10f,
-                                                    4));
+                                                    50,
+                                                    20f,
+                                                    5));
 
         name = "잭프로스트 빙수";
         saveData.AskillDic.Add(name, new ActiveSkill(name,
@@ -176,7 +176,7 @@ public class SaveAndLoad : MonoBehaviour
         saveData.PskillDic.Add(name, new PassiveSkill(name,
                                                     "제한 시간이 30초 이하로 남았을 경우 발동. 모든 점수 획득량이 증가한다",
                                                     1,
-                                                    1.0f));
+                                                    0.2f));
 
         name = "현자의 돌";
         saveData.PskillDic.Add(name, new PassiveSkill(name,
