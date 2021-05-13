@@ -1,0 +1,238 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+
+public enum MonsterState
+{
+    WAIT,
+    MOVE
+}
+
+public class BoardManagerMonster : MonoBehaviour
+{
+    //Singleton
+    public static BoardManagerMonster instance;
+
+    public int width;
+    public int height;
+
+    public List<Sprite> monsterTilesList = new List<Sprite>(); //에디터에서 사용할 타일들을 저장하는 리스트
+    public GameObject[,] monsterTilesBox; //AI의 타일 보관하는 배열
+    public GameObject monsterTilePrefab;  //Tile Prefab
+    public MonsterState currentState;
+
+    public void Init()
+    {
+        instance = GetComponent<BoardManagerMonster>();
+
+        monsterTilesBox = new GameObject[width, height];
+        Vector2 offset = monsterTilePrefab.GetComponent<RectTransform>().rect.size;
+        CreateTiles(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
+    }
+
+    //타일을 생성하는 함수
+    private void CreateTiles(float xOffset, float yOffset)
+    {
+        //BoardManager 위치에 따라 시작점이 달라짐
+        //왼쪽 하단을 기준으로.
+        float startX = transform.position.x;
+        float startY = transform.position.y;
+
+        Sprite[] previousLeft = new Sprite[height];
+        Sprite previousBelow = null;
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                GameObject monsterTile = Instantiate(monsterTilePrefab,
+                                new Vector2(startX + (xOffset * x),
+                                startY + (yOffset * y * 2)),
+                                Quaternion.identity);
+                monsterTile.transform.SetParent(transform);
+                monsterTile.gameObject.name = "Monster [" + x + ", " + y + "]";
+                monsterTile.GetComponent<TileMonster>().SetArrNumber(x, y);
+                monsterTile.GetComponent<TileMonster>().targetX = startX + (xOffset * x);
+                monsterTile.GetComponent<TileMonster>().targetY = startY + (yOffset * y);
+                monsterTilesBox[x, y] = monsterTile;
+
+                CreateTileSprite(y, monsterTile, previousLeft, ref previousBelow);
+            }
+        }
+    }
+
+
+
+    //타일의 스프라이트를 입혀주는 함수. 스프라이트에 따라 타일의 속성(태그)가 바뀐다. (Tile Class)
+    private void CreateTileSprite(int col, GameObject gameObject, Sprite[] previousLeft, ref Sprite previousBelow)
+    {
+        List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
+        possibleCharacters.AddRange(monsterTilesList); //모든 캐릭터들을 리스트에 때려넣음
+        possibleCharacters.Remove(previousLeft[col]); //이전의 왼쪽에 해당되는 열 리스트들을 전부 삭제
+        possibleCharacters.Remove(previousBelow);   //이전의 아래에 해당되는 캐릭터를 삭제
+
+        Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
+        gameObject.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
+        previousLeft[col] = newSprite;
+        previousBelow = newSprite;
+    }
+
+    private void Update()
+    {
+
+    }
+
+
+    //가상으로 옮긴 타일을 교환하는 함수
+    private void SwitchPieces(int row, int col, Vector2 direction)
+    {
+        GameObject holder = monsterTilesBox[row + (int)direction.x, col + (int)direction.y];
+        monsterTilesBox[row + (int)direction.x, col + (int)direction.y] = monsterTilesBox[row, col];
+        monsterTilesBox[row, col] = holder;
+    }
+
+    //가상으로 옮긴 타일과 나머지 타일들의 매칭 여부를 확인하는 함수
+    private bool CheckForMatches()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (monsterTilesBox[x, y] != null)
+                {
+                    if (x < width - 2)
+                    {
+                        if (monsterTilesBox[x + 1, y] != null && monsterTilesBox[x + 2, y] != null)
+                        {
+                            if (monsterTilesBox[x, y].CompareTag(monsterTilesBox[x + 1, y].tag) &&
+                                monsterTilesBox[x, y].CompareTag(monsterTilesBox[x + 2, y].tag))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                    if (y < height - 2)
+                    {
+                        if (monsterTilesBox[x, y + 1] != null && monsterTilesBox[x, y + 2] != null)
+                        {
+                            if (monsterTilesBox[x, y].CompareTag(monsterTilesBox[x, y + 1].tag) &&
+                                monsterTilesBox[x, y].CompareTag(monsterTilesBox[x, y + 2].tag))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private bool SwitchingAndCheck(int row, int col, Vector2 direction)
+    {
+        SwitchPieces(row, col, direction);
+        if (CheckForMatches())
+        {
+            SwitchPieces(row, col, direction);
+            return true;
+        }
+        SwitchPieces(row, col, direction);
+        return false;
+    }
+
+
+    //몬스터가 옮길 수 있는 타일을 찾기 위해 동작하는 함수
+    private List<GameObject> FindAllMatches()
+    {
+        List<GameObject> possibleMoves = new List<GameObject>();
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (monsterTilesBox[x, y] != null)
+                {
+                    if (x < width - 1)
+                    {
+                        if (SwitchingAndCheck(x, y, Vector2.right))
+                        {
+                            possibleMoves.Add(monsterTilesBox[x, y]);
+                        }
+                    }
+                    if (y < height - 1)
+                    {
+                        if (SwitchingAndCheck(x, y, Vector2.up))
+                        {
+                            possibleMoves.Add(monsterTilesBox[x, y]);
+                        }
+                    }
+                }
+            }
+        }
+
+        return possibleMoves;
+    }
+
+    private GameObject PickUpRandom()
+    {
+        List<GameObject> possibleMovesList = new List<GameObject>();
+
+        possibleMovesList = FindAllMatches();
+        if (possibleMovesList.Count > 0)
+        {
+            int tileToUse = Random.Range(0, possibleMovesList.Count);
+            return possibleMovesList[tileToUse];
+        }
+        else
+        {
+            Debug.Log("옮길 수 있는 타일이 없습니다!!");
+
+        }
+        return null;
+    }
+
+    public void MoveTile()
+    {
+        GameObject tile = PickUpRandom();
+        
+        if (tile != null)
+        {
+            //타일을 원하는 방향으로 이동
+            //TODO
+            tile.GetComponent<TileMonster>().SwapTile(new Vector3(0,0,1));
+        }
+    }
+
+    public void SetTargetPos(GameObject first, GameObject second)
+    {
+        first.GetComponent<TileMonster>().targetX = second.GetComponent<TileMonster>().transform.position.x;
+        first.GetComponent<TileMonster>().targetY = second.GetComponent<TileMonster>().transform.position.y;
+        second.GetComponent<TileMonster>().targetX = first.GetComponent<TileMonster>().transform.position.x;
+        second.GetComponent<TileMonster>().targetY = first.GetComponent<TileMonster>().transform.position.y;
+
+        first.GetComponent<TileMonster>().canShifting = true;
+        second.GetComponent<TileMonster>().canShifting = true;
+    }
+
+
+    //TODO
+    public void DestroyMatches()
+    {
+        currentState = MonsterState.WAIT;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (monsterTilesBox[x, y] != null)
+                {
+                    //DestroyMatchesAt(x, y);
+                }
+            }
+        }
+
+       // StartCoroutine(DecreaseColCoroutine());
+    }
+}

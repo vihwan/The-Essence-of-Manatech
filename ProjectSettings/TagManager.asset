@@ -13,6 +13,12 @@ TagManager:
   - test3
   - Lolipop
   - Bomb
+  - M_One
+  - M_Two
+  - M_Three
+  - M_Four
+  - M_Five
+  - M_Six
   layers:
   - Default
   - TransparentFX

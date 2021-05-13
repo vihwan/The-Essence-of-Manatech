@@ -19,10 +19,11 @@ public class GameManager : MonoBehaviour
 
     //제어하는 컴포넌트
     private BoardManager boardManager;
-
+    private BoardManagerMonster boardManagerMonster;
     private GUIManager guiManager;
     private ScoreManager scoreManager;
     private CreateBackTiles createBoard;
+    private CreateBackTilesMonster createBoardMonster;
     private ComboSystem comboSystem;
     private SkillManager skillManager;
 
@@ -43,6 +44,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        boardManagerMonster = FindObjectOfType<BoardManagerMonster>();
+        if (boardManagerMonster != null)
+            boardManagerMonster.Init();
+
         boardManager = FindObjectOfType<BoardManager>();
         if (boardManager != null)
             boardManager.Init();
@@ -50,6 +55,10 @@ public class GameManager : MonoBehaviour
         createBoard = FindObjectOfType<CreateBackTiles>();
         if (createBoard != null)
             createBoard.Init();
+
+        createBoardMonster = FindObjectOfType<CreateBackTilesMonster>();
+        if (createBoardMonster != null)
+            createBoardMonster.Init();
 
         guiManager = FindObjectOfType<GUIManager>();
         if (guiManager != null)

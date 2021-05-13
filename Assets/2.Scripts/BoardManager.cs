@@ -130,7 +130,22 @@ public class BoardManager : MonoBehaviour
         second.GetComponent<Tile>().canShifting = true;
     }
 
-
+    public void DestroyMatches()
+    {
+        currentState = PlayerState.WAIT;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (characterTilesBox[x, y] != null)
+                {
+                    DestroyMatchesAt(x, y);
+                }
+            }
+        }
+        comboSystem.ComboCounter++; //TODO
+        StartCoroutine(DecreaseColCoroutine());
+    }
 
     private void DestroyMatchesAt(int row, int col)
     {
@@ -158,23 +173,6 @@ public class BoardManager : MonoBehaviour
 
             ScoreManager.instance.PlusScore();
         }
-    }
-
-    public void DestroyMatches()
-    {
-        currentState = PlayerState.WAIT;
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                if (characterTilesBox[x, y] != null)
-                {
-                    DestroyMatchesAt(x, y);
-                }
-            }
-        }
-        comboSystem.ComboCounter++; //TODO
-        StartCoroutine(DecreaseColCoroutine());
     }
 
     private IEnumerator DecreaseColCoroutine()
@@ -287,77 +285,6 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-
-    // 2번 변이파리채 함수
-    public void ChangeTile()
-    {
-        randomSelectList.Clear();
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                Tile pluto = characterTilesBox[x, y].GetComponent<Tile>();
-                if (pluto.CompareTag("Pluto"))
-                {
-                    randomSelectList.Add(new RC() { row = pluto.Row, col = pluto.Col });
-                }
-            }
-        }
-
-        //randomSelectList.Count < 변환 가능 갯수(3) 라면,
-        //pluto 변환가능 갯수 = randomSelectList.Count
-        int ableChangeTileCount = SkillManager.instance.ActSkillDic["변이 파리채"].EigenValue;
-        if (randomSelectList.Count <= ableChangeTileCount)
-        {
-            ableChangeTileCount = randomSelectList.Count;
-        }
-
-        List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
-        possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
-
-        for (int i = 0; i < ableChangeTileCount; i++)
-        {
-            int rIndex = Random.Range(0, randomSelectList.Count);
-            int row = randomSelectList[rIndex].row;
-            int col = randomSelectList[rIndex].col;
-            randomSelectList.RemoveAt(rIndex);
-
-            //기존의 플루토 타일을 삭제
-            Tile pluto = characterTilesBox[row, col].GetComponent<Tile>();
-            Destroy(pluto.gameObject);
-            characterTilesBox[row, col] = null;
-
-            //랜덤하게 뽑은 잭오랜턴을 폭탄으로 교체
-            float newPositionX = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionX;
-            float newPositionY = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionY;
-            Vector2 newPosition = new Vector2(newPositionX, newPositionY);
-
-            GameObject newChangeTile = Instantiate(characterTilePrefab, newPosition, Quaternion.identity);
-            newChangeTile.GetComponent<Tile>().SetArrNumber(row, col);
-            newChangeTile.GetComponent<Tile>().targetX = newPositionX;
-            newChangeTile.GetComponent<Tile>().targetY = newPositionY;
-            newChangeTile.transform.SetParent(transform);
-            newChangeTile.gameObject.name = "ChangeTile [" + row + ", " + col + "]";
-            characterTilesBox[row, col] = newChangeTile;
-
-
-            #region 타일 변환 확인 이펙트 (디버그)
-            FlashEffect flashEffect = ObjectPool.GetFlashEffectObject(transform);
-            flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
-            flashEffect.RemoveEffect();
-            #endregion
-
-
-            Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
-            newChangeTile.gameObject.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
-        }
-
-        //타일이 전부 바뀌면 매칭 검사를 한번 한다.
-        findMatches.FindAllMatches();
-        Invoke(nameof(WaitFindCoroutine), 1f);
-
-    }
-
     private void WaitFindCoroutine()
     {
         if (!findMatches.isUpdate)
@@ -368,83 +295,6 @@ public class BoardManager : MonoBehaviour
     }
 
 
-
-    // 4번 스킬 함수 - 잭오할로윈 타일을 생성
-    public void CreateJackBomb()
-    {
-        randomSelectList.Clear();
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                Tile jack = characterTilesBox[x, y].GetComponent<Tile>();
-                if (jack.CompareTag("Lantern"))
-                {
-                    randomSelectList.Add(new RC() { row = jack.Row, col = jack.Col });
-                }
-            }
-        }
-
-        //randomSelectList.Count < JackBomb 생성 가능 갯수 이라면,
-        //jackBomb 생성가능 갯수 = randomSelectList.Count
-        int ableCreateBombCount = SkillManager.instance.ActSkillDic["잭 오 할로윈"].EigenValue;
-        if(randomSelectList.Count <= ableCreateBombCount)
-        {
-            ableCreateBombCount = randomSelectList.Count;
-        }
-
-        for (int i = 0; i < ableCreateBombCount; i++)
-        {
-            int rIndex = Random.Range(0, randomSelectList.Count);
-            int row = randomSelectList[rIndex].row;
-            int col = randomSelectList[rIndex].col;
-            randomSelectList.RemoveAt(rIndex);
-
-            //기존의 잭오랜턴 타일을 삭제
-            Tile jack = characterTilesBox[row, col].GetComponent<Tile>();
-            Destroy(jack.gameObject);
-            characterTilesBox[row, col] = null;
-
-            //랜덤하게 뽑은 잭오랜턴을 폭탄으로 교체
-            float newPositionX = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionX;
-            float newPositionY = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionY;
-            Vector2 newPosition = new Vector2(newPositionX, newPositionY);
-
-            GameObject newJackBomb = Instantiate(characterTilePrefab, newPosition, Quaternion.identity);
-            newJackBomb.GetComponent<Tile>().SetArrNumber(row, col);
-            newJackBomb.GetComponent<Tile>().targetX = newPositionX;
-            newJackBomb.GetComponent<Tile>().targetY = newPositionY;
-            newJackBomb.transform.SetParent(transform);
-            newJackBomb.gameObject.name = "Bomb [" + row + ", " + col + "]";
-            newJackBomb.GetComponent<Image>().sprite = Resources.Load<Sprite>("Bomb");
-            characterTilesBox[row, col] = newJackBomb;
-        }
-    }
-
-    //4번 스킬로 폭탄 주변의 타일을 전부 IsMatched = true로 바꾸는 함수
-    public void JackBombIsMatch(int row, int col)
-    {
-        for (int i = -1; i <= 1; i++)
-        {
-            for (int j = -1; j <= 1; j++)
-            {
-                if (row + i < 0 || row + i > width - 1 || col + j < 0 || col + j > height - 1)
-                    continue;
-
-                if (characterTilesBox[row + i, col + j].GetComponent<Tile>().isMatched)
-                    continue;
-                else
-                    characterTilesBox[row + i, col + j].GetComponent<Tile>().isMatched = true;
-
-                //폭탄 폭발범위 내에 다른 폭탄이 있다면 연쇄폭발
-                if (characterTilesBox[row + i, col + j].GetComponent<Tile>().CompareTag("Bomb"))
-                {
-                    JackBombIsMatch(row + i, col + j);
-                    continue;
-                }
-            }
-        }
-    }
 
     //타일의 스프라이트를 입혀주는 함수. 스프라이트에 따라 타일의 속성(태그)가 바뀐다. (Tile Class)
     private void CreateTileSprite(int col, GameObject gameObject, Sprite[] previousLeft, ref Sprite previousBelow)
@@ -596,6 +446,152 @@ public class BoardManager : MonoBehaviour
 
 
 
+    // 2번 변이파리채 함수
+    public void ChangeTile()
+    {
+        randomSelectList.Clear();
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Tile pluto = characterTilesBox[x, y].GetComponent<Tile>();
+                if (pluto.CompareTag("Pluto"))
+                {
+                    randomSelectList.Add(new RC() { row = pluto.Row, col = pluto.Col });
+                }
+            }
+        }
+
+        //randomSelectList.Count < 변환 가능 갯수(3) 라면,
+        //pluto 변환가능 갯수 = randomSelectList.Count
+        int ableChangeTileCount = SkillManager.instance.ActSkillDic["변이 파리채"].EigenValue;
+        if (randomSelectList.Count <= ableChangeTileCount)
+        {
+            ableChangeTileCount = randomSelectList.Count;
+        }
+
+        List<Sprite> possibleCharacters = new List<Sprite>(); //가능한캐릭터들의 리스트를 생성
+        possibleCharacters.AddRange(characters); //모든 캐릭터들을 리스트에 때려넣음
+
+        for (int i = 0; i < ableChangeTileCount; i++)
+        {
+            int rIndex = Random.Range(0, randomSelectList.Count);
+            int row = randomSelectList[rIndex].row;
+            int col = randomSelectList[rIndex].col;
+            randomSelectList.RemoveAt(rIndex);
+
+            //기존의 플루토 타일을 삭제
+            Tile pluto = characterTilesBox[row, col].GetComponent<Tile>();
+            Destroy(pluto.gameObject);
+            characterTilesBox[row, col] = null;
+
+            //랜덤하게 뽑은 잭오랜턴을 폭탄으로 교체
+            float newPositionX = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionX;
+            float newPositionY = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionY;
+            Vector2 newPosition = new Vector2(newPositionX, newPositionY);
+
+            GameObject newChangeTile = Instantiate(characterTilePrefab, newPosition, Quaternion.identity);
+            newChangeTile.GetComponent<Tile>().SetArrNumber(row, col);
+            newChangeTile.GetComponent<Tile>().targetX = newPositionX;
+            newChangeTile.GetComponent<Tile>().targetY = newPositionY;
+            newChangeTile.transform.SetParent(transform);
+            newChangeTile.gameObject.name = "ChangeTile [" + row + ", " + col + "]";
+            characterTilesBox[row, col] = newChangeTile;
+
+
+            #region 타일 변환 확인 이펙트 (디버그)
+            FlashEffect flashEffect = ObjectPool.GetFlashEffectObject(transform);
+            flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
+            flashEffect.RemoveEffect();
+            #endregion
+
+
+            Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
+            newChangeTile.gameObject.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
+        }
+
+        //타일이 전부 바뀌면 매칭 검사를 한번 한다.
+        findMatches.FindAllMatches();
+        Invoke(nameof(WaitFindCoroutine), 1f);
+
+    }
+
+    // 4번 스킬 함수 - 잭오할로윈 타일을 생성
+    public void CreateJackBomb()
+    {
+        randomSelectList.Clear();
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Tile jack = characterTilesBox[x, y].GetComponent<Tile>();
+                if (jack.CompareTag("Lantern"))
+                {
+                    randomSelectList.Add(new RC() { row = jack.Row, col = jack.Col });
+                }
+            }
+        }
+
+        //randomSelectList.Count < JackBomb 생성 가능 갯수 이라면,
+        //jackBomb 생성가능 갯수 = randomSelectList.Count
+        int ableCreateBombCount = SkillManager.instance.ActSkillDic["잭 오 할로윈"].EigenValue;
+        if (randomSelectList.Count <= ableCreateBombCount)
+        {
+            ableCreateBombCount = randomSelectList.Count;
+        }
+
+        for (int i = 0; i < ableCreateBombCount; i++)
+        {
+            int rIndex = Random.Range(0, randomSelectList.Count);
+            int row = randomSelectList[rIndex].row;
+            int col = randomSelectList[rIndex].col;
+            randomSelectList.RemoveAt(rIndex);
+
+            //기존의 잭오랜턴 타일을 삭제
+            Tile jack = characterTilesBox[row, col].GetComponent<Tile>();
+            Destroy(jack.gameObject);
+            characterTilesBox[row, col] = null;
+
+            //랜덤하게 뽑은 잭오랜턴을 폭탄으로 교체
+            float newPositionX = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionX;
+            float newPositionY = createBoard.backTilesBox[row, col].GetComponent<BackgroundTile>().positionY;
+            Vector2 newPosition = new Vector2(newPositionX, newPositionY);
+
+            GameObject newJackBomb = Instantiate(characterTilePrefab, newPosition, Quaternion.identity);
+            newJackBomb.GetComponent<Tile>().SetArrNumber(row, col);
+            newJackBomb.GetComponent<Tile>().targetX = newPositionX;
+            newJackBomb.GetComponent<Tile>().targetY = newPositionY;
+            newJackBomb.transform.SetParent(transform);
+            newJackBomb.gameObject.name = "Bomb [" + row + ", " + col + "]";
+            newJackBomb.GetComponent<Image>().sprite = Resources.Load<Sprite>("Bomb");
+            characterTilesBox[row, col] = newJackBomb;
+        }
+    }
+
+    //4번 스킬로 폭탄 주변의 타일을 전부 IsMatched = true로 바꾸는 함수
+    public void JackBombIsMatch(int row, int col)
+    {
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (row + i < 0 || row + i > width - 1 || col + j < 0 || col + j > height - 1)
+                    continue;
+
+                if (characterTilesBox[row + i, col + j].GetComponent<Tile>().isMatched)
+                    continue;
+                else
+                    characterTilesBox[row + i, col + j].GetComponent<Tile>().isMatched = true;
+
+                //폭탄 폭발범위 내에 다른 폭탄이 있다면 연쇄폭발
+                if (characterTilesBox[row + i, col + j].GetComponent<Tile>().CompareTag("Bomb"))
+                {
+                    JackBombIsMatch(row + i, col + j);
+                    continue;
+                }
+            }
+        }
+    }
 
 
     //타일들의 상태가 하나라도 Shifting이면 PlayerState는 WAIT인 함수

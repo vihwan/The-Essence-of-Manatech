@@ -66,11 +66,14 @@
   <ItemGroup>
     <Compile Include="Assets\2.Scripts\BackgroundTile.cs" />
     <Compile Include="Assets\2.Scripts\BoardManager.cs" />
+    <Compile Include="Assets\2.Scripts\BoardManagerMonster.cs" />
     <Compile Include="Assets\2.Scripts\ComboSystem.cs" />
     <Compile Include="Assets\2.Scripts\CreateBackTiles.cs" />
+    <Compile Include="Assets\2.Scripts\CreateBackTilesMonster.cs" />
     <Compile Include="Assets\2.Scripts\Effect\FlashEffect.cs" />
     <Compile Include="Assets\2.Scripts\Effect\HintEffect.cs" />
     <Compile Include="Assets\2.Scripts\FindMatches.cs" />
+    <Compile Include="Assets\2.Scripts\FindMatchesMonster.cs" />
     <Compile Include="Assets\2.Scripts\GUIManager.cs" />
     <Compile Include="Assets\2.Scripts\GameData.cs" />
     <Compile Include="Assets\2.Scripts\GameManager.cs" />
@@ -93,6 +96,7 @@
     <Compile Include="Assets\2.Scripts\Test\Gacha.cs" />
     <Compile Include="Assets\2.Scripts\Test\RandomDropTable.cs" />
     <Compile Include="Assets\2.Scripts\Tile.cs" />
+    <Compile Include="Assets\2.Scripts\TileMonster.cs" />
     <Compile Include="Assets\2.Scripts\UtilHelper.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
@@ -654,8 +658,14 @@
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Recorder.Editor">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Recorder">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
@@ -669,6 +679,9 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Recorder.Base">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Base.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
       <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
@@ -677,15 +690,6 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Recorder.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Recorder">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Recorder.Base">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Base.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup></ItemGroup>

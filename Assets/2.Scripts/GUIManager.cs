@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GUIManager : MonoBehaviour
 {
@@ -11,12 +12,17 @@ public class GUIManager : MonoBehaviour
     public Text yourScoreTxt;
     public Text highScoreTxt;
 
-    public Text scoreTxt;
+    public TMP_Text scoreTxt;
     public Text comboCounterTxt;
-    public Text limitTimeTxt;
+    public TMP_Text limitTimeTxt;
 
     private float score = 0;
     private float limitTime;
+
+    private int hour;
+    private int min;
+    private int sec;
+
     public bool isPauseTime = false;
 
     private AlertText alertText;
@@ -42,7 +48,12 @@ public class GUIManager : MonoBehaviour
             {
                 limitTime = 0;
             }
-            limitTimeTxt.text = Mathf.Round(limitTime).ToString();
+            hour = (int)limitTime / 3600;
+            min = (int)limitTime / 60 % 60;
+            sec = (int)limitTime % 60;
+
+            limitTimeTxt.text = string.Format("{0:D2}" + " {1:D2}" + " {2:D2}", hour, min, sec);
+
         }
     }
 
@@ -61,8 +72,11 @@ public class GUIManager : MonoBehaviour
 
     private void Update()
     {
-        if(!isPauseTime)
+        if (!isPauseTime)
+        {
             LimitTime -= Time.deltaTime;
+
+        }
     }
 
 
@@ -103,6 +117,18 @@ public class GUIManager : MonoBehaviour
         }
         yourScoreTxt.text = score.ToString();
     }
+
+/*
+    private void TimeParsing(float limitTime)
+    {
+        int hour;
+        int min;
+        int sec;
+
+        string timeStr;
+        timeStr
+    }*/
+
 
 
     //게임 오버 전에 대기 시간을 주는 코루틴
