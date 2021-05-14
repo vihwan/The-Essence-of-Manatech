@@ -156,24 +156,6 @@ public class TileMonster : MonoBehaviour
             previousCol = Col;
             Col += 1;
         }
-        else if (direction == Vector3.left)
-        {
-            //왼쪽 타일과 교체
-            otherCharacterTile = BoardManagerMonster.instance.monsterTilesBox[Row - 1, Col];
-            otherCharacterTile.GetComponent<TileMonster>().Row += 1;
-            previousRow = Row;
-            previousCol = Col;
-            Row -= 1;
-        }
-        else if (direction == Vector3.down)
-        {
-            //아래쪽 타일과 교체
-            otherCharacterTile = BoardManagerMonster.instance.monsterTilesBox[Row, Col - 1];
-            otherCharacterTile.GetComponent<TileMonster>().Col += 1;
-            previousRow = Row;
-            previousCol = Col;
-            Col -= 1;
-        }
         else
             return;
         //목표로 하는 타겟을 설정

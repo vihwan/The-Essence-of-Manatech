@@ -53,10 +53,8 @@ public class GUIManager : MonoBehaviour
             sec = (int)limitTime % 60;
 
             limitTimeTxt.text = string.Format("{0:D2}" + " {1:D2}" + " {2:D2}", hour, min, sec);
-
         }
     }
-
 
     //초기화함수
     public void Init()
@@ -75,10 +73,8 @@ public class GUIManager : MonoBehaviour
         if (!isPauseTime)
         {
             LimitTime -= Time.deltaTime;
-
         }
     }
-
 
     // 3번 스킬 : 잭프로스트 빙수 - 제한시간을 일정시간동안 멈추게하기
     public void OnPauseTime(float skillTime)
@@ -96,8 +92,6 @@ public class GUIManager : MonoBehaviour
         Debug.Log("멈춰 끝");
         isPauseTime = false;
     }
-
-
 
     // 게임오버가 되면 게임 오버 패널을 액티브
     public void GameOverPanel()
@@ -118,18 +112,16 @@ public class GUIManager : MonoBehaviour
         yourScoreTxt.text = score.ToString();
     }
 
-/*
-    private void TimeParsing(float limitTime)
-    {
-        int hour;
-        int min;
-        int sec;
+    /*
+        private void TimeParsing(float limitTime)
+        {
+            int hour;
+            int min;
+            int sec;
 
-        string timeStr;
-        timeStr
-    }*/
-
-
+            string timeStr;
+            timeStr
+        }*/
 
     //게임 오버 전에 대기 시간을 주는 코루틴
     //BoardState가 MOVE가 될때 까지 기다림

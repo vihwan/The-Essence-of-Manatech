@@ -348,11 +348,11 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 3
+  m_fontStyle: 1
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -10
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -378,7 +378,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -433.93204, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1331,7 +1331,7 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: c4fc1fd838a33ca4892acbf64ce74c8c,
+    m_HighlightedSprite: {fileID: 21300000, guid: c2cd387c29d6cdf419cc07ef05ee5e6d,
       type: 3}
     m_PressedSprite: {fileID: 21300000, guid: 5d0dd0db3e1b86549be9946545cf5646, type: 3}
     m_SelectedSprite: {fileID: 21300000, guid: c2cd387c29d6cdf419cc07ef05ee5e6d, type: 3}
@@ -4082,7 +4082,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6ee706df916874a4d9f9786321d32076, type: 3}
   - {fileID: 21300000, guid: e936e7683228b9940a1bd5bbf7c175c7, type: 3}
   - {fileID: 21300000, guid: 80bc6cdd5f61fea45ad64447e34b9ad7, type: 3}
-  - {fileID: 21300000, guid: a0bc102093f85b544906ad4abc0af09f, type: 3}
   - {fileID: 21300000, guid: 6771f98ea1dc4d84e862cd8fb764a200, type: 3}
   - {fileID: 21300000, guid: aefd74aa1025f4e41aa520b056106292, type: 3}
   monsterTilePrefab: {fileID: 1507016145211992390, guid: cce6a5982bfe39849a3d804ffbc9d829,

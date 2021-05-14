@@ -172,7 +172,7 @@ public class BoardManager : MonoBehaviour
             Destroy(characterTilesBox[row, col].gameObject);
             characterTilesBox[row, col] = null;
 
-            ScoreManager.instance.PlusScore();
+            ScoreManager.instance.GetScore();
         }
     }
 

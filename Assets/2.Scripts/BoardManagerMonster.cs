@@ -9,6 +9,12 @@ public enum MonsterState
     MOVE
 }
 
+internal class MoveTo
+{
+    public GameObject pickUpTile;
+    public Vector2 moveDir;
+}
+
 public class BoardManagerMonster : MonoBehaviour
 {
     //Singleton
@@ -23,11 +29,11 @@ public class BoardManagerMonster : MonoBehaviour
     public MonsterState currentState;
 
     private float elaspedTime = 0f;
-    private float timeLeft = 3f;
+    private float timeStandard = 4f;
 
     private FindMatchesMonster findMatchesMonster;
     private CreateBackTilesMonster createBoardMonster;
-    private Vector3 moveDir;
+    private Vector2 moveDirF;
 
     public void Init()
     {
@@ -46,7 +52,7 @@ public class BoardManagerMonster : MonoBehaviour
         if (currentState == MonsterState.MOVE)
         {
             elaspedTime += Time.deltaTime;
-            if (elaspedTime >= timeLeft)
+            if (elaspedTime >= timeStandard)
             {
                 MoveTile();
                 elaspedTime = 0f;
@@ -158,9 +164,9 @@ public class BoardManagerMonster : MonoBehaviour
     }
 
     //몬스터가 옮길 수 있는 타일을 찾기 위해 동작하는 함수
-    private List<GameObject> FindAllMatches()
+    private List<MoveTo> FindAllMatches()
     {
-        List<GameObject> possibleMoves = new List<GameObject>();
+        List<MoveTo> possibleMoves = new List<MoveTo>();
 
         for (int x = 0; x < width; x++)
         {
@@ -172,16 +178,14 @@ public class BoardManagerMonster : MonoBehaviour
                     {
                         if (SwitchingAndCheck(x, y, Vector2.right))
                         {
-                            possibleMoves.Add(monsterTilesBox[x, y]);
-                            moveDir = Vector2.right;
+                            possibleMoves.Add(new MoveTo { pickUpTile = monsterTilesBox[x, y], moveDir = Vector2.right });
                         }
                     }
                     if (y < height - 1)
                     {
                         if (SwitchingAndCheck(x, y, Vector2.up))
                         {
-                            possibleMoves.Add(monsterTilesBox[x, y]);
-                            moveDir = Vector2.up;
+                            possibleMoves.Add(new MoveTo { pickUpTile = monsterTilesBox[x, y], moveDir = Vector2.up });
                         }
                     }
                 }
@@ -193,13 +197,15 @@ public class BoardManagerMonster : MonoBehaviour
 
     private GameObject PickUpRandom()
     {
-        List<GameObject> possibleMovesList = new List<GameObject>();
+        List<MoveTo> possibleMovesList = new List<MoveTo>();
 
         possibleMovesList = FindAllMatches();
         if (possibleMovesList.Count > 0)
         {
             int tileToUse = Random.Range(0, possibleMovesList.Count);
-            return possibleMovesList[tileToUse];
+            GameObject moveTile = possibleMovesList[tileToUse].pickUpTile;
+            moveDirF = possibleMovesList[tileToUse].moveDir;
+            return moveTile;
         }
         else
         {
@@ -215,7 +221,7 @@ public class BoardManagerMonster : MonoBehaviour
         if (tile != null)
         {
             //타일을 원하는 방향으로 이동
-            tile.GetComponent<TileMonster>().SwapTile(moveDir);
+            tile.GetComponent<TileMonster>().SwapTile(moveDirF);
         }
     }
 

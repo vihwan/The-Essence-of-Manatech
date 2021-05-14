@@ -71,6 +71,7 @@
     <Compile Include="Assets\2.Scripts\CreateBackTiles.cs" />
     <Compile Include="Assets\2.Scripts\CreateBackTilesMonster.cs" />
     <Compile Include="Assets\2.Scripts\Effect\FlashEffect.cs" />
+    <Compile Include="Assets\2.Scripts\Effect\FlashEffectMonster.cs" />
     <Compile Include="Assets\2.Scripts\Effect\HintEffect.cs" />
     <Compile Include="Assets\2.Scripts\FindMatches.cs" />
     <Compile Include="Assets\2.Scripts\FindMatchesMonster.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Assets\2.Scripts\GameData.cs" />
     <Compile Include="Assets\2.Scripts\GameManager.cs" />
     <Compile Include="Assets\2.Scripts\HintManager.cs" />
+    <Compile Include="Assets\2.Scripts\MonsterAI.cs" />
     <Compile Include="Assets\2.Scripts\ObjectPool.cs" />
     <Compile Include="Assets\2.Scripts\PlayerData.cs" />
     <Compile Include="Assets\2.Scripts\SaveAndLoad.cs" />
