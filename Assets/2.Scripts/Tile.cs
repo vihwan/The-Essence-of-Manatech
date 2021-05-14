@@ -34,6 +34,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     //상태변수
     public bool isMatched = false;
+
     public bool isShifting = false;
     public bool canShifting = false;
 
@@ -122,7 +123,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             BoardManager.instance.currentState = PlayerState.WAIT;
         }
 
-        if(canShifting == true)
+        if (canShifting == true)
             MoveTileAnimation();
     }
 
@@ -277,7 +278,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             {
                 BoardManager.instance.characterTilesBox[Row, Col] = this.gameObject;
             }
-            findMatches.FindAllMatches();
         }
         else
         {   //타일 위치 이동 완료
@@ -287,6 +287,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             gameObject.name = "S Character [" + Row + ", " + Col + "]";
             isShifting = false;
             canShifting = false;
+            findMatches.FindAllMatches();
         }
     }
 

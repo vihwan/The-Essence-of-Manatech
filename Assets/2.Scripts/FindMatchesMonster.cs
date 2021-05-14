@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 //몬스터 전용 FindMatches Class
 public class FindMatchesMonster : MonoBehaviour
 {
@@ -14,13 +13,12 @@ public class FindMatchesMonster : MonoBehaviour
     public void FindAllMatches()
     {
         if (!isUpdate)
-            StartCoroutine(FindAllMatchesCoroutine());
+            FindAllMatchesCoroutine();
     }
 
-    private IEnumerator FindAllMatchesCoroutine()
+    private void FindAllMatchesCoroutine()
     {
         isUpdate = true;
-        yield return new WaitForSeconds(.2f);
         for (int x = 0; x < BoardManagerMonster.instance.width; x++)
         {
             for (int y = 0; y < BoardManagerMonster.instance.height; y++)
@@ -67,17 +65,17 @@ public class FindMatchesMonster : MonoBehaviour
         {
             currentMatches.Add(firstTile);
         }
-        firstTile.GetComponent<Tile>().isMatched = true;
+        firstTile.GetComponent<TileMonster>().isMatched = true;
 
         if (!currentMatches.Contains(secondTile))
         {
             currentMatches.Add(secondTile);
         }
-        secondTile.GetComponent<Tile>().isMatched = true;
+        secondTile.GetComponent<TileMonster>().isMatched = true;
         if (!currentMatches.Contains(currentTile))
         {
             currentMatches.Add(currentTile);
         }
-        currentTile.GetComponent<Tile>().isMatched = true;
+        currentTile.GetComponent<TileMonster>().isMatched = true;
     }
 }

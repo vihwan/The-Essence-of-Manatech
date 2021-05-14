@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public enum MonsterKinds
 {
     M_One,
@@ -14,15 +13,14 @@ public enum MonsterKinds
     M_Six
 }
 
-
 public class TileMonster : MonoBehaviour
 {
-
     #region Field Variable
 
     //고유 정보
     [Header("Tile Variables")]
     [SerializeField] private int row;
+
     [SerializeField] private int col;
 
     public float targetX; //이동시 목표 지점 x좌표
@@ -32,10 +30,9 @@ public class TileMonster : MonoBehaviour
 
     //상태변수
     public bool isMatched = false;
+
     public bool isShifting = false;
     public bool canShifting = false;
-
-
 
     //Vector
     private Vector2 tempPosition;
@@ -45,7 +42,7 @@ public class TileMonster : MonoBehaviour
     //Component
     private Image image;
 
-    private FindMatches findMatches;
+    private FindMatchesMonster findMatchesMonster;
 
     //Property
     public int Row { get => row; set => row = value; }
@@ -58,7 +55,7 @@ public class TileMonster : MonoBehaviour
     private void Start()
     {
         image = GetComponent<Image>();
-        findMatches = FindObjectOfType<FindMatches>();
+        findMatchesMonster = FindObjectOfType<FindMatchesMonster>();
 
         SetCharacterTileTag();
         isMatched = false;
@@ -97,7 +94,6 @@ public class TileMonster : MonoBehaviour
             return;
     }
 
-
     // Update is called once per frame
     private void Update()
     {
@@ -122,20 +118,20 @@ public class TileMonster : MonoBehaviour
             isShifting = true;
             tempPosition = new Vector2(targetX, targetY);
             transform.position = Vector2.Lerp(transform.position, tempPosition, .2f);
-            if (BoardManager.instance.characterTilesBox[Row, Col] != this.gameObject)
+            if (BoardManagerMonster.instance.monsterTilesBox[Row, Col] != this.gameObject)
             {
-                BoardManager.instance.characterTilesBox[Row, Col] = this.gameObject;
+                BoardManagerMonster.instance.monsterTilesBox[Row, Col] = this.gameObject;
             }
-            //findMatches.FindAllMatches();
         }
         else
         {   //타일 위치 이동 완료
             transform.position = new Vector2(targetX, targetY);
             //저장되어있는 characterTile의 정보를 바꾸기
-            BoardManager.instance.characterTilesBox[Row, Col] = gameObject;
+            BoardManagerMonster.instance.monsterTilesBox[Row, Col] = gameObject;
             gameObject.name = "S Monster [" + Row + ", " + Col + "]";
             isShifting = false;
             canShifting = false;
+            findMatchesMonster.FindAllMatches();
         }
     }
 
@@ -208,7 +204,6 @@ public class TileMonster : MonoBehaviour
             otherCharacterTile = null;
         }
     }
-
 
     public void SetArrNumber(int x, int y)
     {

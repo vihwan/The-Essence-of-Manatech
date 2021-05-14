@@ -155,6 +155,7 @@ public class BoardManager : MonoBehaviour
             findMatches.currentMatches.Remove(characterTilesBox[row, col]);
 
             #region 파괴 이펙트
+
             //GameObject flashEffect = Instantiate(Resources.Load<GameObject>("FlashEffect")
             //                                    , characterTilesBox[row, col].GetComponent<Tile>().transform.position
             //                                    , Quaternion.identity);
@@ -293,8 +294,6 @@ public class BoardManager : MonoBehaviour
                 DestroyMatches();
         }
     }
-
-
 
     //타일의 스프라이트를 입혀주는 함수. 스프라이트에 따라 타일의 속성(태그)가 바뀐다. (Tile Class)
     private void CreateTileSprite(int col, GameObject gameObject, Sprite[] previousLeft, ref Sprite previousBelow)
@@ -436,15 +435,12 @@ public class BoardManager : MonoBehaviour
         //타일을 섞어줘도 데드락이면 한번 더 실행
         if (IsDeadlocked())
         {
-
             Invoke(nameof(ShuffleBoard), 1f);
         }
         //아니면 매칭된 타일 파괴 한번 하기
         else
             DestroyMatches();
     }
-
-
 
     // 2번 변이파리채 함수
     public void ChangeTile()
@@ -498,13 +494,13 @@ public class BoardManager : MonoBehaviour
             newChangeTile.gameObject.name = "ChangeTile [" + row + ", " + col + "]";
             characterTilesBox[row, col] = newChangeTile;
 
-
             #region 타일 변환 확인 이펙트 (디버그)
+
             FlashEffect flashEffect = ObjectPool.GetFlashEffectObject(transform);
             flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
             flashEffect.RemoveEffect();
-            #endregion
 
+            #endregion 타일 변환 확인 이펙트 (디버그)
 
             Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
             newChangeTile.gameObject.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
@@ -513,7 +509,6 @@ public class BoardManager : MonoBehaviour
         //타일이 전부 바뀌면 매칭 검사를 한번 한다.
         findMatches.FindAllMatches();
         Invoke(nameof(WaitFindCoroutine), 1f);
-
     }
 
     // 4번 스킬 함수 - 잭오할로윈 타일을 생성
@@ -592,7 +587,6 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
-
 
     //타일들의 상태가 하나라도 Shifting이면 PlayerState는 WAIT인 함수
     private void CanMovePlayerState()
