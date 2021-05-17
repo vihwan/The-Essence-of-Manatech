@@ -26,6 +26,7 @@ public class GUIManager : MonoBehaviour
     public bool isPauseTime = false;
 
     private AlertText alertText;
+    private MonsterStatusController monsterStatusController;
 
     //프로퍼티
     public float Score
@@ -66,6 +67,10 @@ public class GUIManager : MonoBehaviour
         alertText = FindObjectOfType<AlertText>();
         if (alertText != null)
             alertText.Init();
+
+        monsterStatusController = FindObjectOfType<MonsterStatusController>();
+        if (monsterStatusController != null)
+            monsterStatusController.Init();
     }
 
     private void Update()

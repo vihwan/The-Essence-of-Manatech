@@ -115,7 +115,7 @@ public class SkillManager : MonoBehaviour
     //스킬 사용 여부를 확인. 마나와 쿨타임을 비교한다.
     private bool CheckSkillUse(string text, int btnNum)
     {
-        if (skillGauge.UseSkillGauge(ActSkillDic[text].Mana) && skillBtns[btnNum].UseSpell(ActSkillDic[text].CoolTime))
+        if (skillGauge.UseMp(ActSkillDic[text].Mana) && skillBtns[btnNum].UseSpell(ActSkillDic[text].CoolTime))
         {
             return true;
         }

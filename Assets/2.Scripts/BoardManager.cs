@@ -53,6 +53,7 @@ public class BoardManager : MonoBehaviour
     private CreateBackTiles createBoard;
     private ComboSystem comboSystem;
     private SkillGauge skillGauge;
+    private MonsterStatusController monsterStatusController;
 
     private List<RC> randomSelectList = new List<RC>();
 
@@ -67,6 +68,7 @@ public class BoardManager : MonoBehaviour
         createBoard = FindObjectOfType<CreateBackTiles>();
         comboSystem = FindObjectOfType<ComboSystem>();
         skillGauge = FindObjectOfType<SkillGauge>();
+        monsterStatusController = FindObjectOfType<MonsterStatusController>();
 
         characterTilesBox = new GameObject[width, height];
 
@@ -151,7 +153,8 @@ public class BoardManager : MonoBehaviour
     {
         if (characterTilesBox[row, col].GetComponent<Tile>().isMatched)
         {
-            skillGauge.GainSkillGauge(); //타일 파괴시 스킬 게이지 획득
+            monsterStatusController.DecreaseHP(3f);
+            skillGauge.IncreaseMp(1f * findMatches.currentMatches.Count); //타일 파괴시 스킬 게이지 획득
             findMatches.currentMatches.Remove(characterTilesBox[row, col]);
 
             #region 파괴 이펙트
@@ -173,6 +176,7 @@ public class BoardManager : MonoBehaviour
             characterTilesBox[row, col] = null;
 
             ScoreManager.instance.GetScore();
+ 
         }
     }
 

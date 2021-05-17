@@ -33,6 +33,7 @@ public class BoardManagerMonster : MonoBehaviour
 
     private FindMatchesMonster findMatchesMonster;
     private CreateBackTilesMonster createBoardMonster;
+    private MonsterStatusController monsterStatusController;
     private Vector2 moveDirF;
 
     public void Init()
@@ -40,6 +41,8 @@ public class BoardManagerMonster : MonoBehaviour
         instance = GetComponent<BoardManagerMonster>();
         findMatchesMonster = FindObjectOfType<FindMatchesMonster>();
         createBoardMonster = FindObjectOfType<CreateBackTilesMonster>();
+        monsterStatusController = FindObjectOfType<MonsterStatusController>();
+
 
         monsterTilesBox = new GameObject[width, height];
         Vector2 offset = monsterTilePrefab.GetComponent<RectTransform>().rect.size;
@@ -258,6 +261,7 @@ public class BoardManagerMonster : MonoBehaviour
     {
         if (monsterTilesBox[row, col].GetComponent<TileMonster>().isMatched)
         {
+            monsterStatusController.IncreaseMp(1f * findMatchesMonster.currentMatches.Count); //타일 파괴시 스킬 게이지 획득
             findMatchesMonster.currentMatches.Remove(monsterTilesBox[row, col]);
 
             #region 파괴 이펙트

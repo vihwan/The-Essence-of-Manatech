@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     private CreateBackTilesMonster createBoardMonster;
     private ComboSystem comboSystem;
     private SkillManager skillManager;
+    private MonsterAI monsterAI;
 
     private void Awake()
     {
@@ -75,6 +76,10 @@ public class GameManager : MonoBehaviour
         skillManager = FindObjectOfType<SkillManager>();
         if (skillManager != null)
             skillManager.Init();
+
+        monsterAI = FindObjectOfType<MonsterAI>();
+        if (monsterAI != null)
+            monsterAI.Init();
     }
 
     private void Update()

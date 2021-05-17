@@ -11,14 +11,14 @@ public class SkillLevelSystem : MonoBehaviour
     List<ActiveSkill> activeSkills;
     List<PassiveSkill> passiveSkills;
 
-    private SkillConversion skillConversion;
+    private SkillConversionData skillConversion;
     TestSkillLevelText testSkillLevelText;
 
     public void Init()
     {
         activeSkills = SkillManager.instance.ActSkillDic.Values.ToList();
         passiveSkills = SkillManager.instance.PasSkillDic.Values.ToList();
-        skillConversion = new SkillConversion();
+        skillConversion = new SkillConversionData();
         testSkillLevelText = FindObjectOfType<TestSkillLevelText>();
         CreateCustomBtn();
     }
