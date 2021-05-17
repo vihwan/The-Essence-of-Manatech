@@ -70,6 +70,7 @@
     <Compile Include="Assets\2.Scripts\ComboSystem.cs" />
     <Compile Include="Assets\2.Scripts\CreateBackTiles.cs" />
     <Compile Include="Assets\2.Scripts\CreateBackTilesMonster.cs" />
+    <Compile Include="Assets\2.Scripts\Effect\BombEffect.cs" />
     <Compile Include="Assets\2.Scripts\Effect\FlashEffect.cs" />
     <Compile Include="Assets\2.Scripts\Effect\FlashEffectMonster.cs" />
     <Compile Include="Assets\2.Scripts\Effect\HintEffect.cs" />

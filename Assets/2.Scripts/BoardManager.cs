@@ -153,7 +153,6 @@ public class BoardManager : MonoBehaviour
     {
         if (characterTilesBox[row, col].GetComponent<Tile>().isMatched)
         {
-            monsterStatusController.DecreaseHP(3f);
             skillGauge.IncreaseMp(1f * findMatches.currentMatches.Count); //타일 파괴시 스킬 게이지 획득
             findMatches.currentMatches.Remove(characterTilesBox[row, col]);
 
@@ -172,11 +171,17 @@ public class BoardManager : MonoBehaviour
 
             #endregion 파괴 이펙트
 
+            GameObject missile = Instantiate(Resources.Load<GameObject>("MissileEffect")
+                                                , characterTilesBox[row, col].GetComponent<Tile>().transform.position
+                                                , Quaternion.identity);
+            missile.GetComponent<Image>().sprite = characterTilesBox[row, col].GetComponent<Image>().sprite;
+            missile.transform.SetParent(transform);
+            Destroy(missile, 10f);
+
             Destroy(characterTilesBox[row, col].gameObject);
             characterTilesBox[row, col] = null;
 
             ScoreManager.instance.GetScore();
- 
         }
     }
 

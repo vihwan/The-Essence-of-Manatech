@@ -14,21 +14,26 @@ public class ObjectPool : MonoBehaviour
     Queue<FlashEffect> flashEffect_OP = new Queue<FlashEffect>();
     //힌트 이펙트들을 담는 큐
     Queue<FlashEffectMonster> flashEffectMon_OP = new Queue<FlashEffectMonster>();
- 
+    Queue<BombEffect> bombEffects_OP = new Queue<BombEffect>();
+
 
     private void Awake()
     {
         Instance = this;
 
-        Initialize(20);
+        Initialize(20, 10);
     }
 
-    private void Initialize(int count)
+    private void Initialize(int count,int count2)
     {
         for (int i = 0; i < count; i++)
         {
             flashEffect_OP.Enqueue(CreateNewFlashObject());
             flashEffectMon_OP.Enqueue(CreateNewFlashMonObject());
+        }
+        for (int i = 0; i < count2; i++)
+        {
+            bombEffects_OP.Enqueue(CreateNewBombEffectObject());
         }
     }
 
@@ -36,8 +41,8 @@ public class ObjectPool : MonoBehaviour
     //폭발 이펙트 생성
     private FlashEffect CreateNewFlashObject()
     {
-        FlashEffect newObj = Instantiate(Resources.Load<FlashEffect>("FlashEffect"), 
-                                 transform.position, 
+        FlashEffect newObj = Instantiate(Resources.Load<FlashEffect>("FlashEffect"),
+                                 transform.position,
                                  Quaternion.identity)
                      .GetComponent<FlashEffect>();
         newObj.gameObject.SetActive(false);
@@ -56,6 +61,15 @@ public class ObjectPool : MonoBehaviour
         return newObj;
     }
 
+    private BombEffect CreateNewBombEffectObject()
+    {
+        BombEffect newObj = Instantiate(Resources.Load<BombEffect>("BombEffect"),
+                                 transform.position,
+                                 Quaternion.identity)
+                     .GetComponent<BombEffect>();
+        newObj.transform.SetParent(transform);
+        return newObj;
+    }
 
 
     public static FlashEffect GetFlashEffectObject(Transform t)
@@ -105,6 +119,26 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
+    public static BombEffect GetBombEffectObject(Transform t)
+    {
+        //오브젝트 풀에 잔여 오브젝트가 있으면
+        //그대로 가져다 쓰기
+        if (Instance.bombEffects_OP.Count > 0)
+        {
+            var obj = Instance.bombEffects_OP.Dequeue();
+            obj.gameObject.SetActive(true);
+            obj.transform.SetParent(t);
+            return obj;
+        }
+        else
+        //없으면 새로 만들어서 가져다쓰기
+        {
+            var newObj = Instance.CreateNewBombEffectObject();
+            newObj.gameObject.SetActive(true);
+            newObj.transform.SetParent(t);
+            return newObj;
+        }
+    }
 
     public static void ReturnObject(GameObject obj)
     {
@@ -118,5 +152,12 @@ public class ObjectPool : MonoBehaviour
         obj.gameObject.SetActive(false);
         obj.transform.SetParent(Instance.transform);
         Instance.flashEffectMon_OP.Enqueue(obj.GetComponent<FlashEffectMonster>());
+    }
+
+    public static void ReturnObjectBomb(GameObject obj)
+    {
+        obj.gameObject.SetActive(false);
+        obj.transform.SetParent(Instance.transform);
+        Instance.bombEffects_OP.Enqueue(obj.GetComponent<BombEffect>());
     }
 }
