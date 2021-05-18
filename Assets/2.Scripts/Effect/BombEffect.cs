@@ -18,7 +18,7 @@ public class BombEffect : MonoBehaviour
 
     private void DestroyEffect()
     {
-        ObjectPool.ReturnObjectBomb(this.gameObject);
+        ObjectPool.ReturnObjectToPool<BombEffect>(this.gameObject);
     }
 
 

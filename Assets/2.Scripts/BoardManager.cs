@@ -165,9 +165,9 @@ public class BoardManager : MonoBehaviour
             //Destroy(flashEffect, .5f);
 
             //TODO : ObjectPool Test
-            FlashEffect flashEffect = ObjectPool.GetFlashEffectObject(transform);
+            GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform,"FlashEffect");
             flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
-            flashEffect.RemoveEffect();
+            flashEffect.GetComponent<FlashEffect>().RemoveEffect();
 
             #endregion 파괴 이펙트
 
@@ -505,9 +505,9 @@ public class BoardManager : MonoBehaviour
 
             #region 타일 변환 확인 이펙트 (디버그)
 
-            FlashEffect flashEffect = ObjectPool.GetFlashEffectObject(transform);
+            GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform,"FlashEffect");
             flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
-            flashEffect.RemoveEffect();
+            flashEffect.GetComponent<FlashEffect>().RemoveEffect();
 
             #endregion 타일 변환 확인 이펙트 (디버그)
 

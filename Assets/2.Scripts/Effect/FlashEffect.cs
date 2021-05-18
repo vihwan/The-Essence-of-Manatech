@@ -17,6 +17,6 @@ public class FlashEffect : MonoBehaviour
 
     private void DestroyEffect()
     {
-        ObjectPool.ReturnObject(this.gameObject);
+        ObjectPool.ReturnObjectToPool<FlashEffect>(this.gameObject);
     }
 }

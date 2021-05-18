@@ -37,7 +37,7 @@ public class SaveAndLoad : MonoBehaviour
 
         File.WriteAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME, savejson);
 
-        Debug.Log("저장 완료");
+        Debug.Log("스킬 데이터 저장 완료");
         Debug.Log(savejson);
     }
 

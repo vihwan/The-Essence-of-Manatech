@@ -267,9 +267,9 @@ public class BoardManagerMonster : MonoBehaviour
             #region 파괴 이펙트
 
             //TODO : ObjectPool Test
-            FlashEffectMonster flashMon = ObjectPool.GetFlashEffectMonObject(transform);
+            GameObject flashMon = ObjectPool.GetObjectPoolEffect<FlashEffectMonster>(transform,"FlashEffect_Devastar");
             flashMon.transform.position = monsterTilesBox[row, col].GetComponent<TileMonster>().transform.position;
-            flashMon.RemoveEffect();
+            flashMon.GetComponent<FlashEffectMonster>().RemoveEffect();
 
             #endregion 파괴 이펙트
 

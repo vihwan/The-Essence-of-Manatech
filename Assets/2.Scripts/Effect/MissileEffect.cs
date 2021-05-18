@@ -103,9 +103,9 @@ public class MissileEffect : MonoBehaviour
 
     public void CreateBombEffect(AttackColor attackColor, Vector3 position)
     {
-        BombEffect bombEffect = ObjectPool.GetBombEffectObject(transform);
+        GameObject bombEffect = ObjectPool.GetBombEffectObject(transform);
         bombEffect.transform.position = position;
-        bombEffect.RemoveEffect();
+        bombEffect.GetComponent<BombEffect>().RemoveEffect();
 
         switch (attackColor)
         {
