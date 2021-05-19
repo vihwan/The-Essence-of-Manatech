@@ -567,7 +567,7 @@ public class BoardManager : MonoBehaviour
             newJackBomb.GetComponent<Tile>().targetY = newPositionY;
             newJackBomb.transform.SetParent(transform);
             newJackBomb.gameObject.name = "Bomb [" + row + ", " + col + "]";
-            newJackBomb.GetComponent<Image>().sprite = Resources.Load<Sprite>("Bomb");
+            newJackBomb.GetComponent<Image>().sprite = Resources.Load<Sprite>("7잭오할로윈");
             characterTilesBox[row, col] = newJackBomb;
         }
     }

@@ -1390,13 +1390,12 @@ MonoBehaviour:
   width: 8
   height: 8
   characters:
-  - {fileID: 21300000, guid: 35c4fe164056d8a479cebcb3df5b2d9d, type: 3}
-  - {fileID: 21300000, guid: d052eb75586182c419c83b6a12cef1e0, type: 3}
-  - {fileID: 21300000, guid: a5b85df169634cf4a875ad83d20d84c6, type: 3}
-  - {fileID: 21300000, guid: 1a575eafbcd2ee3409a43c3bcb7a1aac, type: 3}
-  - {fileID: 21300000, guid: f012f82c49ee74044abe03f43e178669, type: 3}
-  - {fileID: 21300000, guid: 9cc18523f9e2ef04a9c5baeda40d92e4, type: 3}
-  - {fileID: 21300000, guid: 10408a5d7829e6c418b9dad08502ccd3, type: 3}
+  - {fileID: 21300000, guid: d2f0536dbac75be43a4a95271d3b0d80, type: 3}
+  - {fileID: 21300000, guid: af599a74fafece94292aef90132450b6, type: 3}
+  - {fileID: 21300000, guid: 5257a69042d601342815ae19e5de8ef0, type: 3}
+  - {fileID: 21300000, guid: 5503cdc37fc0f0c4fb7ef0afc339de2d, type: 3}
+  - {fileID: 21300000, guid: ccbe2d6484b1b184db2be1cb43ea1ace, type: 3}
+  - {fileID: 21300000, guid: a94afad2f6c6046429ee0394d492fd90, type: 3}
   characterTilePrefab: {fileID: 8874649959314379597, guid: 9456164d537e06d4c9517c7e8084d3c4,
     type: 3}
   currentState: 1

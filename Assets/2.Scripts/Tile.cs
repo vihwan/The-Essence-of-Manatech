@@ -75,27 +75,27 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     //캐릭터 타일의 태그를 설정해주는 함수
     private void SetCharacterTileTag()
     {
-        if (image.sprite.name == "JackFrost")
+        if (image.sprite.name == "2잭프로스트")
         {
             gameObject.tag = CharacterKinds.Frost.ToString();
         }
-        else if (image.sprite.name == "JackOLantern")
+        else if (image.sprite.name == "3잭오랜턴")
         {
             gameObject.tag = CharacterKinds.Lantern.ToString();
         }
-        else if (image.sprite.name == "FluoreSang")
+        else if (image.sprite.name == "1플로레")
         {
             gameObject.tag = CharacterKinds.Fluore.ToString();
         }
-        else if (image.sprite.name == "PlutoNyang")
+        else if (image.sprite.name == "4플루토")
         {
             gameObject.tag = CharacterKinds.Pluto.ToString();
         }
-        else if (image.sprite.name == "characters_0001")
+        else if (image.sprite.name == "5망치")
         {
             gameObject.tag = CharacterKinds.test1.ToString();
         }
-        else if (image.sprite.name == "characters_0003")
+        else if (image.sprite.name == "6스패너")
         {
             gameObject.tag = CharacterKinds.test2.ToString();
         }
@@ -103,7 +103,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             gameObject.tag = CharacterKinds.test3.ToString();
         }
-        else if (image.sprite.name == "Bomb")
+        else if (image.sprite.name == "7잭오할로윈")
         {
             gameObject.tag = CharacterKinds.Bomb.ToString();
         }
