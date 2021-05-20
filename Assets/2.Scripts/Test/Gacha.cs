@@ -21,6 +21,7 @@ public class Gacha : MonoBehaviour
     public int uniqueCount;
     public int legendaryCount;
 
+    private DevaSkill1 devaSkill1;
 
     public void TestGacha()
     {
@@ -54,6 +55,20 @@ public class Gacha : MonoBehaviour
             {
                 GetLegendary();
             }     
+        }
+
+        devaSkill1 = FindObjectOfType<DevaSkill1>();
+        if (devaSkill1 != null)
+        {
+            devaSkill1.go_List.Clear();
+        }
+
+        for (int x = 0; x < BoardManager.instance.width; x++)
+        {
+            for (int y = 0; y < BoardManager.instance.height; y++)
+            {
+                BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>().isSealed = false;
+            }
         }
     }
 

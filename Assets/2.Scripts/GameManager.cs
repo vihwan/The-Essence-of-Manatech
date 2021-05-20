@@ -103,6 +103,7 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.StopBGM();
         SoundManager.instance.PlaySE("DungeonResult");
         boardManager = null; //보드 매니저 비활성화
+        boardManagerMonster = null;
     }
 
     // Load a scene with a specified string name

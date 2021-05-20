@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum MonsterState
-{
-    WAIT,
-    MOVE
-}
-
 internal class MoveTo
 {
     public GameObject pickUpTile;
@@ -34,6 +28,7 @@ public class BoardManagerMonster : MonoBehaviour
     private FindMatchesMonster findMatchesMonster;
     private CreateBackTilesMonster createBoardMonster;
     private MonsterStatusController monsterStatusController;
+    private DevaSkill1 devaSkill1;
     private Vector2 moveDirF;
 
     public void Init()
@@ -42,6 +37,7 @@ public class BoardManagerMonster : MonoBehaviour
         findMatchesMonster = FindObjectOfType<FindMatchesMonster>();
         createBoardMonster = FindObjectOfType<CreateBackTilesMonster>();
         monsterStatusController = FindObjectOfType<MonsterStatusController>();
+        devaSkill1 = FindObjectOfType<DevaSkill1>();
 
 
         monsterTilesBox = new GameObject[width, height];
@@ -385,6 +381,25 @@ public class BoardManagerMonster : MonoBehaviour
                 }
             }
         }
+
+        if (devaSkill1.isRemainTimeUpdate == true)
+        {
+            currentState = MonsterState.USESKILL;
+            return;
+        }
+
+        if (currentState == MonsterState.GROGGY)
+            return;
+
         currentState = MonsterState.MOVE;
+    }
+
+    public bool IsMoveState()
+    {
+        if (currentState == MonsterState.WAIT)
+        {
+            return false;
+        }
+        return true;
     }
 }

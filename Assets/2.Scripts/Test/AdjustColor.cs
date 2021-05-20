@@ -14,7 +14,7 @@ public class AdjustColor : MonoBehaviour
         Inverse
     }
 
-    private ColorState colorState = ColorState.None;
+    //private ColorState colorState = ColorState.None;
 
     // Start is called before the first frame update
     void Start()

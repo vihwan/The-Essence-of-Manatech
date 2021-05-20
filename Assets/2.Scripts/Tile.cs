@@ -32,18 +32,21 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private int previousCol; //타일 이동시 이전 Col 임시저장
     private float swapAngle; //마우스 조작 방향
 
-    //상태변수
-    public bool isMatched = false;
+    private Tile previousTile;
+    private GameObject currentTile_GO;
+    private GameObject otherCharacterTile;
 
+    //상태변수
+
+    public bool isMatched = false;
     public bool isShifting = false;
     public bool canShifting = false;
+    public bool isSealed = false; // 데바스타르 인간 스킬을 당한 상태인가?
 
     //Vector
     private Vector2 firstTouchPosition;
-
     private Vector2 secondTouchPosition;
     private Vector2 tempPosition;
-    private GameObject otherCharacterTile;
 
     //Component
     private Image image;
@@ -65,6 +68,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         findMatches = FindObjectOfType<FindMatches>();
         comboSystem = FindObjectOfType<ComboSystem>();
         hintManager = FindObjectOfType<HintManager>();
+        previousTile = GetComponent<Tile>();
 
         SetCharacterTileTag();
         isMatched = false;
@@ -136,6 +140,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
+
             //만약 클릭한 타일이 폭탄이라면 폭탄 실행
             if (eventData.pointerCurrentRaycast.gameObject.CompareTag("Bomb"))
             {
@@ -143,6 +148,14 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 BoardManager.instance.DestroyMatches();
                 return;
             }
+
+            if (eventData.pointerCurrentRaycast.gameObject.GetComponent<Tile>().isSealed)
+            {
+                Debug.Log("<color=#E36250>봉인당한 타일</color>은 옮겨지지 않습니다.");
+                previousTile = eventData.pointerCurrentRaycast.gameObject.GetComponent<Tile>();
+                return;
+            }
+
             firstTouchPosition = eventData.pointerCurrentRaycast.gameObject.transform.position;
             SoundManager.instance.PlaySE("Select");
             //Debug.Log("선택한 타일 : " + eventData.pointerCurrentRaycast.gameObject);
@@ -155,13 +168,33 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
-            if (eventData.pointerCurrentRaycast.gameObject != null)
+            currentTile_GO = eventData.pointerCurrentRaycast.gameObject;
+
+            if (currentTile_GO != null)
             {
                 //만약 바꾸고 싶은 타일이 폭탄이라면
-                if (eventData.pointerCurrentRaycast.gameObject.CompareTag("Bomb"))
+                if (currentTile_GO.CompareTag("Bomb"))
                 {
                     //옮기지 못한다!!!
                     Debug.Log("<color=#C86200>폭탄은 옮겨지지 않습니다.</color>");
+                    return;
+                }
+
+                if (!currentTile_GO.GetComponent<Tile>().isSealed)
+                {
+                    if (previousTile != null)
+                    {
+                        if (previousTile.isSealed)
+                        {
+                            Debug.Log("<color=#E36250>봉인당한 타일</color>은 옮겨지지 않습니다.");
+                            previousTile = null;
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.Log("<color=#E36250>봉인당한 타일</color>은 옮겨지지 않습니다.");
                     return;
                 }
 

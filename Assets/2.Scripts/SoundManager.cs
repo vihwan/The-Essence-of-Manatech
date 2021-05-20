@@ -25,6 +25,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource audioSourceBGM; //배경음악은 하나만 있어도 되니 배열이 아님
     public Sound[] effectSounds;  //효과음 클립들을 저장하는 배열
     public Sound[] bgmSounds;     //배경음 클립들을 저장하는 배열
+    public Sound[] voiceSounds;
 
     public string[] playSoundName; //현재 실행중인 클립의 이름들을 보관하는 배열
 
@@ -73,6 +74,30 @@ public class SoundManager : MonoBehaviour
         }
         Debug.Log(name + "사운드가 SoundManager에 등록되어있지 않습니다.");
     }
+
+    public void PlayCV(string _name)
+    {
+        for (int i = 0; i < voiceSounds.Length; i++)
+        {
+            if (voiceSounds[i].name == _name)
+            {
+                for (int j = 0; j < audioSourceEffects.Length; j++)
+                {
+                    if (!audioSourceEffects[j].isPlaying)
+                    {
+                        playSoundName[j] = voiceSounds[i].name;
+                        audioSourceEffects[j].clip = voiceSounds[i].clip;
+                        audioSourceEffects[j].Play();
+                        return;
+                    }
+                }
+                Debug.Log("모든 가용 AudioSource가 사용중입니다.");
+                return;
+            }
+        }
+        Debug.Log(name + "사운드가 SoundManager에 등록되어있지 않습니다.");
+    }
+
 
     //배경음 재생
     public void PlayBGM(string _name)

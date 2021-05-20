@@ -52,8 +52,9 @@ public class BoardManager : MonoBehaviour
     private FindMatches findMatches;
     private CreateBackTiles createBoard;
     private ComboSystem comboSystem;
-    private SkillGauge skillGauge;
+    private PlayerStatusController skillGauge;
     private MonsterStatusController monsterStatusController;
+    private DevaSkill1 devaSkill1;
 
     private List<RC> randomSelectList = new List<RC>();
 
@@ -67,21 +68,22 @@ public class BoardManager : MonoBehaviour
         findMatches = FindObjectOfType<FindMatches>();
         createBoard = FindObjectOfType<CreateBackTiles>();
         comboSystem = FindObjectOfType<ComboSystem>();
-        skillGauge = FindObjectOfType<SkillGauge>();
+        skillGauge = FindObjectOfType<PlayerStatusController>();
         monsterStatusController = FindObjectOfType<MonsterStatusController>();
+        devaSkill1 = FindObjectOfType<DevaSkill1>();
 
         characterTilesBox = new GameObject[width, height];
 
         Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().rect.size;
         CreateTiles(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
         SoundManager.instance.PlayBGM("데바스타르");
-        SoundManager.instance.audioSourceBGM.mute = true;
-        SoundManager.instance.audioSourceBGM.volume = .15f;
+        //SoundManager.instance.audioSourceBGM.mute = true;
+        SoundManager.instance.audioSourceBGM.volume = .3f;
     }
 
     private void Update()
     {
-        CanMovePlayerState();
+        CheckMovePlayerState();
         PrintBoardState();
     }
 
@@ -165,7 +167,7 @@ public class BoardManager : MonoBehaviour
             //Destroy(flashEffect, .5f);
 
             //TODO : ObjectPool Test
-            GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform,"FlashEffect");
+            GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform, "FlashEffect");
             flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
             flashEffect.GetComponent<FlashEffect>().RemoveEffect();
 
@@ -505,7 +507,7 @@ public class BoardManager : MonoBehaviour
 
             #region 타일 변환 확인 이펙트 (디버그)
 
-            GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform,"FlashEffect");
+            GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform, "FlashEffect");
             flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
             flashEffect.GetComponent<FlashEffect>().RemoveEffect();
 
@@ -598,7 +600,7 @@ public class BoardManager : MonoBehaviour
     }
 
     //타일들의 상태가 하나라도 Shifting이면 PlayerState는 WAIT인 함수
-    private void CanMovePlayerState()
+    private void CheckMovePlayerState()
     {
         for (int x = 0; x < width; x++)
         {
@@ -607,7 +609,7 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[x, y] != null)
                 {
                     Tile movingTile = characterTilesBox[x, y].GetComponent<Tile>();
-                    if (movingTile.isShifting || movingTile.isMatched || movingTile.canShifting)
+                    if (movingTile.isShifting || movingTile.isMatched || movingTile.canShifting || hasEmptyTile())
                     {
                         currentState = PlayerState.WAIT;
                         return;
@@ -615,6 +617,13 @@ public class BoardManager : MonoBehaviour
                 }
             }
         }
+
+        if (devaSkill1.isUsingSkill || devaSkill1.isBerserk)
+        {
+            currentState = PlayerState.WAIT;
+            return;
+        }
+
         currentState = PlayerState.MOVE;
     }
 
@@ -626,4 +635,20 @@ public class BoardManager : MonoBehaviour
         }
         return true;
     }
+    
+    private bool hasEmptyTile()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (characterTilesBox[x, y] == null)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

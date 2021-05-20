@@ -21,7 +21,7 @@ public class SkillManager : MonoBehaviour
 
     //Component
 
-    private SkillGauge skillGauge;
+    private PlayerStatusController playerStatusController;
     private HintManager hintManager;
     private SaveAndLoad saveAndLoad;
     private TestSkillLevelText testSkillLevelText;
@@ -39,10 +39,10 @@ public class SkillManager : MonoBehaviour
         }
 
 
-        skillGauge = GetComponent<SkillGauge>();
-        if (skillGauge != null)
+        playerStatusController = FindObjectOfType<PlayerStatusController>();
+        if (playerStatusController != null)
         {
-            skillGauge.Init();
+            playerStatusController.Init();
         }
 
         SkillButton[] btns = GetComponentsInChildren<SkillButton>(true);
@@ -115,7 +115,7 @@ public class SkillManager : MonoBehaviour
     //스킬 사용 여부를 확인. 마나와 쿨타임을 비교한다.
     private bool CheckSkillUse(string text, int btnNum)
     {
-        if (skillGauge.UseMp(ActSkillDic[text].Mana) && skillBtns[btnNum].UseSpell(ActSkillDic[text].CoolTime))
+        if (playerStatusController.UseMp(ActSkillDic[text].Mana) && skillBtns[btnNum].UseSpell(ActSkillDic[text].CoolTime))
         {
             return true;
         }

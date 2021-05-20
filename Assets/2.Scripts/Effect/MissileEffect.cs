@@ -92,8 +92,11 @@ public class MissileEffect : MonoBehaviour
                 CreateBombEffect(attackColor, transform.position);
 
                 MonsterStatusController mon = FindObjectOfType<MonsterStatusController>();
-                if (mon != null)
+                if (mon != null) { 
                     mon.DecreaseHP(3f);
+                    if (BoardManagerMonster.instance.currentState == MonsterState.GROGGY)
+                        mon.DecreaseHP(4.5f);
+                }
 
                 this.gameObject.GetComponent<Image>().enabled = false;
                 isUpdate = false;
