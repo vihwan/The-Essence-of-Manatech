@@ -158,33 +158,115 @@ public class BoardManager : MonoBehaviour
             skillGauge.IncreaseMp(1f * findMatches.currentMatches.Count); //타일 파괴시 스킬 게이지 획득
             findMatches.currentMatches.Remove(characterTilesBox[row, col]);
 
-            #region 파괴 이펙트
 
-            //GameObject flashEffect = Instantiate(Resources.Load<GameObject>("FlashEffect")
-            //                                    , characterTilesBox[row, col].GetComponent<Tile>().transform.position
-            //                                    , Quaternion.identity);
-            //flashEffect.transform.SetParent(transform);
-            //Destroy(flashEffect, .5f);
+            CreateDestroyEffect(row, col);
 
-            //TODO : ObjectPool Test
-            GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform, "FlashEffect");
-            flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
-            flashEffect.GetComponent<FlashEffect>().RemoveEffect();
+            //주변에 봉인된 타일이 있는지 체크
+            CheckNearSealedTile(row, col);
 
-            #endregion 파괴 이펙트
-
-            GameObject missile = Instantiate(Resources.Load<GameObject>("MissileEffect")
-                                                , characterTilesBox[row, col].GetComponent<Tile>().transform.position
-                                                , Quaternion.identity);
-            missile.GetComponent<Image>().sprite = characterTilesBox[row, col].GetComponent<Image>().sprite;
-            missile.transform.SetParent(transform);
-            Destroy(missile, 10f);
-
+            if (characterTilesBox[row, col].transform.childCount > 0)
+            {
+                devaSkill1.go_List.Remove(characterTilesBox[row, col].GetComponentInChildren<SealedEffect>().gameObject);
+            }
             Destroy(characterTilesBox[row, col].gameObject);
             characterTilesBox[row, col] = null;
 
             ScoreManager.instance.GetScore();
         }
+    }
+
+    private void CreateDestroyEffect(int row, int col)
+    {
+        #region 파괴 이펙트
+        GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform, "FlashEffect");
+        flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
+        flashEffect.GetComponent<FlashEffect>().RemoveEffect();
+
+        #endregion 파괴 이펙트
+
+        #region 미사일 이펙트
+        GameObject missile = Instantiate(Resources.Load<GameObject>("MissileEffect")
+                                            , characterTilesBox[row, col].GetComponent<Tile>().transform.position
+                                            , Quaternion.identity);
+        missile.GetComponent<Image>().sprite = characterTilesBox[row, col].GetComponent<Image>().sprite;
+        missile.transform.SetParent(transform);
+        Destroy(missile, 10f);
+        #endregion
+    }
+
+    private void CheckNearSealedTile(int row, int col)
+    {
+        //만약 파괴할 타일 상하좌우에 봉인된 타일이 있다면 그 또한 파괴
+        //파괴하면서 데바스타르 Go_List 를 지워줘야한다. 
+
+        //왼쪽
+        if (CheckIndexOutOfRange(row - 1, col))
+        {
+            if (characterTilesBox[row - 1, col] != null)
+            {
+                if (characterTilesBox[row - 1, col].GetComponent<Tile>().isSealed)
+                {
+                    CreateDestroyEffect(row - 1, col);
+                    devaSkill1.go_List.Remove(characterTilesBox[row - 1, col].GetComponentInChildren<SealedEffect>().gameObject);
+                    Destroy(characterTilesBox[row - 1, col].gameObject);
+                    characterTilesBox[row - 1, col] = null;
+                }
+            }
+        }
+
+        //오른쪽
+        if (CheckIndexOutOfRange(row + 1, col))
+        {
+            if (characterTilesBox[row + 1, col] != null)
+            {
+                if (characterTilesBox[row + 1, col].GetComponent<Tile>().isSealed)
+                {
+                    CreateDestroyEffect(row + 1, col);
+                    devaSkill1.go_List.Remove(characterTilesBox[row + 1, col].GetComponentInChildren<SealedEffect>().gameObject);
+                    Destroy(characterTilesBox[row + 1, col].gameObject);
+                    characterTilesBox[row + 1, col] = null;
+                }
+            }
+        }
+
+        //아래쪽
+        if (CheckIndexOutOfRange(row , col -1))
+        {
+            if (characterTilesBox[row, col - 1] != null)
+            {
+                if (characterTilesBox[row, col - 1].GetComponent<Tile>().isSealed)
+                {
+                    CreateDestroyEffect(row, col - 1);
+                    devaSkill1.go_List.Remove(characterTilesBox[row, col - 1].GetComponentInChildren<SealedEffect>().gameObject);
+                    Destroy(characterTilesBox[row, col - 1].gameObject);
+                    characterTilesBox[row, col - 1] = null;
+                }
+            }
+        }
+
+        //위쪽
+        if (CheckIndexOutOfRange(row, col + 1))
+        {
+            if (characterTilesBox[row, col + 1] != null)
+            {
+                if (characterTilesBox[row, col + 1].GetComponent<Tile>().isSealed)
+                {
+                    CreateDestroyEffect(row, col + 1);
+                    devaSkill1.go_List.Remove(characterTilesBox[row, col + 1].GetComponentInChildren<SealedEffect>().gameObject);
+                    Destroy(characterTilesBox[row, col + 1].gameObject);
+                    characterTilesBox[row, col + 1] = null;
+                }
+            }
+        }
+    }
+
+    private bool CheckIndexOutOfRange(int row, int col)
+    {
+        //IndexOutOfRange 예외 처리
+        if (row - 1 < 0 || row + 1 > width - 1 || col - 1 < 0 || col + 1 > height - 1)
+            return false;
+
+        return true;
     }
 
     private IEnumerator DecreaseColCoroutine()
@@ -454,7 +536,7 @@ public class BoardManager : MonoBehaviour
     }
 
     // 2번 변이파리채 함수
-    public void ChangeTile()
+    public void ChangePlutoTile()
     {
         randomSelectList.Clear();
         for (int x = 0; x < width; x++)
@@ -489,6 +571,9 @@ public class BoardManager : MonoBehaviour
 
             //기존의 플루토 타일을 삭제
             Tile pluto = characterTilesBox[row, col].GetComponent<Tile>();
+            if (pluto.transform.childCount > 0)
+                devaSkill1.go_List.Remove(pluto.gameObject.GetComponentInChildren<SealedEffect>().gameObject);
+
             Destroy(pluto.gameObject);
             characterTilesBox[row, col] = null;
 
@@ -555,6 +640,9 @@ public class BoardManager : MonoBehaviour
 
             //기존의 잭오랜턴 타일을 삭제
             Tile jack = characterTilesBox[row, col].GetComponent<Tile>();
+            if (jack.transform.childCount > 0)
+                devaSkill1.go_List.Remove(jack.gameObject.GetComponentInChildren<SealedEffect>().gameObject);
+
             Destroy(jack.gameObject);
             characterTilesBox[row, col] = null;
 
@@ -635,7 +723,7 @@ public class BoardManager : MonoBehaviour
         }
         return true;
     }
-    
+
     private bool hasEmptyTile()
     {
         for (int x = 0; x < width; x++)

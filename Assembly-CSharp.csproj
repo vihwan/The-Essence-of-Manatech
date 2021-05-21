@@ -89,6 +89,7 @@
     <Compile Include="Assets\2.Scripts\Monster\MonsterSkillGauge.cs" />
     <Compile Include="Assets\2.Scripts\Monster\MonsterStatus.cs" />
     <Compile Include="Assets\2.Scripts\Monster\MonsterStatusController.cs" />
+    <Compile Include="Assets\2.Scripts\Monster\SealedEffect.cs" />
     <Compile Include="Assets\2.Scripts\ObjectPool.cs" />
     <Compile Include="Assets\2.Scripts\PlayerData.cs" />
     <Compile Include="Assets\2.Scripts\PlayerStatus.cs" />

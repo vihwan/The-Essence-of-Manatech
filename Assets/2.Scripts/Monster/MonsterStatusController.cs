@@ -8,7 +8,7 @@ using TMPro;
 public class MonsterStatusController : MonoBehaviour
 {
     // 나중에 몬스터 정보가 담긴 컴포넌트 불러오기
-    private MonsterStatus monsterStatus = new MonsterStatus(5000, 30);
+    private MonsterStatus monsterStatus = new MonsterStatus(5000, 20);
 
     [SerializeField]
     private float maxHp;

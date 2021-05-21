@@ -13,6 +13,15 @@ public class FindMatches : MonoBehaviour
 
     public int LolipopCount { get => lolipopCount; set => lolipopCount = value; }
 
+
+    public bool IsMatchFinding()
+    {
+        if (isUpdate)
+            return true;
+        else
+            return false;
+    }
+
     public void FindAllMatches()
     {
         if (!isUpdate)
@@ -22,6 +31,7 @@ public class FindMatches : MonoBehaviour
     private void FindAllMatchesCoroutine()
     {
         isUpdate = true;
+
         LolipopCount = 0;
         for (int x = 0; x < BoardManager.instance.width; x++)
         {

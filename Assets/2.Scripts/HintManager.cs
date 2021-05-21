@@ -19,7 +19,8 @@ public class HintManager : MonoBehaviour
             {
                 if (BoardManager.instance.characterTilesBox[x, y] != null)
                 {
-                    if (BoardManager.instance.characterTilesBox[x, y].CompareTag("Bomb"))
+                    if (BoardManager.instance.characterTilesBox[x, y].CompareTag("Bomb") ||
+                        BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>().isSealed)
                         continue;
 
                     if (x < BoardManager.instance.width - 1)

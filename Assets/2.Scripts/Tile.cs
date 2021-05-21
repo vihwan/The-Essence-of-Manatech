@@ -54,6 +54,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private FindMatches findMatches;
     private ComboSystem comboSystem;
     private HintManager hintManager;
+    public bool isUpdate = false;
 
     //Property
     public int Row { get => row; set => row = value; }
@@ -273,9 +274,12 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public IEnumerator CheckMoveCoroutine()
     {
-        yield return new WaitForSeconds(.7f);
+        isUpdate = true;
+        yield return new WaitForSeconds(.5f);
+        yield return new WaitWhile(() => findMatches.IsMatchFinding()); //WaitUntil
         if (otherCharacterTile != null)
         {
+            //이동한 두 타일 둘다 매칭 상태가 아니라면 다시 원래 자리로 돌린다.
             if (!isMatched && !otherCharacterTile.GetComponent<Tile>().isMatched)
             {
                 otherCharacterTile.GetComponent<Tile>().Row = Row;
@@ -294,6 +298,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             }
             otherCharacterTile = null;
         }
+        isUpdate = false;
     }
 
     //타일 이동 애니메이션

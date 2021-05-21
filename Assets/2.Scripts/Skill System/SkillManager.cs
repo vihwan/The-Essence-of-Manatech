@@ -141,7 +141,7 @@ public class SkillManager : MonoBehaviour
     private void Skill_Flapper()
     {
         //2번 스킬 : 변이 파리채
-        BoardManager.instance.ChangeTile();
+        BoardManager.instance.ChangePlutoTile();
     }
 
     private void Skill_Jack_Frost_ShavedIce()

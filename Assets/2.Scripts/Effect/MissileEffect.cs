@@ -46,19 +46,19 @@ public class MissileEffect : MonoBehaviour
 
     private void SetAttackColor()
     {
-        if (image.sprite.name == "JackFrost")
+        if (image.sprite.name == "2잭프로스트")
         {
             attackColor = AttackColor.Ice;
         }
-        else if (image.sprite.name == "FluoreSang")
+        else if (image.sprite.name == "1플로레")
         {
             attackColor = AttackColor.Light;
         }
-        else if (image.sprite.name == "JackOLantern")
+        else if (image.sprite.name == "3잭오랜턴")
         {
             attackColor = AttackColor.Fire;
         }
-        else if (image.sprite.name == "PlutoNyang")
+        else if (image.sprite.name == "4플루토")
         {
             attackColor = AttackColor.Dark;
         }

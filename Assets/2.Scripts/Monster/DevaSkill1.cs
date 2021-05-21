@@ -55,13 +55,14 @@ public class DevaSkill1 : MonoBehaviour
 
     public void Execute()
     {
-        limitTime = 30f;
+        limitTime = 60f;
         remainTime = limitTime;
-        limitTimeImage.fillAmount = 1f;
+        GaugeUpdate();
         rootUI.SetActive(true);
 
         //목소리 출력
         //"서로를 옭아매는 어리석은 인간이여"
+
         SoundManager.instance.PlayCV("Human_Skill");
 
         deva1s.Clear();
@@ -69,7 +70,14 @@ public class DevaSkill1 : MonoBehaviour
         {
             for (int y = 0; y < BoardManager.instance.height; y++)
             {
+                if (x == 0 || x == BoardManager.instance.width - 1 || y == 0 || y == BoardManager.instance.height - 1)
+                    continue;
+
                 Tile tile = BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>();
+
+                if (tile.CompareTag("Lolipop") || tile.CompareTag("Bomb"))
+                    continue;
+
                 deva1s.Add(new Deva1() { row = tile.Row, col = tile.Col });
             }
         }
@@ -101,6 +109,7 @@ public class DevaSkill1 : MonoBehaviour
                 if (go_List.Count == 0)
                 {
                     //패턴 파훼 성공
+                    Debug.Log("<color=#0456F1>패턴 파훼</color> 성공!!");
                     //그로기 타임
                     BoardManagerMonster.instance.currentState = MonsterState.GROGGY;
                     SoundManager.instance.PlayCV("Human_Skill_Groggy");
@@ -172,11 +181,11 @@ public class DevaSkill1 : MonoBehaviour
             Tile tile = BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>();
             tile.isSealed = true;
 
-            GameObject go = Instantiate(Resources.Load<GameObject>("circleC")
+            SealedEffect seal = Instantiate(Resources.Load<SealedEffect>("circleC")
                     , tile.transform.position
                     , Quaternion.identity);
-            go.transform.SetParent(tile.transform);
-            go_List.Add(go);
+            seal.transform.SetParent(tile.transform);
+            go_List.Add(seal.gameObject);
 
             yield return new WaitForSeconds(.5f);
         }
