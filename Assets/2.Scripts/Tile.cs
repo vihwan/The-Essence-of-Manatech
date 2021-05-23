@@ -11,7 +11,7 @@ public enum CharacterKinds
     Fluore,
     test1,
     test2,
-    test3,
+    Bloom,
     Bomb,
     Lolipop
 }
@@ -104,13 +104,13 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             gameObject.tag = CharacterKinds.test2.ToString();
         }
-        else if (image.sprite.name == "characters_0005")
-        {
-            gameObject.tag = CharacterKinds.test3.ToString();
-        }
         else if (image.sprite.name == "7잭오할로윈")
         {
             gameObject.tag = CharacterKinds.Bomb.ToString();
+        }
+        else if (image.sprite.name == "8빗자루")
+        {
+            gameObject.tag = CharacterKinds.Bloom.ToString();
         }
         else if (image.sprite.name == "Lolipop")
         {

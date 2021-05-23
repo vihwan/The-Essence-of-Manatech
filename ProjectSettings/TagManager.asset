@@ -8,7 +8,6 @@ TagManager:
   - Pluto
   - Lantern
   - Fluore
-  - test1
   - test2
   - test3
   - Lolipop
@@ -19,6 +18,8 @@ TagManager:
   - M_Four
   - M_Five
   - M_Six
+  - Bloom
+  - test1
   layers:
   - Default
   - TransparentFX

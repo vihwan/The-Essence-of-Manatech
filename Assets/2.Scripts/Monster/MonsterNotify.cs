@@ -10,11 +10,13 @@ public class MonsterNotify : MonoBehaviour
     private Text notifyText;
     private Animator animator;
 
+    public Image NotifyImage { get => notifyImage; set => notifyImage = value; }
+
 
     // Start is called before the first frame update
     public void init()
     {
-        notifyImage = GetComponentInChildren<Image>();
+        NotifyImage = GetComponentInChildren<Image>();
         notifyText = GetComponentInChildren<Text>();
         animator = GetComponent<Animator>();
     }

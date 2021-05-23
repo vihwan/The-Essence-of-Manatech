@@ -10,6 +10,7 @@ public enum MonsterState
     WAIT,
     MOVE,
     USESKILL,
+    TRANSFORM,
     GROGGY,
     BERSERK,
     DEAD
@@ -23,6 +24,7 @@ public class MonsterAI : MonoBehaviour
     private bool isUpdate = false;
     private bool isPhase1 = false;
     private bool isPhase2 = false;
+    private bool isTransform = false;
 
     private MonsterStatusController monsterStatusController;
     private MonsterNotify notify;
@@ -58,10 +60,19 @@ public class MonsterAI : MonoBehaviour
         {
             if(monsterStatusController.CurrHp == 0f)
             {
-                //벼 ㅇ 신!
-                TransToDevil();
+                //유저와 몬스터의 조작을 멈추고 대기 시간을 가진다.
+                BoardManagerMonster.instance.currentState = MonsterState.TRANSFORM;
+                isTransform = true;
                 isPhase1 = false;
             }
+        }
+
+        if (isTransform)
+        {                
+            //벼 ㅇ 신!
+            StartCoroutine(TransToDevil());
+            isTransform = false;
+            isPhase2 = true;
         }
 
         //마나가 꽉 차면 스킬 사용
@@ -84,16 +95,22 @@ public class MonsterAI : MonoBehaviour
     }
 
     //페이즈 2가 되어 악마로 변신하는 메소드
-    private void TransToDevil()
+    private IEnumerator TransToDevil()
     {
-        //유저와 몬스터의 조작을 멈추고 대기 시간을 가진다.
-        BoardManager.instance.currentState = PlayerState.WAIT;
-        BoardManagerMonster.instance.currentState = MonsterState.WAIT;
+        notify.SetText("크윽.. 방해하는 자에게 고통을!!");
+        SoundManager.instance.PlayCV("Human_Death1");
+        notify.PlayAnim();
 
+        yield return new WaitForSeconds(3f);
 
+        notify.NotifyImage.sprite = Resources.Load<Sprite>("notify2");
+        notify.SetText("진정한 혼돈의 힘을 보여주마!!!");
+        SoundManager.instance.PlayCV("HumanToDevil");
+        notify.PlayAnim();
 
-        isPhase2 = true;
+        yield return null;
     }
+
 
     //플레이어와 몬스터가 타일을 옮기는 중이라면, 스킬을 사용할 수 없습니다.
     public IEnumerator WaitForStateMove()

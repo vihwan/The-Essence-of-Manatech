@@ -706,7 +706,7 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        if (devaSkill1.isUsingSkill || devaSkill1.isBerserk)
+        if (devaSkill1.isUsingSkill || devaSkill1.isBerserk || BoardManagerMonster.instance.currentState == MonsterState.TRANSFORM)
         {
             currentState = PlayerState.WAIT;
             return;

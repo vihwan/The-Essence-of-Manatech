@@ -8,7 +8,7 @@ using TMPro;
 public class MonsterStatusController : MonoBehaviour
 {
     // 나중에 몬스터 정보가 담긴 컴포넌트 불러오기
-    private MonsterStatus monsterStatus = new MonsterStatus(5000, 20);
+    private MonsterStatus monsterStatus = new MonsterStatus(3000, 20);
 
     [SerializeField]
     private float maxHp;
@@ -105,7 +105,6 @@ public class MonsterStatusController : MonoBehaviour
         if (CurrHp <= 0)
         {
             currHp = 0f;
-            Debug.Log("몬스터의 hp가 0이 되었습니다");
         }
     }
 

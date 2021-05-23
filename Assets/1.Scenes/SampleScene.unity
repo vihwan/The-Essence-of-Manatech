@@ -1576,6 +1576,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5503cdc37fc0f0c4fb7ef0afc339de2d, type: 3}
   - {fileID: 21300000, guid: ccbe2d6484b1b184db2be1cb43ea1ace, type: 3}
   - {fileID: 21300000, guid: a94afad2f6c6046429ee0394d492fd90, type: 3}
+  - {fileID: 21300000, guid: ef3430edbc22c074a80b15151d0b5c9e, type: 3}
   characterTilePrefab: {fileID: 8874649959314379597, guid: 9456164d537e06d4c9517c7e8084d3c4,
     type: 3}
   currentState: 1
@@ -3597,6 +3598,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: c14a7d69ced1f214590cb617c60ccbed, type: 3}
   - name: Human_Skill_Berserk
     clip: {fileID: 8300000, guid: c46566102a7850e4eb52f09a1fb36d2b, type: 3}
+  - name: Human_Death1
+    clip: {fileID: 8300000, guid: 52fe255a44111404d9c1dea4349cbeac, type: 3}
+  - name: HumanToDevil
+    clip: {fileID: 8300000, guid: 49443fd23ff905a47ba1b7e6c2938b7e, type: 3}
   - name: Human_Skill_Groggy
     clip: {fileID: 8300000, guid: 3bb99a71cb4d0154e98e75d3d3a2f161, type: 3}
   playSoundName: []

@@ -91,11 +91,12 @@ public class MissileEffect : MonoBehaviour
 
                 CreateBombEffect(attackColor, transform.position);
 
+                //데미지 주기
                 MonsterStatusController mon = FindObjectOfType<MonsterStatusController>();
                 if (mon != null) { 
-                    mon.DecreaseHP(3f);
+                    mon.DecreaseHP(100f);
                     if (BoardManagerMonster.instance.currentState == MonsterState.GROGGY)
-                        mon.DecreaseHP(4.5f);
+                        mon.DecreaseHP(200f);
                 }
 
                 this.gameObject.GetComponent<Image>().enabled = false;

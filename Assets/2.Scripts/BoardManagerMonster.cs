@@ -388,7 +388,7 @@ public class BoardManagerMonster : MonoBehaviour
             return;
         }
 
-        if (currentState == MonsterState.GROGGY)
+        if (currentState == MonsterState.GROGGY || currentState == MonsterState.TRANSFORM)
             return;
 
         currentState = MonsterState.MOVE;
