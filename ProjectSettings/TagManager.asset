@@ -20,6 +20,7 @@ TagManager:
   - M_Six
   - Bloom
   - test1
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -29,7 +30,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Particles
   - 
   - 
   - 

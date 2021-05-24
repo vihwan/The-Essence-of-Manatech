@@ -98,7 +98,7 @@ public class DevaSkill1 : MonoBehaviour
                 limitTimeImage.fillAmount = 0f;
 
                 if (BoardManager.instance.currentState == PlayerState.MOVE
-                        && BoardManagerMonster.instance.currentState == MonsterState.USESKILL)
+                        && MonsterAI.instance.currentState == MonsterState.USESKILL)
                 {
                     SkillBerserk();
                     isRemainTimeUpdate = false;
@@ -111,7 +111,7 @@ public class DevaSkill1 : MonoBehaviour
                     //패턴 파훼 성공
                     Debug.Log("<color=#0456F1>패턴 파훼</color> 성공!!");
                     //그로기 타임
-                    BoardManagerMonster.instance.currentState = MonsterState.GROGGY;
+                    MonsterAI.instance.currentState = MonsterState.GROGGY;
                     SoundManager.instance.PlayCV("Human_Skill_Groggy");
                     rootUI.SetActive(false);
                     isRemainTimeUpdate = false;

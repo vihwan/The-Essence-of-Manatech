@@ -139,6 +139,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             hintManager.DestroyHint();
         }
 
+
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
 

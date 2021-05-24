@@ -17,19 +17,21 @@ public class BoardManagerMonster : MonoBehaviour
     public int width;
     public int height;
 
+    private Vector2 moveDirF;
+
     public List<Sprite> monsterTilesList = new List<Sprite>(); //에디터에서 사용할 타일들을 저장하는 리스트
     public GameObject[,] monsterTilesBox; //AI의 타일 보관하는 배열
     public GameObject monsterTilePrefab;  //Tile Prefab
-    public MonsterState currentState;
 
-    private float elaspedTime = 0f;
-    private float timeStandard = 4f;
+/*    private float elaspedTime = 0f;
+    private float timeStandard = 4f;*/
 
     private FindMatchesMonster findMatchesMonster;
     private CreateBackTilesMonster createBoardMonster;
     private MonsterStatusController monsterStatusController;
     private DevaSkill1 devaSkill1;
-    private Vector2 moveDirF;
+
+
 
     public void Init()
     {
@@ -48,7 +50,7 @@ public class BoardManagerMonster : MonoBehaviour
     private void Update()
     {
         CanMovePlayerState();
-        if (currentState == MonsterState.MOVE)
+/*        if (currentState == MonsterState.MOVETILE)
         {
             elaspedTime += Time.deltaTime;
             if (elaspedTime >= timeStandard)
@@ -56,7 +58,7 @@ public class BoardManagerMonster : MonoBehaviour
                 MoveTile();
                 elaspedTime = 0f;
             }
-        }
+        }*/
     }
 
     //타일을 생성하는 함수
@@ -78,6 +80,7 @@ public class BoardManagerMonster : MonoBehaviour
                                 new Vector2(startX + (xOffset * x),
                                 startY + (yOffset * y * 2)),
                                 Quaternion.identity);
+
                 monsterTile.transform.SetParent(transform);
                 monsterTile.gameObject.name = "Monster [" + x + ", " + y + "]";
                 monsterTile.GetComponent<TileMonster>().SetArrNumber(x, y);
@@ -238,7 +241,7 @@ public class BoardManagerMonster : MonoBehaviour
     //TODO
     public void DestroyMatches()
     {
-        currentState = MonsterState.WAIT;
+        MonsterAI.instance.currentState = MonsterState.WAIT;
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -303,7 +306,7 @@ public class BoardManagerMonster : MonoBehaviour
 
     private IEnumerator FillBoardCoroutine()
     {
-        currentState = MonsterState.WAIT;
+        MonsterAI.instance.currentState = MonsterState.WAIT;
 
         RefillBoard();
         yield return new WaitForSeconds(.5f);
@@ -375,7 +378,7 @@ public class BoardManagerMonster : MonoBehaviour
                     TileMonster movingTile = monsterTilesBox[x, y].GetComponent<TileMonster>();
                     if (movingTile.isShifting || movingTile.isMatched || movingTile.canShifting)
                     {
-                        currentState = MonsterState.WAIT;
+                        MonsterAI.instance.currentState = MonsterState.WAIT;
                         return;
                     }
                 }
@@ -384,19 +387,19 @@ public class BoardManagerMonster : MonoBehaviour
 
         if (devaSkill1.isRemainTimeUpdate == true)
         {
-            currentState = MonsterState.USESKILL;
+            MonsterAI.instance.currentState = MonsterState.USESKILL;
             return;
         }
 
-        if (currentState == MonsterState.GROGGY || currentState == MonsterState.TRANSFORM)
+        if (MonsterAI.instance.currentState == MonsterState.GROGGY || MonsterAI.instance.currentState == MonsterState.TRANSFORM)
             return;
 
-        currentState = MonsterState.MOVE;
+        MonsterAI.instance.currentState = MonsterState.MOVE;
     }
 
     public bool IsMoveState()
     {
-        if (currentState == MonsterState.WAIT)
+        if (MonsterAI.instance.currentState == MonsterState.WAIT)
         {
             return false;
         }

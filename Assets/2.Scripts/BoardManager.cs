@@ -74,7 +74,7 @@ public class BoardManager : MonoBehaviour
 
         characterTilesBox = new GameObject[width, height];
 
-        Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().rect.size;
+        Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().sizeDelta;
         CreateTiles(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
         SoundManager.instance.PlayBGM("데바스타르");
         //SoundManager.instance.audioSourceBGM.mute = true;
@@ -86,6 +86,8 @@ public class BoardManager : MonoBehaviour
         CheckMovePlayerState();
         PrintBoardState();
     }
+
+
 
     private void PrintBoardState()
     {
@@ -103,14 +105,14 @@ public class BoardManager : MonoBehaviour
         Sprite[] previousLeft = new Sprite[height];
         Sprite previousBelow = null;
 
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 GameObject characterTile = Instantiate(characterTilePrefab,
-                                new Vector2(startX + (xOffset * x),
-                                startY + (yOffset * y * 2)),
-                                Quaternion.identity);
+                                           new Vector3(startX + (xOffset * x), startY + (yOffset * y * 2)),
+                                           Quaternion.identity);
                 characterTile.transform.SetParent(transform);
                 characterTile.gameObject.name = "Character [" + x + ", " + y + "]";
                 characterTile.GetComponent<Tile>().SetArrNumber(x, y);
@@ -178,9 +180,10 @@ public class BoardManager : MonoBehaviour
     private void CreateDestroyEffect(int row, int col)
     {
         #region 파괴 이펙트
-        GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform, "FlashEffect");
+        ParticleSystem flashEffect = Instantiate(Resources.Load<ParticleSystem>("CFX_MagicPoof"), transform.position,Quaternion.identity);
+        flashEffect.transform.SetParent(transform);
         flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
-        flashEffect.GetComponent<FlashEffect>().RemoveEffect();
+        //flashEffect.GetComponent<FlashEffect>().RemoveEffect();
 
         #endregion 파괴 이펙트
 
@@ -419,6 +422,14 @@ public class BoardManager : MonoBehaviour
             {
                 if (characterTilesBox[x, y] != null)
                 {
+
+                    //봉인된 타일은 데드락 조건에 포함시키지 않는다.
+                    if(characterTilesBox[x,y].transform.childCount > 0)
+                    {
+                        continue;
+                    }
+
+
                     if (x < width - 2)
                     {
                         if (characterTilesBox[x + 1, y] != null && characterTilesBox[x + 2, y] != null)
@@ -706,7 +717,7 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        if (devaSkill1.isUsingSkill || devaSkill1.isBerserk || BoardManagerMonster.instance.currentState == MonsterState.TRANSFORM)
+        if (devaSkill1.isUsingSkill || devaSkill1.isBerserk || MonsterAI.instance.currentState == MonsterState.TRANSFORM)
         {
             currentState = PlayerState.WAIT;
             return;

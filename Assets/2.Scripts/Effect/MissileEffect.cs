@@ -94,8 +94,8 @@ public class MissileEffect : MonoBehaviour
                 //데미지 주기
                 MonsterStatusController mon = FindObjectOfType<MonsterStatusController>();
                 if (mon != null) { 
-                    mon.DecreaseHP(100f);
-                    if (BoardManagerMonster.instance.currentState == MonsterState.GROGGY)
+                    mon.DecreaseHP(4);
+                    if (MonsterAI.instance.currentState == MonsterState.GROGGY)
                         mon.DecreaseHP(200f);
                 }
 

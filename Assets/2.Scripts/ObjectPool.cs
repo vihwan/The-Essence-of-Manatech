@@ -10,7 +10,7 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] private GameObject poolingObjectPrefab;
 
     //폭발 이펙트들을 담는 큐
-    Queue<GameObject> flashEffect_OP = new Queue<GameObject>();
+  //  Queue<GameObject> flashEffect_OP = new Queue<GameObject>();
     //힌트 이펙트들을 담는 큐
     Queue<GameObject> flashEffectMon_OP = new Queue<GameObject>();
     Queue<GameObject> bombEffects_OP = new Queue<GameObject>();
@@ -26,7 +26,7 @@ public class ObjectPool : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            flashEffect_OP.Enqueue(CreateNewObject<FlashEffect>("FlashEffect"));
+            //flashEffect_OP.Enqueue(CreateNewObject<FlashEffectParticle>("FlashEffect"));
             flashEffectMon_OP.Enqueue(CreateNewObject<FlashEffectMonster>("FlashEffect_Devastar"));
         }
         for (int i = 0; i < count2; i++)
@@ -52,11 +52,12 @@ public class ObjectPool : MonoBehaviour
         Type classType = typeof(T);
         Queue<GameObject> tempQueue;
 
-        if (classType == typeof(FlashEffect))
+   /*     if (classType == typeof(FlashEffect))
         {
             tempQueue = Instance.flashEffect_OP;
         }
-        else if (classType == typeof(FlashEffectMonster))
+        else */
+        if (classType == typeof(FlashEffectMonster))
         {
             tempQueue = Instance.flashEffectMon_OP;
         }
@@ -162,9 +163,10 @@ public class ObjectPool : MonoBehaviour
 
         Type classType = typeof(T);
 
-        if(classType == typeof(FlashEffect))
+/*        if(classType == typeof(FlashEffect))
             Instance.flashEffect_OP.Enqueue(obj);
-        else if(classType == typeof(FlashEffectMonster))
+        else*/ 
+        if(classType == typeof(FlashEffectMonster))
             Instance.flashEffectMon_OP.Enqueue(obj);
         else if(classType == typeof(BombEffect))
             Instance.bombEffects_OP.Enqueue(obj);
