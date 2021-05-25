@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 
 
-internal class Deva1
+internal class Deva
 {
     public int row;
     public int col;
@@ -23,20 +23,23 @@ public class DevaSkill1 : MonoBehaviour
      * 
      * **/
 
-    private List<Deva1> deva1s = new List<Deva1>();
+    private List<Deva> deva1s = new List<Deva>();
     public List<GameObject> go_List;
 
-    private GameObject rootUI;
-    private TMP_Text tmp_Text;
-    private Image limitTimeImage;
 
     [SerializeField] private float limitTime;
     [SerializeField] private float remainTime;
     public bool isRemainTimeUpdate = false;
     public bool isUsingSkill = false;
-
-    private MonsterNotify notify;
     internal bool isBerserk = false;
+
+
+    internal GameObject rootUI;
+    private TMP_Text tmp_Text;
+    private Image limitTimeImage;
+    private MonsterNotify notify;
+
+
 
     public void Init()
     {
@@ -78,7 +81,7 @@ public class DevaSkill1 : MonoBehaviour
                 if (tile.CompareTag("Lolipop") || tile.CompareTag("Bomb"))
                     continue;
 
-                deva1s.Add(new Deva1() { row = tile.Row, col = tile.Col });
+                deva1s.Add(new Deva() { row = tile.Row, col = tile.Col });
             }
         }
         StartCoroutine(MakeMagicCircle());

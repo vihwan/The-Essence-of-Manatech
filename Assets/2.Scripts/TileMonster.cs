@@ -117,7 +117,7 @@ public class TileMonster : MonoBehaviour
         {
             isShifting = true;
             tempPosition = new Vector2(targetX, targetY);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, .2f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, .3f);
             if (BoardManagerMonster.instance.monsterTilesBox[Row, Col] != this.gameObject)
             {
                 BoardManagerMonster.instance.monsterTilesBox[Row, Col] = this.gameObject;
@@ -167,6 +167,7 @@ public class TileMonster : MonoBehaviour
     public IEnumerator CheckMoveCoroutine()
     {
         yield return new WaitForSeconds(.7f);
+        yield return new WaitWhile(() => findMatchesMonster.IsMatchFinding()); //WaitWhile
         if (otherCharacterTile != null)
         {
             if (!isMatched && !otherCharacterTile.GetComponent<TileMonster>().isMatched)

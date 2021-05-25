@@ -76,6 +76,7 @@
     <Compile Include="Assets\2.Scripts\Effect\FlashEffectParticle.cs" />
     <Compile Include="Assets\2.Scripts\Effect\HintEffect.cs" />
     <Compile Include="Assets\2.Scripts\Effect\MissileEffect.cs" />
+    <Compile Include="Assets\2.Scripts\Effect\NenEffect.cs" />
     <Compile Include="Assets\2.Scripts\FindMatches.cs" />
     <Compile Include="Assets\2.Scripts\FindMatchesMonster.cs" />
     <Compile Include="Assets\2.Scripts\GUIManager.cs" />
@@ -85,6 +86,8 @@
     <Compile Include="Assets\2.Scripts\MathHelper.cs" />
     <Compile Include="Assets\2.Scripts\MathHelperTest.cs" />
     <Compile Include="Assets\2.Scripts\Monster\DevaSkill1.cs" />
+    <Compile Include="Assets\2.Scripts\Monster\DevaSkill2.cs" />
+    <Compile Include="Assets\2.Scripts\Monster\DevaSkill3.cs" />
     <Compile Include="Assets\2.Scripts\Monster\MonsterAI.cs" />
     <Compile Include="Assets\2.Scripts\Monster\MonsterNotify.cs" />
     <Compile Include="Assets\2.Scripts\Monster\MonsterSkillGauge.cs" />

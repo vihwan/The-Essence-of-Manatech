@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 
 
 /*//효과음 Enum
@@ -87,7 +89,11 @@ public class SoundManager : MonoBehaviour
                     {
                         playSoundName[j] = voiceSounds[i].name;
                         audioSourceEffects[j].clip = voiceSounds[i].clip;
+
+                        float clipLength = audioSourceEffects[j].clip.length;
+
                         audioSourceEffects[j].Play();
+                        StartCoroutine(StartMethod(clipLength));
                         return;
                     }
                 }
@@ -97,6 +103,13 @@ public class SoundManager : MonoBehaviour
         }
         Debug.Log(name + "사운드가 SoundManager에 등록되어있지 않습니다.");
     }
+
+    private IEnumerator StartMethod(float clipLength)
+    {
+        yield return new WaitForSeconds(clipLength);
+    }
+
+
 
 
     //배경음 재생

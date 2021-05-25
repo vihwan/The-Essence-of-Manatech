@@ -30,7 +30,8 @@ public class BoardManagerMonster : MonoBehaviour
     private CreateBackTilesMonster createBoardMonster;
     private MonsterStatusController monsterStatusController;
     private DevaSkill1 devaSkill1;
-
+    private DevaSkill2 devaSkill2;
+    private DevaSkill3 devaSkill3;
 
 
     public void Init()
@@ -40,6 +41,8 @@ public class BoardManagerMonster : MonoBehaviour
         createBoardMonster = FindObjectOfType<CreateBackTilesMonster>();
         monsterStatusController = FindObjectOfType<MonsterStatusController>();
         devaSkill1 = FindObjectOfType<DevaSkill1>();
+        devaSkill2 = FindObjectOfType<DevaSkill2>();
+        devaSkill3 = FindObjectOfType<DevaSkill3>();
 
 
         monsterTilesBox = new GameObject[width, height];
@@ -385,7 +388,9 @@ public class BoardManagerMonster : MonoBehaviour
             }
         }
 
-        if (devaSkill1.isRemainTimeUpdate == true)
+        if (devaSkill1.isRemainTimeUpdate == true || 
+            devaSkill2.isRemainTimeUpdate == true || 
+            devaSkill3.isRemainTimeUpdate == true)
         {
             MonsterAI.instance.currentState = MonsterState.USESKILL;
             return;

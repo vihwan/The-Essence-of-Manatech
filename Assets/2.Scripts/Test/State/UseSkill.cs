@@ -15,7 +15,6 @@ internal class UseSkill : MonsterStateTest
         _monsterAI.MonsterStatusController.DecreaseMp((int)_monsterAI.MonsterStatusController.MaxMp);
         _monsterAI.Notify.SetText("서로를 옭아매는 어리석은 인간들이여");
         _monsterAI.Notify.PlayAnim();
-        _monsterAI.DevaSkill1.Execute();
         yield break;
     }
 }

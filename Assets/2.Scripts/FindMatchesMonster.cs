@@ -16,6 +16,14 @@ public class FindMatchesMonster : MonoBehaviour
             FindAllMatchesCoroutine();
     }
 
+    public bool IsMatchFinding()
+    {
+        if (isUpdate)
+            return true;
+        else
+            return false;
+    }
+
     private void FindAllMatchesCoroutine()
     {
         isUpdate = true;

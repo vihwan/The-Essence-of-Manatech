@@ -1,0 +1,172 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using System;
+
+
+public class DevaSkill2 : MonoBehaviour
+{
+    private List<Deva> deva2s = new List<Deva>();
+    public List<GameObject> go_List2;
+
+    [SerializeField] private float limitTime;
+    [SerializeField] private float remainTime;
+
+    public bool isRemainTimeUpdate = false;
+    public bool isUsingSkill = false;
+    internal bool isBerserk = false;
+
+    private GameObject rootUI;
+    private TMP_Text tmp_Text;
+    private Image limitTimeImage;
+    private MonsterNotify notify;
+    private PlayerStatusController player;
+
+    // Start is called before the first frame update
+    public void Init()
+    {
+        rootUI = transform.Find("RootUI").gameObject;
+        if (rootUI != null)
+            rootUI.SetActive(false);
+
+        tmp_Text = GetComponentInChildren<TMP_Text>(true);
+
+        limitTimeImage = transform.Find("RootUI/SkillLimitTimeSlide/BaseUI/Gauge").GetComponent<Image>();
+        if (limitTimeImage != null)
+            limitTimeImage.fillAmount = 1f;
+
+        notify = FindObjectOfType<MonsterNotify>();
+        player = FindObjectOfType<PlayerStatusController>();
+
+    }
+    private void GaugeUpdate()
+    {
+        limitTimeImage.fillAmount = remainTime / limitTime;
+        tmp_Text.text = remainTime + "s";
+    }
+
+    // Update is called once per frame
+    public void Execute()
+    {
+        limitTime = 15f;
+        remainTime = limitTime;
+        GaugeUpdate();
+        rootUI.SetActive(true);
+
+        isUsingSkill = true;
+
+        // 사운드 출력
+        // 그 분을 대신하여
+        SoundManager.instance.PlayCV("Devil_Skill1");
+
+        deva2s.Clear();
+
+        for (int x = 0; x < BoardManager.instance.width; x++)
+        {
+            for (int y = 0; y < BoardManager.instance.height; y++)
+            {
+                if (x == 0 || x == BoardManager.instance.width - 1 || y == 0 || y == BoardManager.instance.height - 1)
+                    continue;
+
+                Tile tile = BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>();
+
+                deva2s.Add(new Deva() { row = tile.Row, col = tile.Col });
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            int rIndex = UnityEngine.Random.Range(0, deva2s.Count);
+
+            int x = deva2s[rIndex].row;
+            int y = deva2s[rIndex].col;
+            deva2s.RemoveAt(rIndex);
+
+            Tile tile = BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>();
+            tile.isActiveNen = true;
+
+            NenEffect nen = Instantiate(Resources.Load<NenEffect>("NenEffect")
+                    , tile.transform.position
+                    , Quaternion.identity);
+            nen.transform.SetParent(tile.transform);
+            go_List2.Add(nen.gameObject);
+        }
+
+        isUsingSkill = false;
+        isRemainTimeUpdate = true;
+    }
+
+    private void Update()
+    {
+        if (isRemainTimeUpdate)
+        {
+            remainTime -= Time.deltaTime;
+
+            GaugeUpdate();
+
+            if(go_List2.Count == 0)
+            {
+                player.IsInvincible = true;
+                Debug.Log("패턴을 파훼하여 무적 상태입니다.");
+            }
+
+
+            if (remainTime <= 0)
+            {
+                remainTime = 0f;
+                limitTimeImage.fillAmount = 0f;
+
+                if (MonsterAI.instance.currentState == MonsterState.USESKILL)
+                {
+                    SkillBerserk();
+                }
+            }
+        }
+    }
+
+    private void SkillBerserk()
+    {
+        isBerserk = true;
+
+        // 너희들을 심판한다! 컨빅션
+        notify.SetText("너희들을 심판한다!");
+        notify.PlayAnim();
+        SoundManager.instance.PlayCV("Devil_Skill1_Berserk");
+
+        for (int i = 0; i < go_List2.Count; i++)
+        {
+            //넨가드 이펙트 제거
+            Destroy(go_List2[i].gameObject);
+        }
+
+        //캐릭터 타일 넨가드 해제
+        for (int x = 0; x < BoardManager.instance.width; x++)
+        {
+            for (int y = 0; y < BoardManager.instance.height; y++)
+            {
+                if (BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>().isActiveNen)
+                {
+                    BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>().isActiveNen = false;
+                }
+                else
+                    continue;
+            }
+        }
+
+        if (player.IsInvincible == false)
+        {
+            player.DecreaseHP(300);
+        }
+        else
+        {
+            player.IsInvincible = false;
+        }
+
+        go_List2.Clear();
+        rootUI.SetActive(false);
+        isBerserk = false;
+        isRemainTimeUpdate = false;
+    }
+}

@@ -8,7 +8,7 @@ using TMPro;
 public class MonsterStatusController : MonoBehaviour
 {
     // 나중에 몬스터 정보가 담긴 컴포넌트 불러오기
-    private MonsterStatus monsterStatus = new MonsterStatus(3000, 20);
+    private MonsterStatus monsterStatus = new MonsterStatus(3000, 20, 200);
 
     [SerializeField]
     private float maxHp;
@@ -18,13 +18,18 @@ public class MonsterStatusController : MonoBehaviour
     private float maxMp;
     private float currMp;
 
+    [SerializeField]
+    private float maxShield;
+    private float currShield;
+
 
     [SerializeField] private TMP_Text[] texts;
     [SerializeField] public Image[] images_Gauge;
-
     [SerializeField] private Image red;
 
-    public const int HP = 0, MP = 1;
+    private GameObject shieldObject;
+
+    public const int HP = 0, MP = 1, SH = 2;
     private bool isUpdate = false;
 
     [SerializeField] private float redSpeed = 1f;
@@ -38,9 +43,11 @@ public class MonsterStatusController : MonoBehaviour
     private Tween<Color> colorTween = new Tween<Color>();
 
     public float MaxHp { get => maxHp; }
-    public float CurrHp { get => currHp;}
+    public float CurrHp { get => currHp; set => currHp = value; }
     public float MaxMp { get => maxMp;}
-    public float CurrMp { get => currMp; }
+    public float CurrMp { get => currMp; set => currMp = value; }
+    public float MaxShield { get => maxShield;}
+    public float CurrShield { get => currShield; set => currShield = value; }
 
     public void Init()
     {
@@ -48,9 +55,17 @@ public class MonsterStatusController : MonoBehaviour
         currHp = monsterStatus.Hp;
         maxMp = monsterStatus.Mp;
         currMp = 0f;
+        maxShield = monsterStatus.Shield;
+        currShield = monsterStatus.Shield;
+
+        shieldObject = transform.Find("Slider/MonsterShieldSlide").gameObject;
+        if(shieldObject != null)
+        {
+            shieldObject.SetActive(false);
+        }
 
        // red = UtilHelper.Find<Image>(transform, "Red");
-        //동작할 함수를 연결합니다.
+       //동작할 함수를 연결합니다.
         tween.SetTween(MathHelper.Spring);
         //red의 동작할 함수를 연결합니다.
         redTween.SetTween(MathHelper.EaseOutQuad);
@@ -90,21 +105,35 @@ public class MonsterStatusController : MonoBehaviour
     {
         texts[HP].text = Mathf.Round(CurrHp).ToString() + " / " + MaxHp;
         texts[MP].text = Mathf.Round(CurrMp).ToString() + " / " + MaxMp;
+        texts[SH].text = Mathf.Round(CurrShield).ToString() + " / " + MaxShield;
     }
 
     private void GaugeUpdate()
     {      
-        images_Gauge[HP].fillAmount = currHp / MaxHp;
+        images_Gauge[HP].fillAmount = CurrHp / MaxHp;
         images_Gauge[MP].fillAmount = CurrMp / MaxMp;
+        images_Gauge[SH].fillAmount = CurrShield / MaxShield;
     }
 
     public void DecreaseHP(float _count)
     {
-        currHp -= _count;
-
-        if (CurrHp <= 0)
+        if(shieldObject.activeSelf)
         {
-            currHp = 0f;
+            if(currShield > 0)
+                currShield -= _count;
+            else
+            {
+                shieldObject.SetActive(false);
+            }
+        }
+        else
+        {
+            currHp -= _count;
+
+            if (CurrHp <= 0)
+            {
+                currHp = 0f;
+            }
         }
     }
 

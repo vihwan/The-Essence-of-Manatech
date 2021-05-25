@@ -20,6 +20,7 @@ private PlayerStatus playerStatus = new PlayerStatus(500, 200);
     [SerializeField] private float maxMp;
     [SerializeField] private TMP_Text[] texts;
     [SerializeField] private Image[] images_Gauge;
+    [SerializeField] private bool isInvincible = false; //무적 상태인가 아닌가
 
     public const int HP = 0, MP = 1;
 
@@ -32,6 +33,7 @@ private PlayerStatus playerStatus = new PlayerStatus(500, 200);
     public float MaxMp { get => maxMp; set => maxMp = value; }
     public float CurrHp { get => currHp; set => currHp = value; }
     public float MaxHp { get => maxHp; set => maxHp = value; }
+    public bool IsInvincible { get => isInvincible; set => isInvincible = value; }
 
     #endregion Variable
 

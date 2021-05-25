@@ -42,6 +42,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public bool isShifting = false;
     public bool canShifting = false;
     public bool isSealed = false; // 데바스타르 인간 스킬을 당한 상태인가?
+    public bool isActiveNen = false; // 데바스타르 스킬2 넨 활성화 상태인가?
 
     //Vector
     private Vector2 firstTouchPosition;
@@ -276,7 +277,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public IEnumerator CheckMoveCoroutine()
     {
         isUpdate = true;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.7f);
         yield return new WaitWhile(() => findMatches.IsMatchFinding()); //WaitUntil
         if (otherCharacterTile != null)
         {
@@ -312,7 +313,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             isShifting = true;
             tempPosition = new Vector2(targetX, targetY);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, .2f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, .3f);
             if (BoardManager.instance.characterTilesBox[Row, Col] != this.gameObject)
             {
                 BoardManager.instance.characterTilesBox[Row, Col] = this.gameObject;
