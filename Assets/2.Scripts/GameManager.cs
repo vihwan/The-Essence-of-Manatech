@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void GameOver()
+    internal void GameOver()
     {
         StartCoroutine(guiManager.WaitForShifting());
         SoundManager.instance.StopAllSE();

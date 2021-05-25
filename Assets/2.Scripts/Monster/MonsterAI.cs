@@ -138,7 +138,6 @@ public class MonsterAI : MonoBehaviour
             {
                 StartCoroutine(TransToDevil());
                 ElaspedTime = 0f;
-                isSkillTurn2 = true;
             }
         }
 
@@ -170,6 +169,8 @@ public class MonsterAI : MonoBehaviour
                 //게임 오버
                 SoundManager.instance.PlayCV("Devil_Skill_Dead");
                 currentState = MonsterState.DEAD;
+                GameManager.instance.isGameOver = true;
+                GameManager.instance.GameOver();
                 isPhase2 = false;
             }
         }
@@ -224,17 +225,16 @@ public class MonsterAI : MonoBehaviour
 
         isTransform = false;
         isPhase2 = true;
-        isUpdate = false;
-        currentState = MonsterState.MOVE;
 
+        currentState = MonsterState.MOVE;
         MonsterStatusController.CurrHp = MonsterStatusController.MaxHp;
         MonsterStatusController.CurrMp = 0;
         devaSkill1.enabled = false;
         devaSkill2.enabled = true;
         fireParticle.Play();
 
-
         Debug.Log("2페이즈 돌입");
+        isUpdate = false;
     }
 
 
@@ -253,17 +253,16 @@ public class MonsterAI : MonoBehaviour
         {
             if (isSkillTurn2)
             {
-                UseSkill_2();
                 isSkillTurn2 = false;
+                UseSkill_2();
             }
             else
             {
-                UseSkill_3();
                 isSkillTurn2 = true;
+                UseSkill_3();
             }
         }
         isUpdate = false;
-        yield break;
     }
 
 
@@ -288,6 +287,8 @@ public class MonsterAI : MonoBehaviour
         if (BoardManager.instance.currentState == PlayerState.MOVE
             && currentState == MonsterState.MOVE)
         {
+            Debug.Log("데바 2스킬 사용");
+
             currentState = MonsterState.USESKILL;
             Notify.gameObject.SetActive(true);
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
@@ -305,6 +306,8 @@ public class MonsterAI : MonoBehaviour
         if (BoardManager.instance.currentState == PlayerState.MOVE
             && currentState == MonsterState.MOVE)
         {
+            Debug.Log("데바 3스킬 사용");
+
             currentState = MonsterState.USESKILL;
             Notify.gameObject.SetActive(true);
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);

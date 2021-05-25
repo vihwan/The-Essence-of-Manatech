@@ -106,21 +106,24 @@ public class DevaSkill2 : MonoBehaviour
 
             GaugeUpdate();
 
-            if(go_List2.Count == 0)
+            if(player.IsInvincible == false)
             {
-                player.IsInvincible = true;
-                Debug.Log("패턴을 파훼하여 무적 상태입니다.");
+                if (go_List2.Count == 0)
+                {
+                    player.IsInvincible = true;
+                    Debug.Log("패턴을 파훼하여 무적 상태입니다.");
+                }
             }
-
 
             if (remainTime <= 0)
             {
                 remainTime = 0f;
                 limitTimeImage.fillAmount = 0f;
 
-                if (MonsterAI.instance.currentState == MonsterState.USESKILL)
+                if (MonsterAI.instance.currentState == MonsterState.USESKILL && isBerserk == false)
                 {
                     SkillBerserk();
+                    isRemainTimeUpdate = false;
                 }
             }
         }
@@ -150,23 +153,23 @@ public class DevaSkill2 : MonoBehaviour
                 {
                     BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>().isActiveNen = false;
                 }
-                else
-                    continue;
             }
         }
 
+        //광폭화시 플레이어가 무적이 아니라면 데미지를 입는다.
         if (player.IsInvincible == false)
         {
             player.DecreaseHP(300);
         }
         else
-        {
+        { 
+            //무적이라면 무적을 해제한다.
+            //넨가드 이펙트를 없앤다.
             player.IsInvincible = false;
         }
 
         go_List2.Clear();
         rootUI.SetActive(false);
         isBerserk = false;
-        isRemainTimeUpdate = false;
     }
 }
