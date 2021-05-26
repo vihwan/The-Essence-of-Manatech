@@ -71,9 +71,12 @@ public class SkillManager : MonoBehaviour
 
     private void Update()
     {
-        if (BoardManager.instance.currentState == PlayerState.MOVE)
+        if (GameManager.instance.GameState == GameState.START)
         {
-            UseSkill();
+            if (BoardManager.instance.currentState == PlayerState.MOVE)
+            {
+                UseSkill();
+            }
         }
     }
 

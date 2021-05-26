@@ -21,7 +21,6 @@ public class DevaSkill2 : MonoBehaviour
     private GameObject rootUI;
     private TMP_Text tmp_Text;
     private Image limitTimeImage;
-    private MonsterNotify notify;
     private PlayerStatusController player;
 
     // Start is called before the first frame update
@@ -37,7 +36,6 @@ public class DevaSkill2 : MonoBehaviour
         if (limitTimeImage != null)
             limitTimeImage.fillAmount = 1f;
 
-        notify = FindObjectOfType<MonsterNotify>();
         player = FindObjectOfType<PlayerStatusController>();
 
     }
@@ -134,8 +132,8 @@ public class DevaSkill2 : MonoBehaviour
         isBerserk = true;
 
         // 너희들을 심판한다! 컨빅션
-        notify.SetText("너희들을 심판한다!");
-        notify.PlayAnim();
+        MonsterAI.instance.Notify.SetText("너희들을 심판한다!");
+        MonsterAI.instance.Notify.PlayAnim();
         SoundManager.instance.PlayCV("Devil_Skill1_Berserk");
 
         for (int i = 0; i < go_List2.Count; i++)

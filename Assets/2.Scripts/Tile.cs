@@ -9,8 +9,8 @@ public enum CharacterKinds
     Pluto,
     Lantern,
     Fluore,
-    test1,
-    test2,
+    HammerSpanner,
+    Shururu,
     Bloom,
     Bomb,
     Lolipop
@@ -56,11 +56,25 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private ComboSystem comboSystem;
     private HintManager hintManager;
     public bool isUpdate = false;
+    private float moveSpeed;
+
 
     //Property
     public int Row { get => row; set => row = value; }
 
     public int Col { get => col; set => col = value; }
+    public float MoveSpeed
+    {
+        get
+        {
+            if (GameManager.instance.GameState == GameState.BEGIN)
+                moveSpeed = .05f;
+            else
+                moveSpeed = .2f;
+
+            return moveSpeed;
+        }
+    }
 
     #endregion Field Variable
 
@@ -97,13 +111,13 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             gameObject.tag = CharacterKinds.Pluto.ToString();
         }
-        else if (image.sprite.name == "5망치")
+        else if (image.sprite.name == "7망치스패너")
         {
-            gameObject.tag = CharacterKinds.test1.ToString();
+            gameObject.tag = CharacterKinds.HammerSpanner.ToString();
         }
-        else if (image.sprite.name == "6스패너")
+        else if (image.sprite.name == "9슈르르")
         {
-            gameObject.tag = CharacterKinds.test2.ToString();
+            gameObject.tag = CharacterKinds.Shururu.ToString();
         }
         else if (image.sprite.name == "7잭오할로윈")
         {
@@ -313,7 +327,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             isShifting = true;
             tempPosition = new Vector2(targetX, targetY);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, .3f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, MoveSpeed);
             if (BoardManager.instance.characterTilesBox[Row, Col] != this.gameObject)
             {
                 BoardManager.instance.characterTilesBox[Row, Col] = this.gameObject;

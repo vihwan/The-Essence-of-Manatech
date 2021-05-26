@@ -18,7 +18,6 @@ public class DevaSkill3 : MonoBehaviour
     private TMP_Text tmp_Text;
     private TMP_Text tmp_Text_Hp;
     private Image limitTimeImage;
-    private MonsterNotify notify;
     private MonsterStatusController monster;
     private GameObject shieldGauge;
 
@@ -35,7 +34,6 @@ public class DevaSkill3 : MonoBehaviour
         if (limitTimeImage != null)
             limitTimeImage.fillAmount = 1f;
 
-        notify = FindObjectOfType<MonsterNotify>();
         monster = FindObjectOfType<MonsterStatusController>();
         tmp_Text_Hp = monster.transform.Find("Slider/MonsterHpSlide/BaseUI/Gauge/Text (TMP)").GetComponent<TMP_Text>();
         shieldGauge = monster.transform.Find("Slider/MonsterShieldSlide").gameObject;
@@ -88,8 +86,8 @@ public class DevaSkill3 : MonoBehaviour
                 MonsterAI.instance.Action = MonsterState.GROGGY;
                 MonsterAI.instance.GroggyTime = 15f;
                 SoundManager.instance.PlayCV("Devil_Skill_Groggy");
-                notify.SetText("크윽.. 이럴수가!!");
-                notify.PlayAnim();
+                MonsterAI.instance.Notify.SetText("크윽.. 이럴수가!!");
+                MonsterAI.instance.Notify.PlayAnim();
                 rootUI.SetActive(false);
                 shieldGauge.SetActive(false);
                 tmp_Text_Hp.enabled = true;
@@ -113,8 +111,8 @@ public class DevaSkill3 : MonoBehaviour
     private void SkillBerserk()
     {
         isBerserk = true;
-        notify.SetText("혼돈 속에 쳐박혀라!!!");
-        notify.PlayAnim();
+        MonsterAI.instance.Notify.SetText("혼돈 속에 쳐박혀라!!!");
+        MonsterAI.instance.Notify.PlayAnim();
         SoundManager.instance.PlayCV("Devil_Skill2_Berserk");
 
         PlayerStatusController playerStatusController = FindObjectOfType<PlayerStatusController>();

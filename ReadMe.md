@@ -72,16 +72,14 @@ Monster AI Refactoring을 통해 더욱 알아보기 편하게 수정.
          * **/
 
 
-3. 스테이지 시작 애니메이션 및 연출 제작
+3. (완료) 스테이지 시작 애니메이션 프로토타입 제작
 
 UI들이 슬라이드하면서 화면에 배치되는 애니메이션을 만들고, 끝난 이후 바로 타일이 생성
 일정 시간 대기시간을 가지며 Ready Start 문구가 출력되도록 설정
 
-
-GameManager.update
-SkillManager.update
-MonsterAI.WAIT
-BoardManager.update
+게임 UI 슬라이드 애니메이션 이후 컴포넌트 참조를 하려니까, 참조 전에 Update 구분을 실행하는 놈들이 있다.
+알고보니 Instance 놈들이 전부 그러했다.
+Enum 타입의 GameState 변수를 생성하여, GameState가 Start일때만 Update 구문이 돌아가도록 설정했다.
 
 
 

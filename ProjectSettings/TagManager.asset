@@ -8,8 +8,6 @@ TagManager:
   - Pluto
   - Lantern
   - Fluore
-  - test2
-  - test3
   - Lolipop
   - Bomb
   - M_One
@@ -21,6 +19,8 @@ TagManager:
   - Bloom
   - test1
   - FxTemporaire
+  - HammerSpanner
+  - Shururu
   layers:
   - Default
   - TransparentFX

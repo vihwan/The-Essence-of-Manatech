@@ -3,31 +3,37 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
+public enum GameState{
+    BEGIN,
+    START,
+    END
+}
+
+
 public class GameManager : MonoBehaviour
 {
+    //Singleton
     public static GameManager instance;
 
-    public GameObject faderObj;
-    public Image faderImg;
+
+    private string currentScene;
     public bool isGameOver = false;
 
     public float fadeSpeed = .02f;
-
     private Color fadeTransparency = new Color(0, 0, 0, .04f);
-    private string currentScene;
+    public GameObject faderObj;
+    public Image faderImg;
+
     private AsyncOperation async;
+
+    [SerializeField] private GameState gameState;
 
     //제어하는 컴포넌트
     private StageManager stageManager;
-    private BoardManager boardManager;
-    private BoardManagerMonster boardManagerMonster;
-    private GUIManager guiManager;
-    private ScoreManager scoreManager;
-    private CreateBackTiles createBoard;
-    private CreateBackTilesMonster createBoardMonster;
-    private ComboSystem comboSystem;
-    private SkillManager skillManager;
-    private MonsterAI monsterAI;
+
+    public GameState GameState { get => gameState; set => gameState = value; }
+
 
     private void Awake()
     {
@@ -46,72 +52,39 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
+        GameState = GameState.BEGIN;
         stageManager = FindObjectOfType<StageManager>();
         if (stageManager != null)
-            stageManager.Init();
-
-        boardManagerMonster = FindObjectOfType<BoardManagerMonster>();
-        boardManager = FindObjectOfType<BoardManager>();
-
-        /*boardManagerMonster = FindObjectOfType<BoardManagerMonster>();
-        if (boardManagerMonster != null)
-            boardManagerMonster.Init();
-
-        boardManager = FindObjectOfType<BoardManager>();
-        if (boardManager != null)
-            boardManager.Init();
-
-        createBoard = FindObjectOfType<CreateBackTiles>();
-        if (createBoard != null)
-            createBoard.Init();
-
-        createBoardMonster = FindObjectOfType<CreateBackTilesMonster>();
-        if (createBoardMonster != null)
-            createBoardMonster.Init();
-
-        guiManager = FindObjectOfType<GUIManager>();
-        if (guiManager != null)
-            guiManager.Init();
-
-        scoreManager = FindObjectOfType<ScoreManager>();
-        if (scoreManager != null)
-            scoreManager.Init();
-
-        comboSystem = FindObjectOfType<ComboSystem>();
-        if (comboSystem != null)
-            comboSystem.Init();
-
-        skillManager = FindObjectOfType<SkillManager>();
-        if (skillManager != null)
-            skillManager.Init();
-
-        monsterAI = FindObjectOfType<MonsterAI>();
-        if (monsterAI != null)
-            monsterAI.Init();*/
+            stageManager.Init(); 
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (GameState == GameState.START)
         {
-            ReturnToMenu();
-        }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ReturnToMenu();
+            }
 
-        if (!isGameOver && guiManager.LimitTime <= 0)
-        {
-            isGameOver = true;
-            GameOver();
+            if (!isGameOver && GUIManager.instance.LimitTime <= 0)
+            {
+                isGameOver = true;
+                GameOver();
+            }
         }
     }
 
     internal void GameOver()
     {
-        StartCoroutine(guiManager.WaitForShifting());
+        GameState = GameState.END;
+        StartCoroutine(GUIManager.instance.WaitForShifting());
         SoundManager.instance.StopAllSE();
         SoundManager.instance.StopBGM();
         SoundManager.instance.PlaySE("DungeonResult");
-        boardManager = null; //보드 매니저 비활성화
-        boardManagerMonster = null;
+        BoardManager.instance = null; //보드 매니저 비활성화
+        BoardManagerMonster.instance = null;
     }
 
     // Load a scene with a specified string name
@@ -179,6 +152,8 @@ public class GameManager : MonoBehaviour
             return currentScene;
         }
     }
+
+
 
     public void ExitGame()
     {

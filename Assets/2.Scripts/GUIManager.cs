@@ -61,8 +61,8 @@ public class GUIManager : MonoBehaviour
     public void Init()
     {
         instance = GetComponent<GUIManager>();
-        limitTime = 600;
-        limitTimeTxt.text = limitTime.ToString();
+        LimitTime = 600;
+      //  limitTimeTxt.text = LimitTime.ToString();
 
         alertText = FindObjectOfType<AlertText>();
         if (alertText != null)
@@ -75,9 +75,12 @@ public class GUIManager : MonoBehaviour
 
     private void Update()
     {
-        if (!isPauseTime)
+        if (GameManager.instance.GameState == GameState.START)
         {
-            LimitTime -= Time.deltaTime;
+            if (!isPauseTime)
+            {
+                LimitTime -= Time.deltaTime;
+            }
         }
     }
 

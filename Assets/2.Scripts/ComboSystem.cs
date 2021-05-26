@@ -1,12 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public enum AnimationState
-{
-    IDLE,
-    UP,
-    FAIL
-}
 
 public class ComboSystem : MonoBehaviour
 {
@@ -14,7 +8,6 @@ public class ComboSystem : MonoBehaviour
 
     private Text comboCounterText;
     private Animator animator;
-    private AnimationState animationState;
 
     public int ComboCounter
     {

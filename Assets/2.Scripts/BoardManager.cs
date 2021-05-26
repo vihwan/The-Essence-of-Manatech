@@ -78,15 +78,15 @@ public class BoardManager : MonoBehaviour
 
         Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().sizeDelta;
         CreateTiles(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
-        SoundManager.instance.PlayBGM("데바스타르");
-        //SoundManager.instance.audioSourceBGM.mute = true;
-        SoundManager.instance.audioSourceBGM.volume = .3f;
     }
 
     private void Update()
     {
-        CheckMovePlayerState();
-       // PrintBoardState();
+        if (GameManager.instance.GameState == GameState.START)
+        {
+            CheckMovePlayerState();
+            // PrintBoardState();
+        }
     }
 
 

@@ -37,8 +37,6 @@ public class DevaSkill1 : MonoBehaviour
     internal GameObject rootUI;
     private TMP_Text tmp_Text;
     private Image limitTimeImage;
-    private MonsterNotify notify;
-
 
 
     public void Init()
@@ -52,8 +50,6 @@ public class DevaSkill1 : MonoBehaviour
         limitTimeImage = transform.Find("RootUI/SkillLimitTimeSlide/BaseUI/Gauge").GetComponent<Image>();
         if (limitTimeImage != null)
             limitTimeImage.fillAmount = 1f;
-
-        notify = FindObjectOfType<MonsterNotify>();
     }
 
     public void Execute()
@@ -139,11 +135,9 @@ public class DevaSkill1 : MonoBehaviour
         // 400의 데미지를 줌
         // 보이스 출력 : 파멸하라
         // 알림 이미지 출력
-        notify.SetText("파멸하라!");
-        notify.PlayAnim();
+        MonsterAI.instance.Notify.SetText("파멸하라!");
+        MonsterAI.instance.Notify.PlayAnim();
         SoundManager.instance.PlayCV("Human_Skill_Berserk");
-
- 
 
         for (int i = 0; i < go_List.Count; i++)
         {

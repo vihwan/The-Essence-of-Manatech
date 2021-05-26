@@ -95,4 +95,5 @@ MonoBehaviour:
   isShifting: 0
   canShifting: 0
   isSealed: 0
+  isActiveNen: 0
   isUpdate: 0

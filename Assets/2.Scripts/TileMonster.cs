@@ -43,11 +43,26 @@ public class TileMonster : MonoBehaviour
     private Image image;
 
     private FindMatchesMonster findMatchesMonster;
+    private float moveSpeed;
 
     //Property
     public int Row { get => row; set => row = value; }
 
     public int Col { get => col; set => col = value; }
+
+    public float MoveSpeed
+    {
+        get
+        {
+            if (GameManager.instance.GameState == GameState.BEGIN)
+                moveSpeed = .05f;
+            else
+                moveSpeed = .2f;
+
+            return moveSpeed;
+        }
+    }
+
 
     #endregion Field Variable
 
@@ -117,7 +132,7 @@ public class TileMonster : MonoBehaviour
         {
             isShifting = true;
             tempPosition = new Vector2(targetX, targetY);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, .3f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, MoveSpeed);
             if (BoardManagerMonster.instance.monsterTilesBox[Row, Col] != this.gameObject)
             {
                 BoardManagerMonster.instance.monsterTilesBox[Row, Col] = this.gameObject;

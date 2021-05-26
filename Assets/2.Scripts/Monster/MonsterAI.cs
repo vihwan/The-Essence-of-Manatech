@@ -114,11 +114,11 @@ public class MonsterAI : MonoBehaviour
 
         fireParticle = transform.Find("Canvas/Fire").GetComponent<ParticleSystem>();
 
-        Notify = FindObjectOfType<MonsterNotify>();
-        if (Notify != null)
+        notify = GameObject.Find("StageManager/GUIManagerCanvas/MonsterUI/Notify").GetComponent<MonsterNotify>();
+        if (notify != null)
         {
-            Notify.init();
-            Notify.gameObject.SetActive(false);
+            notify.init();
+            notify.gameObject.SetActive(false);
         }
 
         isPhase1 = true;
@@ -194,50 +194,53 @@ public class MonsterAI : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        switch (monsterAction)
+        if (GameManager.instance.GameState == GameState.START)
         {
-            case MonsterState.WAIT:
-                WAIT();
-                break;
-
-            case MonsterState.MOVE:
-                MOVE();
-                break;
-
-            case MonsterState.USESKILL:
-                SKILLUSE();
-                break;
-
-            case MonsterState.TRANSFORM:
-                TRANSFORM();
-                break;
-
-            case MonsterState.GROGGY:
-                GROGGY();
-                break;
-        }
-
-        //페이즈1에서 사망할 경우, 페이즈2로 돌입
-        if (isPhase1)
-        {
-            if (MonsterStatusController.CurrHp == 0f)
+            switch (monsterAction)
             {
-                //유저와 몬스터의 조작을 멈추고 대기 시간을 가진다.
-                Action = MonsterState.TRANSFORM;
-                isTransform = true;
-                isPhase1 = false;
+                case MonsterState.WAIT:
+                    WAIT();
+                    break;
+
+                case MonsterState.MOVE:
+                    MOVE();
+                    break;
+
+                case MonsterState.USESKILL:
+                    SKILLUSE();
+                    break;
+
+                case MonsterState.TRANSFORM:
+                    TRANSFORM();
+                    break;
+
+                case MonsterState.GROGGY:
+                    GROGGY();
+                    break;
             }
-        }
 
-
-        if (isPhase2)
-        {
-            if (MonsterStatusController.CurrHp == 0f)
+            //페이즈1에서 사망할 경우, 페이즈2로 돌입
+            if (isPhase1)
             {
-                //데바스타르 사망
-                //게임 오버
-                Action = MonsterState.DEAD;
-                isPhase2 = false;
+                if (MonsterStatusController.CurrHp == 0f)
+                {
+                    //유저와 몬스터의 조작을 멈추고 대기 시간을 가진다.
+                    Action = MonsterState.TRANSFORM;
+                    isTransform = true;
+                    isPhase1 = false;
+                }
+            }
+
+
+            if (isPhase2)
+            {
+                if (MonsterStatusController.CurrHp == 0f)
+                {
+                    //데바스타르 사망
+                    //게임 오버
+                    Action = MonsterState.DEAD;
+                    isPhase2 = false;
+                }
             }
         }
     }
@@ -329,7 +332,7 @@ public class MonsterAI : MonoBehaviour
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
             Action = MonsterState.CASTING;
-            Debug.Log("데바 1스킬 사용");
+            Debug.Log("<color=#1287F6>데바</color> 1스킬 사용");
             Notify.gameObject.SetActive(true);
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
             Notify.SetText("서로를 옭아매는 어리석은 인간들이여");
@@ -344,7 +347,7 @@ public class MonsterAI : MonoBehaviour
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
             Action = MonsterState.CASTING;
-            Debug.Log("데바 2스킬 사용");
+            Debug.Log("<color=#1287F6>데바</color> 2스킬 사용");
             Notify.gameObject.SetActive(true);
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
             Notify.SetText("그 분을 대신하여");
@@ -360,7 +363,7 @@ public class MonsterAI : MonoBehaviour
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
             Action = MonsterState.CASTING;
-            Debug.Log("데바 3스킬 사용");
+            Debug.Log("<color=#1287F6>데바</color> 3스킬 사용");
             Notify.gameObject.SetActive(true);
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
             Notify.SetText("혼돈의 힘은 무한하다.");
