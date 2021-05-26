@@ -12,7 +12,7 @@ public class MoveTile : MonsterStateTest
     public override IEnumerator Start()
     {
         BoardManagerMonster.instance.MoveTile();
-        _monsterAI.SetState(new Idle(_monsterAI));
+      //  _monsterAI.SetState(new Idle(_monsterAI));
         yield break;
     }
 }

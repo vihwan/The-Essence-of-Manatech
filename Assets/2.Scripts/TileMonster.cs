@@ -100,7 +100,7 @@ public class TileMonster : MonoBehaviour
         if (isMatched)
         {
             image.color = new Color(.5f, .5f, .5f, 1.0f);
-            MonsterAI.instance.currentState = MonsterState.WAIT;
+            MonsterAI.instance.Action = MonsterState.WAIT;
         }
 
         if (canShifting == true)
@@ -182,7 +182,7 @@ public class TileMonster : MonoBehaviour
             else
             {
                 BoardManagerMonster.instance.DestroyMatches();
-                MonsterAI.instance.currentState = MonsterState.WAIT;
+                MonsterAI.instance.Action = MonsterState.WAIT;
             }
             otherCharacterTile = null;
         }

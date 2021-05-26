@@ -120,7 +120,7 @@ public class DevaSkill2 : MonoBehaviour
                 remainTime = 0f;
                 limitTimeImage.fillAmount = 0f;
 
-                if (MonsterAI.instance.currentState == MonsterState.USESKILL && isBerserk == false)
+                if (MonsterAI.instance.Action == MonsterState.CASTING && isBerserk == false)
                 {
                     SkillBerserk();
                     isRemainTimeUpdate = false;
@@ -171,5 +171,6 @@ public class DevaSkill2 : MonoBehaviour
         go_List2.Clear();
         rootUI.SetActive(false);
         isBerserk = false;
+        MonsterAI.instance.Action = MonsterState.MOVE;
     }
 }

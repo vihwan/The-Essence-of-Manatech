@@ -85,7 +85,7 @@ public class DevaSkill3 : MonoBehaviour
                 //패턴 파훼 성공
                 Debug.Log("<color=#0456F1>패턴 파훼</color> 성공!!");
                 //그로기 타임
-                MonsterAI.instance.currentState = MonsterState.GROGGY;
+                MonsterAI.instance.Action = MonsterState.GROGGY;
                 MonsterAI.instance.GroggyTime = 15f;
                 SoundManager.instance.PlayCV("Devil_Skill_Groggy");
                 notify.SetText("크윽.. 이럴수가!!");
@@ -102,7 +102,7 @@ public class DevaSkill3 : MonoBehaviour
                 remainTime = 0f;
                 limitTimeImage.fillAmount = 0f;
 
-                if (MonsterAI.instance.currentState == MonsterState.USESKILL)
+                if (MonsterAI.instance.Action == MonsterState.CASTING)
                 {
                     SkillBerserk();
                 }
@@ -126,5 +126,6 @@ public class DevaSkill3 : MonoBehaviour
 
         isBerserk = false;
         isRemainTimeUpdate = false;
+        MonsterAI.instance.Action = MonsterState.MOVE;
     }
 }

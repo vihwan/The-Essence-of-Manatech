@@ -15,7 +15,7 @@ public class Begin : MonsterStateTest
 
         yield return new WaitForSeconds(2f);
 
-        _monsterAI.SetState(new Idle(_monsterAI));
+        //_monsterAI.SetState(new Idle(_monsterAI));
 
         yield break;
     }

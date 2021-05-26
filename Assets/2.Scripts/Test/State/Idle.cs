@@ -18,13 +18,13 @@ public class Idle : MonsterStateTest
             {
                 if (_monsterAI.MonsterStatusController.images_Gauge[MonsterStatusController.MP].fillAmount == 1f)
                 {
-                    _monsterAI.SetState(new UseSkill(_monsterAI));
+                  //  _monsterAI.SetState(new UseSkill(_monsterAI));
                     _monsterAI.ElaspedTime = 0f;
                     yield break;
                 }
                 else
                 {
-                    _monsterAI.SetState(new MoveTile(_monsterAI));
+                 //   _monsterAI.SetState(new MoveTile(_monsterAI));
                     _monsterAI.ElaspedTime = 0f;
                     yield break;
                 }

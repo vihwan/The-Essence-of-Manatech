@@ -13,21 +13,26 @@ public class SkillButton : MonoBehaviour
     private float cooldownTime;
     private float cooldownTimer;
 
+    public float CooldownTime { get => cooldownTime; set => cooldownTime = value; }
+    public float CooldownTimer { get => cooldownTimer; set => cooldownTimer = value; }
+    public TMP_Text CooldownText { get => cooldownText; set => cooldownText = value; }
+    public Image CooldownSkillImage { get => cooldownSkillImage; set => cooldownSkillImage = value; }
+
     //[SerializeField] public ActiveSkill skillInfo; //디버그용
 
     public void Init()
     {
-        cooldownSkillImage = UtilHelper.Find<Image>(transform, "cool_Image");
-        if (cooldownSkillImage != null)
-            cooldownSkillImage.gameObject.SetActive(false);
+        CooldownSkillImage = UtilHelper.Find<Image>(transform, "cool_Image");
+        if (CooldownSkillImage != null)
+            CooldownSkillImage.gameObject.SetActive(false);
 
         cooldownEffect = UtilHelper.Find<Image>(transform, "cooldownEffect");
         if (cooldownEffect != null)
             cooldownEffect.fillAmount = 0.0f;
 
-        cooldownText = UtilHelper.Find<TMP_Text>(transform, "Text (TMP)");
-        if (cooldownText != null)
-            cooldownText.gameObject.SetActive(false);
+        CooldownText = UtilHelper.Find<TMP_Text>(transform, "Text (TMP)");
+        if (CooldownText != null)
+            CooldownText.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -40,23 +45,23 @@ public class SkillButton : MonoBehaviour
 
     private void ApplyCooldown()
     {
-        cooldownTimer -= Time.deltaTime;
+        CooldownTimer -= Time.deltaTime;
 
-        if (cooldownTimer <= 0.0f)
+        if (CooldownTimer <= 0.0f)
         {
             isCooldown = false;
-            cooldownSkillImage.gameObject.SetActive(false);
-            cooldownText.gameObject.SetActive(false);
+            CooldownSkillImage.gameObject.SetActive(false);
+            CooldownText.gameObject.SetActive(false);
             cooldownEffect.fillAmount = 0.0f;
         }
         else
         {
-            cooldownText.text = Mathf.RoundToInt(cooldownTimer).ToString();
-            cooldownEffect.fillAmount = cooldownTimer / cooldownTime;
+            CooldownText.text = Mathf.RoundToInt(CooldownTimer).ToString();
+            cooldownEffect.fillAmount = CooldownTimer / CooldownTime;
         }
     }
 
-    public bool UseSpell(float skillCoolDownTime)
+    public bool CanUseSpell()
     {
         if (isCooldown)
         {
@@ -66,10 +71,6 @@ public class SkillButton : MonoBehaviour
         else
         {
             isCooldown = true;
-            cooldownSkillImage.gameObject.SetActive(true);
-            cooldownText.gameObject.SetActive(true);
-            cooldownTimer = skillCoolDownTime;
-            cooldownTime = skillCoolDownTime;
             return true;
         }
     }

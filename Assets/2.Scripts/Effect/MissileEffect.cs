@@ -95,7 +95,7 @@ public class MissileEffect : MonoBehaviour
                 MonsterStatusController mon = FindObjectOfType<MonsterStatusController>();
                 if (mon != null) { 
                     mon.DecreaseHP(4);
-                    if (MonsterAI.instance.currentState == MonsterState.GROGGY)
+                    if (MonsterAI.instance.Action == MonsterState.GROGGY)
                         mon.DecreaseHP(200f);
                 }
 

@@ -23,9 +23,6 @@ public class BoardManagerMonster : MonoBehaviour
     public GameObject[,] monsterTilesBox; //AI의 타일 보관하는 배열
     public GameObject monsterTilePrefab;  //Tile Prefab
 
-/*    private float elaspedTime = 0f;
-    private float timeStandard = 4f;*/
-
     private FindMatchesMonster findMatchesMonster;
     private CreateBackTilesMonster createBoardMonster;
     private MonsterStatusController monsterStatusController;
@@ -52,16 +49,7 @@ public class BoardManagerMonster : MonoBehaviour
 
     private void Update()
     {
-        CanMovePlayerState();
-/*        if (currentState == MonsterState.MOVETILE)
-        {
-            elaspedTime += Time.deltaTime;
-            if (elaspedTime >= timeStandard)
-            {
-                MoveTile();
-                elaspedTime = 0f;
-            }
-        }*/
+
     }
 
     //타일을 생성하는 함수
@@ -244,7 +232,7 @@ public class BoardManagerMonster : MonoBehaviour
     //TODO
     public void DestroyMatches()
     {
-        MonsterAI.instance.currentState = MonsterState.WAIT;
+        MonsterAI.instance.Action = MonsterState.WAIT;
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -309,7 +297,7 @@ public class BoardManagerMonster : MonoBehaviour
 
     private IEnumerator FillBoardCoroutine()
     {
-        MonsterAI.instance.currentState = MonsterState.WAIT;
+        MonsterAI.instance.Action = MonsterState.WAIT;
 
         RefillBoard();
         yield return new WaitForSeconds(.5f);
@@ -370,7 +358,7 @@ public class BoardManagerMonster : MonoBehaviour
     }
 
     //타일들의 상태가 하나라도 Shifting이면 PlayerState는 WAIT인 함수
-    private void CanMovePlayerState()
+    internal bool CanMovePlayerState()
     {
         for (int x = 0; x < width; x++)
         {
@@ -381,8 +369,7 @@ public class BoardManagerMonster : MonoBehaviour
                     TileMonster movingTile = monsterTilesBox[x, y].GetComponent<TileMonster>();
                     if (movingTile.isShifting || movingTile.isMatched || movingTile.canShifting)
                     {
-                        MonsterAI.instance.currentState = MonsterState.WAIT;
-                        return;
+                        return false; 
                     }
                 }
             }
@@ -392,19 +379,18 @@ public class BoardManagerMonster : MonoBehaviour
             devaSkill2.isRemainTimeUpdate == true || 
             devaSkill3.isRemainTimeUpdate == true)
         {
-            MonsterAI.instance.currentState = MonsterState.USESKILL;
-            return;
+            return false;
         }
 
-        if (MonsterAI.instance.currentState == MonsterState.GROGGY || MonsterAI.instance.currentState == MonsterState.TRANSFORM)
-            return;
+        if (MonsterAI.instance.Action == MonsterState.GROGGY || MonsterAI.instance.Action == MonsterState.TRANSFORM)
+            return false;
 
-        MonsterAI.instance.currentState = MonsterState.MOVE;
+        return true;
     }
 
     public bool IsMoveState()
     {
-        if (MonsterAI.instance.currentState == MonsterState.WAIT)
+        if (MonsterAI.instance.Action == MonsterState.WAIT)
         {
             return false;
         }

@@ -108,7 +108,7 @@ public class SaveAndLoad : MonoBehaviour
         saveData.AskillDic.Add(name, new ActiveSkill(name,
                                                     "미구현입니다.",
                                                     1,
-                                                    75,
+                                                    70,
                                                     40f,
                                                     5));
 

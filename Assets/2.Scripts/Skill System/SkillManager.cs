@@ -115,11 +115,36 @@ public class SkillManager : MonoBehaviour
     //스킬 사용 여부를 확인. 마나와 쿨타임을 비교한다.
     private bool CheckSkillUse(string text, int btnNum)
     {
-        if (playerStatusController.UseMp(ActSkillDic[text].Mana) && skillBtns[btnNum].UseSpell(ActSkillDic[text].CoolTime))
+        /* 쿨타임이 아닐때
+         *      - 마나가 있으면 -> 스킬 사용
+         *      -        없으면  -> 마나가 없습니다.
+         * 
+         * 쿨타임일때
+         *      - 쿨타임입니다.
+         * **/
+
+        if (skillBtns[btnNum].CanUseSpell())
         {
-            return true;
+            if (playerStatusController.CanUseMp(ActSkillDic[text].Mana))
+            {
+                //스킬 버튼의 쿨타임 
+                skillBtns[btnNum].CooldownSkillImage.gameObject.SetActive(true);
+                skillBtns[btnNum].CooldownText.gameObject.SetActive(true);
+                skillBtns[btnNum].CooldownTimer = ActSkillDic[text].CoolTime;
+                skillBtns[btnNum].CooldownTime = ActSkillDic[text].CoolTime;
+
+                playerStatusController.CurrMp -= ActSkillDic[text].Mana;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        return false;
+        else
+        {
+            return false;
+        }
     }
 
     private void Skill_Chain_Fluore()

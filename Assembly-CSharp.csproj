@@ -110,6 +110,7 @@
     <Compile Include="Assets\2.Scripts\Skill System\SkillManager.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\TestSkillLevelText.cs" />
     <Compile Include="Assets\2.Scripts\SoundManager.cs" />
+    <Compile Include="Assets\2.Scripts\StageManager.cs" />
     <Compile Include="Assets\2.Scripts\Test\AdjustColor.cs" />
     <Compile Include="Assets\2.Scripts\Test\Gacha.cs" />
     <Compile Include="Assets\2.Scripts\Test\MonsterStateMachine.cs" />

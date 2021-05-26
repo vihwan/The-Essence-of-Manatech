@@ -114,7 +114,7 @@ public class GUIManager : MonoBehaviour
         {
             highScoreTxt.text = "Best: " + PlayerPrefs.GetInt("HighScore").ToString();
         }
-        yourScoreTxt.text = score.ToString();
+        yourScoreTxt.text = ((int)score).ToString();
     }
 
     /*

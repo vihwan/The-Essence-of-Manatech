@@ -95,15 +95,14 @@ private PlayerStatus playerStatus = new PlayerStatus(500, 200);
         CurrMp += _count;
     }
 
-    public bool UseMp(int useMana)
+    public bool CanUseMp(int necessaryMana)
     {
-        if (CurrMp < useMana)
+        if (CurrMp < necessaryMana)
         {
-            SkillManager.instance.appearText("<color=#00C7FF>마나</color>가 부족합니다.\n" + useMana +"만큼 마나가 필요합니다.");
+            SkillManager.instance.appearText("<color=#00C7FF>마나</color>가 부족합니다.\n" + necessaryMana +"만큼 마나가 필요합니다.");
             return false;
         }
-
-        CurrMp -= useMana;
-        return true;
+        else
+            return true;
     }
 }

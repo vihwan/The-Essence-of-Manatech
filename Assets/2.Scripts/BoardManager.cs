@@ -86,7 +86,7 @@ public class BoardManager : MonoBehaviour
     private void Update()
     {
         CheckMovePlayerState();
-        PrintBoardState();
+       // PrintBoardState();
     }
 
 
@@ -700,7 +700,17 @@ public class BoardManager : MonoBehaviour
             //기존의 잭오랜턴 타일을 삭제
             Tile jack = characterTilesBox[row, col].GetComponent<Tile>();
             if (jack.transform.childCount > 0)
-                devaSkill1.go_List.Remove(jack.gameObject.GetComponentInChildren<SealedEffect>().gameObject);
+            {
+                if (characterTilesBox[row, col].GetComponent<Tile>().isSealed)
+                {
+                    devaSkill1.go_List.Remove(characterTilesBox[row, col].GetComponentInChildren<SealedEffect>().gameObject);
+                }
+                else if (characterTilesBox[row, col].GetComponent<Tile>().isActiveNen)
+                {
+                    devaSkill2.go_List2.Remove(characterTilesBox[row, col].GetComponentInChildren<NenEffect>().gameObject);
+                }
+            }
+
 
             Destroy(jack.gameObject);
             characterTilesBox[row, col] = null;
@@ -756,7 +766,7 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[x, y] != null)
                 {
                     Tile movingTile = characterTilesBox[x, y].GetComponent<Tile>();
-                    if (movingTile.isShifting || movingTile.isMatched || movingTile.canShifting || hasEmptyTile())
+                    if (movingTile.isShifting || movingTile.canShifting || movingTile.isMatched || hasEmptyTile())
                     {
                         currentState = PlayerState.WAIT;
                         return;
@@ -765,7 +775,7 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        if (devaSkill1.isUsingSkill || devaSkill1.isBerserk || MonsterAI.instance.currentState == MonsterState.TRANSFORM)
+        if (devaSkill1.isUsingSkill || devaSkill1.isBerserk || MonsterAI.instance.Action == MonsterState.TRANSFORM)
         {
             currentState = PlayerState.WAIT;
             return;

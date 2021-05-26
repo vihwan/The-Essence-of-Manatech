@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     private AsyncOperation async;
 
     //제어하는 컴포넌트
+    private StageManager stageManager;
     private BoardManager boardManager;
     private BoardManagerMonster boardManagerMonster;
     private GUIManager guiManager;
@@ -45,7 +46,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        stageManager = FindObjectOfType<StageManager>();
+        if (stageManager != null)
+            stageManager.Init();
+
         boardManagerMonster = FindObjectOfType<BoardManagerMonster>();
+        boardManager = FindObjectOfType<BoardManager>();
+
+        /*boardManagerMonster = FindObjectOfType<BoardManagerMonster>();
         if (boardManagerMonster != null)
             boardManagerMonster.Init();
 
@@ -79,7 +87,7 @@ public class GameManager : MonoBehaviour
 
         monsterAI = FindObjectOfType<MonsterAI>();
         if (monsterAI != null)
-            monsterAI.Init();
+            monsterAI.Init();*/
     }
 
     private void Update()
