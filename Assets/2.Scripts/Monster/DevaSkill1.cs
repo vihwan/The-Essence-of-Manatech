@@ -72,12 +72,15 @@ public class DevaSkill1 : MonoBehaviour
                 if (x == 0 || x == BoardManager.instance.width - 1 || y == 0 || y == BoardManager.instance.height - 1)
                     continue;
 
-                Tile tile = BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>();
+                if (BoardManager.instance.characterTilesBox[x, y] != null)
+                {
+                    Tile tile = BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>();
 
-                if (tile.CompareTag("Lolipop") || tile.CompareTag("Bomb"))
-                    continue;
+                    if (tile.CompareTag("Lolipop") || tile.CompareTag("Bomb"))
+                        continue;
 
-                deva1s.Add(new Deva() { row = tile.Row, col = tile.Col });
+                    deva1s.Add(new Deva() { row = tile.Row, col = tile.Col });
+                }
             }
         }
         StartCoroutine(MakeMagicCircle());
@@ -113,6 +116,8 @@ public class DevaSkill1 : MonoBehaviour
                     //그로기 타임
                     MonsterAI.instance.Action = MonsterState.GROGGY;
 
+                    MonsterAI.instance.Notify.SetText("크윽...!");
+                    MonsterAI.instance.Notify.PlayAnim();
                     SoundManager.instance.PlayCV("Human_Skill_Groggy");
                     rootUI.SetActive(false);
                     isRemainTimeUpdate = false;

@@ -11,10 +11,11 @@ public class GUIManager : MonoBehaviour
     public GameObject gameOverPanel;
     public Text yourScoreTxt;
     public Text highScoreTxt;
-
     public TMP_Text scoreTxt;
     public Text comboCounterTxt;
     public TMP_Text limitTimeTxt;
+
+    private Button button;
 
     private float score = 0;
     private float limitTime;
@@ -27,6 +28,7 @@ public class GUIManager : MonoBehaviour
 
     private AlertText alertText;
     private MonsterStatusController monsterStatusController;
+    private PauseMenu pauseMenu;
 
     //프로퍼티
     public float Score
@@ -71,11 +73,29 @@ public class GUIManager : MonoBehaviour
         monsterStatusController = FindObjectOfType<MonsterStatusController>();
         if (monsterStatusController != null)
             monsterStatusController.Init();
+
+        pauseMenu = GetComponentInChildren<PauseMenu>(true);
+        if (pauseMenu != null)
+            pauseMenu.Init();
+    }
+
+    public void OnInitPauseButton()
+    {
+        button = transform.Find("LimitTimeRoot/LimitTimeImage/Button").GetComponent<Button>();
+        if(button != null)
+        {
+            button.onClick.AddListener(OpenPauseMenu);
+        }
+    }
+
+    private void OpenPauseMenu()
+    {
+        pauseMenu.CallMenu();
     }
 
     private void Update()
     {
-        if (GameManager.instance.GameState == GameState.START)
+        if (GameManager.instance.GameState == GameState.PLAYING)
         {
             if (!isPauseTime)
             {
@@ -136,7 +156,7 @@ public class GUIManager : MonoBehaviour
     public IEnumerator WaitForShifting()
     {
         yield return new WaitUntil(() => BoardManager.instance.IsMoveState());
-        yield return new WaitForSeconds(.25f);
+        yield return new WaitForSeconds(.3f);
         GameOverPanel(); //GUI GameOver Panel
     }
 }

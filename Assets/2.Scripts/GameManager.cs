@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public enum GameState{
     BEGIN,
-    START,
+    PLAYING,
+    PAUSE,
     END
 }
 
@@ -61,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameState == GameState.START)
+        if (GameState == GameState.PLAYING)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {

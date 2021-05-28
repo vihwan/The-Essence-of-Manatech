@@ -25,13 +25,15 @@ public class FindMatches : MonoBehaviour
     public void FindAllMatches()
     {
         if (!isUpdate)
-            FindAllMatchesCoroutine();
+        {
+           StartCoroutine(FindAllMatchesCoroutine());
+        }
     }
 
-    private void FindAllMatchesCoroutine()
+    private IEnumerator FindAllMatchesCoroutine()
     {
         isUpdate = true;
-
+        yield return new WaitForSeconds(.2f);
         LolipopCount = 0;
         for (int x = 0; x < BoardManager.instance.width; x++)
         {

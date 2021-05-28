@@ -1,0 +1,1220 @@
+fileFormatVersion: 2
+guid: 6a1a6d8d6edc7974082141979be3b60f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8099433432225489142
+    second: ikki_0
+  - first:
+      213: 10500423901752377
+    second: ikki_1
+  - first:
+      213: 3070363899775773509
+    second: ikki_2
+  - first:
+      213: -7449775765908640216
+    second: ikki_3
+  - first:
+      213: 7542922241832214228
+    second: ikki_4
+  - first:
+      213: 6187551438512709134
+    second: ikki_5
+  - first:
+      213: -4986825619185700046
+    second: ikki_6
+  - first:
+      213: -780169658369777422
+    second: ikki_7
+  - first:
+      213: -7886871864290975649
+    second: ikki_8
+  - first:
+      213: 7537087864173645651
+    second: ikki_9
+  - first:
+      213: -2144489465776080996
+    second: ikki_10
+  - first:
+      213: 5802108502326048243
+    second: ikki_11
+  - first:
+      213: -7556447678668742013
+    second: ikki_12
+  - first:
+      213: -3213292151312183867
+    second: ikki_13
+  - first:
+      213: -4507678971173141032
+    second: ikki_14
+  - first:
+      213: -2003867601802386886
+    second: ikki_15
+  - first:
+      213: -1757586901448850425
+    second: ikki_16
+  - first:
+      213: -3445516263387899620
+    second: ikki_17
+  - first:
+      213: -872381826864694743
+    second: ikki_18
+  - first:
+      213: 8879821047744626250
+    second: ikki_19
+  - first:
+      213: -736866114286158
+    second: ikki_20
+  - first:
+      213: 2262402477639938629
+    second: ikki_21
+  - first:
+      213: -6842974824340686708
+    second: ikki_22
+  - first:
+      213: -3992665621466466973
+    second: ikki_23
+  - first:
+      213: 4306136315504022915
+    second: ikki_24
+  - first:
+      213: 2740092392339088784
+    second: ikki_25
+  - first:
+      213: 4977359183012904366
+    second: ikki_26
+  - first:
+      213: -2959762253886145175
+    second: ikki_27
+  - first:
+      213: -2963252642342042459
+    second: ikki_28
+  - first:
+      213: -743174177906693485
+    second: ikki_29
+  - first:
+      213: -1921454222148802624
+    second: ikki_30
+  - first:
+      213: -5797253999234493668
+    second: ikki_31
+  - first:
+      213: -7525815419786927436
+    second: ikki_32
+  - first:
+      213: -8318395659023421694
+    second: ikki_33
+  - first:
+      213: 5099747418189030955
+    second: ikki_34
+  - first:
+      213: -4635899701593683023
+    second: ikki_35
+  - first:
+      213: 6406748264397722658
+    second: ikki_36
+  - first:
+      213: -1928008456625821648
+    second: ikki_37
+  - first:
+      213: -4698397553288655302
+    second: ikki_38
+  - first:
+      213: 3889866346913528169
+    second: ikki_39
+  - first:
+      213: 229680557927462308
+    second: ikki_40
+  - first:
+      213: -5695275491442152930
+    second: ikki_41
+  - first:
+      213: -1030305271438788072
+    second: ikki_42
+  - first:
+      213: 4841996373884332530
+    second: ikki_43
+  - first:
+      213: -8904890635479620166
+    second: ikki_44
+  - first:
+      213: -501860797401910542
+    second: ikki_45
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ikki_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1827
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f029b14bc7f66070800000000000000
+      internalID: 8099433432225489142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_1
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 1827
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93ca7a4741e452000800000000000000
+      internalID: 10500423901752377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_2
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 1827
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54b615903bf1c9a20800000000000000
+      internalID: 3070363899775773509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_3
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 1827
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82ea3b859641d9890800000000000000
+      internalID: -7449775765908640216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_4
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 1827
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4de5dc890d7dda860800000000000000
+      internalID: 7542922241832214228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_5
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 1827
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0ed10210499ed550800000000000000
+      internalID: 6187551438512709134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1566
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2337e9b458c3bcab0800000000000000
+      internalID: -4986825619185700046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_7
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 1566
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f0e45844d74c25f0800000000000000
+      internalID: -780169658369777422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_8
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 1566
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f50e9eb63d33c8290800000000000000
+      internalID: -7886871864290975649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_9
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 1566
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35f4af0ba7d199860800000000000000
+      internalID: 7537087864173645651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_10
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 1566
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9779df513e3d32e0800000000000000
+      internalID: -2144489465776080996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_11
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 1566
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f5fa6521fa358050800000000000000
+      internalID: 5802108502326048243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1305
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 382ef1d3fda122790800000000000000
+      internalID: -7556447678668742013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_13
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 1305
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cd8c7920d71863d0800000000000000
+      internalID: -3213292151312183867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_14
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 1305
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d50ab1cbd18171c0800000000000000
+      internalID: -4507678971173141032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_15
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 1305
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a32a7a97805d034e0800000000000000
+      internalID: -2003867601802386886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_16
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 1305
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7040345760ccb97e0800000000000000
+      internalID: -1757586901448850425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_17
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 1305
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c19deeca6311f20d0800000000000000
+      internalID: -3445516263387899620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1044
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92a393db95da4e3f0800000000000000
+      internalID: -872381826864694743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_19
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 1044
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4efad312367b3b70800000000000000
+      internalID: 8879821047744626250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_20
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 1044
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bdc20df2d16dfff0800000000000000
+      internalID: -736866114286158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_21
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 1044
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54231b2111ba56f10800000000000000
+      internalID: 2262402477639938629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_22
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 1044
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c887b3427aed801a0800000000000000
+      internalID: -6842974824340686708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_23
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 1044
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 365b39575c33798c0800000000000000
+      internalID: -3992665621466466973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 783
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 385d6000a2872cb30800000000000000
+      internalID: 4306136315504022915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_25
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 783
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0952f116383c60620800000000000000
+      internalID: 2740092392339088784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_26
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 783
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ead33074ec1231540800000000000000
+      internalID: 4977359183012904366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_27
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 783
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96db18d59efcce6d0800000000000000
+      internalID: -2959762253886145175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_28
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 783
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a40779fb6960e6d0800000000000000
+      internalID: -2963252642342042459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_29
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 783
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39ae0afc507bfa5f0800000000000000
+      internalID: -743174177906693485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 522
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c765a4b09f9555e0800000000000000
+      internalID: -1921454222148802624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_31
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 522
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c135aeee3340c8fa0800000000000000
+      internalID: -5797253999234493668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_32
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 522
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b2617acfbeee8790800000000000000
+      internalID: -7525815419786927436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_33
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 522
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20fe1ca883f1f8c80800000000000000
+      internalID: -8318395659023421694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_34
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 522
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b266f59d141f5c640800000000000000
+      internalID: 5099747418189030955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_35
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 522
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1bb4b2098c9f9afb0800000000000000
+      internalID: -4635899701593683023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_36
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 261
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 224d6c02a9759e850800000000000000
+      internalID: 6406748264397722658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_37
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 261
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0386ed216865e35e0800000000000000
+      internalID: -1928008456625821648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_38
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 261
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3e4aa68150fbceb0800000000000000
+      internalID: -4698397553288655302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_39
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 261
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 969f68745d49bf530800000000000000
+      internalID: 3889866346913528169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_40
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 261
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a57413204dff2300800000000000000
+      internalID: 229680557927462308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_41
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 261
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1a2a9a8d1156f0b0800000000000000
+      internalID: -5695275491442152930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_42
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81abdad70de93b1f0800000000000000
+      internalID: -1030305271438788072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_43
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 0
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f9ea1d4c0a323340800000000000000
+      internalID: 4841996373884332530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_44
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 0
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab5e88ca5297b6480800000000000000
+      internalID: -8904890635479620166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ikki_45
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 0
+        width: 227
+        height: 261
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f23a2483480909f0800000000000000
+      internalID: -501860797401910542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

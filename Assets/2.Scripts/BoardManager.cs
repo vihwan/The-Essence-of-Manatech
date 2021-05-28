@@ -34,18 +34,16 @@ public class BoardManager : MonoBehaviour
 
     [Header("Board Variable")]
     public int width;
-
     public int height;
+
+    private const float refillDelay = 0.5f;
 
     public List<Sprite> characters = new List<Sprite>(); //외부에서 사용할 캐릭터들을 저장하는 리스트
     public GameObject[,] characterTilesBox; //캐릭터 타일 보관하는 배열
     public GameObject characterTilePrefab;  //Tile Prefab
+    public Text stateText;
 
     public PlayerState currentState = PlayerState.WAIT;
-
-    //private float nextTime = 0f;
-    //private float TimeLeft = 3f;
-    public Text stateText;
 
     //필요한 컴포넌트
 
@@ -82,7 +80,7 @@ public class BoardManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.GameState == GameState.START)
+        if (GameManager.instance.GameState == GameState.PLAYING)
         {
             CheckMovePlayerState();
             // PrintBoardState();
@@ -334,7 +332,7 @@ public class BoardManager : MonoBehaviour
             }
             nullCount = 0;
         }
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(refillDelay * 0.5f);
         StartCoroutine(FillBoardCoroutine());
     }
 
@@ -400,15 +398,18 @@ public class BoardManager : MonoBehaviour
     //타일 생성하여 보드 채우기 코루틴
     private IEnumerator FillBoardCoroutine()
     {
+
         currentState = PlayerState.WAIT;
 
         RefillBoard();
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(refillDelay * 1.2f);
+        //WaitUntil => FindMatches 코루틴 이 종료되었을 때?
 
         while (MatchesOnBoard())
         {
-            yield return new WaitForSeconds(.5f);
             DestroyMatches();
+            yield return new WaitForSeconds(refillDelay * 2);
+
         }
         findMatches.currentMatches.Clear();
         yield return new WaitForSeconds(.5f);
@@ -418,7 +419,9 @@ public class BoardManager : MonoBehaviour
             Debug.Log("<color=#FF6534> DeadLock 발생 </color> 타일들을 섞습니다.");
             Invoke(nameof(ShuffleBoard), 1f);
             SkillManager.instance.appearText("Deadlock 발생 타일을 섞습니다.");
+            yield return new WaitForSeconds(1f);
         }
+
     }
 
     private void WaitFindCoroutine()

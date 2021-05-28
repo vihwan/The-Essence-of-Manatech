@@ -67,11 +67,15 @@ public class StageManager : MonoBehaviour
         readyGoText.text = "Start!";
         SoundManager.instance.PlaySE("GameStart");
         //스타트 사운드 실행
+
+
+        //버튼 활성화
+        GUIManager.instance.OnInitPauseButton();
     }
 
     private void ChangeGameStateStart()
     {
-        GameManager.instance.GameState = GameState.START;
+        GameManager.instance.GameState = GameState.PLAYING;
     }
 
     private void FindObjects()

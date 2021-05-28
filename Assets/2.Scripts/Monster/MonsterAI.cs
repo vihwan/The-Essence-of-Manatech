@@ -194,7 +194,7 @@ public class MonsterAI : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (GameManager.instance.GameState == GameState.START)
+        if (GameManager.instance.GameState == GameState.PLAYING)
         {
             switch (monsterAction)
             {

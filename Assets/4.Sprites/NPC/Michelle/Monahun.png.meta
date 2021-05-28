@@ -1,0 +1,1169 @@
+fileFormatVersion: 2
+guid: 5af4778b99edfb54f84656c5d1bfa68b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5108601841118324724
+    second: ezgif.com-gif-maker_0
+  - first:
+      213: 763718201113852716
+    second: ezgif.com-gif-maker_1
+  - first:
+      213: 1037891125679955185
+    second: ezgif.com-gif-maker_2
+  - first:
+      213: 6965229494165062650
+    second: ezgif.com-gif-maker_3
+  - first:
+      213: 7488926447407996787
+    second: ezgif.com-gif-maker_4
+  - first:
+      213: 1824921886515328041
+    second: ezgif.com-gif-maker_5
+  - first:
+      213: 3779983321907253453
+    second: ezgif.com-gif-maker_6
+  - first:
+      213: -966056320420023668
+    second: ezgif.com-gif-maker_7
+  - first:
+      213: -8860312699811430183
+    second: ezgif.com-gif-maker_8
+  - first:
+      213: -5443729655699382175
+    second: ezgif.com-gif-maker_9
+  - first:
+      213: -4415440932393464980
+    second: ezgif.com-gif-maker_10
+  - first:
+      213: -1205740810681323922
+    second: ezgif.com-gif-maker_11
+  - first:
+      213: -2807913808948371079
+    second: ezgif.com-gif-maker_12
+  - first:
+      213: -6210186659520421850
+    second: ezgif.com-gif-maker_13
+  - first:
+      213: 6085218192123517740
+    second: ezgif.com-gif-maker_14
+  - first:
+      213: -3098221142656904999
+    second: ezgif.com-gif-maker_15
+  - first:
+      213: -5362691222513635890
+    second: ezgif.com-gif-maker_16
+  - first:
+      213: 6326988287503335889
+    second: ezgif.com-gif-maker_17
+  - first:
+      213: -1946271401956286902
+    second: ezgif.com-gif-maker_18
+  - first:
+      213: 7493043591068940568
+    second: ezgif.com-gif-maker_19
+  - first:
+      213: -6809371085959695748
+    second: ezgif.com-gif-maker_20
+  - first:
+      213: -4187907744740216896
+    second: ezgif.com-gif-maker_21
+  - first:
+      213: -7299982079221094050
+    second: ezgif.com-gif-maker_22
+  - first:
+      213: 5262801672783224760
+    second: ezgif.com-gif-maker_23
+  - first:
+      213: -1043656696398758442
+    second: ezgif.com-gif-maker_24
+  - first:
+      213: -5027714466931689989
+    second: ezgif.com-gif-maker_25
+  - first:
+      213: -837714591242410733
+    second: ezgif.com-gif-maker_26
+  - first:
+      213: 3047803924789513124
+    second: ezgif.com-gif-maker_27
+  - first:
+      213: 9128138834254292934
+    second: ezgif.com-gif-maker_28
+  - first:
+      213: 1693567719685220467
+    second: ezgif.com-gif-maker_29
+  - first:
+      213: 5705124103282463497
+    second: ezgif.com-gif-maker_30
+  - first:
+      213: -1434855942865972087
+    second: ezgif.com-gif-maker_31
+  - first:
+      213: -5016805020390001260
+    second: ezgif.com-gif-maker_32
+  - first:
+      213: 2078111573547904136
+    second: ezgif.com-gif-maker_33
+  - first:
+      213: 1094694293067274272
+    second: ezgif.com-gif-maker_34
+  - first:
+      213: 7065532297096504250
+    second: ezgif.com-gif-maker_35
+  - first:
+      213: 4504948611649316130
+    second: ezgif.com-gif-maker_36
+  - first:
+      213: -5408455199253211806
+    second: ezgif.com-gif-maker_37
+  - first:
+      213: 2590328405260668398
+    second: ezgif.com-gif-maker_38
+  - first:
+      213: 5175404033766169497
+    second: Monahun_0
+  - first:
+      213: 1029985695308735551
+    second: Monahun_1
+  - first:
+      213: 2765475777604778086
+    second: Monahun_2
+  - first:
+      213: -1858253503184836098
+    second: Monahun_3
+  - first:
+      213: 1332521557070118024
+    second: Monahun_4
+  - first:
+      213: -6947026192723749941
+    second: Monahun_5
+  - first:
+      213: 2407450944740187645
+    second: Monahun_6
+  - first:
+      213: -5258280302864961378
+    second: Monahun_7
+  - first:
+      213: -8729401549375128409
+    second: Monahun_8
+  - first:
+      213: 4461926114208771708
+    second: Monahun_9
+  - first:
+      213: 1689234074558255922
+    second: Monahun_10
+  - first:
+      213: -354187884107178960
+    second: Monahun_11
+  - first:
+      213: 130043114500375867
+    second: Monahun_12
+  - first:
+      213: 5804862795518407006
+    second: Monahun_13
+  - first:
+      213: 6359467151190517909
+    second: Monahun_14
+  - first:
+      213: -5266007583703662491
+    second: Monahun_15
+  - first:
+      213: -4709769705163732807
+    second: Monahun_16
+  - first:
+      213: -634689878305296633
+    second: Monahun_17
+  - first:
+      213: 5156845637211846346
+    second: Monahun_18
+  - first:
+      213: -6005894157823179637
+    second: Monahun_19
+  - first:
+      213: 5965621739026940982
+    second: Monahun_20
+  - first:
+      213: 840330504843023096
+    second: Monahun_21
+  - first:
+      213: -1753233055156803291
+    second: Monahun_22
+  - first:
+      213: 6066795824709762128
+    second: Monahun_23
+  - first:
+      213: -7728675592615418641
+    second: Monahun_24
+  - first:
+      213: -7943962383791905772
+    second: Monahun_25
+  - first:
+      213: -1140358933158511785
+    second: Monahun_26
+  - first:
+      213: -4492581132320406797
+    second: Monahun_27
+  - first:
+      213: 2755683276162555230
+    second: Monahun_28
+  - first:
+      213: 7823045738235004372
+    second: Monahun_29
+  - first:
+      213: 6427818254834361049
+    second: Monahun_30
+  - first:
+      213: -1119966559302161763
+    second: Monahun_31
+  - first:
+      213: 4057889258493468253
+    second: Monahun_32
+  - first:
+      213: 2968108897305542860
+    second: Monahun_33
+  - first:
+      213: -7638917051040382355
+    second: Monahun_34
+  - first:
+      213: 3794839737901422660
+    second: Monahun_35
+  - first:
+      213: 2014360435765394582
+    second: Monahun_36
+  - first:
+      213: 8329600398307404391
+    second: Monahun_37
+  - first:
+      213: 5072690735597613688
+    second: Monahun_38
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Monahun_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 875
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99b91c95c8ab2d740800000000000000
+      internalID: 5175404033766169497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_1
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 875
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f346c94688e3b4e00800000000000000
+      internalID: 1029985695308735551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_2
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 875
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 668741f4191f06620800000000000000
+      internalID: 2765475777604778086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_3
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 875
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef9ea08c8482636e0800000000000000
+      internalID: -1858253503184836098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_4
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 875
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88cf6b0db411e7210800000000000000
+      internalID: 1332521557070118024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 750
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc3dd511c74379f90800000000000000
+      internalID: -6947026192723749941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_6
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 750
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfdda6701ebf86120800000000000000
+      internalID: 2407450944740187645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_7
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 750
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e90fc429ce5d607b0800000000000000
+      internalID: -5258280302864961378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_8
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 750
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ac30cb8a8fead680800000000000000
+      internalID: -8729401549375128409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_9
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 750
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7ee37b1922fbed30800000000000000
+      internalID: 4461926114208771708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 625
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 233d78cd07d517710800000000000000
+      internalID: 1689234074558255922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_11
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 625
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03c5b08fefba51bf0800000000000000
+      internalID: -354187884107178960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_12
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 625
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b35c74d06810ec100800000000000000
+      internalID: 130043114500375867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_13
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 625
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5171c005f30f8050800000000000000
+      internalID: 5804862795518407006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_14
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 625
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 598e97b1ead514850800000000000000
+      internalID: 6359467151190517909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 500
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56084dcc0026be6b0800000000000000
+      internalID: -5266007583703662491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_16
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 500
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b8c1d5186983aeb0800000000000000
+      internalID: -4709769705163732807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_17
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 500
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70fa31d1be02137f0800000000000000
+      internalID: -634689878305296633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_18
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 500
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac6f88fe8cbc09740800000000000000
+      internalID: 5156845637211846346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_19
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 500
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b840b548517c6aca0800000000000000
+      internalID: -6005894157823179637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 375
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6348c0b4d552ac250800000000000000
+      internalID: 5965621739026940982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_21
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 375
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f2d713542479ab00800000000000000
+      internalID: 840330504843023096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_22
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 375
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 529e7ea43d34ba7e0800000000000000
+      internalID: -1753233055156803291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_23
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 375
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05cf5a8c8a6913450800000000000000
+      internalID: 6066795824709762128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_24
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 375
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe42ded2f7a3eb490800000000000000
+      internalID: -7728675592615418641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 250
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 414a4050d4061c190800000000000000
+      internalID: -7943962383791905772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_26
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 250
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75bb4a89791ac20f0800000000000000
+      internalID: -1140358933158511785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_27
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 250
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f28b6b434527a1c0800000000000000
+      internalID: -4492581132320406797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_28
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 250
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5d5725e6572e3620800000000000000
+      internalID: 2755683276162555230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_29
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 250
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d5812196aa019c60800000000000000
+      internalID: 7823045738235004372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 125
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d26c2095a2343950800000000000000
+      internalID: 6427818254834361049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_31
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 125
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9a6a7029541570f0800000000000000
+      internalID: -1119966559302161763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_32
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 125
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5e506ee7c4805830800000000000000
+      internalID: 4057889258493468253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_33
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 125
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc0c29ef057d03920800000000000000
+      internalID: 2968108897305542860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_34
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 125
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6240103a6d1df590800000000000000
+      internalID: -7638917051040382355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_35
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 448962db2aaf9a430800000000000000
+      internalID: 3794839737901422660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_36
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 0
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69cb56fc42274fb10800000000000000
+      internalID: 2014360435765394582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_37
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 0
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76aa01e1e6fa89370800000000000000
+      internalID: 8329600398307404391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monahun_38
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 0
+        width: 77
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 872f5b60951d56640800000000000000
+      internalID: 5072690735597613688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

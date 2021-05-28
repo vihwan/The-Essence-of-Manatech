@@ -17,12 +17,15 @@ public class BoardManagerMonster : MonoBehaviour
     public int width;
     public int height;
 
+    private const float refillDelay = 0.5f;
+
     private Vector2 moveDirF;
 
     public List<Sprite> monsterTilesList = new List<Sprite>(); //에디터에서 사용할 타일들을 저장하는 리스트
     public GameObject[,] monsterTilesBox; //AI의 타일 보관하는 배열
     public GameObject monsterTilePrefab;  //Tile Prefab
 
+    //Component
     private FindMatchesMonster findMatchesMonster;
     private CreateBackTilesMonster createBoardMonster;
     private MonsterStatusController monsterStatusController;
@@ -291,7 +294,7 @@ public class BoardManagerMonster : MonoBehaviour
             }
             nullCount = 0;
         }
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(refillDelay * 0.5f);
         StartCoroutine(FillBoardCoroutine());
     }
 
@@ -300,12 +303,12 @@ public class BoardManagerMonster : MonoBehaviour
         MonsterAI.instance.Action = MonsterState.WAIT;
 
         RefillBoard();
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(refillDelay);
 
         while (MatchesOnBoard())
         {
-            yield return new WaitForSeconds(.5f);
             DestroyMatches();
+            yield return new WaitForSeconds(refillDelay * 2);
         }
         findMatchesMonster.currentMatches.Clear();
         yield return new WaitForSeconds(.5f);

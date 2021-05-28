@@ -8,7 +8,7 @@ using TMPro;
 public class MonsterStatusController : MonoBehaviour
 {
     // 나중에 몬스터 정보가 담긴 컴포넌트 불러오기
-    private MonsterStatus monsterStatus = new MonsterStatus(3000, 20, 200);
+    private MonsterStatus monsterStatus = new MonsterStatus(3000, 30, 200);
 
     [SerializeField]
     private float maxHp;
@@ -117,10 +117,17 @@ public class MonsterStatusController : MonoBehaviour
 
     public void DecreaseHP(float _count)
     {
-        if(shieldObject.activeSelf)
+        float damage = 0f;
+
+        if (MonsterAI.instance.Action == MonsterState.GROGGY)
+            damage = _count * 20;
+        else
+            damage = _count;
+
+        if (shieldObject.activeSelf)
         {
             if(currShield > 0)
-                currShield -= _count;
+                currShield -= damage;
             else
             {
                 shieldObject.SetActive(false);
@@ -128,7 +135,7 @@ public class MonsterStatusController : MonoBehaviour
         }
         else
         {
-            currHp -= _count;
+            currHp -= damage;
 
             if (CurrHp <= 0)
             {

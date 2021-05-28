@@ -265,10 +265,10 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/2019.4.23f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -625,49 +625,76 @@
       <HintPath>C:/Program Files/Unity/2019.4.23f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.SpriteShape.Editor">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.SpriteShape.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Recorder.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Path.Editor">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Path.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Recorder">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Recorder.Base">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Base.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEngineBridge.001">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Common.Runtime">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Common.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.SpriteShape.Runtime">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.SpriteShape.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics.Editor">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Common.Editor">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Common.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEditorBridge.001">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

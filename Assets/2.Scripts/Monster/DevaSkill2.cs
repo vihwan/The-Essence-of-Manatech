@@ -118,7 +118,8 @@ public class DevaSkill2 : MonoBehaviour
                 remainTime = 0f;
                 limitTimeImage.fillAmount = 0f;
 
-                if (MonsterAI.instance.Action == MonsterState.CASTING && isBerserk == false)
+                if (MonsterAI.instance.Action == MonsterState.CASTING && isBerserk == false
+                    && BoardManager.instance.currentState == PlayerState.MOVE)
                 {
                     SkillBerserk();
                     isRemainTimeUpdate = false;
@@ -147,9 +148,11 @@ public class DevaSkill2 : MonoBehaviour
         {
             for (int y = 0; y < BoardManager.instance.height; y++)
             {
-                if (BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>().isActiveNen)
+                Tile tile = BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>();
+
+                if (tile.isActiveNen)
                 {
-                    BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>().isActiveNen = false;
+                    tile.isActiveNen = false;
                 }
             }
         }

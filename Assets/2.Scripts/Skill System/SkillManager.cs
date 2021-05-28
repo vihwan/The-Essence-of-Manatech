@@ -71,7 +71,7 @@ public class SkillManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.GameState == GameState.START)
+        if (GameManager.instance.GameState == GameState.PLAYING)
         {
             if (BoardManager.instance.currentState == PlayerState.MOVE)
             {

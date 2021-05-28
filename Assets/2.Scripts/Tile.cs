@@ -55,7 +55,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private FindMatches findMatches;
     private ComboSystem comboSystem;
     private HintManager hintManager;
-    public bool isUpdate = false;
+    public bool isCheckMoveUpdate = false;
     private float moveSpeed;
 
 
@@ -70,7 +70,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             if (GameManager.instance.GameState == GameState.BEGIN)
                 moveSpeed = .05f;
             else
-                moveSpeed = .2f;
+                moveSpeed = .3f;
 
             return moveSpeed;
         }
@@ -123,7 +123,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             gameObject.tag = CharacterKinds.Bomb.ToString();
         }
-        else if (image.sprite.name == "8빗자루")
+        else if (image.sprite.name == "8빗자루_2")
         {
             gameObject.tag = CharacterKinds.Bloom.ToString();
         }
@@ -149,14 +149,16 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (hintManager != null)
-        {
-            hintManager.DestroyHint();
-        }
 
+        if(GameManager.instance.GameState != GameState.PLAYING)
+            return;
 
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
+            if (hintManager != null)
+            {
+                hintManager.DestroyHint();
+            }
 
             //만약 클릭한 타일이 폭탄이라면 폭탄 실행
             if (eventData.pointerCurrentRaycast.gameObject.CompareTag("Bomb"))
@@ -183,6 +185,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (GameManager.instance.GameState != GameState.PLAYING)
+            return;
+
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
             currentTile_GO = eventData.pointerCurrentRaycast.gameObject;
@@ -290,9 +295,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public IEnumerator CheckMoveCoroutine()
     {
-        isUpdate = true;
+        isCheckMoveUpdate = true;
         yield return new WaitForSeconds(.7f);
-        yield return new WaitWhile(() => findMatches.IsMatchFinding()); //WaitUntil
+        yield return new WaitUntil(() => !findMatches.IsMatchFinding()); //WaitWhile
         if (otherCharacterTile != null)
         {
             //이동한 두 타일 둘다 매칭 상태가 아니라면 다시 원래 자리로 돌린다.
@@ -314,7 +319,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             }
             otherCharacterTile = null;
         }
-        isUpdate = false;
+        isCheckMoveUpdate = false;
     }
 
     //타일 이동 애니메이션

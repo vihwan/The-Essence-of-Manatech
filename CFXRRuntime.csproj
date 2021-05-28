@@ -269,7 +269,7 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/2019.4.23f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -617,10 +617,10 @@
       <HintPath>C:/Program Files/Unity/2019.4.23f1/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/System.Xml.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup></ItemGroup>

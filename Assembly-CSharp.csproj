@@ -123,7 +123,11 @@
     <Compile Include="Assets\2.Scripts\Tile.cs" />
     <Compile Include="Assets\2.Scripts\TileMonster.cs" />
     <Compile Include="Assets\2.Scripts\Tween.cs" />
+    <Compile Include="Assets\2.Scripts\UI\MainMenu.cs" />
+    <Compile Include="Assets\2.Scripts\UI\PauseMenu.cs" />
+    <Compile Include="Assets\2.Scripts\UI\TitleUIManager.cs" />
     <Compile Include="Assets\2.Scripts\UtilHelper.cs" />
+    <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\UIParticles\Examples\Scripts\SwitchPanels.cs" />
     <Compile Include="Assets\UIParticles\Scripts\SetPropertyUtility.cs" />
     <Compile Include="Assets\UIParticles\Scripts\UiParticles.cs" />
@@ -134,11 +138,13 @@
     <None Include="Assets\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR Particle Ubershader.shader" />
     <None Include="Assets\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR_SETTINGS.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\SpriteOutline\Shaders\SpriteOutline.shader" />
     <None Include="Assets\UIParticles\Shaders\Ui Particle Add.shader" />
     <None Include="Assets\UIParticles\version.txt" />
     <None Include="Assets\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\QuickOutline\Resources\Shaders\OutlineMask.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\JsonDotNet\link.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
@@ -149,6 +155,7 @@
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\UIParticles\Shaders\Ui Glow Additive Simple.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\QuickOutline\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\Cartoon FX Remaster\CFXR Prefabs\Texts\_Make your own text effect.txt" />
     <None Include="Assets\8.GameData\SkillData.txt" />
@@ -160,6 +167,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR_URP.cginc" />
+    <None Include="Assets\QuickOutline\Resources\Shaders\OutlineFill.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
@@ -347,7 +355,7 @@
       <HintPath>C:/Program Files/Unity/2019.4.23f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/2019.4.23f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -695,43 +703,70 @@
       <HintPath>C:/Program Files/Unity/2019.4.23f1/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/System.Xml.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.SpriteShape.Editor">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.SpriteShape.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Recorder.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Path.Editor">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Path.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Recorder">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Recorder.Base">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Base.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Recorder.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEngineBridge.001">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Common.Runtime">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Common.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.SpriteShape.Runtime">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.SpriteShape.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics.Editor">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Common.Editor">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.2D.Common.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEditorBridge.001">
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech2/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>D:/입사포트폴리오/포트폴리오/마도학의정수/The-Essence-of-Manatech/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
