@@ -124,6 +124,9 @@
     <Compile Include="Assets\2.Scripts\TileMonster.cs" />
     <Compile Include="Assets\2.Scripts\Tween.cs" />
     <Compile Include="Assets\2.Scripts\UI\MainMenu.cs" />
+    <Compile Include="Assets\2.Scripts\UI\NPC_DruidMia.cs" />
+    <Compile Include="Assets\2.Scripts\UI\NPC_Ikki.cs" />
+    <Compile Include="Assets\2.Scripts\UI\NPC_Michelle.cs" />
     <Compile Include="Assets\2.Scripts\UI\PauseMenu.cs" />
     <Compile Include="Assets\2.Scripts\UI\TitleUIManager.cs" />
     <Compile Include="Assets\2.Scripts\UtilHelper.cs" />
