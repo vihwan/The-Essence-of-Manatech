@@ -706,13 +706,41 @@
       <Project>{D721207D-6070-34F0-3A83-D6D9A508B90C}</Project>
       <Name>CFXRRuntime</Name>
     </ProjectReference>
+    <ProjectReference Include="Fungus.FungusLuaEditor.csproj">
+      <Project>{51752FFA-5783-6CE7-9D09-3C24E87958A6}</Project>
+      <Name>Fungus.FungusLuaEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="CFXREditor.csproj">
       <Project>{03F0140D-13B9-E043-07EC-A3038B66AD89}</Project>
       <Name>CFXREditor</Name>
     </ProjectReference>
+    <ProjectReference Include="FungusEditor.csproj">
+      <Project>{F669CA26-FB4B-BD29-8CD3-4A127DAD0FE4}</Project>
+      <Name>FungusEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Fungus.LineEndingsEditor.csproj">
+      <Project>{D9F5D520-11A8-CB65-1FF3-13859A3CD3D2}</Project>
+      <Name>Fungus.LineEndingsEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="CFXRDemo.csproj">
       <Project>{8CCD5416-896A-FF9D-8A92-8C94B531970F}</Project>
       <Name>CFXRDemo</Name>
+    </ProjectReference>
+    <ProjectReference Include="FungusExamples.csproj">
+      <Project>{9B820C70-1F89-BAD6-47BC-C77ACAD80CBE}</Project>
+      <Name>FungusExamples</Name>
+    </ProjectReference>
+    <ProjectReference Include="Fungus.csproj">
+      <Project>{CF484B9A-E4FE-806D-190E-56E686E50610}</Project>
+      <Name>Fungus</Name>
+    </ProjectReference>
+    <ProjectReference Include="Fungus.UsfxrEditor.csproj">
+      <Project>{8EAD97F2-07CA-1D6D-5C84-E4A2FB54C9C9}</Project>
+      <Name>Fungus.UsfxrEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Fungus.FungusLuaJSONCheckerEditor.csproj">
+      <Project>{B8E29A1A-8EA1-E6F4-626B-7E4249C22083}</Project>
+      <Name>Fungus.FungusLuaJSONCheckerEditor</Name>
     </ProjectReference>
     <ProjectReference Include="CFXRDemoEditor.csproj">
       <Project>{DA26AC0F-147B-DE32-01E8-9FEBCE4287BD}</Project>

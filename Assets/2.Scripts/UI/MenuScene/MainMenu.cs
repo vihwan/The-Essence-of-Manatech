@@ -123,4 +123,10 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
     {
         LoadingSceneManager.SetLoadScene("InGameScene"); //로딩 씬을 실행
     }
+
+    public int RandomSelectNum()
+    {
+        int rand = UnityEngine.Random.Range(0, 3);
+        return rand;
+    }
 }

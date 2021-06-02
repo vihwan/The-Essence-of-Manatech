@@ -11,7 +11,8 @@ public class LoadingSceneManager : MonoBehaviour
 
     [SerializeField]
     private Image theLoadingSlider;
-    public static bool isLoad = false;
+    [SerializeField]
+    private Text loadingText;
 
     public static float loadingTime = 0.0f;
 
@@ -39,20 +40,22 @@ public class LoadingSceneManager : MonoBehaviour
             loadingTime += Time.deltaTime;
             timer += Time.deltaTime;
             print(timer);
-            if (operation.progress < 0.9f)
+            if (timer < 5f)
             {
                 theLoadingSlider.fillAmount = Mathf.Lerp(theLoadingSlider.fillAmount, operation.progress, timer);
-                if (theLoadingSlider.fillAmount >= operation.progress) //즉 진행상황이 0.9이상이 되면
-                {
-                    timer = 0f; //타이머를 초기화
-                }
+                loadingText.text = ((int)theLoadingSlider.fillAmount * 100) + "%";
+                /*                if (theLoadingSlider.fillAmount >= operation.progress) //즉 진행상황이 0.9이상이 되면
+                                {
+                                    timer = 0f; //타이머를 초기화
+                                }*/
             }
             else
             {
                 theLoadingSlider.fillAmount = Mathf.Lerp(theLoadingSlider.fillAmount, 1f, timer);
+                loadingText.text = ((int)theLoadingSlider.fillAmount * 100) + "%";
                 if (theLoadingSlider.fillAmount == 1.0f)  //만약 로딩바가 100%가 되면
                 {
-                    isLoad = true;
+                    yield return new WaitForSecondsRealtime(2f);
                     operation.allowSceneActivation = true; //씬 동작을 활성화
                     loadingTime = 0.0f;
                     yield break;

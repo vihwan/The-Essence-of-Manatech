@@ -865,7 +865,7 @@ GameObject:
   - component: {fileID: 1915491925}
   - component: {fileID: 1915491924}
   m_Layer: 5
-  m_Name: LoadingText
+  m_Name: ToolTipText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1118,3 +1118,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theLoadingSlider: {fileID: 699895873}
+  loadingText: {fileID: 1131901789}
