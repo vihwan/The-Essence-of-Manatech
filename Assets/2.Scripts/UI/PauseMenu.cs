@@ -61,7 +61,7 @@ public class PauseMenu : MonoBehaviour
     public void ClickExit() //Quit
     {
         CloseMenu();
-        LoadingSceneManager.SetLoadScene("MenuScene");
+        GameManager.instance.LoadScene("MenuScene");
     }
 
 }

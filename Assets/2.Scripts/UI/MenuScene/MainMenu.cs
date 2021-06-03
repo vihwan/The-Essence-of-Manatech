@@ -28,12 +28,39 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
     private ConfirmMenu confirm_Menu;
     private Animator startAni;
 
+    private Fungus.SayDialog sayDialog;
+
     public ConfirmMenu Confirm_Menu { get => confirm_Menu;}
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
+
+        sayDialog = FindObjectOfType<Fungus.SayDialog>();
+        if(sayDialog != null)
+        {
+            print("Success Refer SayDialog");
+        }
+
+
+        mia = GetComponentInChildren<NPC_DruidMia>();
+        if (mia != null)
+        {
+            mia.Init();
+        }
+
+        michelle = GetComponentInChildren<NPC_Michelle>();
+        if (michelle != null)
+        {
+            michelle.Init();
+        }
+
+        ikki = GetComponentInChildren<NPC_Ikki>();
+        if (ikki != null)
+        {
+            ikki.Init();
+        }
 
         go_Mia = GetComponentInChildren<NPC_DruidMia>().gameObject;
         if (go_Mia != null)
@@ -79,23 +106,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
             confirm_Menu.Init();
         }
 
-        mia = FindObjectOfType<NPC_DruidMia>();
-        if (mia != null)
-        {
-            mia.Init();
-        }
 
-        michelle = FindObjectOfType<NPC_Michelle>();
-        if(michelle != null)
-        {
-            michelle.Init();
-        }
-
-        ikki = FindObjectOfType<NPC_Ikki>();
-        if(ikki != null)
-        {
-            ikki.Init();
-        }
 
         SoundManager.instance.PlayBGM("샨트리");
     }
@@ -108,6 +119,27 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
             mia.AMBVoice();
             elapsedTime = 0f;
         }
+
+        //대화창이 켜진 상태에서는 NPC의 버튼이 동작하지 않는다.
+        if (isActiveSayDialog())
+            ActiveNPCButton(false);
+        else
+            ActiveNPCButton(true);
+    }
+
+    private bool isActiveSayDialog()
+    {
+        if (sayDialog.gameObject.activeSelf == true)
+            return true;
+        else
+            return false;
+    }
+
+    private void ActiveNPCButton(bool state)
+    {
+        mia.GetComponent<Button>().enabled = state;
+        ikki.GetComponent<Button>().enabled = state;
+        michelle.GetComponent<Button>().enabled = state;
     }
 
 
@@ -162,11 +194,14 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         startAni.gameObject.SetActive(true);
     }
 
+
+    //AnimatorEvent
     public void LoadingForStartGame()
     {
-        LoadingSceneManager.SetLoadScene("InGameScene"); //로딩 씬을 실행
+        GameManager.instance.LoadScene("InGameScene"); //로딩 씬을 실행
     }
 
+    //Fungus
     public int RandomSelectNum()
     {
         int rand = UnityEngine.Random.Range(0, 3);

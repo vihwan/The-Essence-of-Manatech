@@ -9,7 +9,7 @@ public class TitleUIManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            LoadingSceneManager.SetLoadScene("MenuScene");
+            GameManager.instance.LoadScene("MenuScene");
         }
     }
 }

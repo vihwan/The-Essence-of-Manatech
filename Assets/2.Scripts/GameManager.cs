@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     private string currentScene;
     public bool isGameOver = false;
+    private bool isReturning = false; // 게임 메뉴로 돌아갈 때 돌아가는 중에, 다시 돌아가는 기능을 실행할 수 없도록 생성한 변수
 
     public float fadeSpeed = .02f;
     private Color fadeTransparency = new Color(0, 0, 0, .04f);
@@ -91,8 +92,8 @@ public class GameManager : MonoBehaviour
     // Load a scene with a specified string name
     public void LoadScene(string sceneName)
     {
-        instance.StartCoroutine(Load(sceneName));
-        instance.StartCoroutine(FadeOut(instance.faderObj, instance.faderImg));
+        instance.StartCoroutine(FadeOut(instance.faderObj, instance.faderImg, sceneName));
+        //instance.StartCoroutine(Load(sceneName)); Obsolete
     }
 
     // Reload the current scene
@@ -108,7 +109,7 @@ public class GameManager : MonoBehaviour
     }
 
     //Iterate the fader transparency to 100%
-    private IEnumerator FadeOut(GameObject faderObject, Image fader)
+    private IEnumerator FadeOut(GameObject faderObject, Image fader, string sceneName)
     {
         faderObject.SetActive(true);
         while (fader.color.a < 1)
@@ -116,7 +117,7 @@ public class GameManager : MonoBehaviour
             fader.color += fadeTransparency;
             yield return new WaitForSeconds(fadeSpeed);
         }
-        ActivateScene(); //Activate the scene when the fade ends
+        LoadingSceneManager.SetLoadScene(sceneName);
     }
 
     // Iterate the fader transparency to 0%
@@ -130,19 +131,14 @@ public class GameManager : MonoBehaviour
         faderObject.SetActive(false);
     }
 
-    // Begin loading a scene with a specified string asynchronously
+
+    [System.Obsolete("This is an obsolete method. LoadingSceneManager Class의 SetLoadScene을 사용하세요.")]
     private IEnumerator Load(string sceneName)
     {
         async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;
         yield return async;
         isReturning = false;
-    }
-
-    // Allows the scene to change once it is loaded
-    public void ActivateScene()
-    {
-        async.allowSceneActivation = true;
     }
 
     // Get the current scene name
@@ -154,24 +150,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
     public void ExitGame()
     {
-        // If we are running in a standalone build of the game
+        // 빌드된 게임이라면
 #if UNITY_STANDALONE
         // Quit the application
         Application.Quit();
 #endif
 
-        // If we are running in the editor
+        // 에디터에서 실행중인 것이라면
 #if UNITY_EDITOR
         // Stop playing the scene
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
 
-    private bool isReturning = false;
+
 
     public void ReturnToMenu()
     {

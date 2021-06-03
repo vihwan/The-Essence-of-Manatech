@@ -32,26 +32,19 @@ public class LoadingSceneManager : MonoBehaviour
         AsyncOperation operation = SceneManager.LoadSceneAsync(nextscene); //다음 씬을 비동기식 동작
         operation.allowSceneActivation = false; //씬 동작을 비활성화
 
-        float timer = 0.0f;
-
         while (!operation.isDone)
         {
             yield return null;
             loadingTime += Time.deltaTime;
-            timer += Time.deltaTime;
-            print(timer);
-            if (timer < 5f)
+            if (loadingTime < 5f)
             {
-                theLoadingSlider.fillAmount = Mathf.Lerp(theLoadingSlider.fillAmount, operation.progress, timer);
-                loadingText.text = ((int)theLoadingSlider.fillAmount * 100) + "%";
-                /*                if (theLoadingSlider.fillAmount >= operation.progress) //즉 진행상황이 0.9이상이 되면
-                                {
-                                    timer = 0f; //타이머를 초기화
-                                }*/
+                theLoadingSlider.fillAmount = Mathf.Clamp(loadingTime, 0f,.99f);
+                loadingText.text = Mathf.RoundToInt(theLoadingSlider.fillAmount * 100) + "%";
+
             }
             else
             {
-                theLoadingSlider.fillAmount = Mathf.Lerp(theLoadingSlider.fillAmount, 1f, timer);
+                theLoadingSlider.fillAmount = Mathf.Clamp01(1f);
                 loadingText.text = ((int)theLoadingSlider.fillAmount * 100) + "%";
                 if (theLoadingSlider.fillAmount == 1.0f)  //만약 로딩바가 100%가 되면
                 {
