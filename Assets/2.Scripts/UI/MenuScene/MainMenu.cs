@@ -9,6 +9,14 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
     // Canvas / Panel에 있는 스크립트
     public static MainMenu instance;
 
+
+    private float ambTime = 30f;
+    private float elapsedTime = 0f;
+
+    private NPC_DruidMia mia;
+    private NPC_Ikki ikki;
+    private NPC_Michelle michelle;
+
     private GameObject go_Mia;
     private GameObject go_Ikki;
     private GameObject go_Michelle;
@@ -18,7 +26,6 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
     private PopupMenu michelle_Popup;
 
     private ConfirmMenu confirm_Menu;
-
     private Animator startAni;
 
     public ConfirmMenu Confirm_Menu { get => confirm_Menu;}
@@ -71,6 +78,36 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         {
             confirm_Menu.Init();
         }
+
+        mia = FindObjectOfType<NPC_DruidMia>();
+        if (mia != null)
+        {
+            mia.Init();
+        }
+
+        michelle = FindObjectOfType<NPC_Michelle>();
+        if(michelle != null)
+        {
+            michelle.Init();
+        }
+
+        ikki = FindObjectOfType<NPC_Ikki>();
+        if(ikki != null)
+        {
+            ikki.Init();
+        }
+
+        SoundManager.instance.PlayBGM("샨트리");
+    }
+
+    private void Update()
+    {
+        elapsedTime += Time.deltaTime;
+        if(elapsedTime > ambTime)
+        {
+            mia.AMBVoice();
+            elapsedTime = 0f;
+        }
     }
 
 
@@ -79,6 +116,8 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         SetPopupMenuFalse();
         go_Mia.GetComponent<Button>().interactable = false;
         go_Mia.transform.Find("PopupMenu").gameObject.SetActive(true);
+
+        mia.ClickVoice();
     }
 
     private void OnClickIkki()
@@ -86,6 +125,8 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         SetPopupMenuFalse();
         go_Ikki.GetComponent<Button>().interactable = false;
         go_Ikki.transform.Find("PopupMenu").gameObject.SetActive(true);
+
+        ikki.ClickVoice();
     }
 
     private void OnClickMichelle()
@@ -93,6 +134,8 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         SetPopupMenuFalse();
         go_Michelle.GetComponent<Button>().interactable = false;
         go_Michelle.transform.Find("PopupMenu").gameObject.SetActive(true);
+
+        michelle.ClickVoice();
     }
 
     internal void SetPopupMenuFalse()

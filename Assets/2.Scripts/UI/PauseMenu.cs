@@ -7,28 +7,33 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private GameObject resumeBtn;
-    //private Button settingBtn;
+    [SerializeField] private GameObject settingBtn;
     [SerializeField] private GameObject exitBtn;
 
     public void Init()
     {
-/*        pauseUI = transform.Find("UIRoot").gameObject;
+        resumeBtn = transform.Find("UIRoot/ButtonRoot/ResumeButton").gameObject;
+        if (resumeBtn != null)
+        {
+            resumeBtn.GetComponent<Button>().onClick.AddListener(CloseMenu);
+        }
+
+        settingBtn = transform.Find("UIRoot/ButtonRoot/SettingButton").gameObject;
+        if (settingBtn != null)
+        {
+            settingBtn.GetComponent<Button>().onClick.AddListener(OpenSettingMenu);
+        }
+
+        exitBtn = transform.Find("UIRoot/ButtonRoot/ExitButton").gameObject;
+        if (exitBtn != null)
+        {
+            exitBtn.GetComponent<Button>().onClick.AddListener(ClickExit);
+        }
+        pauseUI = transform.Find("UIRoot").gameObject;
         if (pauseUI != null)
         {
             pauseUI.SetActive(false);
-        }*/
-
-        /*        resumeBtn = transform.Find("Background/ButtonRoot/ResumeButton").gameObject;
-                if(resumeBtn != null)
-                {
-                    resumeBtn.GetComponent<Button>().onClick.AddListener(CloseMenu);
-                }
-
-                exitBtn = transform.Find("Background/ButtonRoot/ExitButton").gameObject;
-                if(exitBtn != null)
-                {
-                    exitBtn.GetComponent<Button>().onClick.AddListener(ClickExit);
-                }*/
+        }
     }
 
     internal void CallMenu()
@@ -42,6 +47,7 @@ public class PauseMenu : MonoBehaviour
     {
         //설정창을 여는 함수
         //추후에 추가해서 연결할 계획.
+        SettingMenu.instance.gameObject.SetActive(true);
     }
 
 

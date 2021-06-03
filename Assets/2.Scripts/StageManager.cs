@@ -34,10 +34,7 @@ public class StageManager : MonoBehaviour
 
 
         PlayUISlide();
-        SoundManager.instance.PlayBGM("데바스타르");
-        //SoundManager.instance.audioSourceBGM.mute = true;
-        SoundManager.instance.audioSourceBGM.volume = .3f;
-
+        SoundManager.instance.PlayMusicWithCrossFade("데바스타르");
     }
 
     private void PlayUISlide()

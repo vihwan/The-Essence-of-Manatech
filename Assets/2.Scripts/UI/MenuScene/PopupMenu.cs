@@ -56,6 +56,8 @@ public class PopupMenu : MonoBehaviour
         {
             //미아와 대화
             print("환경 설정");
+            //Time.timeScale = 0f;
+            SettingMenu.instance.gameObject.SetActive(true);
         }
         else if (this.gameObject.transform.parent.name == "NPC_Ikki")
         {

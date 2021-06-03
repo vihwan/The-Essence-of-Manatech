@@ -254,6 +254,9 @@ public class MonsterAI : MonoBehaviour
 
         //데바스타르 스킬 발동중에 변신한다면 스킬을 취소해야한다.
         devaSkill1.go_List.Clear();
+
+        yield return new WaitForSeconds(1f);
+
         for (int i = 0; i < BoardManager.instance.width; i++)
         {
             for (int j = 0; j < BoardManager.instance.height; j++)
