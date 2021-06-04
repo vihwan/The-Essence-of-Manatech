@@ -270,8 +270,6 @@ public class MonsterAI : MonoBehaviour
         }
         devaSkill1.rootUI.SetActive(false);
 
-
-
         Notify.SetText("크윽.. 방해하는 자에게 고통을!!");
         SoundManager.instance.PlayCV("Human_Death1");
         Notify.PlayAnim();
@@ -281,8 +279,7 @@ public class MonsterAI : MonoBehaviour
         Notify.NotifyImage.sprite = Resources.Load<Sprite>("notify2");
         Notify.SetText("진정한 혼돈의 힘을 보여주마!!!");
         SoundManager.instance.PlayCV("HumanToDevil");
-        SoundManager.instance.StopBGM();
-        SoundManager.instance.PlayBGM("데바스타르2");
+        SoundManager.instance.PlayBGMWithCrossFade("데바스타르2");
         Notify.PlayAnim();
 
         isTransform = false;

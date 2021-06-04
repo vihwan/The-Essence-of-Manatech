@@ -154,7 +154,7 @@ public class SoundManager : MonoBehaviour
         Debug.Log(_name + "사운드가 SoundManager Sound[] bgmSounds에 등록되어있지 않습니다.");
     }
 
-    public void PlayMusicWithFade(string _name ,float transitionTime = 1.0f)
+    public void PlayBGMWithFade(string _name ,float transitionTime = 1.0f)
     {
         AudioSource activeSource = (isPlayingPrevMusic) ? audioSourceBGM1 : audioSourceBGM2;
 
@@ -191,7 +191,7 @@ public class SoundManager : MonoBehaviour
         Debug.Log(_name + "사운드가 SoundManager Sound[] bgmSounds에 등록되어있지 않습니다.");
     }
 
-    public void PlayMusicWithCrossFade(string _name, float transitionTime = 1.0f)
+    public void PlayBGMWithCrossFade(string _name, float transitionTime = 1.0f)
     {
         AudioSource activeSource = (isPlayingPrevMusic) ? audioSourceBGM1 : audioSourceBGM2;
         AudioSource newSource = (isPlayingPrevMusic) ? audioSourceBGM2 : audioSourceBGM1;
@@ -212,8 +212,6 @@ public class SoundManager : MonoBehaviour
                 else
                     Debug.Log("배경음 AudioSource가 이미 사용중입니다.");
             }
-            else
-                Debug.Log(_name + "사운드가 SoundManager Sound[] bgmSounds에 등록되어있지 않습니다.");
         }
         
         StartCoroutine(UpdateMusicWithCrossFade(activeSource, newSource, transitionTime));

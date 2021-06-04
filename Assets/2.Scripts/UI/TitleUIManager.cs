@@ -1,15 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class TitleUIManager : MonoBehaviour
 {
-    // Update is called once per frame
-    void Update()
+    private bool isLoading = false;
+
+
+    private void Update()
     {
+        if (isLoading == true)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
-            GameManager.instance.LoadScene("MenuScene");
+            print("게임 시작");
+            Invoke(nameof(GameStart), 1.0f);
+            isLoading = true;
         }
+    }
+
+    private void GameStart()
+    {
+        GameManager.instance.LoadScene("MenuScene");
     }
 }

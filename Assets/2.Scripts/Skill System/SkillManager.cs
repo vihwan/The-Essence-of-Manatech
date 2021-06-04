@@ -4,6 +4,9 @@ using UnityEngine.UI;
 using System.Linq;
 using System;
 
+
+//게임 씬에서 스킬의 사용을 관리하는 매니저 입니다.
+//게임 씬에서 스킬 버튼에 맞게 데이터를 할당해주고 스킬을 사용할 수 있습니다.
 public class SkillManager : MonoBehaviour
 {
     public static SkillManager instance;
@@ -11,31 +14,27 @@ public class SkillManager : MonoBehaviour
     public delegate void CantSkill(string text);
     public CantSkill appearText;
 
-
     //Variable
 
     [SerializeField] private List<SkillButton> skillBtns = new List<SkillButton>();
     [SerializeField] public Dictionary<string, ActiveSkill> ActSkillDic = new Dictionary<string, ActiveSkill>();
     [SerializeField] public Dictionary<string, PassiveSkill> PasSkillDic = new Dictionary<string, PassiveSkill>();
 
-
-    //Component
-
+    //외부 Component
     private PlayerStatusController playerStatusController;
     private HintManager hintManager;
-    private SaveAndLoad saveAndLoad;
-    private TestSkillLevelText testSkillLevelText;
-    private SkillLevelSystem skillLevelSystem;
+    private SkillData skillData;
 
     public void Init()
     {
         instance = GetComponent<SkillManager>();
 
-        saveAndLoad = FindObjectOfType<SaveAndLoad>();
-        if (saveAndLoad != null)
+        skillData = FindObjectOfType<SkillData>();
+        if (skillData != null)
         {
-            saveAndLoad.LoadData(ActSkillDic);
-            saveAndLoad.LoadData(PasSkillDic);
+            //스킬 매니저가 사용할 스킬들을 SkillData에서 가져옵니다.
+            this.ActSkillDic = skillData.ActSkillDic;
+            this.PasSkillDic = skillData.PasSkillDic;
         }
 
 
@@ -54,19 +53,6 @@ public class SkillManager : MonoBehaviour
         }
 
         hintManager = FindObjectOfType<HintManager>();
-
-        testSkillLevelText = FindObjectOfType<TestSkillLevelText>();
-        if (testSkillLevelText != null)
-        {
-            testSkillLevelText.Init();
-        }
-
-        skillLevelSystem = FindObjectOfType<SkillLevelSystem>();
-        if (skillLevelSystem != null)
-        {
-            skillLevelSystem.Init();
-        }
-
     }
 
     private void Update()
@@ -150,9 +136,10 @@ public class SkillManager : MonoBehaviour
         }
     }
 
+    //1번 스킬 : 체인 플로레
     private void Skill_Chain_Fluore()
     {
-        //1번 스킬 : 체인 플로레
+
         // 힌트 스킬
 
         if (hintManager.currentHintEffect == null)
@@ -166,25 +153,25 @@ public class SkillManager : MonoBehaviour
         //스킬 이펙트 출력
     }
 
+    //2번 스킬 : 변이 파리채
     private void Skill_Flapper()
     {
-        //2번 스킬 : 변이 파리채
+
         BoardManager.instance.ChangePlutoTile();
     }
 
+    //3번 스킬 : 잭프로스트 빙수
     private void Skill_Jack_Frost_ShavedIce()
     {
-        //3번 스킬 : 잭프로스트 빙수
-        //스킬 함수
         GUIManager.instance.OnPauseTime(ActSkillDic["잭프로스트 빙수"].EigenValue);
 
         //스킬 보이스 출력
         //스킬 이펙트 출력
     }
 
+    //4번 스킬 : 잭 오 할로윈
     private void Skill_Jack_O_Halloween()
     {
-        //4번 스킬 : 잭 오 할로윈
 
         BoardManager.instance.CreateJackBomb();
         //스킬 보이스 출력

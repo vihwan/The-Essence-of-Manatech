@@ -27,14 +27,14 @@ public class StageManager : MonoBehaviour
     private AnimatorStateInfo info;
 
     // Start is called before the first frame update
-    public void Init()
+    private void Start()
     {
         animator = GetComponent<Animator>();
         readyGoText = transform.Find("GUIManagerCanvas/ReadyGoText/Text").GetComponent<TMP_Text>();
 
 
         PlayUISlide();
-        SoundManager.instance.PlayMusicWithCrossFade("데바스타르");
+        SoundManager.instance.PlayBGMWithCrossFade("데바스타르");
     }
 
     private void PlayUISlide()

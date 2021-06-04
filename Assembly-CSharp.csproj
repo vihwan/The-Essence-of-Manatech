@@ -105,6 +105,7 @@
     <Compile Include="Assets\2.Scripts\Skill System\PlayerStatusController.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\SkillButton.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\SkillConversionData.cs" />
+    <Compile Include="Assets\2.Scripts\Skill System\SkillData.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\SkillEffectManager.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\SkillLevelSystem.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\SkillManager.cs" />
@@ -132,8 +133,12 @@
     <Compile Include="Assets\2.Scripts\UI\MenuScene\NPC_Michelle.cs" />
     <Compile Include="Assets\2.Scripts\UI\MenuScene\NPC_Preset.cs" />
     <Compile Include="Assets\2.Scripts\UI\MenuScene\PopupMenu.cs" />
+    <Compile Include="Assets\2.Scripts\UI\MenuScene\SkillMenu\ActivePage.cs" />
+    <Compile Include="Assets\2.Scripts\UI\MenuScene\SkillMenu\ExplainPage.cs" />
+    <Compile Include="Assets\2.Scripts\UI\MenuScene\SkillMenu\PassivePage.cs" />
     <Compile Include="Assets\2.Scripts\UI\PauseMenu.cs" />
     <Compile Include="Assets\2.Scripts\UI\SettingMenu.cs" />
+    <Compile Include="Assets\2.Scripts\UI\SkillManageMenu.cs" />
     <Compile Include="Assets\2.Scripts\UI\TitleUIManager.cs" />
     <Compile Include="Assets\2.Scripts\UtilHelper.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />

@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using UnityEngine.UI;
 
+[System.Obsolete("사용되지 않는 클래스DA")]
 public class SkillLevelSystem : MonoBehaviour
 {
 
@@ -46,18 +47,29 @@ public class SkillLevelSystem : MonoBehaviour
         }
     }
 
-    private void ActSkillLevelUp(int index)
+    public void ActSkillLevelUp(int index)
     {
         if (activeSkills[index].Level >= 3)
         {
-            SkillManager.instance.appearText("<color=#B31405>더이상 스킬을 올릴 수 없습니다.</color>");
+           // SkillManager.instance.appearText("<color=#B31405>더이상 스킬을 올릴 수 없습니다.</color>");
             return;
         }
 
-        SkillManager.instance.appearText("<color=#B31405>스킬 레벨업</color>");
+       // SkillManager.instance.appearText("<color=#B31405>스킬 레벨업</color>");
         activeSkills[index].Level++;
-        passiveSkills[index].Level++;
         skillConversion.ConvertActiveSkill();
+        testSkillLevelText.ConvertText();
+    }
+
+    public void PassSkillLevelUp(int index)
+    {
+        if (passiveSkills[index].Level >= 3)
+        {
+            //SkillManager.instance.appearText("<color=#B31405>더이상 스킬을 올릴 수 없습니다.</color>");
+            return;
+        }
+       // SkillManager.instance.appearText("<color=#B31405>스킬 레벨업</color>");
+        passiveSkills[index].Level++;
         skillConversion.ConvertPassiveSkill();
         testSkillLevelText.ConvertText();
     }

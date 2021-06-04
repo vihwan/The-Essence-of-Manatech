@@ -611,6 +611,7 @@ GameObject:
   - component: {fileID: 1131901790}
   - component: {fileID: 1131901789}
   - component: {fileID: 1131901791}
+  - component: {fileID: 1131901792}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -692,6 +693,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5}
   m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
+--- !u!114 &1131901792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131901787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
 --- !u!1 &1345944002
 GameObject:
@@ -1021,8 +1037,8 @@ MonoBehaviour:
   m_enableVertexGradient: 1
   m_colorMode: 2
   m_fontColorGradient:
-    topLeft: {r: 0, g: 0, b: 0, a: 1}
-    topRight: {r: 0, g: 0, b: 0, a: 1}
+    topLeft: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
+    topRight: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}

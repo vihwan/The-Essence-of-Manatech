@@ -9,6 +9,8 @@ public class PopupMenu : MonoBehaviour
     private Button talk_Btn;
     private Button speci_Btn;
 
+    private SkillManageMenu skillManageMenu;
+
 
     // Start is called before the first frame update
     public void Init()
@@ -55,14 +57,15 @@ public class PopupMenu : MonoBehaviour
         if (this.gameObject.transform.parent.name == "NPC_Druidmia")
         {
             //미아와 대화
-            print("환경 설정");
+            print("환경 설정 메뉴 열기");
             //Time.timeScale = 0f;
             SettingMenu.instance.gameObject.SetActive(true);
         }
         else if (this.gameObject.transform.parent.name == "NPC_Ikki")
         {
             //이키와 대화
-            print("스킬 설정");
+            print("스킬 설정 메뉴 열기");
+            MainMenu.instance.SkillManageMenu.OpenSkillMenu();
         }
         else if (this.gameObject.transform.parent.name == "NPC_Michelle")
         {

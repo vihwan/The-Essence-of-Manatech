@@ -56,9 +56,9 @@ public class GameManager : MonoBehaviour
     {
 
         GameState = GameState.BEGIN;
-        stageManager = FindObjectOfType<StageManager>();
+/*        stageManager = FindObjectOfType<StageManager>();
         if (stageManager != null)
-            stageManager.Init(); 
+            stageManager.Init(); */
     }
 
     private void Update()

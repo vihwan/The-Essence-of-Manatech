@@ -25,17 +25,14 @@ public class ConfirmMenu : MonoBehaviour
         }
     }
 
-
     private void OnClickStart()
     {
         this.gameObject.SetActive(false);
-        MainMenu.instance.startGame();
+        MainMenu.instance.StartGame();
     }
 
     private void OnClickClose()
     {
         this.gameObject.SetActive(false);
     }
-
-
 }

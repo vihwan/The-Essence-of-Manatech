@@ -29,8 +29,10 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
     private Animator startAni;
 
     private Fungus.SayDialog sayDialog;
+    private SkillManageMenu skillManageMenu;
 
     public ConfirmMenu Confirm_Menu { get => confirm_Menu;}
+    public SkillManageMenu SkillManageMenu { get => skillManageMenu;}
 
     // Start is called before the first frame update
     void Start()
@@ -106,9 +108,13 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
             confirm_Menu.Init();
         }
 
+        skillManageMenu = FindObjectOfType<SkillManageMenu>();
+        if(skillManageMenu != null)
+        {
+            skillManageMenu.Init();
+        }
 
-
-        SoundManager.instance.PlayBGM("샨트리");
+        SoundManager.instance.PlayBGMWithCrossFade("샨트리");
     }
 
     private void Update()
@@ -188,7 +194,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         print(eventData.pointerCurrentRaycast.gameObject);
     }
 
-    public void startGame()
+    public void StartGame()
     {
         print("게임 시작 카운트다운");
         startAni.gameObject.SetActive(true);

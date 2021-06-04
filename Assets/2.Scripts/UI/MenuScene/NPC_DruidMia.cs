@@ -14,7 +14,6 @@ public class NPC_DruidMia : NPC_Preset, IPointerExitHandler, IPointerEnterHandle
 
     public void Init()
     {
-
         for (int i = 1; i <= 3; i++)
         {
             ambVoiceDic.Add(i, "Mia_amb0" + i);

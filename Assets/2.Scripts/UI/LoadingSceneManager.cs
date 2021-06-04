@@ -9,6 +9,8 @@ public class LoadingSceneManager : MonoBehaviour
 {
     public static string nextscene;
 
+    private bool isLoading = false;
+
     [SerializeField]
     private Image theLoadingSlider;
     [SerializeField]
@@ -18,7 +20,8 @@ public class LoadingSceneManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(LoadSceneCoroutine());
+        if (isLoading == false)
+            StartCoroutine(LoadSceneCoroutine());
     }
 
     public static void SetLoadScene(string _sceneName) // 로딩씬을 실행시키는 함수
@@ -29,6 +32,8 @@ public class LoadingSceneManager : MonoBehaviour
 
     private IEnumerator LoadSceneCoroutine()
     {
+        isLoading = true;
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(nextscene); //다음 씬을 비동기식 동작
         operation.allowSceneActivation = false; //씬 동작을 비활성화
 
@@ -36,11 +41,11 @@ public class LoadingSceneManager : MonoBehaviour
         {
             yield return null;
             loadingTime += Time.deltaTime;
-            if (loadingTime < 5f)
+            if ( loadingTime < 5f || operation.progress < .9f)
             {
                 theLoadingSlider.fillAmount = Mathf.Clamp(loadingTime, 0f,.99f);
                 loadingText.text = Mathf.RoundToInt(theLoadingSlider.fillAmount * 100) + "%";
-
+                print("로딩중, Loading Time : " + (int)loadingTime);
             }
             else
             {
@@ -48,12 +53,15 @@ public class LoadingSceneManager : MonoBehaviour
                 loadingText.text = ((int)theLoadingSlider.fillAmount * 100) + "%";
                 if (theLoadingSlider.fillAmount == 1.0f)  //만약 로딩바가 100%가 되면
                 {
-                    yield return new WaitForSecondsRealtime(2f);
+                    yield return new WaitForSeconds(2f);
                     operation.allowSceneActivation = true; //씬 동작을 활성화
                     loadingTime = 0.0f;
+                    print("NextScene Activate");
                     yield break;
                 }
             }
         }
+
+        isLoading = false;
     }
 }
