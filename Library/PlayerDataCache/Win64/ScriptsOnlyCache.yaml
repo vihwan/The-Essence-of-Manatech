@@ -172,7 +172,7 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11424}
     - Class: 114
-      Script: {instanceID: 11426}
+      Script: {instanceID: 11428}
     - Class: 114
       Script: {instanceID: 11430}
     - Class: 114
@@ -303,9 +303,9 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11424}
     - Class: 114
-      Script: {instanceID: 11426}
+      Script: {instanceID: 11428}
     - Class: 114
-      Script: {instanceID: 11430}
+      Script: {instanceID: 11432}
     - Class: 114
       Script: {instanceID: 11434}
     - Class: 114
@@ -719,12 +719,6 @@ ScriptsOnlyBuild:
     className: Image
   - hash:
       serializedVersion: 2
-      Hash: aeb62f729c52c814dec86c47dcac1471
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: Text
-  - hash:
-      serializedVersion: 2
       Hash: d4020bafcd3ccbb5601a6e6c8ac78be0
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -741,6 +735,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: GridLayoutGroup
+  - hash:
+      serializedVersion: 2
+      Hash: aeb62f729c52c814dec86c47dcac1471
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: Text
   - hash:
       serializedVersion: 2
       Hash: 748dd2a2a28da4e618912da5ac45684b

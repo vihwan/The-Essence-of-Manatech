@@ -21,7 +21,11 @@ public class LoadingSceneManager : MonoBehaviour
     private void Start()
     {
         if (isLoading == false)
+        {
+            ChangeLoadingBg(nextscene);
             StartCoroutine(LoadSceneCoroutine());
+        }
+
     }
 
     public static void SetLoadScene(string _sceneName) // 로딩씬을 실행시키는 함수
@@ -66,8 +70,18 @@ public class LoadingSceneManager : MonoBehaviour
     }
 
     //다음 로드하는 씬에 따라, 배경 이미지가 달라지게 만들어주는 함수입니다.
-    private void ChangeLoadingBg()
+    private void ChangeLoadingBg(string sceneName)
     {
-
+        Image backgroundImage = transform.Find("Background").GetComponent<Image>();
+        if(sceneName == "MenuScene")
+        {
+            print("샨트리 배경");
+            backgroundImage.sprite = Resources.Load<Sprite>("loading0");
+        }
+        else if(sceneName == "InGameScene")
+        {
+            print("던전로딩 배경");
+            backgroundImage.sprite = Resources.Load<Sprite>("loading1");
+        }
     }
 }

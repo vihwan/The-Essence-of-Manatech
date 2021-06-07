@@ -56,6 +56,11 @@ public class ExplainPage : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
+    public string GetSkillName()
+    {
+        return skillName;
+    }
+
     public void SetSkillName(string skillName)
     {
         this.skillName = skillName;
