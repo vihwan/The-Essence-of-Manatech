@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerData : MonoBehaviour
+public static class PlayerData
 {
-    private int skillPoint;
-    private int highScore;
+    private static int skillPoint = 16;
+    private static int highScore;
 
-    public int SkillPoint { get => skillPoint; }
-    public int HighScore { get => highScore; }
+    public static int SkillPoint { get => skillPoint; set => skillPoint = value; }
+    public static int HighScore { get => highScore; set => skillPoint = value; }
 
-    public void SetSkillPoint(int skillPoint)
+    public static void IncreaseSkillPoint()
     {
-        this.skillPoint = skillPoint;
+        skillPoint++;
     }
 
-    public void SetHighScore(int highScore)
+    public static void DecreaseSkillPoint()
     {
-        this.highScore = highScore;
+        skillPoint--;
     }
 }

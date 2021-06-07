@@ -32,7 +32,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameState gameState;
 
     //제어하는 컴포넌트
-    private StageManager stageManager;
+    private SaveAndLoad saveAndLoad;
+    private SkillData skillData;
 
     public GameState GameState { get => gameState; set => gameState = value; }
 
@@ -56,9 +57,17 @@ public class GameManager : MonoBehaviour
     {
 
         GameState = GameState.BEGIN;
-/*        stageManager = FindObjectOfType<StageManager>();
-        if (stageManager != null)
-            stageManager.Init(); */
+        saveAndLoad = FindObjectOfType<SaveAndLoad>();
+        if(saveAndLoad != null)
+        {
+            saveAndLoad.Init(); 
+        }
+
+        skillData = FindObjectOfType<SkillData>();
+        if(skillData != null)
+        {
+            skillData.Initailize();
+        }
     }
 
     private void Update()

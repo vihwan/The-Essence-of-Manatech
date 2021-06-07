@@ -71,7 +71,7 @@ public class ExplainPage : MonoBehaviour
 
     public void SetExplainPage(PassiveSkill passiveSkill)
     {
-        skillLevelText.text = passiveSkill.Level.ToString();
+        skillLevelText.text = "스킬 레벨 : " + passiveSkill.Level.ToString();
         explainText.text = passiveSkill.Description;
     }
 
@@ -80,15 +80,19 @@ public class ExplainPage : MonoBehaviour
         //TODO :
         if (levelupBtn.name == "ActLevelUpButton")
         {
-            print("스킬 레벨 업" + skillName);
+            print("스킬 레벨 업 : " + skillName);
             SkillData.instance.ActSkillLevelUp(skillName);
 
             //레벨업 된 스킬 정보로 새로 갱신해줘야 한다.
             SetExplainPage(SkillData.instance.ActSkillDic[skillName]);
+
         }
         else if (levelupBtn.name == "PassLevelUpButton")
         {
+            print("스킬 레벨 업 : " + skillName);
             SkillData.instance.PassSkillLevelUp(skillName);
+
+            //레벨업 된 스킬 정보로 새로 갱신해줘야 한다.
             SetExplainPage(SkillData.instance.PasSkillDic[skillName]);
         }
     }

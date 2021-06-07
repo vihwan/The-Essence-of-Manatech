@@ -13,6 +13,8 @@ public class ActivePage : MonoBehaviour
 
     private ExplainPage explainPage;
 
+    public ExplainPage ExplainPage { get => explainPage; set => explainPage = value; }
+
     // Start is called before the first frame update
     public void Init()
     {
@@ -40,38 +42,38 @@ public class ActivePage : MonoBehaviour
             skillBtn4.onClick.AddListener(OpenExplainPage04);
         }
 
-        explainPage = GetComponentInChildren<ExplainPage>();
-        if(explainPage != null)
+        ExplainPage = GetComponentInChildren<ExplainPage>();
+        if(ExplainPage != null)
         {
-            explainPage.Init();
+            ExplainPage.Init();
         }
     }
 
     private void OpenExplainPage01()
     {
-        explainPage.gameObject.SetActive(true);
-        explainPage.SetSkillName("체인 플로레");
-        explainPage.SetExplainPage(SkillData.instance.ActSkillDic["체인 플로레"]);
+        ExplainPage.gameObject.SetActive(true);
+        ExplainPage.SetSkillName("체인 플로레");
+        ExplainPage.SetExplainPage(SkillData.instance.ActSkillDic["체인 플로레"]);
     }
 
     private void OpenExplainPage02()
     {
-        explainPage.gameObject.SetActive(true);
-        explainPage.SetSkillName("변이 파리채");
-        explainPage.SetExplainPage(SkillData.instance.ActSkillDic["변이 파리채"]);
+        ExplainPage.gameObject.SetActive(true);
+        ExplainPage.SetSkillName("변이 파리채");
+        ExplainPage.SetExplainPage(SkillData.instance.ActSkillDic["변이 파리채"]);
     }
 
     private void OpenExplainPage03()
     {
-        explainPage.gameObject.SetActive(true);
-        explainPage.SetSkillName("잭프로스트 빙수");
-        explainPage.SetExplainPage(SkillData.instance.ActSkillDic["잭프로스트 빙수"]);
+        ExplainPage.gameObject.SetActive(true);
+        ExplainPage.SetSkillName("잭프로스트 빙수");
+        ExplainPage.SetExplainPage(SkillData.instance.ActSkillDic["잭프로스트 빙수"]);
     }
 
     private void OpenExplainPage04()
     {
-        explainPage.gameObject.SetActive(true);
-        explainPage.SetSkillName("잭 오 할로윈");
-        explainPage.SetExplainPage(SkillData.instance.ActSkillDic["잭 오 할로윈"]);
+        ExplainPage.gameObject.SetActive(true);
+        ExplainPage.SetSkillName("잭 오 할로윈");
+        ExplainPage.SetExplainPage(SkillData.instance.ActSkillDic["잭 오 할로윈"]);
     }
 }

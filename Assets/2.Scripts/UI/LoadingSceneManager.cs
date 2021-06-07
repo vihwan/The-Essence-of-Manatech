@@ -64,4 +64,10 @@ public class LoadingSceneManager : MonoBehaviour
 
         isLoading = false;
     }
+
+    //다음 로드하는 씬에 따라, 배경 이미지가 달라지게 만들어주는 함수입니다.
+    private void ChangeLoadingBg()
+    {
+
+    }
 }

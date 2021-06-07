@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CreateBackTilesMonster : MonoBehaviour
-{public int width;
+{
+    public int width;
     public int height;
     public GameObject tileBackgroundPrefab;
     public GameObject[,] backTilesBox;

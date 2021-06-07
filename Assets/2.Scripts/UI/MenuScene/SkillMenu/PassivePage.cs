@@ -12,6 +12,8 @@ public class PassivePage : MonoBehaviour
 
     private ExplainPage explainPage;
 
+    public ExplainPage ExplainPage { get => explainPage; set => explainPage = value; }
+
     // Start is called before the first frame update
     public void Init()
     {
@@ -39,10 +41,10 @@ public class PassivePage : MonoBehaviour
             skillBtn4.onClick.AddListener(OpenExplainPage04);
         }
 
-        explainPage = GetComponentInChildren<ExplainPage>(true);
-        if (explainPage != null)
+        ExplainPage = GetComponentInChildren<ExplainPage>(true);
+        if (ExplainPage != null)
         {
-            explainPage.Init();
+            ExplainPage.Init();
         }
 
         this.gameObject.SetActive(false);
@@ -50,29 +52,29 @@ public class PassivePage : MonoBehaviour
 
     private void OpenExplainPage01()
     {
-        explainPage.gameObject.SetActive(true);
-        explainPage.SetSkillName("고대의 도서관");
-        explainPage.SetExplainPage(SkillData.instance.PasSkillDic["고대의 도서관"]);
+        ExplainPage.gameObject.SetActive(true);
+        ExplainPage.SetSkillName("고대의 도서관");
+        ExplainPage.SetExplainPage(SkillData.instance.PasSkillDic["고대의 도서관"]);
     }
 
     private void OpenExplainPage02()
     {
-        explainPage.gameObject.SetActive(true);
-        explainPage.SetSkillName("쇼타임");
-        explainPage.SetExplainPage(SkillData.instance.PasSkillDic["쇼타임"]);
+        ExplainPage.gameObject.SetActive(true);
+        ExplainPage.SetSkillName("쇼타임");
+        ExplainPage.SetExplainPage(SkillData.instance.PasSkillDic["쇼타임"]);
     }
 
     private void OpenExplainPage03()
     {
-        explainPage.gameObject.SetActive(true);
-        explainPage.SetSkillName("현자의 돌");
-        explainPage.SetExplainPage(SkillData.instance.PasSkillDic["현자의 돌"]);
+        ExplainPage.gameObject.SetActive(true);
+        ExplainPage.SetSkillName("현자의 돌");
+        ExplainPage.SetExplainPage(SkillData.instance.PasSkillDic["현자의 돌"]);
     }
 
     private void OpenExplainPage04()
     {
-        explainPage.gameObject.SetActive(true);
-        explainPage.SetSkillName("붉은 사탕");
-        explainPage.SetExplainPage(SkillData.instance.PasSkillDic["붉은 사탕"]);
+        ExplainPage.gameObject.SetActive(true);
+        ExplainPage.SetSkillName("붉은 사탕");
+        ExplainPage.SetExplainPage(SkillData.instance.PasSkillDic["붉은 사탕"]);
     }
 }
