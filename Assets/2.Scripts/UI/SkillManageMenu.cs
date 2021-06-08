@@ -96,11 +96,12 @@ public class SkillManageMenu : MonoBehaviour
 
     //액티브 스킬 창을 연다.
     private void OpenActiveSkillPage()
-    {
+    {      
         CloseAllSkillPage();
         InActiveAllTapFocus();
         activePage.gameObject.SetActive(true);
         tapFocusAct.gameObject.SetActive(true);
+        UISound.SelectMenuButton();
     }
 
     //패시브 스킬 창을 연다
@@ -110,6 +111,7 @@ public class SkillManageMenu : MonoBehaviour
         InActiveAllTapFocus();
         passivePage.gameObject.SetActive(true);
         tapFocusPass.gameObject.SetActive(true);
+        UISound.SelectMenuButton();
     }
 
     //모든 스킬 페이지창을 닫는다.
@@ -117,12 +119,14 @@ public class SkillManageMenu : MonoBehaviour
     {
         activePage.gameObject.SetActive(false);
         passivePage.gameObject.SetActive(false);
+        UISound.SelectMenuButton();
     }
 
     //스킬 관리창을 연다.
     public void OpenSkillMenu()
     {
         this.gameObject.SetActive(true);
+        UISound.SelectMenuButton();
     }
 
     //스킬 관리창을 닫는다.
@@ -130,6 +134,7 @@ public class SkillManageMenu : MonoBehaviour
     {
         InitPage();
         this.gameObject.SetActive(false);
+        UISound.SelectMenuButton();
     }
 
     private void InActiveAllTapFocus()

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
@@ -17,44 +16,101 @@ public class SaveData
 public class SaveAndLoad : MonoBehaviour
 {
     private string SAVE_DATA_DIRECTORY;  // 저장할 폴더 경로
-    private string SAVE_FILENAME = "/SkillData.txt"; // 파일 이름
+    private string SAVE_FILENAME = "SkillData.txt"; // 파일 이름
 
     private SaveData saveData = new SaveData();
+    private TitleUIManager title;
 
     //Save Skill Data
     public void Init()
     {
-        SAVE_DATA_DIRECTORY = Application.dataPath + "/8.GameData/";
+        title = FindObjectOfType<TitleUIManager>();
+        if(title != null)
+        {
+            title.transform.Find("Debug Text").GetComponent<Text>().text = "텍스트 참조 성공";
+        }
 
-        if (!Directory.Exists(SAVE_DATA_DIRECTORY)) // 해당 경로가 존재하지 않는다면
-            Directory.CreateDirectory(SAVE_DATA_DIRECTORY); // 폴더 생성(경로 생성)
-
+        //SaveData에 데이터를 세팅
         SetActiveSkill();
         SetPassiveSkill();
 
-        //Json직렬화
-        string savejson = JsonConvert.SerializeObject(saveData);
+        try
+        {
+            //Json직렬화
+            title.transform.Find("Debug Text").GetComponent<Text>().text = "try문 진입";
 
-        File.WriteAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME, savejson);
+            string savejson = JsonConvert.SerializeObject(saveData); // ????
+            if (savejson.Equals("{}"))
+            {
+                Debug.Log("json null");
+                title.transform.Find("Debug Text").GetComponent<Text>().text = "json null";
+                return;
+            }
 
-        Debug.Log("스킬 데이터 저장 완료");
-        Debug.Log(savejson);
+            SAVE_DATA_DIRECTORY = Path.Combine(Application.persistentDataPath , "GameData");
+
+            if (!Directory.Exists(SAVE_DATA_DIRECTORY)) // 해당 경로가 존재하지 않는다면
+                Directory.CreateDirectory(SAVE_DATA_DIRECTORY); // 폴더 생성(경로 생성)
+
+            File.WriteAllText(Path.Combine(SAVE_DATA_DIRECTORY, SAVE_FILENAME), savejson);
+            Debug.Log("스킬 데이터 저장 완료");
+            title.transform.Find("Debug Text").GetComponent<Text>().text = "스킬 데이터 저장 완료";
+        }
+        catch (FileNotFoundException e)
+        {
+            Debug.Log("The file was not found:" + e.Message);
+            title.transform.Find("Debug Text").GetComponent<Text>().text = "파일을 찾을 수 없음";
+        }
+        catch (DirectoryNotFoundException e)
+        {      
+            Debug.Log("The directory was not found: " + e.Message);
+            title.transform.Find("Debug Text").GetComponent<Text>().text = "디렉토리를 찾을 수 없음";
+        }
+        catch (IOException e)
+        {
+            Debug.Log("The file could not be opened:" + e.Message);
+            title.transform.Find("Debug Text").GetComponent<Text>().text = "파일을 열 수 없음";
+        }
     }
 
 
-
-    public void LoadData<T> (Dictionary<string, T> aDic) where T : class
+    public void TestDataLoad()
     {
-        if (File.Exists(SAVE_DATA_DIRECTORY + SAVE_FILENAME))
+        Dictionary<string, ActiveSkill> testDic = new Dictionary<string, ActiveSkill>();
+
+        try
+        {
+            LoadData(testDic);
+            title.transform.Find("Debug Text").GetComponent<Text>().text = testDic.ToString();
+        }
+        catch (FileNotFoundException e)
+        {
+            Debug.Log("The file was not found:" + e.Message);
+        }
+        catch (DirectoryNotFoundException e)
+        {
+            Debug.Log("The directory was not found: " + e.Message);
+        }
+        catch (IOException e)
+        {
+            Debug.Log("The file could not be opened:" + e.Message);
+        }
+    }
+
+
+    //Json파일을 역직렬화하여 데이터를 불러오는 함수입니다.
+    public void LoadData<T>(Dictionary<string, T> aDic) where T : class
+    {
+        if (File.Exists(Path.Combine(SAVE_DATA_DIRECTORY, SAVE_FILENAME)))
         {
             // 전체 읽어오기
-            string loadJson = File.ReadAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME);
+            string loadJson = File.ReadAllText(Path.Combine(SAVE_DATA_DIRECTORY, SAVE_FILENAME));
             //Json역직렬화
             saveData = JsonConvert.DeserializeObject<SaveData>(loadJson);
 
             Type valueType = typeof(T);
 
-            if(valueType == typeof(ActiveSkill))
+            if (valueType == typeof(ActiveSkill))
             {
                 foreach (var item in saveData.AskillDic)
                 {
@@ -64,7 +120,7 @@ public class SaveAndLoad : MonoBehaviour
                     aDic.Add(name, value as T);
                 }
             }
-            else if(valueType == typeof(PassiveSkill))
+            else if (valueType == typeof(PassiveSkill))
             {
                 foreach (var item in saveData.PskillDic)
                 {
@@ -76,11 +132,17 @@ public class SaveAndLoad : MonoBehaviour
             }
 
             Debug.Log("스킬 데이터 로드 완료");
+            title.transform.Find("Debug Text").GetComponent<Text>().text = "스킬 데이터 로드 완료";
         }
         else
+        {
             Debug.Log("스킬 데이터 파일이 없습니다.");
+            title.transform.Find("Debug Text").GetComponent<Text>().text = "스킬 데이터 파일이 없습니다.";
+        }
+
     }
 
+    //액티브 스킬의 초기설정 함수
     private void SetActiveSkill()
     {
         //image타입도 저장이 될까? 안되네 역시
@@ -91,7 +153,7 @@ public class SaveAndLoad : MonoBehaviour
         name = "체인 플로레";
         saveData.AskillDic.Add(name, new ActiveSkill(name,
                                                     "고출력된 매직 미사일을 생성하여, 현재 플레이어가 옮길 수 있는 타일들을 전부 찾고, " +
-                                                    "옮길 수 있는 타일들 중 하나를 선택해 번개 이펙트로 알려줍니다. \n " +
+                                                    "옮길 수 있는 타일들 중 하나를 선택해 번개 이펙트로 알려줍니다. \n" +
                                                     "이 번개 이펙트는, 플레이어가 타일을 누를 시에 사라지며, " +
                                                     "이펙트가 생성되고 있는 도중에는, 다시 이 스킬을 사용할 수 없습니다.",
                                                     1,
@@ -119,16 +181,16 @@ public class SaveAndLoad : MonoBehaviour
 
         name = "잭 오 할로윈";
         saveData.AskillDic.Add(name, new ActiveSkill(name,
-                                                    "가장 크고 달콤한 호박에 가장 질 좋은 붉은 사탕을 먹여 탄생한 호문쿨루스인 잭 오 할로윈을 생성합니다. \n " +
-                                                    "사용할 경우, 일정 갯수의 잭오랜턴 타일을 '잭 오 할로윈' 타일로 바꿉니다. \n " +
-                                                    "잭 오 할로윈 타일을 클릭할 경우, 자신을 기준으로 3x3범위의 타일을 파괴합니다. \n " +
+                                                    "가장 크고 달콤한 호박에 가장 질 좋은 붉은 사탕을 먹여 탄생한 호문쿨루스인 잭 오 할로윈을 생성합니다. \n" +
+                                                    "사용할 경우, 일정 갯수의 잭오랜턴 타일을 '잭 오 할로윈' 타일로 바꿉니다. \n" +
+                                                    "잭 오 할로윈 타일을 클릭할 경우, 자신을 기준으로 3x3범위의 타일을 파괴합니다. \n" +
                                                     "잭 오 할로윈 타일은 너무 뜨거운 마그마를 뿜어내어, 옮길 수 없습니다.",
                                                     1,
                                                     75,
                                                     30f,
                                                     3));
     }
-
+    //패시브 스킬의 초기설정 함수
     private void SetPassiveSkill()
     {
 

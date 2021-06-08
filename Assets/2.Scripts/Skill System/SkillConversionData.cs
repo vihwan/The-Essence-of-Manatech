@@ -24,14 +24,14 @@ public class SkillConversionData
         //"변이 파리채"
         if (SkillData.instance.ActSkillDic["변이 파리채"].Level == 2)
         {
-            SkillData.instance.ActSkillDic["변이 파리채"].Mana = 40;
-            SkillData.instance.ActSkillDic["변이 파리채"].CoolTime = 8;
+            SkillData.instance.ActSkillDic["변이 파리채"].Mana = 45;
+            SkillData.instance.ActSkillDic["변이 파리채"].CoolTime = 18;
             SkillData.instance.ActSkillDic["변이 파리채"].EigenValue = 7;
         }
         else if (SkillData.instance.ActSkillDic["변이 파리채"].Level == 3)
         {
-            SkillData.instance.ActSkillDic["변이 파리채"].Mana = 20;
-            SkillData.instance.ActSkillDic["변이 파리채"].CoolTime = 6;
+            SkillData.instance.ActSkillDic["변이 파리채"].Mana = 40;
+            SkillData.instance.ActSkillDic["변이 파리채"].CoolTime = 15;
             SkillData.instance.ActSkillDic["변이 파리채"].EigenValue = 10;
         }
 
@@ -52,7 +52,7 @@ public class SkillConversionData
         //"잭 오 할로윈"
         if (SkillData.instance.ActSkillDic["잭 오 할로윈"].Level == 2)
         {
-            SkillData.instance.ActSkillDic["잭 오 할로윈"].Mana = 60;
+            SkillData.instance.ActSkillDic["잭 오 할로윈"].Mana = 65;
             SkillData.instance.ActSkillDic["잭 오 할로윈"].CoolTime = 25;
             //잭오할로윈 폭탄갯수 = 4
             SkillData.instance.ActSkillDic["잭 오 할로윈"].EigenValue = 4;
@@ -60,7 +60,7 @@ public class SkillConversionData
         }
         else if (SkillData.instance.ActSkillDic["잭 오 할로윈"].Level == 3)
         {
-            SkillData.instance.ActSkillDic["잭 오 할로윈"].Mana = 40;
+            SkillData.instance.ActSkillDic["잭 오 할로윈"].Mana = 50;
             SkillData.instance.ActSkillDic["잭 오 할로윈"].CoolTime = 20;
             //잭오할로윈 폭탄갯수 = 5
             SkillData.instance.ActSkillDic["잭 오 할로윈"].EigenValue = 5;

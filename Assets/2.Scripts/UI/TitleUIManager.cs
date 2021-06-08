@@ -9,13 +9,15 @@ public class TitleUIManager : MonoBehaviour
 {
     private bool isLoading = false;
 
-    [SerializeField]
-    private TestDictionary testdic = new TestDictionary();
-
     private void Start()
     {
-        testdic.Add("하이", 1);
-        testdic.Add("안녕", 2);
+        SoundManager.instance.PlayBGM("Title");
+
+    }
+
+    void OnGUI()
+    {
+      // UnityEditor.Handles.Label(new Vector3(960,540,0), "Text");
     }
 
 
@@ -27,8 +29,12 @@ public class TitleUIManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
 
-            Animator animator = GetComponentInChildren<Animator>();
-            if (animator != null) animator.SetTrigger("Start");
+            Animator animator = GetComponent<Animator>();
+            if (animator != null)
+            {
+                animator.SetTrigger("Start");
+                SoundManager.instance.PlaySE("TitleStart");
+            }
 
             print("게임 시작");
             Invoke(nameof(GameStart), 1.0f);

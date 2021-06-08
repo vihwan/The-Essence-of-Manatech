@@ -60,7 +60,8 @@ public class GameManager : MonoBehaviour
         saveAndLoad = FindObjectOfType<SaveAndLoad>();
         if(saveAndLoad != null)
         {
-            saveAndLoad.Init(); 
+            saveAndLoad.Init();
+
         }
 
         skillData = FindObjectOfType<SkillData>();
@@ -68,6 +69,8 @@ public class GameManager : MonoBehaviour
         {
             skillData.Initailize();
         }
+
+        saveAndLoad.TestDataLoad();
     }
 
     private void Update()

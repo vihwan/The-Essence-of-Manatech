@@ -122,7 +122,14 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         elapsedTime += Time.deltaTime;
         if(elapsedTime > ambTime)
         {
-            mia.AMBVoice();
+            int randnum = Random.Range(0, 3);
+            if (randnum == 0)
+                mia.AMBVoice();
+            else if (randnum == 1)
+                michelle.AMBVoice();
+            else
+                ikki.AMBVoice();
+
             elapsedTime = 0f;
         }
 
@@ -156,6 +163,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         go_Mia.transform.Find("PopupMenu").gameObject.SetActive(true);
 
         mia.ClickVoice();
+        UISound.ClickNPCSE();
     }
 
     private void OnClickIkki()
@@ -165,6 +173,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         go_Ikki.transform.Find("PopupMenu").gameObject.SetActive(true);
 
         ikki.ClickVoice();
+        UISound.ClickNPCSE();
     }
 
     private void OnClickMichelle()
@@ -174,6 +183,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         go_Michelle.transform.Find("PopupMenu").gameObject.SetActive(true);
 
         michelle.ClickVoice();
+        UISound.ClickNPCSE();
     }
 
     internal void SetPopupMenuFalse()
@@ -188,10 +198,18 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
     }
 
 
-    //Debug 용 함수
+    //Event함수
+    //NPC의 팝업 메뉴창이 열려있을 때, 다른 배경을 클릭하게 되면 그 창이 닫히도록
+    //해주는 함수입니다.
     public void OnPointerClick(PointerEventData eventData)
     {
-        print(eventData.pointerCurrentRaycast.gameObject);
+        //print(eventData.pointerCurrentRaycast.gameObject);
+
+        PopupMenu[] popupMenus = FindObjectsOfType<PopupMenu>();
+        if(popupMenus != null && eventData.pointerCurrentRaycast.gameObject != null)
+        {
+            SetPopupMenuFalse();
+        }
     }
 
     public void StartGame()
@@ -200,7 +218,18 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         startAni.gameObject.SetActive(true);
     }
 
+    //UnityEvent에 추가되는 함수
+    public void StartCount()
+    {
+        SoundManager.instance.PlaySE("StartCount");
+    }
+    //UnityEvent에 추가되는 함수
+    public void StartSFX()
+    {
+        SoundManager.instance.PlaySE("StartGame");
+    }
 
+    //UnityEvent에 추가되는 함수
     //AnimatorEvent
     public void LoadingForStartGame()
     {

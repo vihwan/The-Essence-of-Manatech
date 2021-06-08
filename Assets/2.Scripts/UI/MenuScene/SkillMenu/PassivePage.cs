@@ -56,6 +56,7 @@ public class PassivePage : MonoBehaviour
         ExplainPage.SetSkillName(skillName);
         ExplainPage.SetExplainPage(SkillData.instance.PasSkillDic[skillName]);
         CreateGoldBorder(skillName);
+        UISound.SelectMenuButton();
     }
     /*
         private void OpenExplainPage02()

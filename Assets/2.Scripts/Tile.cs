@@ -150,6 +150,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerDown(PointerEventData eventData)
     {
 
+        print(eventData.position);
+
         if(GameManager.instance.GameState != GameState.PLAYING)
             return;
 

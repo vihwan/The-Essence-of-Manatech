@@ -31,6 +31,7 @@ public class PopupMenu : MonoBehaviour
     private void OnClickTalk()
     {
         MainMenu.instance.SetPopupMenuFalse();
+        UISound.SelectMenuButton();
 
         if (this.gameObject.transform.parent.name == "NPC_Druidmia")
         {
@@ -53,6 +54,7 @@ public class PopupMenu : MonoBehaviour
     private void OnClickSpecific()
     {
         MainMenu.instance.SetPopupMenuFalse();
+        UISound.SelectMenuButton();
 
         if (this.gameObject.transform.parent.name == "NPC_Druidmia")
         {

@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Assets\UIParticles\Editor\MenuOption.cs" />
     <Compile Include="Assets\UIParticles\Editor\UiParticlesEditor.cs" />
+    <Compile Include="Assets\Unity-Logs-Viewer\Reporter\Editor\ReporterEditor.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/2019.4.23f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

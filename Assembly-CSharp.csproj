@@ -141,11 +141,18 @@
     <Compile Include="Assets\2.Scripts\UI\SettingMenu.cs" />
     <Compile Include="Assets\2.Scripts\UI\SkillManageMenu.cs" />
     <Compile Include="Assets\2.Scripts\UI\TitleUIManager.cs" />
+    <Compile Include="Assets\2.Scripts\UI\UISound.cs" />
     <Compile Include="Assets\2.Scripts\UtilHelper.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\UIParticles\Examples\Scripts\SwitchPanels.cs" />
     <Compile Include="Assets\UIParticles\Scripts\SetPropertyUtility.cs" />
     <Compile Include="Assets\UIParticles\Scripts\UiParticles.cs" />
+    <Compile Include="Assets\Unity-Logs-Viewer\Reporter\MultiKeyDictionary.cs" />
+    <Compile Include="Assets\Unity-Logs-Viewer\Reporter\Reporter.cs" />
+    <Compile Include="Assets\Unity-Logs-Viewer\Reporter\ReporterGUI.cs" />
+    <Compile Include="Assets\Unity-Logs-Viewer\Reporter\ReporterMessageReceiver.cs" />
+    <Compile Include="Assets\Unity-Logs-Viewer\Reporter\Test\Rotate.cs" />
+    <Compile Include="Assets\Unity-Logs-Viewer\Reporter\Test\TestReporter.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\UIParticles\Shaders\Ui Particle Multiply.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
@@ -173,7 +180,6 @@
     <None Include="Assets\QuickOutline\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\Cartoon FX Remaster\CFXR Prefabs\Texts\_Make your own text effect.txt" />
-    <None Include="Assets\8.GameData\SkillData.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Cartoon FX Remaster\Readme Cartoon FX Remaster.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
