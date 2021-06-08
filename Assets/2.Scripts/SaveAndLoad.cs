@@ -19,17 +19,10 @@ public class SaveAndLoad : MonoBehaviour
     private string SAVE_FILENAME = "SkillData.txt"; // 파일 이름
 
     private SaveData saveData = new SaveData();
-    private TitleUIManager title;
 
     //Save Skill Data
     public void Init()
     {
-        title = FindObjectOfType<TitleUIManager>();
-        if(title != null)
-        {
-            title.transform.Find("Debug Text").GetComponent<Text>().text = "텍스트 참조 성공";
-        }
-
         //SaveData에 데이터를 세팅
         SetActiveSkill();
         SetPassiveSkill();
@@ -37,13 +30,10 @@ public class SaveAndLoad : MonoBehaviour
         try
         {
             //Json직렬화
-            title.transform.Find("Debug Text").GetComponent<Text>().text = "try문 진입";
-
             string savejson = JsonConvert.SerializeObject(saveData); // ????
             if (savejson.Equals("{}"))
             {
                 Debug.Log("json null");
-                title.transform.Find("Debug Text").GetComponent<Text>().text = "json null";
                 return;
             }
 
@@ -54,22 +44,22 @@ public class SaveAndLoad : MonoBehaviour
 
             File.WriteAllText(Path.Combine(SAVE_DATA_DIRECTORY, SAVE_FILENAME), savejson);
             Debug.Log("스킬 데이터 저장 완료");
-            title.transform.Find("Debug Text").GetComponent<Text>().text = "스킬 데이터 저장 완료";
+            
         }
         catch (FileNotFoundException e)
         {
             Debug.Log("The file was not found:" + e.Message);
-            title.transform.Find("Debug Text").GetComponent<Text>().text = "파일을 찾을 수 없음";
+            
         }
         catch (DirectoryNotFoundException e)
         {      
             Debug.Log("The directory was not found: " + e.Message);
-            title.transform.Find("Debug Text").GetComponent<Text>().text = "디렉토리를 찾을 수 없음";
+           
         }
         catch (IOException e)
         {
             Debug.Log("The file could not be opened:" + e.Message);
-            title.transform.Find("Debug Text").GetComponent<Text>().text = "파일을 열 수 없음";
+           
         }
     }
 
@@ -80,8 +70,7 @@ public class SaveAndLoad : MonoBehaviour
 
         try
         {
-            LoadData(testDic);
-            title.transform.Find("Debug Text").GetComponent<Text>().text = testDic.ToString();
+            LoadData(testDic);     
         }
         catch (FileNotFoundException e)
         {
@@ -132,12 +121,12 @@ public class SaveAndLoad : MonoBehaviour
             }
 
             Debug.Log("스킬 데이터 로드 완료");
-            title.transform.Find("Debug Text").GetComponent<Text>().text = "스킬 데이터 로드 완료";
+    
         }
         else
         {
             Debug.Log("스킬 데이터 파일이 없습니다.");
-            title.transform.Find("Debug Text").GetComponent<Text>().text = "스킬 데이터 파일이 없습니다.";
+  
         }
 
     }

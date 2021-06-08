@@ -15,12 +15,6 @@ public class TitleUIManager : MonoBehaviour
 
     }
 
-    void OnGUI()
-    {
-      // UnityEditor.Handles.Label(new Vector3(960,540,0), "Text");
-    }
-
-
     private void Update()
     {
         if (isLoading == true)

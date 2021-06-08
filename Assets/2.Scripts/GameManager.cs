@@ -186,10 +186,10 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (CurrentSceneName != "Menu")
+        if (CurrentSceneName != "MenuScene")
         {
             StopAllCoroutines();
-            LoadScene("Menu");
+            LoadScene("MenuScene");
             isReturning = true;
         }
     }
