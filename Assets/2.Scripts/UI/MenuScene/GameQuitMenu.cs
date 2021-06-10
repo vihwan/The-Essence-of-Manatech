@@ -32,10 +32,12 @@ public class GameQuitMenu : MonoBehaviour
             //빌드된 파일이라면 (기기에서 실행되고 있는 상태라면)
             Application.Quit(); //실행 종료
 #endif
+        UISound.ClickButton();
     }
 
     private void OnClickClose()
     {
         this.gameObject.SetActive(false);
+        UISound.ClickButton();
     }
 }

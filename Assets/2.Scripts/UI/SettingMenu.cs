@@ -83,7 +83,7 @@ public class SettingMenu : MonoBehaviour
 
         //Time.timeScale = 1f;
         instance.gameObject.SetActive(false);
-        UISound.SelectMenuButton();
+        UISound.ClickButton();
     }
 
     private void InitResolution()

@@ -26,10 +26,12 @@ public class ConfirmMenu : MonoBehaviour
     {
         this.gameObject.SetActive(false);
         MainMenu.instance.StartGame();
+        UISound.ClickButton();
     }
 
     private void OnClickClose()
     {
         this.gameObject.SetActive(false);
+        UISound.ClickButton();
     }
 }

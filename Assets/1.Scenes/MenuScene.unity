@@ -3752,7 +3752,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -3806,7 +3806,7 @@ AudioSource:
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -3836,7 +3836,7 @@ AudioSource:
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
 --- !u!114 &568340644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3866,12 +3866,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume: 1
-  loop: 1
-  targetAudioSource: {fileID: 0}
+  loop: 0
+  targetAudioSource: {fileID: 568340643}
   audioMode: 1
   beepSounds: []
-  soundEffect: {fileID: 0}
-  inputSound: {fileID: 8300000, guid: c4764345603b5274b9ed0ce760b1bb22, type: 3}
+  soundEffect: {fileID: 8300000, guid: c4764345603b5274b9ed0ce760b1bb22, type: 3}
+  inputSound: {fileID: 0}
 --- !u!114 &568340646
 MonoBehaviour:
   m_ObjectHideFlags: 0

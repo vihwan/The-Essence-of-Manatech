@@ -4729,12 +4729,12 @@ ParticleSystem:
   m_GameObject: {fileID: 8842865532214825913}
   serializedVersion: 6
   lengthInSec: 2
-  simulationSpeed: 1
+  simulationSpeed: 1.5
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -4872,27 +4872,27 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 2
-      minColor: {r: 0, g: 0.49056602, b: 0.47785047, a: 0.54901963}
-      maxColor: {r: 1, g: 0.8807937, b: 0, a: 0.54509807}
+      minMaxState: 4
+      minColor: {r: 1, g: 0.12394618, b: 0.02352941, a: 1}
+      maxColor: {r: 1, g: 0.8248069, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 1}
-        key2: {r: 0, g: 0, b: 0, a: 0}
-        key3: {r: 0, g: 0, b: 0, a: 0}
-        key4: {r: 0, g: 0, b: 0, a: 0}
-        key5: {r: 0, g: 0, b: 0, a: 0}
-        key6: {r: 0, g: 0, b: 0, a: 0}
-        key7: {r: 0, g: 0, b: 0, a: 0}
-        ctime0: 0
-        ctime1: 65535
-        ctime2: 0
-        ctime3: 0
-        ctime4: 0
-        ctime5: 0
-        ctime6: 0
-        ctime7: 0
+        key0: {r: 1, g: 0, b: 0, a: 1}
+        key1: {r: 1, g: 0.38606966, b: 0, a: 1}
+        key2: {r: 1, g: 0.82495254, b: 0, a: 0}
+        key3: {r: 0.18177521, g: 1, b: 0, a: 0}
+        key4: {r: 0, g: 1, b: 0.97092533, a: 0}
+        key5: {r: 0.34901965, g: 0.48517394, b: 1, a: 0}
+        key6: {r: 0.82756376, g: 0, b: 1, a: 0}
+        key7: {r: 1, g: 1, b: 1, a: 0}
+        ctime0: 193
+        ctime1: 8481
+        ctime2: 19082
+        ctime3: 27563
+        ctime4: 36237
+        ctime5: 46453
+        ctime6: 56283
+        ctime7: 65535
         atime0: 0
         atime1: 65535
         atime2: 0
@@ -4902,7 +4902,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 2
+        m_NumColorKeys: 8
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
@@ -9230,7 +9230,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a4b2919529f88e345804ef0e7e13b9bf, type: 2}
+  - {fileID: 2100000, guid: 2175ac793e235894da12a78ea274cb1f, type: 2}
   - {fileID: 2100000, guid: 2175ac793e235894da12a78ea274cb1f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -9475,7 +9475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e8969313b8e4614b498f042e99683a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: a4b2919529f88e345804ef0e7e13b9bf, type: 2}
+  m_Material: {fileID: 2100000, guid: 2175ac793e235894da12a78ea274cb1f, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_Maskable: 1

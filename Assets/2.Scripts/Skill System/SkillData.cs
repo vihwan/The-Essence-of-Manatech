@@ -34,13 +34,13 @@ public class SkillData : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public void ActSkillLevelUp(string skillName)
+    public bool ActSkillLevelUp(string skillName)
     {
         if (ActSkillDic[skillName].Level >= 3)
         {
             // 스킬 레벨업 불가능
             print("더이상 레벨을 올릴 수 없습니다.");
-            return;
+            return false;
         }
 
         //액티브 스킬 레벨업
@@ -49,15 +49,17 @@ public class SkillData : MonoBehaviour
         //레벨업이 되면 플레이어 데이터의 스킬포인트와 스킬포인트 텍스트를 갱신합니다.
         PlayerData.DecreaseSkillPoint();
         SkillManageMenu.UpdateSpText();
+
+        return true;
     }
 
-    public void PassSkillLevelUp(string skillName)
+    public bool PassSkillLevelUp(string skillName)
     {
         if (PasSkillDic[skillName].Level >= 3)
         {
             // 스킬 레벨업 불가능
             print("더이상 레벨을 올릴 수 없습니다.");
-            return;
+            return false;
         }
         //패시브 스킬 레벨업
         PasSkillDic[skillName].Level++;
@@ -65,5 +67,7 @@ public class SkillData : MonoBehaviour
         //레벨업이 되면 플레이어 데이터의 스킬포인트와 스킬포인트 텍스트를 갱신합니다.
         PlayerData.DecreaseSkillPoint();
         SkillManageMenu.UpdateSpText();
+
+        return true;
     }
 }

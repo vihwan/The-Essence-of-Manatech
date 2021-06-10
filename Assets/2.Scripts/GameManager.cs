@@ -85,20 +85,15 @@ public class GameManager : MonoBehaviour
             if (!isGameOver && GUIManager.instance.LimitTime <= 0)
             {
                 isGameOver = true;
-                GameOver();
+                GameWin();
             }
         }
     }
 
-    internal void GameOver()
+    internal void GameWin()
     {
         GameState = GameState.END;
         StartCoroutine(GUIManager.instance.WaitForShifting());
-        SoundManager.instance.StopAllSE();
-        SoundManager.instance.StopBGM();
-        SoundManager.instance.PlaySE("DungeonResult");
-        BoardManager.instance = null; //보드 매니저 비활성화
-        BoardManagerMonster.instance = null;
     }
 
     // Load a scene with a specified string name

@@ -75,14 +75,20 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 0ddec4e454e820a47b42a324b38cb49e, type: 3}
   - name: ClickButton
     clip: {fileID: 8300000, guid: c4764345603b5274b9ed0ce760b1bb22, type: 3}
-  - name: OpenList
-    clip: {fileID: 8300000, guid: e108239c0f73ce8409ce023e969fc275, type: 3}
+  - name: CommandShow
+    clip: {fileID: 8300000, guid: 66fe98ef5a62f794f910bdd8aaca6283, type: 3}
   - name: SkillLevelUp
-    clip: {fileID: 8300000, guid: e86ce0d6836a3bc4da66d3dcf224ce7b, type: 3}
+    clip: {fileID: 8300000, guid: 7830f378d84ac514e852b434b1f94be6, type: 3}
   - name: StartCount
     clip: {fileID: 8300000, guid: 092a27181ba0c364281fb8a3ffc5cc97, type: 3}
   - name: StartGame
     clip: {fileID: 8300000, guid: a787230e9f1f7014dafb9dfaa7be6403, type: 3}
+  - name: CommandSelect
+    clip: {fileID: 8300000, guid: 03fa07db8e92b554990f0ede8f9e5093, type: 3}
+  - name: Thunder
+    clip: {fileID: 8300000, guid: 0c4503224cad14f42aae438d906d4e0b, type: 3}
+  - name: Versus
+    clip: {fileID: 8300000, guid: 62f4ed77e9b001c4d9d90144eaf24bf7, type: 3}
   bgmSounds:
   - name: "\uB370\uBC14\uC2A4\uD0C0\uB974"
     clip: {fileID: 8300000, guid: fb14269f68163ad4abea711da52dd2c2, type: 3}

@@ -40,18 +40,13 @@ public class StageManager : MonoBehaviour
     private void PlayUISlide()
     {
         animator.SetTrigger("Slide");
-        Invoke(nameof(GetReady), 4f);
     }
 
     private void GetReady()
     {
-        info = animator.GetCurrentAnimatorStateInfo(0);
-        if (info.normalizedTime > info.length * 0.8)
-        {
-            animator.SetTrigger("ReadyGo");
-            SoundManager.instance.PlayCV("Player_Ancient_Library");
-            SoundManager.instance.PlaySE("PlayerCasting");
-        }
+        animator.SetBool("UseLibrary", true);
+        SoundManager.instance.PlayCV("Player_Ancient_Library");
+        SoundManager.instance.PlaySE("PlayerCasting");
     }
 
     private void PlayReadySound()
@@ -68,6 +63,12 @@ public class StageManager : MonoBehaviour
 
         //버튼 활성화
         GUIManager.instance.OnInitPauseButton();
+    }
+
+    private void PlayVersusSoundEffect()
+    {
+        SoundManager.instance.PlaySE("Thunder");
+        SoundManager.instance.PlaySE("Versus");
     }
 
     private void ChangeGameStateStart()
@@ -113,7 +114,12 @@ public class StageManager : MonoBehaviour
         if (monsterAI != null)
             monsterAI.Init();
 
-        // GameManager.instance.GameState = GameState.START;
+
+        info = animator.GetCurrentAnimatorStateInfo(0);
+        if (info.normalizedTime * 10 > info.length * 0.9f)
+        {
+            Invoke(nameof(GetReady), 3f);
+        }
     }
 
 

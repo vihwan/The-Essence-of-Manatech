@@ -109,7 +109,7 @@ public class SkillManageMenu : MonoBehaviour
         InActiveAllTapFocus();
         activePage.gameObject.SetActive(true);
         tapFocusAct.gameObject.SetActive(true);
-        UISound.SelectMenuButton();
+        UISound.ClickButton();
     }
 
     //패시브 스킬 창을 연다
@@ -119,7 +119,7 @@ public class SkillManageMenu : MonoBehaviour
         InActiveAllTapFocus();
         passivePage.gameObject.SetActive(true);
         tapFocusPass.gameObject.SetActive(true);
-        UISound.SelectMenuButton();
+        UISound.ClickButton();
     }
 
     //모든 스킬 페이지창을 닫는다.
@@ -127,14 +127,14 @@ public class SkillManageMenu : MonoBehaviour
     {
         activePage.gameObject.SetActive(false);
         passivePage.gameObject.SetActive(false);
-        UISound.SelectMenuButton();
+        UISound.ClickButton();
     }
 
     //스킬 관리창을 연다.
     public void OpenSkillMenu()
     {
         this.gameObject.SetActive(true);
-        UISound.SelectMenuButton();
+        UISound.ClickButton();
     }
 
     //스킬 관리창을 닫는다.
@@ -142,7 +142,7 @@ public class SkillManageMenu : MonoBehaviour
     {
         InitPage();
         this.gameObject.SetActive(false);
-        UISound.SelectMenuButton();
+        UISound.ClickButton();
 
         NPC_Ikki ikki = FindObjectOfType<NPC_Ikki>();
         if (ikki != null)

@@ -65,7 +65,6 @@ public class ExplainPage : MonoBehaviour
     {
         this.skillName = skillName;
     }
-
     public void SetExplainPage(ActiveSkill activeSkill)
     {
         skillLevelText.text = "스킬 레벨 : " + activeSkill.Level.ToString();
@@ -73,40 +72,43 @@ public class ExplainPage : MonoBehaviour
         mpText.text = "MP 소모량 : " + activeSkill.Mana.ToString();
         explainText.text = activeSkill.Description;
     }
-
     public void SetExplainPage(PassiveSkill passiveSkill)
     {
         skillLevelText.text = "스킬 레벨 : " + passiveSkill.Level.ToString();
         explainText.text = passiveSkill.Description;
     }
-
     private void LevelUp(string skillName)
     {
-        UISound.ClickLevelUpButton();
-        //파티클 생성
-        ParticleSystem levelupEffect =  Instantiate(Resources.Load<ParticleSystem>("CFXR Firework (Custom)"), 
-                                                    levelupBtn.transform.position, 
-                                                    Quaternion.identity);
-        levelupEffect.transform.SetParent(transform);
-       // Destroy(levelupEffect, 4f); UI particle 오류
-
         if (levelupBtn.name == "ActLevelUpButton")
         {
             print("스킬 레벨 업 : " + skillName);
-            SkillData.instance.ActSkillLevelUp(skillName);
-
+            if (SkillData.instance.ActSkillLevelUp(skillName))
+            {
+                UISound.ClickLevelUpButton();
+                CreateLevelUpParticle();
+            }
             //레벨업 된 스킬 정보로 새로 갱신해줘야 한다.
             SetExplainPage(SkillData.instance.ActSkillDic[skillName]);
-
         }
         else if (levelupBtn.name == "PassLevelUpButton")
         {
             print("스킬 레벨 업 : " + skillName);
-            SkillData.instance.PassSkillLevelUp(skillName);
+            if (SkillData.instance.PassSkillLevelUp(skillName))
+            {
+                UISound.ClickLevelUpButton();
+                CreateLevelUpParticle();
+            }
 
             //레벨업 된 스킬 정보로 새로 갱신해줘야 한다.
             SetExplainPage(SkillData.instance.PasSkillDic[skillName]);
         }
     }
-
+    private void CreateLevelUpParticle()
+    {
+        //파티클 생성
+        ParticleSystem levelupEffect = Instantiate(Resources.Load<ParticleSystem>("CFXR Firework (Custom)"),
+                                                    transform.Find("SkillPropBg").transform.position,
+                                                    Quaternion.identity);
+        levelupEffect.transform.SetParent(transform);
+    }
 }

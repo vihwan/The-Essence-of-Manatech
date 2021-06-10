@@ -144,6 +144,7 @@
     <Compile Include="Assets\2.Scripts\UI\TitleUIManager.cs" />
     <Compile Include="Assets\2.Scripts\UI\UISound.cs" />
     <Compile Include="Assets\2.Scripts\UtilHelper.cs" />
+    <Compile Include="Assets\8.Extensions\UIParticleSystem.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\UIParticles\Examples\Scripts\SwitchPanels.cs" />
     <Compile Include="Assets\UIParticles\Scripts\SetPropertyUtility.cs" />
@@ -181,6 +182,7 @@
     <None Include="Assets\QuickOutline\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\Cartoon FX Remaster\CFXR Prefabs\Texts\_Make your own text effect.txt" />
+    <None Include="Assets\8.Extensions\hidden particle.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Cartoon FX Remaster\Readme Cartoon FX Remaster.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />

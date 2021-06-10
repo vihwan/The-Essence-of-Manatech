@@ -138,24 +138,20 @@ public class GUIManager : MonoBehaviour
             highScoreTxt.text = "Best: " + PlayerPrefs.GetInt("HighScore").ToString();
         }
         yourScoreTxt.text = ((int)score).ToString();
+
+        SoundManager.instance.StopAllSE();
+        SoundManager.instance.StopBGM();
+        SoundManager.instance.PlaySE("DungeonResult");
+        BoardManager.instance = null; //보드 매니저 비활성화
+        BoardManagerMonster.instance = null;
     }
 
-    /*
-        private void TimeParsing(float limitTime)
-        {
-            int hour;
-            int min;
-            int sec;
-
-            string timeStr;
-            timeStr
-        }*/
 
     //게임 오버 전에 대기 시간을 주는 코루틴
     //BoardState가 MOVE가 될때 까지 기다림
     public IEnumerator WaitForShifting()
     {
-        yield return new WaitUntil(() => BoardManager.instance.IsMoveState());
+        yield return new WaitUntil(() => BoardManager.instance.currentState == PlayerState.MOVE);
         yield return new WaitForSeconds(.3f);
         GameOverPanel(); //GUI GameOver Panel
     }

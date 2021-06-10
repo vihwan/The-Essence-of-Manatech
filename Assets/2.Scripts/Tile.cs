@@ -16,7 +16,7 @@ public enum CharacterKinds
     Lolipop
 }
 
-public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     #region Field Variable
 
@@ -149,9 +149,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-
-        print(eventData.position);
-
         if(GameManager.instance.GameState != GameState.PLAYING)
             return;
 
@@ -182,6 +179,12 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             //Debug.Log("선택한 타일 : " + eventData.pointerCurrentRaycast.gameObject);
         }
         else
+            return;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (BoardManager.instance.currentState != PlayerState.MOVE)
             return;
     }
 
@@ -357,4 +360,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         Row = x;
         Col = y;
     }
+
+
 }

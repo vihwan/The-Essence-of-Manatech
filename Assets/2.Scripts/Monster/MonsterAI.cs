@@ -62,6 +62,7 @@ public class MonsterAI : MonoBehaviour
         {
             monsterAction = value;
 
+            //특수한 변수 대입이 필요한 경우를 대비해 스위치문을 따로 작성
             switch (monsterAction)
             {
                 case MonsterState.WAIT:
@@ -77,6 +78,8 @@ public class MonsterAI : MonoBehaviour
                     break;
 
                 case MonsterState.TRANSFORM:
+                    isTransform = true;
+                    isPhase1 = false;
                     break;
 
                 case MonsterState.GROGGY:
@@ -88,7 +91,7 @@ public class MonsterAI : MonoBehaviour
                 case MonsterState.DEAD:
                     SoundManager.instance.PlayCV("Devil_Skill_Dead");
                     GameManager.instance.isGameOver = true;
-                    GameManager.instance.GameOver();
+                    GameManager.instance.GameWin();
                     break;
             }
         }
@@ -226,8 +229,6 @@ public class MonsterAI : MonoBehaviour
                 {
                     //유저와 몬스터의 조작을 멈추고 대기 시간을 가진다.
                     Action = MonsterState.TRANSFORM;
-                    isTransform = true;
-                    isPhase1 = false;
                 }
             }
 
@@ -252,23 +253,12 @@ public class MonsterAI : MonoBehaviour
     {
         isUpdate = true;
 
-        //데바스타르 스킬 발동중에 변신한다면 스킬을 취소해야한다.
-        devaSkill1.go_List.Clear();
-
-        yield return new WaitForSeconds(1f);
-
-        for (int i = 0; i < BoardManager.instance.width; i++)
+        //만약 데바스타르 스킬이 실행중이라면(isRemainTime)
+        if (devaSkill1.isRemainTimeUpdate == true)
         {
-            for (int j = 0; j < BoardManager.instance.height; j++)
-            {
-                if (BoardManager.instance.characterTilesBox[i, j].transform.childCount > 0)
-                {
-                    BoardManager.instance.characterTilesBox[i, j].GetComponent<Tile>().isSealed = false;
-                    Destroy(BoardManager.instance.characterTilesBox[i, j].GetComponentInChildren<SealedEffect>().gameObject);
-                }
-            }
+            CancelDevaSkill1(out bool isCancelSkill);
+            yield return new WaitUntil(() => isCancelSkill == true);
         }
-        devaSkill1.rootUI.SetActive(false);
 
         Notify.SetText("크윽.. 방해하는 자에게 고통을!!");
         SoundManager.instance.PlayCV("Human_Death1");
@@ -295,6 +285,25 @@ public class MonsterAI : MonoBehaviour
         Action = MonsterState.MOVE;
         Debug.Log("2페이즈 돌입");
         isUpdate = false;
+    }
+
+    private void CancelDevaSkill1(out bool state)
+    {
+        //데바스타르 스킬 발동중에 변신한다면 스킬을 취소해야한다.
+        devaSkill1.go_List.Clear();
+        for (int i = 0; i < BoardManager.instance.width; i++)
+        {
+            for (int j = 0; j < BoardManager.instance.height; j++)
+            {
+                if (BoardManager.instance.characterTilesBox[i, j].transform.childCount > 0)
+                {
+                    BoardManager.instance.characterTilesBox[i, j].GetComponent<Tile>().isSealed = false;
+                    Destroy(BoardManager.instance.characterTilesBox[i, j].GetComponentInChildren<SealedEffect>().gameObject);
+                }
+            }
+        }
+        devaSkill1.rootUI.SetActive(false);
+        state = true;
     }
 
 

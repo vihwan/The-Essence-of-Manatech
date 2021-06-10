@@ -419,7 +419,7 @@ public class BoardManager : MonoBehaviour
             Debug.Log("<color=#FF6534> DeadLock 발생 </color> 타일들을 섞습니다.");
             Invoke(nameof(ShuffleBoard), 1f);
             SkillManager.instance.appearText("Deadlock 발생 타일을 섞습니다.");
-            yield return new WaitForSeconds(1f);
+            yield return new WaitUntil(()=> !IsDeadlocked());
         }
 
     }
@@ -464,13 +464,11 @@ public class BoardManager : MonoBehaviour
             {
                 if (characterTilesBox[x, y] != null)
                 {
-
                     //봉인된 타일은 데드락 조건에 포함시키지 않는다.
                     if (characterTilesBox[x, y].transform.childCount > 0)
                     {
                         continue;
                     }
-
 
                     if (x < width - 2)
                     {
@@ -497,7 +495,6 @@ public class BoardManager : MonoBehaviour
                 }
             }
         }
-
         return false;
     }
 
