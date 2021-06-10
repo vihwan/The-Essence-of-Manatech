@@ -82,7 +82,14 @@ public class ExplainPage : MonoBehaviour
 
     private void LevelUp(string skillName)
     {
-        //TODO :
+        UISound.ClickLevelUpButton();
+        //파티클 생성
+        ParticleSystem levelupEffect =  Instantiate(Resources.Load<ParticleSystem>("CFXR Firework (Custom)"), 
+                                                    levelupBtn.transform.position, 
+                                                    Quaternion.identity);
+        levelupEffect.transform.SetParent(transform);
+       // Destroy(levelupEffect, 4f); UI particle 오류
+
         if (levelupBtn.name == "ActLevelUpButton")
         {
             print("스킬 레벨 업 : " + skillName);

@@ -7,8 +7,10 @@ using UnityEngine.UI;
 // 스킬 관리 정보창을 관리하는 컴포넌트입니다.
 // 기본적으로 UI 닫기 버튼, 액티브 스킬창 보기, 패시브 스킬창 보기를 담당합니다.
 //SKillManageCanvas에 추가되어있음
+
 public class SkillManageMenu : MonoBehaviour
 {
+    [Tooltip("이 게임오브젝트는 게임 실행 시, Active를 True해줘야 한다")]
     //Text 컴포넌트
     private static Text spText; //스킬 포인트
 
@@ -72,7 +74,7 @@ public class SkillManageMenu : MonoBehaviour
         tapFocusAct = transform.Find("Background/ButtonAct/TapFocus").GetComponent<Image>();
         tapFocusPass = transform.Find("Background/ButtonPass/TapFocus").GetComponent<Image>();
 
-        CloseSkillMenu();
+        this.gameObject.SetActive(false);
     }
 
     //스킬 페이지 창들을 초기화시킨다.
@@ -83,6 +85,7 @@ public class SkillManageMenu : MonoBehaviour
         //2. 패시브 스킬 버튼 창은 꺼져 있어야한다.
         //3. 상세정보창은 꺼져 있어야 한다.
         //4. tapFocus는 액티브 스킬꺼가 켜져 있어야한다.
+        //5. 스킬 선택시 나타나는 황금 테두리가 꺼져 있어야 한다.
 
         activePage.gameObject.SetActive(true);
         passivePage.gameObject.SetActive(false);
@@ -90,8 +93,13 @@ public class SkillManageMenu : MonoBehaviour
         activePage.ExplainPage.gameObject.SetActive(false);
         passivePage.ExplainPage.gameObject.SetActive(false);
 
+        //액티브, 패시브 전환 황금 이펙트 을 초기화합니다.
         tapFocusAct.gameObject.SetActive(true);
         tapFocusPass.gameObject.SetActive(false);
+
+        //액티브, 패시브 스킬 페이지의 황금 테두리를 일반 테두리로 바꿉니다.
+        activePage.AllButtonSpriteNormal();
+        passivePage.AllButtonSpriteNormal();
     }
 
     //액티브 스킬 창을 연다.
@@ -135,6 +143,10 @@ public class SkillManageMenu : MonoBehaviour
         InitPage();
         this.gameObject.SetActive(false);
         UISound.SelectMenuButton();
+
+        NPC_Ikki ikki = FindObjectOfType<NPC_Ikki>();
+        if (ikki != null)
+            ikki.EndTalkVoice();
     }
 
     private void InActiveAllTapFocus()

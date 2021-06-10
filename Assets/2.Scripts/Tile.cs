@@ -68,9 +68,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         get
         {
             if (GameManager.instance.GameState == GameState.BEGIN)
-                moveSpeed = .05f;
+                moveSpeed = 5f * Time.deltaTime;
             else
-                moveSpeed = .3f;
+                moveSpeed = 15f * Time.deltaTime;
 
             return moveSpeed;
         }

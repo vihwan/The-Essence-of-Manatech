@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using UnityEngine.UI;
 using System;
 using Newtonsoft.Json;
 
-[System.Serializable]
 public class SaveData
 {
     public Dictionary<string, ActiveSkill> AskillDic = new Dictionary<string, ActiveSkill>();
@@ -16,7 +14,7 @@ public class SaveData
 public class SaveAndLoad : MonoBehaviour
 {
     private string SAVE_DATA_DIRECTORY;  // 저장할 폴더 경로
-    private string SAVE_FILENAME = "SkillData.txt"; // 파일 이름
+    private string SAVE_FILENAME = "SkillData.json"; // 파일 이름
 
     private SaveData saveData = new SaveData();
 
@@ -26,40 +24,42 @@ public class SaveAndLoad : MonoBehaviour
         //SaveData에 데이터를 세팅
         SetActiveSkill();
         SetPassiveSkill();
-
+        //Json직렬화
         try
         {
-            //Json직렬화
-            string savejson = JsonConvert.SerializeObject(saveData); // ????
+            SAVE_DATA_DIRECTORY = Path.Combine(Application.persistentDataPath, "GameData");
+
+            if (!Directory.Exists(SAVE_DATA_DIRECTORY)) // 해당 경로가 존재하지 않는다면
+                Directory.CreateDirectory(SAVE_DATA_DIRECTORY); // 폴더 생성(경로 생성)
+
+
+            // C# 버전을 꼭 확인하기.
+            string savejson = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+            Debug.Log(savejson);
             if (savejson.Equals("{}"))
             {
                 Debug.Log("json null");
                 return;
             }
 
-            SAVE_DATA_DIRECTORY = Path.Combine(Application.persistentDataPath , "GameData");
-
-            if (!Directory.Exists(SAVE_DATA_DIRECTORY)) // 해당 경로가 존재하지 않는다면
-                Directory.CreateDirectory(SAVE_DATA_DIRECTORY); // 폴더 생성(경로 생성)
-
             File.WriteAllText(Path.Combine(SAVE_DATA_DIRECTORY, SAVE_FILENAME), savejson);
             Debug.Log("스킬 데이터 저장 완료");
-            
+
         }
         catch (FileNotFoundException e)
         {
             Debug.Log("The file was not found:" + e.Message);
-            
+
         }
         catch (DirectoryNotFoundException e)
-        {      
+        {
             Debug.Log("The directory was not found: " + e.Message);
-           
+
         }
         catch (IOException e)
         {
             Debug.Log("The file could not be opened:" + e.Message);
-           
+
         }
     }
 
@@ -70,7 +70,7 @@ public class SaveAndLoad : MonoBehaviour
 
         try
         {
-            LoadData(testDic);     
+            LoadData(testDic);
         }
         catch (FileNotFoundException e)
         {
@@ -119,14 +119,11 @@ public class SaveAndLoad : MonoBehaviour
                     aDic.Add(name, value as T);
                 }
             }
-
             Debug.Log("스킬 데이터 로드 완료");
-    
         }
         else
         {
             Debug.Log("스킬 데이터 파일이 없습니다.");
-  
         }
 
     }

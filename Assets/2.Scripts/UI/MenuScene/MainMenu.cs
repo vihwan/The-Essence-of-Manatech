@@ -26,6 +26,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
     private PopupMenu michelle_Popup;
 
     private ConfirmMenu confirm_Menu;
+    private GameQuitMenu gamequit_Menu;
     private Animator startAni;
 
     private Fungus.SayDialog sayDialog;
@@ -108,6 +109,12 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
             confirm_Menu.Init();
         }
 
+        gamequit_Menu = transform.Find("GameQuit_Popup").GetComponent<GameQuitMenu>();
+        if(gamequit_Menu != null)
+        {
+            gamequit_Menu.Init();
+        }
+
         skillManageMenu = FindObjectOfType<SkillManageMenu>();
         if(skillManageMenu != null)
         {
@@ -138,6 +145,12 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
             ActiveNPCButton(false);
         else
             ActiveNPCButton(true);
+
+        //메인 메뉴에서 Escape 키를 누르면, 게임 종료 여부 팝업창이 나온다
+        if (Input.GetKeyDown(KeyCode.Escape) && gamequit_Menu.gameObject.activeSelf == false)
+        {
+            gamequit_Menu.gameObject.SetActive(true);
+        }
     }
 
     private bool isActiveSayDialog()

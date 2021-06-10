@@ -2,9 +2,6 @@
 using UnityEngine;
 
 
-[System.Serializable]
-public class TestDictionary : SerializeDictionary<string, int> { }
-
 public class TitleUIManager : MonoBehaviour
 {
     private bool isLoading = false;

@@ -191,10 +191,10 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: "\uBCF8 \uAC8C\uC784\uC740 Neople\uC0AC\uC758 '\uB358\uC804\uC564\uD30C\uC774\uD130'\uC758
-    \uD32C\uAC8C\uC784\uC73C\uB85C, \n\uBAA8\uB4E0 \uC800\uC791\uAD8C\uC740 \uC81C\uC791\uC0AC\uC778
-    Neople\uC5D0\uAC8C \uC788\uC73C\uBA70,\n\uBCF8 \uAC8C\uC784\uC740 \uC5B4\uB5A0\uD55C
-    \uC0C1\uC5C5\uC801\uC778 \uC6A9\uB3C4\uB85C \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC74C\uC744
-    \uBC1D\uD799\uB2C8\uB2E4."
+    \uD32C\uAC8C\uC784 \uD3EC\uD2B8\uD3F4\uB9AC\uC624 \uC785\uB2C8\uB2E4.\n\uBAA8\uB4E0
+    \uC800\uC791\uAD8C\uC740 \uC81C\uC791\uC0AC\uC778 Neople\uC5D0\uAC8C \uC788\uC73C\uBA70,\n\uBCF8
+    \uAC8C\uC784\uC740 \uC5B4\uB5A0\uD55C \uC0C1\uC5C5\uC801\uC778 \uC6A9\uB3C4\uB85C
+    \uC0AC\uC6A9\uB418\uC9C0 \uC54A\uC74C\uC744 \uBC1D\uD799\uB2C8\uB2E4."
 --- !u!222 &29969309
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -658,6 +658,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: effectSounds.Array.data[10].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7830f378d84ac514e852b434b1f94be6, type: 3}
     - target: {fileID: 8755530067770564297, guid: 54a39329467313a418cec21d3559feba,
         type: 3}
       propertyPath: m_Name
