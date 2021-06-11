@@ -331,8 +331,9 @@ public class BoardManager : MonoBehaviour
                 }
             }
             nullCount = 0;
+            //yield return null;
         }
-        yield return new WaitForSeconds(refillDelay * 0.5f);
+        yield return new WaitForSeconds(refillDelay * 0.6f);
         StartCoroutine(FillBoardCoroutine());
     }
 
@@ -408,7 +409,7 @@ public class BoardManager : MonoBehaviour
         while (MatchesOnBoard())
         {
             DestroyMatches();
-            yield return new WaitForSeconds(refillDelay * 2);
+            yield return new WaitForSeconds(refillDelay * 2.5f);
 
         }
         findMatches.currentMatches.Clear();

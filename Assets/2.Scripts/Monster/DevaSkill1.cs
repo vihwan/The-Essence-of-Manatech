@@ -61,8 +61,7 @@ public class DevaSkill1 : MonoBehaviour
 
         //목소리 출력
         //"서로를 옭아매는 어리석은 인간이여"
-
-        SoundManager.instance.PlayCV("Human_Skill");
+        MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_One);
 
         deva1s.Clear();
         for (int x = 0; x < BoardManager.instance.width; x++)
@@ -105,6 +104,7 @@ public class DevaSkill1 : MonoBehaviour
                 {
                     SkillBerserk();
                     isRemainTimeUpdate = false;
+                    MonsterAI.instance.isUsingSkill = false;
                 }
             }
             else
@@ -114,13 +114,11 @@ public class DevaSkill1 : MonoBehaviour
                     //패턴 파훼 성공
                     Debug.Log("<color=#0456F1>패턴 파훼</color> 성공!!");
                     //그로기 타임
-                    MonsterAI.instance.Action = MonsterState.GROGGY;
-
-                    MonsterAI.instance.Notify.SetText("크윽...!");
-                    MonsterAI.instance.Notify.PlayAnim();
-                    SoundManager.instance.PlayCV("Human_Skill_Groggy");
+                    MonsterAI.instance.Action = MonsterState.GROGGY;        
                     rootUI.SetActive(false);
                     isRemainTimeUpdate = false;
+                    isUsingSkill = false;
+                    MonsterAI.instance.isUsingSkill = false;
                 }
             }
 
@@ -140,9 +138,7 @@ public class DevaSkill1 : MonoBehaviour
         // 400의 데미지를 줌
         // 보이스 출력 : 파멸하라
         // 알림 이미지 출력
-        MonsterAI.instance.Notify.SetText("파멸하라!");
-        MonsterAI.instance.Notify.PlayAnim();
-        SoundManager.instance.PlayCV("Human_Skill_Berserk");
+        MonsterAI.instance.Action = MonsterState.BERSERK;
 
         for (int i = 0; i < go_List.Count; i++)
         {
@@ -170,6 +166,7 @@ public class DevaSkill1 : MonoBehaviour
         rootUI.SetActive(false);
         MonsterAI.instance.Action = MonsterState.MOVE;
         isBerserk = false;
+
     }
 
     private IEnumerator MakeMagicCircle()

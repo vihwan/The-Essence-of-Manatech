@@ -16,9 +16,9 @@ public class NPC_Michelle : NPC_Preset, IPointerExitHandler, IPointerEnterHandle
 
         for (int i = 1; i <= 3; i++)
         {
-            ambVoiceDic.Add(i, "Michelle_amb0" + i);
-            tkVoiceDic.Add(i, "Michelle_talk0" + i);
-            fwVoiceDic.Add(i, "Michelle_fw0" + i);
+            ambVoiceDic.Add(i, "michelle_amb_0" + i);
+            tkVoiceDic.Add(i, "michelle_tk_0" + i);
+            fwVoiceDic.Add(i, "michelle_fw_0" + i);
         }
     }
 

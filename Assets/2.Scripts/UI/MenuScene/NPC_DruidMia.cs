@@ -16,9 +16,9 @@ public class NPC_DruidMia : NPC_Preset, IPointerExitHandler, IPointerEnterHandle
     {
         for (int i = 1; i <= 3; i++)
         {
-            ambVoiceDic.Add(i, "Mia_amb0" + i);
-            tkVoiceDic.Add(i, "Mia_talk0" + i);
-            fwVoiceDic.Add(i, "Mia_fw0" + i);
+            ambVoiceDic.Add(i, "druid_mia_amb_0" + i);
+            tkVoiceDic.Add(i, "druid_mia_tk_0" + i);
+            fwVoiceDic.Add(i, "druid_mia_fw_0" + i);
         }
     }
 

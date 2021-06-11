@@ -24,7 +24,7 @@ public class TitleUIManager : MonoBehaviour
             if (animator != null)
             {
                 animator.SetTrigger("Start");
-                SoundManager.instance.PlaySE("TitleStart");
+                SoundManager.instance.PlaySE("title_start");
             }
 
             print("게임 시작");

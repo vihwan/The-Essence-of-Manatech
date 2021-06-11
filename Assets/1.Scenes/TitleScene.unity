@@ -659,6 +659,66 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: voiceSounds.Array.size
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: monsterSounds.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: voiceSounds.Array.data[12].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 43365be78a5d8a546a2b81ed57477eb3, type: 3}
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: voiceSounds.Array.data[12].name
+      value: Meet01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: voiceSounds.Array.data[13].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: b1c07021131296043b168610a2ec36fd, type: 3}
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: voiceSounds.Array.data[13].name
+      value: Meet02
+      objectReference: {fileID: 0}
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: voiceSounds.Array.data[14].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 01f6a4d15397b9547831cef2721e47c1, type: 3}
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: voiceSounds.Array.data[14].name
+      value: Meet03
+      objectReference: {fileID: 0}
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: monsterSounds.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: c14a7d69ced1f214590cb617c60ccbed, type: 3}
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: monsterSounds.Array.data[0].name
+      value: Human_Skill
+      objectReference: {fileID: 0}
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: monsterSounds.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: c46566102a7850e4eb52f09a1fb36d2b, type: 3}
+    - target: {fileID: 8755530067770564296, guid: 54a39329467313a418cec21d3559feba,
+        type: 3}
+      propertyPath: monsterSounds.Array.data[1].name
+      value: Human_Skill_Berserk
+      objectReference: {fileID: 0}
     - target: {fileID: 8755530067770564297, guid: 54a39329467313a418cec21d3559feba,
         type: 3}
       propertyPath: m_Name

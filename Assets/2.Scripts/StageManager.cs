@@ -34,7 +34,7 @@ public class StageManager : MonoBehaviour
 
 
         PlayUISlide();
-        SoundManager.instance.PlayBGMWithCrossFade("데바스타르");
+        SoundManager.instance.PlayBGMWithCrossFade("resting_place_for_extinction_p1");
     }
 
     private void PlayUISlide()
@@ -45,19 +45,19 @@ public class StageManager : MonoBehaviour
     private void GetReady()
     {
         animator.SetBool("UseLibrary", true);
-        SoundManager.instance.PlayCV("Player_Ancient_Library");
-        SoundManager.instance.PlaySE("PlayerCasting");
+        SoundManager.instance.PlayCV("wz_ancient_library");
+        SoundManager.instance.PlaySE("cherry_blossom_sunlight");
     }
 
     private void PlayReadySound()
     {
-        SoundManager.instance.PlaySE("GameReady");
+        SoundManager.instance.PlaySE("game_ready");
     }
 
     private void SetGoText()
     {
         readyGoText.text = "Start!";
-        SoundManager.instance.PlaySE("GameStart");
+        SoundManager.instance.PlaySE("game_start");
         //스타트 사운드 실행
 
 
@@ -67,8 +67,29 @@ public class StageManager : MonoBehaviour
 
     private void PlayVersusSoundEffect()
     {
-        SoundManager.instance.PlaySE("Thunder");
-        SoundManager.instance.PlaySE("Versus");
+        SoundManager.instance.PlaySE("prey_phase_clear_thunder");
+        SoundManager.instance.PlaySE("versus");
+        Invoke(nameof(PlayDevaMeetSound), 1f);
+        
+    }
+
+    private void PlayDevaMeetSound()
+    {
+        int randNum = UnityEngine.Random.Range(1, 4);
+        if (randNum == 1)
+        {
+            SoundManager.instance.PlayMonV("devastar_meet_01");
+        }
+        else if (randNum == 2)
+        {
+            SoundManager.instance.PlayMonV("devastar_meet_02");
+        }
+        else if (randNum == 3)
+        {
+            SoundManager.instance.PlayMonV("devastar_meet_03");
+        }
+        else
+            return;
     }
 
     private void ChangeGameStateStart()

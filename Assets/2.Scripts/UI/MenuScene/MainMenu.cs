@@ -121,7 +121,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
             skillManageMenu.Init();
         }
 
-        SoundManager.instance.PlayBGMWithCrossFade("샨트리");
+        SoundManager.instance.PlayBGMWithCrossFade("chantri");
     }
 
     private void Update()
@@ -234,12 +234,12 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
     //UnityEvent에 추가되는 함수
     public void StartCount()
     {
-        SoundManager.instance.PlaySE("StartCount");
+        SoundManager.instance.PlaySE("oz_ui_count");
     }
     //UnityEvent에 추가되는 함수
     public void StartSFX()
     {
-        SoundManager.instance.PlaySE("StartGame");
+        SoundManager.instance.PlaySE("sr_ui_start");
     }
 
     //UnityEvent에 추가되는 함수

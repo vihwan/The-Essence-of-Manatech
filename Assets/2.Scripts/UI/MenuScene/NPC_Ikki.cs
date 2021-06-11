@@ -16,9 +16,9 @@ public class NPC_Ikki : NPC_Preset, IPointerExitHandler, IPointerEnterHandler
 
         for (int i = 1; i <= 3; i++)
         {
-            ambVoiceDic.Add(i, "Ikki_amb0" + i);
-            tkVoiceDic.Add(i, "Ikki_talk0" + i);
-            fwVoiceDic.Add(i, "Ikki_fw0" + i);
+            ambVoiceDic.Add(i, "ikki_amb_0" + i);
+            tkVoiceDic.Add(i, "ikki_tk_0" + i);
+            fwVoiceDic.Add(i, "ikki_fw_0" + i);
         }
     }
 

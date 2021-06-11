@@ -56,8 +56,8 @@ public class DevaSkill2 : MonoBehaviour
         isUsingSkill = true;
 
         // 사운드 출력
-        // 그 분을 대신하여
-        SoundManager.instance.PlayCV("Devil_Skill1");
+        // 그 분을 대신하여 (스킬 2)
+        MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two);
 
         deva2s.Clear();
 
@@ -123,6 +123,7 @@ public class DevaSkill2 : MonoBehaviour
                 {
                     SkillBerserk();
                     isRemainTimeUpdate = false;
+                    MonsterAI.instance.isUsingSkill = false;
                 }
             }
         }
@@ -133,9 +134,8 @@ public class DevaSkill2 : MonoBehaviour
         isBerserk = true;
 
         // 너희들을 심판한다! 컨빅션
-        MonsterAI.instance.Notify.SetText("너희들을 심판한다!");
-        MonsterAI.instance.Notify.PlayAnim();
-        SoundManager.instance.PlayCV("Devil_Skill1_Berserk");
+        // MonsterAI.instance.Action = MonsterState.BERSERK;
+        MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two_Next);
 
         for (int i = 0; i < go_List2.Count; i++)
         {
@@ -157,6 +157,9 @@ public class DevaSkill2 : MonoBehaviour
             }
         }
 
+        //임시
+        Invoke(nameof(PlaySoundConviction), 3.5f);
+
         //광폭화시 플레이어가 무적이 아니라면 데미지를 입는다.
         if (player.IsInvincible == false)
         {
@@ -173,5 +176,10 @@ public class DevaSkill2 : MonoBehaviour
         rootUI.SetActive(false);
         isBerserk = false;
         MonsterAI.instance.Action = MonsterState.MOVE;
+    }
+
+    private void PlaySoundConviction()
+    {
+        MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two_Final);
     }
 }

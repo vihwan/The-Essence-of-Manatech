@@ -57,7 +57,7 @@ public class TileMonster : MonoBehaviour
             if (GameManager.instance.GameState == GameState.BEGIN)
                 moveSpeed = 5f * Time.deltaTime;
             else
-                moveSpeed = 15f * Time.deltaTime;
+                moveSpeed = 17f * Time.deltaTime;
 
             return moveSpeed;
         }

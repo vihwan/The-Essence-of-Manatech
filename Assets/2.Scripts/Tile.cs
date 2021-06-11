@@ -70,7 +70,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
             if (GameManager.instance.GameState == GameState.BEGIN)
                 moveSpeed = 5f * Time.deltaTime;
             else
-                moveSpeed = 15f * Time.deltaTime;
+                moveSpeed = 17f * Time.deltaTime;
 
             return moveSpeed;
         }
@@ -207,28 +207,31 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
                     return;
                 }
 
-                if (!currentTile_GO.GetComponent<Tile>().isSealed)
+                if (UtilHelper.HasComponent<Tile>(currentTile_GO))
                 {
-                    if (previousTile != null)
+                    if (!currentTile_GO.GetComponent<Tile>().isSealed)
                     {
-                        if (previousTile.isSealed)
+                        if (previousTile != null)
                         {
-                            Debug.Log("<color=#E36250>봉인당한 타일</color>은 옮겨지지 않습니다.");
-                            previousTile = null;
-                            return;
+                            if (previousTile.isSealed)
+                            {
+                                Debug.Log("<color=#E36250>봉인당한 타일</color>은 옮겨지지 않습니다.");
+                                previousTile = null;
+                                return;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    Debug.Log("<color=#E36250>봉인당한 타일</color>은 옮겨지지 않습니다.");
-                    return;
-                }
+                    else
+                    {
+                        Debug.Log("<color=#E36250>봉인당한 타일</color>은 옮겨지지 않습니다.");
+                        return;
+                    }
 
-                BoardManager.instance.currentState = PlayerState.WAIT; //유저 조작 대기 상태
-                secondTouchPosition = eventData.position;
-                //Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
-                CalculateSwapAngle();
+                    BoardManager.instance.currentState = PlayerState.WAIT; //유저 조작 대기 상태
+                    secondTouchPosition = eventData.position;
+                    //Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
+                    CalculateSwapAngle();
+                }           
             }
         }
     }

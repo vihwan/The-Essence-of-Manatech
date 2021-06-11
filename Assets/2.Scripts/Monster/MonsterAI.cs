@@ -29,6 +29,7 @@ public class MonsterAI : MonoBehaviour
     private bool isPhase2 = false;
     private bool isTransform = false;
     private bool isSkillTurn2 = true;
+    public bool isUsingSkill = false;
 
 
     [SerializeField] private float elaspedTime = 0f;
@@ -38,18 +39,20 @@ public class MonsterAI : MonoBehaviour
 
     //private MonsterStateTest monsterStateTest;
     private MonsterStatusController monsterStatusController;
-    private MonsterNotify notify;
     private DevaSkill1 devaSkill1;
     private DevaSkill2 devaSkill2;
     private DevaSkill3 devaSkill3;
 
+    private SetDevastarSoundandNotify soundandNotify;
+
     private ParticleSystem fireParticle;
+
 
     public float ElaspedTime { get => elaspedTime; set => elaspedTime = value; }
     public float TimeStandard { get => timeStandard; set => timeStandard = value; }
     public MonsterStatusController MonsterStatusController { get => monsterStatusController; set => monsterStatusController = value; }
-    public MonsterNotify Notify { get => notify; set => notify = value; }
     public float GroggyTime { get => groggyTime; set => groggyTime = value; }
+    public SetDevastarSoundandNotify SoundandNotify { get => soundandNotify; set => soundandNotify = value; }
 
     public MonsterState Action
     {
@@ -83,19 +86,33 @@ public class MonsterAI : MonoBehaviour
                     break;
 
                 case MonsterState.GROGGY:
+                    {
+                        if (isPhase1)
+                            SoundandNotify.SetVoiceAndNotify(DevastarState.GroggyHuman);
+                        else if (isPhase2)
+                            SoundandNotify.SetVoiceAndNotify(DevastarState.GroggyDevil);
+                    }
                     break;
 
                 case MonsterState.BERSERK:
+                    {
+                        if (isPhase1)
+                            SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_One_Berserk);
+                        else if (isPhase2)
+                            SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Three_Berserk);
+                    }
                     break;
 
                 case MonsterState.DEAD:
-                    SoundManager.instance.PlayCV("Devil_Skill_Dead");
+                    SoundManager.instance.PlayMonV("Devil_Skill_Dead");
                     GameManager.instance.isGameOver = true;
                     GameManager.instance.GameWin();
                     break;
             }
         }
     }
+
+   
 
     // Start is called before the first frame update
     public void Init()
@@ -117,11 +134,11 @@ public class MonsterAI : MonoBehaviour
 
         fireParticle = transform.Find("Canvas/Fire").GetComponent<ParticleSystem>();
 
-        notify = GameObject.Find("StageManager/GUIManagerCanvas/MonsterUI/Notify").GetComponent<MonsterNotify>();
-        if (notify != null)
+
+        SoundandNotify = GetComponent<SetDevastarSoundandNotify>();
+        if(SoundandNotify != null)
         {
-            notify.init();
-            notify.gameObject.SetActive(false);
+            SoundandNotify.Initailze();
         }
 
         isPhase1 = true;
@@ -260,17 +277,15 @@ public class MonsterAI : MonoBehaviour
             yield return new WaitUntil(() => isCancelSkill == true);
         }
 
-        Notify.SetText("크윽.. 방해하는 자에게 고통을!!");
-        SoundManager.instance.PlayCV("Human_Death1");
-        Notify.PlayAnim();
+        //1페이즈 사망 대사
+        SoundandNotify.SetVoiceAndNotify(DevastarState.HumanDead);
 
         yield return new WaitForSeconds(3f);
 
-        Notify.NotifyImage.sprite = Resources.Load<Sprite>("notify2");
-        Notify.SetText("진정한 혼돈의 힘을 보여주마!!!");
-        SoundManager.instance.PlayCV("HumanToDevil");
-        SoundManager.instance.PlayBGMWithCrossFade("데바스타르2");
-        Notify.PlayAnim();
+
+        //2페이즈 시작 대사
+        SoundManager.instance.PlayBGMWithCrossFade("resting_place_for_extinction_p2");
+        SoundandNotify.SetVoiceAndNotify(DevastarState.Transform);
 
         isTransform = false;
         isPhase2 = true;
@@ -282,7 +297,7 @@ public class MonsterAI : MonoBehaviour
         devaSkill2.enabled = true;
         fireParticle.Play();
 
-        Action = MonsterState.MOVE;
+        Action = MonsterState.WAIT;
         Debug.Log("2페이즈 돌입");
         isUpdate = false;
     }
@@ -331,6 +346,7 @@ public class MonsterAI : MonoBehaviour
                 UseSkill_3();
             }
         }
+        yield return new WaitUntil(() => isUsingSkill == false);
         isUpdate = false;
     }
 
@@ -342,10 +358,7 @@ public class MonsterAI : MonoBehaviour
         {
             Action = MonsterState.CASTING;
             Debug.Log("<color=#1287F6>데바</color> 1스킬 사용");
-            Notify.gameObject.SetActive(true);
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
-            Notify.SetText("서로를 옭아매는 어리석은 인간들이여");
-            Notify.PlayAnim();
             devaSkill1.Execute();
         }
     }
@@ -357,10 +370,7 @@ public class MonsterAI : MonoBehaviour
         {
             Action = MonsterState.CASTING;
             Debug.Log("<color=#1287F6>데바</color> 2스킬 사용");
-            Notify.gameObject.SetActive(true);
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
-            Notify.SetText("그 분을 대신하여");
-            Notify.PlayAnim();
             devaSkill2.Execute();
         }
     }
@@ -373,10 +383,7 @@ public class MonsterAI : MonoBehaviour
         {
             Action = MonsterState.CASTING;
             Debug.Log("<color=#1287F6>데바</color> 3스킬 사용");
-            Notify.gameObject.SetActive(true);
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
-            Notify.SetText("혼돈의 힘은 무한하다.");
-            Notify.PlayAnim();
             devaSkill3.Execute();
         }
     }

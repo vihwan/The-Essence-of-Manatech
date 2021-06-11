@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class DevaSkill3 : MonoBehaviour
 {
@@ -55,10 +56,10 @@ public class DevaSkill3 : MonoBehaviour
         isUsingSkill = true;
 
         // 사운드 출력
-        // 혼돈의 힘은 무한하다.
-        SoundManager.instance.PlayCV("Devil_Skill2");
+        // 혼돈의 힘은 무한하다. (3스킬)
+        MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Three);
 
-        if(shieldGauge != null)
+        if (shieldGauge != null)
         {
             shieldGauge.SetActive(true);
             tmp_Text_Hp.enabled = false;
@@ -85,13 +86,11 @@ public class DevaSkill3 : MonoBehaviour
                 //그로기 타임
                 MonsterAI.instance.Action = MonsterState.GROGGY;
                 MonsterAI.instance.GroggyTime = 15f;
-                SoundManager.instance.PlayCV("Devil_Skill_Groggy");
-                MonsterAI.instance.Notify.SetText("크윽.. 이럴수가!!");
-                MonsterAI.instance.Notify.PlayAnim();
                 rootUI.SetActive(false);
                 shieldGauge.SetActive(false);
                 tmp_Text_Hp.enabled = true;
                 isRemainTimeUpdate = false;
+                MonsterAI.instance.isUsingSkill = false;
             }
 
 
@@ -103,6 +102,7 @@ public class DevaSkill3 : MonoBehaviour
                 if (MonsterAI.instance.Action == MonsterState.CASTING)
                 {
                     SkillBerserk();
+                    MonsterAI.instance.isUsingSkill = false;
                 }
             }
         }
@@ -111,9 +111,11 @@ public class DevaSkill3 : MonoBehaviour
     private void SkillBerserk()
     {
         isBerserk = true;
-        MonsterAI.instance.Notify.SetText("혼돈 속에 쳐박혀라!!!");
-        MonsterAI.instance.Notify.PlayAnim();
-        SoundManager.instance.PlayCV("Devil_Skill2_Berserk");
+
+        MonsterAI.instance.Action = MonsterState.BERSERK;
+
+        //임시
+        Invoke(nameof(PlaySoundChaosFusion), 5f);
 
         PlayerStatusController playerStatusController = FindObjectOfType<PlayerStatusController>();
         playerStatusController.DecreaseHP(500);
@@ -124,6 +126,12 @@ public class DevaSkill3 : MonoBehaviour
 
         isBerserk = false;
         isRemainTimeUpdate = false;
+
         MonsterAI.instance.Action = MonsterState.MOVE;
+    }
+
+    private void PlaySoundChaosFusion()
+    {
+        MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Three_ChaosFusion);   
     }
 }

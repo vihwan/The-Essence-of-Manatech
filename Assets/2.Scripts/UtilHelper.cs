@@ -27,4 +27,9 @@ public static class UtilHelper
         if (btn != null)
             btn.onClick.AddListener(action);
     }
+
+    public static bool HasComponent<T>(this GameObject obj) where T : Component
+    {
+        return obj.GetComponent<T>() != null;
+    }
 }

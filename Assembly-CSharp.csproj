@@ -94,6 +94,7 @@
     <Compile Include="Assets\2.Scripts\Monster\MonsterStatus.cs" />
     <Compile Include="Assets\2.Scripts\Monster\MonsterStatusController.cs" />
     <Compile Include="Assets\2.Scripts\Monster\SealedEffect.cs" />
+    <Compile Include="Assets\2.Scripts\Monster\SetDevastarSoundandNotify.cs" />
     <Compile Include="Assets\2.Scripts\ObjectPool.cs" />
     <Compile Include="Assets\2.Scripts\PlayerData.cs" />
     <Compile Include="Assets\2.Scripts\PlayerStatus.cs" />
@@ -118,7 +119,7 @@
     <Compile Include="Assets\2.Scripts\Test\MonsterStateMachine.cs" />
     <Compile Include="Assets\2.Scripts\Test\MonsterStateTest.cs" />
     <Compile Include="Assets\2.Scripts\Test\RandomDropTable.cs" />
-    <Compile Include="Assets\2.Scripts\Test\Serialization.cs" />
+    <Compile Include="Assets\2.Scripts\Test\SerializeDictionary.cs" />
     <Compile Include="Assets\2.Scripts\Test\State\Begin.cs" />
     <Compile Include="Assets\2.Scripts\Test\State\Idle.cs" />
     <Compile Include="Assets\2.Scripts\Test\State\MoveTile.cs" />
