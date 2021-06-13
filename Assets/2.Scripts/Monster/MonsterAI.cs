@@ -104,7 +104,7 @@ public class MonsterAI : MonoBehaviour
                     break;
 
                 case MonsterState.DEAD:
-                    SoundManager.instance.PlayMonV("Devil_Skill_Dead");
+                    SoundManager.instance.PlayMonV("devastar_devil_die_01");
                     GameManager.instance.isGameOver = true;
                     GameManager.instance.GameWin();
                     break;
