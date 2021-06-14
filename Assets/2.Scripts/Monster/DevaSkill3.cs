@@ -85,7 +85,8 @@ public class DevaSkill3 : MonoBehaviour
                 Debug.Log("<color=#0456F1>패턴 파훼</color> 성공!!");
                 //그로기 타임
                 MonsterAI.instance.Action = MonsterState.GROGGY;
-                MonsterAI.instance.GroggyTime = 15f;
+                MonsterAI.instance.StandardGroggyTime = 15f;
+                MonsterAI.instance.RemainGroggyTime = MonsterAI.instance.StandardGroggyTime;
                 rootUI.SetActive(false);
                 shieldGauge.SetActive(false);
                 tmp_Text_Hp.enabled = true;

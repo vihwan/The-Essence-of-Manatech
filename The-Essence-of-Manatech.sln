@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fungus", "Fungus.csproj", "{CF484B9A-E4FE-806D-190E-56E686E50610}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{4FA1653E-39B4-192C-6943-C427CE821B6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fungus", "Fungus.csproj", "{CF484B9A-E4FE-806D-190E-56E686E50610}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FungusExamples", "FungusExamples.csproj", "{9B820C70-1F89-BAD6-47BC-C77ACAD80CBE}"
 EndProject
@@ -42,14 +42,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CF484B9A-E4FE-806D-190E-56E686E50610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF484B9A-E4FE-806D-190E-56E686E50610}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF484B9A-E4FE-806D-190E-56E686E50610}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF484B9A-E4FE-806D-190E-56E686E50610}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4FA1653E-39B4-192C-6943-C427CE821B6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4FA1653E-39B4-192C-6943-C427CE821B6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FA1653E-39B4-192C-6943-C427CE821B6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FA1653E-39B4-192C-6943-C427CE821B6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF484B9A-E4FE-806D-190E-56E686E50610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF484B9A-E4FE-806D-190E-56E686E50610}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF484B9A-E4FE-806D-190E-56E686E50610}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF484B9A-E4FE-806D-190E-56E686E50610}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B820C70-1F89-BAD6-47BC-C77ACAD80CBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9B820C70-1F89-BAD6-47BC-C77ACAD80CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B820C70-1F89-BAD6-47BC-C77ACAD80CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU

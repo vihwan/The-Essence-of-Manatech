@@ -465,12 +465,14 @@ public class BoardManager : MonoBehaviour
             {
                 if (characterTilesBox[x, y] != null)
                 {
-                    //봉인된 타일은 데드락 조건에 포함시키지 않는다.
-                    if (characterTilesBox[x, y].transform.childCount > 0)
-                    {
-                        continue;
-                    }
 
+                    if (UtilHelper.HasComponent<Tile>(characterTilesBox[x, y]))
+                    {
+                        //봉인된 타일은 데드락 조건에 포함시키지 않는다.
+                        if (characterTilesBox[x, y].GetComponent<Tile>().isSealed)
+                            continue;
+                    }
+ 
                     if (x < width - 2)
                     {
                         if (characterTilesBox[x + 1, y] != null && characterTilesBox[x + 2, y] != null)

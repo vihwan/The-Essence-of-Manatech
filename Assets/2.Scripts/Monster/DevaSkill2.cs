@@ -23,6 +23,8 @@ public class DevaSkill2 : MonoBehaviour
     private Image limitTimeImage;
     private PlayerStatusController player;
 
+    private GameObject NenBarrier;
+
     // Start is called before the first frame update
     public void Init()
     {
@@ -61,6 +63,7 @@ public class DevaSkill2 : MonoBehaviour
 
         deva2s.Clear();
 
+        //타일을 랜덤하게 3개를 선택 한 후, 그 타일에 넨 이펙트를 생성한다.
         for (int x = 0; x < BoardManager.instance.width; x++)
         {
             for (int y = 0; y < BoardManager.instance.height; y++)
@@ -85,7 +88,7 @@ public class DevaSkill2 : MonoBehaviour
             Tile tile = BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>();
             tile.isActiveNen = true;
 
-            NenEffect nen = Instantiate(Resources.Load<NenEffect>("NenEffect")
+            NenEffect nen = Instantiate(Resources.Load<NenEffect>("DevaSkill_2_NenEffect")
                     , tile.transform.position
                     , Quaternion.identity);
             nen.transform.SetParent(tile.transform);
@@ -104,12 +107,17 @@ public class DevaSkill2 : MonoBehaviour
 
             GaugeUpdate();
 
-            if(player.IsInvincible == false)
+            if (player.IsInvincible == false)
             {
                 if (go_List2.Count == 0)
                 {
                     player.IsInvincible = true;
                     Debug.Log("패턴을 파훼하여 무적 상태입니다.");
+
+                    NenBarrier = Instantiate(Resources.Load<GameObject>("NenBarrier")
+                                 , GameObject.Find("BackgroundCanvas/BoardRoot/BoardImagePlayer").transform.position
+                                 , Quaternion.identity
+                                 , this.transform);
                 }
             }
 
@@ -121,21 +129,27 @@ public class DevaSkill2 : MonoBehaviour
                 if (MonsterAI.instance.Action == MonsterState.CASTING && isBerserk == false
                     && BoardManager.instance.currentState == PlayerState.MOVE)
                 {
-                    SkillBerserk();
-                    isRemainTimeUpdate = false;
-                    MonsterAI.instance.isUsingSkill = false;
+                    if (!isBerserk)
+                    {
+                        StartCoroutine(SkillBerserk());
+                        isRemainTimeUpdate = false;
+                        MonsterAI.instance.isUsingSkill = false;
+                    }
                 }
             }
         }
     }
 
-    private void SkillBerserk()
+    private IEnumerator SkillBerserk()
     {
         isBerserk = true;
 
         // 너희들을 심판한다! 컨빅션
         // MonsterAI.instance.Action = MonsterState.BERSERK;
         MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two_Next);
+
+        rootUI.SetActive(false);
+
 
         for (int i = 0; i < go_List2.Count; i++)
         {
@@ -158,28 +172,25 @@ public class DevaSkill2 : MonoBehaviour
         }
 
         //임시
-        Invoke(nameof(PlaySoundConviction), 3.5f);
+        yield return new WaitForSeconds(2.5f);
 
+        //컨빅션
+        MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two_Final);
         //광폭화시 플레이어가 무적이 아니라면 데미지를 입는다.
         if (player.IsInvincible == false)
         {
             player.DecreaseHP(300);
         }
         else
-        { 
+        {
             //무적이라면 무적을 해제한다.
             //넨가드 이펙트를 없앤다.
             player.IsInvincible = false;
         }
 
         go_List2.Clear();
-        rootUI.SetActive(false);
-        isBerserk = false;
+        Destroy(NenBarrier);
         MonsterAI.instance.Action = MonsterState.MOVE;
-    }
-
-    private void PlaySoundConviction()
-    {
-        MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two_Final);
+        isBerserk = false;
     }
 }

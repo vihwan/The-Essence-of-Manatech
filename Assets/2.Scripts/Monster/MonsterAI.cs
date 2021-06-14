@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 
 public enum MonsterState
@@ -19,10 +20,13 @@ public enum MonsterState
 
 public class MonsterAI : MonoBehaviour
 {
-
+    //Singleton
     public static MonsterAI instance;
 
-    [SerializeField] private float groggyTime = 10f;
+    #region Variable
+
+    [SerializeField] private float remainGroggyTime = 10f;
+    private float standardGroggyTime = 10f;
 
     private bool isUpdate = false;
     private bool isPhase1 = false;
@@ -31,29 +35,33 @@ public class MonsterAI : MonoBehaviour
     private bool isSkillTurn2 = true;
     public bool isUsingSkill = false;
 
-
     [SerializeField] private float elaspedTime = 0f;
     [SerializeField] private float timeStandard = 4f;
 
     private MonsterState monsterAction;
-
-    //private MonsterStateTest monsterStateTest;
-    private MonsterStatusController monsterStatusController;
-    private DevaSkill1 devaSkill1;
-    private DevaSkill2 devaSkill2;
-    private DevaSkill3 devaSkill3;
-
-    private SetDevastarSoundandNotify soundandNotify;
-
     private ParticleSystem fireParticle;
     private Image bg;
     private bool isChangeBgColor = false;
     private float timeElapsed = 0f;
 
+    private GameObject groggyRootUI;
+    private Image groggyGauge;
+    private TMP_Text remainTimeText;
+
+    //Component
+    private SetDevastarSoundandNotify soundandNotify;
+    private MonsterStatusController monsterStatusController;
+    private DevaSkill1 devaSkill1;
+    private DevaSkill2 devaSkill2;
+    private DevaSkill3 devaSkill3;
+    #endregion
+
+    #region Property
     public float ElaspedTime { get => elaspedTime; set => elaspedTime = value; }
     public float TimeStandard { get => timeStandard; set => timeStandard = value; }
     public MonsterStatusController MonsterStatusController { get => monsterStatusController; set => monsterStatusController = value; }
-    public float GroggyTime { get => groggyTime; set => groggyTime = value; }
+    public float RemainGroggyTime { get => remainGroggyTime; set => remainGroggyTime = value; }
+    public float StandardGroggyTime { get => standardGroggyTime; set => standardGroggyTime = value; }
     public SetDevastarSoundandNotify SoundandNotify { get => soundandNotify; set => soundandNotify = value; }
 
     public MonsterState Action
@@ -115,6 +123,7 @@ public class MonsterAI : MonoBehaviour
     }
 
 
+    #endregion
 
     // Start is called before the first frame update
     public void Init()
@@ -145,10 +154,20 @@ public class MonsterAI : MonoBehaviour
 
         bg = GameObject.Find("StageManager/BackgroundCanvas/BackgroundImage").GetComponent<Image>();
 
+
+        groggyRootUI = transform.Find("Canvas/RootUI").gameObject;
+        if(groggyRootUI != null)
+        {
+            groggyGauge = groggyRootUI.transform.Find("GroggySlide/BaseUI/Gauge").GetComponent<Image>();
+            remainTimeText = GetComponentInChildren<TMP_Text>(true);
+            groggyRootUI.SetActive(false);
+        }
+
+
         isPhase1 = true;
         devaSkill1.enabled = true;
         devaSkill2.enabled = false;
-        GroggyTime = 10f;
+        RemainGroggyTime = 10f;
 
         Action = MonsterState.MOVE;
     }
@@ -195,6 +214,10 @@ public class MonsterAI : MonoBehaviour
     {
         if (isTransform)
         {
+            //만약 그로기 게이지UI가 켜져있으면 꺼준다.
+            if (groggyRootUI.activeSelf == true)
+                groggyRootUI.SetActive(false);
+
             //벼 ㅇ 신!
             if (!isUpdate)
             {
@@ -206,14 +229,25 @@ public class MonsterAI : MonoBehaviour
 
     private void GROGGY()
     {
-        GroggyTime -= Time.deltaTime;
-        if (GroggyTime <= 0)
+        if (isPhase1 && monsterStatusController.CurrHp == 0)
+            Action = MonsterState.TRANSFORM;
+
+        RemainGroggyTime -= Time.deltaTime;
+        UpdateGroggyGauge();
+        if (RemainGroggyTime <= 0)
         {
-            GroggyTime = 10f;
+            groggyRootUI.SetActive(false);
+            RemainGroggyTime = 10f;
             Action = MonsterState.MOVE;
         }
     }
 
+    private void UpdateGroggyGauge()
+    {
+        groggyRootUI.SetActive(true);
+        groggyGauge.fillAmount = RemainGroggyTime / StandardGroggyTime;
+        remainTimeText.text = Mathf.RoundToInt(remainGroggyTime) + "s";
+    }
 
     // Update is called once per frame
     private void Update()
@@ -328,10 +362,13 @@ public class MonsterAI : MonoBehaviour
         {
             for (int j = 0; j < BoardManager.instance.height; j++)
             {
-                if (BoardManager.instance.characterTilesBox[i, j].transform.childCount > 0)
+                if(UtilHelper.HasComponent<Tile>(BoardManager.instance.characterTilesBox[i, j]))
                 {
-                    BoardManager.instance.characterTilesBox[i, j].GetComponent<Tile>().isSealed = false;
-                    Destroy(BoardManager.instance.characterTilesBox[i, j].GetComponentInChildren<SealedEffect>().gameObject);
+                    if (BoardManager.instance.characterTilesBox[i, j].transform.childCount > 0)
+                    {
+                        BoardManager.instance.characterTilesBox[i, j].GetComponent<Tile>().isSealed = false;
+                        Destroy(BoardManager.instance.characterTilesBox[i, j].GetComponentInChildren<SealedEffect>().gameObject);
+                    }
                 }
             }
         }

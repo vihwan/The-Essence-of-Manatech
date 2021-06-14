@@ -116,7 +116,9 @@ public class DevaSkill1 : MonoBehaviour
                     //패턴 파훼 성공
                     Debug.Log("<color=#0456F1>패턴 파훼</color> 성공!!");
                     //그로기 타임
-                    MonsterAI.instance.Action = MonsterState.GROGGY;        
+                    MonsterAI.instance.Action = MonsterState.GROGGY;
+                    MonsterAI.instance.StandardGroggyTime = 10f;
+                    MonsterAI.instance.RemainGroggyTime = MonsterAI.instance.StandardGroggyTime;
                     rootUI.SetActive(false);
                     isRemainTimeUpdate = false;
                     isUsingSkill = false;
@@ -162,7 +164,9 @@ public class DevaSkill1 : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(1f);
+        rootUI.SetActive(false);
+
+        yield return new WaitForSeconds(.5f);
 
         //파티클 이펙트
         GameObject bombObject = Instantiate(Resources.Load<GameObject>("DevaSkill_1_Berserk_Particle")
@@ -175,7 +179,7 @@ public class DevaSkill1 : MonoBehaviour
         PlayerStatusController playerStatusController = FindObjectOfType<PlayerStatusController>();
         playerStatusController.DecreaseHP(400);
         go_List.Clear();
-        rootUI.SetActive(false);
+
         MonsterAI.instance.Action = MonsterState.MOVE;
         isBerserk = false;
     }

@@ -24,7 +24,9 @@ public class PlayerStatusController : MonoBehaviour
     [SerializeField] private bool isInvincible = false; //무적 상태인가 아닌가
     private bool isDamage = false;
     private float elapsedTime = 0f;
+    private Vector3 prevHpBarPos = Vector3.zero;
     private Color prevColor = new Color(1f,1f,1f);
+    
 
 
     //Constant Value
@@ -46,6 +48,7 @@ public class PlayerStatusController : MonoBehaviour
         CurrMp = 0f; //시작시 마나는 0으로 설정
         MaxMp = playerStatus.Mp; //총 마나 양을 200으로 설정
 
+        prevHpBarPos = hpSlideUI.transform.localPosition;
         prevColor = hpSlideUI.transform.Find("Gauge").GetComponent<Image>().color;
     }
 
@@ -116,18 +119,16 @@ public class PlayerStatusController : MonoBehaviour
     //데미지를 받았을 경우, 체력 바가 1초동안 흔들리게 하는 함수
     private void HpBarPingpong()
     {
-        Vector3 prevPos = hpSlideUI.transform.localPosition;
-
         elapsedTime += Time.deltaTime;
         if (elapsedTime < 1f)
         {
             float pingpong = Mathf.PingPong(Time.time * 5000, 20f);
-            hpSlideUI.transform.localPosition = new Vector3(pingpong, prevPos.y, prevPos.z);
+            hpSlideUI.transform.localPosition = new Vector3(pingpong, prevHpBarPos.y, prevHpBarPos.z);
             prevColor = new Color(0.7f, 0f, 0f);
         }
         else
         {
-            hpSlideUI.transform.localPosition = prevPos;
+            hpSlideUI.transform.localPosition = prevHpBarPos;
             prevColor = new Color(1f, 1f, 1f);
             elapsedTime = 0f;
             isDamage = false;
