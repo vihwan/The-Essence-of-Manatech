@@ -154,29 +154,33 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
+            GameObject currentTile = eventData.pointerCurrentRaycast.gameObject;
+
             if (hintManager != null)
             {
                 hintManager.DestroyHint();
             }
 
-            //만약 클릭한 타일이 폭탄이라면 폭탄 실행
-            if (eventData.pointerCurrentRaycast.gameObject.CompareTag("Bomb"))
+            if(UtilHelper.HasComponent<Tile>(currentTile))
             {
-                BoardManager.instance.JackBombIsMatch(Row, Col);
-                BoardManager.instance.DestroyMatches();
-                return;
-            }
+                //만약 클릭한 타일이 폭탄이라면 폭탄 실행
+                if (currentTile.CompareTag("Bomb"))
+                {
+                    BoardManager.instance.JackBombIsMatch(Row, Col);
+                    BoardManager.instance.DestroyMatches();
+                    return;
+                }
 
-            if (eventData.pointerCurrentRaycast.gameObject.GetComponent<Tile>().isSealed)
-            {
-                Debug.Log("<color=#E36250>봉인당한 타일</color>은 옮겨지지 않습니다.");
-                previousTile = eventData.pointerCurrentRaycast.gameObject.GetComponent<Tile>();
-                return;
-            }
+                if (currentTile.GetComponent<Tile>().isSealed)
+                {
+                    Debug.Log("<color=#E36250>봉인당한 타일</color>은 옮겨지지 않습니다.");
+                    previousTile = eventData.pointerCurrentRaycast.gameObject.GetComponent<Tile>();
+                    return;
+                }
 
-            firstTouchPosition = eventData.pointerCurrentRaycast.gameObject.transform.position;
-            SoundManager.instance.PlaySE("Select");
-            //Debug.Log("선택한 타일 : " + eventData.pointerCurrentRaycast.gameObject);
+                firstTouchPosition = currentTile.transform.position;
+                SoundManager.instance.PlaySE("Select");
+            }     
         }
         else
             return;

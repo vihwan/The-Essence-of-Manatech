@@ -46,7 +46,9 @@ public class MonsterAI : MonoBehaviour
     private SetDevastarSoundandNotify soundandNotify;
 
     private ParticleSystem fireParticle;
-
+    private Image bg;
+    private bool isChangeBgColor = false;
+    private float timeElapsed = 0f;
 
     public float ElaspedTime { get => elaspedTime; set => elaspedTime = value; }
     public float TimeStandard { get => timeStandard; set => timeStandard = value; }
@@ -112,7 +114,7 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-   
+
 
     // Start is called before the first frame update
     public void Init()
@@ -136,10 +138,12 @@ public class MonsterAI : MonoBehaviour
 
 
         SoundandNotify = GetComponent<SetDevastarSoundandNotify>();
-        if(SoundandNotify != null)
+        if (SoundandNotify != null)
         {
             SoundandNotify.Initailze();
         }
+
+        bg = GameObject.Find("StageManager/BackgroundCanvas/BackgroundImage").GetComponent<Image>();
 
         isPhase1 = true;
         devaSkill1.enabled = true;
@@ -252,6 +256,21 @@ public class MonsterAI : MonoBehaviour
 
             if (isPhase2)
             {
+                if (!isChangeBgColor)
+                {
+                    if(timeElapsed < 5f)
+                    {
+                        bg.color = Color.Lerp(Color.white, new Color(1.0f, 0.8f, 0.8f, 1.0f), timeElapsed / 3f);
+                        timeElapsed += Time.deltaTime;
+                    }
+                    else
+                    {
+                        bg.color = new Color(1.0f, 0.8f, 0.8f, 1.0f);
+                        isChangeBgColor = true;
+                    }
+                }
+
+
                 if (MonsterStatusController.CurrHp == 0f)
                 {
                     //데바스타르 사망
@@ -281,7 +300,6 @@ public class MonsterAI : MonoBehaviour
         SoundandNotify.SetVoiceAndNotify(DevastarState.HumanDead);
 
         yield return new WaitForSeconds(3f);
-
 
         //2페이즈 시작 대사
         SoundManager.instance.PlayBGMWithCrossFade("resting_place_for_extinction_p2");

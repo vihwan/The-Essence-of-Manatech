@@ -35,7 +35,7 @@ public class DevaSkill1 : MonoBehaviour
 
 
     internal GameObject rootUI;
-    private TMP_Text tmp_Text;
+    private TMP_Text remainTimeText;
     private Image limitTimeImage;
 
 
@@ -45,7 +45,7 @@ public class DevaSkill1 : MonoBehaviour
         if (rootUI != null)
             rootUI.SetActive(false);
 
-        tmp_Text = GetComponentInChildren<TMP_Text>(true);
+        remainTimeText = GetComponentInChildren<TMP_Text>(true);
 
         limitTimeImage = transform.Find("RootUI/SkillLimitTimeSlide/BaseUI/Gauge").GetComponent<Image>();
         if (limitTimeImage != null)
@@ -83,7 +83,6 @@ public class DevaSkill1 : MonoBehaviour
             }
         }
         StartCoroutine(MakeMagicCircle());
-
     }
 
     private void Update()
@@ -102,9 +101,12 @@ public class DevaSkill1 : MonoBehaviour
                 if (BoardManager.instance.currentState == PlayerState.MOVE
                         && MonsterAI.instance.Action == MonsterState.CASTING)
                 {
-                    SkillBerserk();
-                    isRemainTimeUpdate = false;
-                    MonsterAI.instance.isUsingSkill = false;
+                    if (!isBerserk)
+                    {
+                        StartCoroutine(SkillBerserk());
+                        isRemainTimeUpdate = false;
+                        MonsterAI.instance.isUsingSkill = false;
+                    }
                 }
             }
             else
@@ -128,10 +130,10 @@ public class DevaSkill1 : MonoBehaviour
     private void GaugeUpdate()
     {
         limitTimeImage.fillAmount = remainTime / limitTime;
-        tmp_Text.text = remainTime + "s";
+        remainTimeText.text = Mathf.RoundToInt(remainTime) + "s";
     }
 
-    private void SkillBerserk()
+    private IEnumerator SkillBerserk()
     {
         isBerserk = true;
         // 플레이어가 제한시간 내에 패턴을 파훼하지 못했을 시 발동한다.
@@ -160,13 +162,22 @@ public class DevaSkill1 : MonoBehaviour
             }
         }
 
+        yield return new WaitForSeconds(1f);
+
+        //파티클 이펙트
+        GameObject bombObject = Instantiate(Resources.Load<GameObject>("DevaSkill_1_Berserk_Particle")
+                                            , GameObject.Find("StageManager/BackgroundCanvas/BoardRoot/BoardImagePlayer").transform.position
+                                            , Quaternion.identity
+                                            , BoardManager.instance.transform);
+
+        Destroy(bombObject, 3f);
+
         PlayerStatusController playerStatusController = FindObjectOfType<PlayerStatusController>();
         playerStatusController.DecreaseHP(400);
         go_List.Clear();
         rootUI.SetActive(false);
         MonsterAI.instance.Action = MonsterState.MOVE;
         isBerserk = false;
-
     }
 
     private IEnumerator MakeMagicCircle()
@@ -183,13 +194,23 @@ public class DevaSkill1 : MonoBehaviour
             Tile tile = BoardManager.instance.characterTilesBox[x, y].GetComponent<Tile>();
             tile.isSealed = true;
 
+            //파티클 이펙트 생성
+            GameObject particle = Instantiate(Resources.Load<GameObject>("DevaSkill_1_Particle")
+                                                    , tile.transform.position
+                                                    , Quaternion.identity
+                                                    , tile.transform);
+
+            Destroy(particle, 3f);
+
+            yield return new WaitForSeconds(.5f);
+
             SealedEffect seal = Instantiate(Resources.Load<SealedEffect>("circleC")
-                    , tile.transform.position
-                    , Quaternion.identity);
+                                    , tile.transform.position
+                                    , Quaternion.identity);
             seal.transform.SetParent(tile.transform);
             go_List.Add(seal.gameObject);
 
-            yield return new WaitForSeconds(.5f);
+            yield return null;
         }
         isUsingSkill = false;
         isRemainTimeUpdate = true;

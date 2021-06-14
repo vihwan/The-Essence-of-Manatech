@@ -19,7 +19,7 @@ public class DevaSkill2 : MonoBehaviour
     internal bool isBerserk = false;
 
     private GameObject rootUI;
-    private TMP_Text tmp_Text;
+    private TMP_Text remainTimeText;
     private Image limitTimeImage;
     private PlayerStatusController player;
 
@@ -30,7 +30,7 @@ public class DevaSkill2 : MonoBehaviour
         if (rootUI != null)
             rootUI.SetActive(false);
 
-        tmp_Text = GetComponentInChildren<TMP_Text>(true);
+        remainTimeText = GetComponentInChildren<TMP_Text>(true);
 
         limitTimeImage = transform.Find("RootUI/SkillLimitTimeSlide/BaseUI/Gauge").GetComponent<Image>();
         if (limitTimeImage != null)
@@ -42,7 +42,7 @@ public class DevaSkill2 : MonoBehaviour
     private void GaugeUpdate()
     {
         limitTimeImage.fillAmount = remainTime / limitTime;
-        tmp_Text.text = remainTime + "s";
+        remainTimeText.text = Mathf.RoundToInt(remainTime) + "s";
     }
 
     // Update is called once per frame
