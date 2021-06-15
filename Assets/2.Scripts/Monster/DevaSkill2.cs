@@ -25,6 +25,8 @@ public class DevaSkill2 : MonoBehaviour
 
     private GameObject NenBarrier;
 
+    private Animator convictionAni;
+
     // Start is called before the first frame update
     public void Init()
     {
@@ -39,6 +41,8 @@ public class DevaSkill2 : MonoBehaviour
             limitTimeImage.fillAmount = 1f;
 
         player = FindObjectOfType<PlayerStatusController>();
+
+        convictionAni = GetComponentInChildren<Animator>(true);
 
     }
     private void GaugeUpdate()
@@ -144,12 +148,11 @@ public class DevaSkill2 : MonoBehaviour
     {
         isBerserk = true;
 
-        // 너희들을 심판한다! 컨빅션
+        // 너희들을 심판한다!
         // MonsterAI.instance.Action = MonsterState.BERSERK;
         MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two_Next);
 
         rootUI.SetActive(false);
-
 
         for (int i = 0; i < go_List2.Count; i++)
         {
@@ -172,8 +175,13 @@ public class DevaSkill2 : MonoBehaviour
         }
 
         //임시
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.5f);
 
+        convictionAni.SetTrigger("Active");
+    }
+
+    public void ActiveConviction()
+    {
         //컨빅션
         MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two_Final);
         //광폭화시 플레이어가 무적이 아니라면 데미지를 입는다.

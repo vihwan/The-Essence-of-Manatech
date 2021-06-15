@@ -25,6 +25,8 @@ public class SettingMenu : MonoBehaviour
         //1. AudioListener 사용
         AudioListener.volume = 1.0f;
         //2. AudioMixer 사용
+/*        AudioSource audio = GetComponent<AudioSource>();
+        audio.outputAudioMixerGroup = Resources.Load<AudioMixerGroup>("");*/
     }
 
 

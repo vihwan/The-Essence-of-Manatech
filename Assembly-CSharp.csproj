@@ -115,6 +115,7 @@
     <Compile Include="Assets\2.Scripts\StageManager.cs" />
     <Compile Include="Assets\2.Scripts\Test\AdjustColor.cs" />
     <Compile Include="Assets\2.Scripts\Test\AnimationEventListener.cs" />
+    <Compile Include="Assets\2.Scripts\Test\CalledInAnimation.cs" />
     <Compile Include="Assets\2.Scripts\Test\Gacha.cs" />
     <Compile Include="Assets\2.Scripts\Test\MonsterStateMachine.cs" />
     <Compile Include="Assets\2.Scripts\Test\MonsterStateTest.cs" />
