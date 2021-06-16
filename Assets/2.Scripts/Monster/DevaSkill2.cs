@@ -15,7 +15,7 @@ public class DevaSkill2 : MonoBehaviour
     [SerializeField] private float remainTime;
 
     public bool isRemainTimeUpdate = false;
-    public bool isUsingSkill = false;
+    private bool isActive = false;
     internal bool isBerserk = false;
 
     private GameObject rootUI;
@@ -26,6 +26,8 @@ public class DevaSkill2 : MonoBehaviour
     private GameObject NenBarrier;
 
     private Animator convictionAni;
+
+    public bool IsActive { get => isActive; set => isActive = value; }
 
     // Start is called before the first frame update
     public void Init()
@@ -59,7 +61,7 @@ public class DevaSkill2 : MonoBehaviour
         GaugeUpdate();
         rootUI.SetActive(true);
 
-        isUsingSkill = true;
+        IsActive = true;
 
         // 사운드 출력
         // 그 분을 대신하여 (스킬 2)
@@ -99,7 +101,7 @@ public class DevaSkill2 : MonoBehaviour
             go_List2.Add(nen.gameObject);
         }
 
-        isUsingSkill = false;
+        IsActive = false;
         isRemainTimeUpdate = true;
     }
 
@@ -149,7 +151,7 @@ public class DevaSkill2 : MonoBehaviour
         isBerserk = true;
 
         // 너희들을 심판한다!
-        // MonsterAI.instance.Action = MonsterState.BERSERK;
+        MonsterAI.instance.Action = MonsterState.BERSERK;
         MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two_Next);
 
         rootUI.SetActive(false);

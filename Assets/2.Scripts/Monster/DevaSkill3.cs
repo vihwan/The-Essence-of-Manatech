@@ -12,7 +12,7 @@ public class DevaSkill3 : MonoBehaviour
     [SerializeField] private float remainTime;
 
     public bool isRemainTimeUpdate = false;
-    public bool isUsingSkill = false;
+    private bool isActive = false;
     internal bool isBerserk = false;
 
     private GameObject rootUI;
@@ -21,6 +21,8 @@ public class DevaSkill3 : MonoBehaviour
     private Image limitTimeImage;
     private MonsterStatusController monster;
     private GameObject shieldGauge;
+
+    public bool IsActive { get => isActive; set => isActive = value; }
 
     // Start is called before the first frame update
     public void Init()
@@ -53,7 +55,7 @@ public class DevaSkill3 : MonoBehaviour
         GaugeUpdate();
         rootUI.SetActive(true);
 
-        isUsingSkill = true;
+        IsActive = true;
 
         // 사운드 출력
         // 혼돈의 힘은 무한하다. (3스킬)
@@ -66,7 +68,7 @@ public class DevaSkill3 : MonoBehaviour
             monster.CurrShield = 200f;
         }
 
-        isUsingSkill = false;
+        IsActive = false;
         isRemainTimeUpdate = true;
     }
 
@@ -114,6 +116,7 @@ public class DevaSkill3 : MonoBehaviour
         isBerserk = true;
 
         MonsterAI.instance.Action = MonsterState.BERSERK;
+        MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Three_Berserk);
 
         //임시
         Invoke(nameof(PlaySoundChaosFusion), 5f);

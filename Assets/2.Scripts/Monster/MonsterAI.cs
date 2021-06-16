@@ -106,10 +106,9 @@ public class MonsterAI : MonoBehaviour
 
                 case MonsterState.BERSERK:
                     {
+                        //버그가 너무 많아서 페이즈 2는 따로 해당 함수에서 소리와 알림이 출력되도록 설정
                         if (isPhase1)
                             SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_One_Berserk);
-                        else if (isPhase2)
-                            SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Three_Berserk);
                     }
                     break;
 
@@ -411,6 +410,8 @@ public class MonsterAI : MonoBehaviour
     {
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
+            isUsingSkill = true;
+
             Action = MonsterState.CASTING;
             Debug.Log("<color=#1287F6>데바</color> 1스킬 사용");
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
@@ -423,6 +424,8 @@ public class MonsterAI : MonoBehaviour
         //그분을 대신하여 / 그분의 의지대로
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
+            isUsingSkill = true;
+
             Action = MonsterState.CASTING;
             Debug.Log("<color=#1287F6>데바</color> 2스킬 사용");
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
@@ -436,6 +439,8 @@ public class MonsterAI : MonoBehaviour
 
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
+            isUsingSkill = true;
+
             Action = MonsterState.CASTING;
             Debug.Log("<color=#1287F6>데바</color> 3스킬 사용");
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);

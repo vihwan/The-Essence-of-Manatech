@@ -25,7 +25,6 @@ public class LoadingSceneManager : MonoBehaviour
             ChangeLoadingBg(nextscene);
             StartCoroutine(LoadSceneCoroutine());
         }
-
     }
 
     public static void SetLoadScene(string _sceneName) // 로딩씬을 실행시키는 함수

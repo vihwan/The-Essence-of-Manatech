@@ -54,6 +54,7 @@ public class BoardManager : MonoBehaviour
     private MonsterStatusController monsterStatusController;
     private DevaSkill1 devaSkill1;
     private DevaSkill2 devaSkill2;
+    private DevaSkill3 devaSkill3;
 
     private List<RC> randomSelectList = new List<RC>();
 
@@ -71,6 +72,7 @@ public class BoardManager : MonoBehaviour
         monsterStatusController = FindObjectOfType<MonsterStatusController>();
         devaSkill1 = FindObjectOfType<DevaSkill1>();
         devaSkill2 = FindObjectOfType<DevaSkill2>();
+        devaSkill3 = FindObjectOfType<DevaSkill3>();
 
         characterTilesBox = new GameObject[width, height];
 
@@ -82,7 +84,7 @@ public class BoardManager : MonoBehaviour
     {
         if (GameManager.instance.GameState == GameState.PLAYING)
         {
-            CheckMovePlayerState();
+            CheckPlayerMoveState();
             // PrintBoardState();
         }
     }
@@ -417,12 +419,12 @@ public class BoardManager : MonoBehaviour
 
         if (IsDeadlocked())
         {
-            Debug.Log("<color=#FF6534> DeadLock 발생 </color> 타일들을 섞습니다.");
             Invoke(nameof(ShuffleBoard), 1f);
+            Debug.Log("<color=#FF6534> DeadLock 발생 </color> 타일들을 섞습니다.");
             SkillManager.instance.appearText("Deadlock 발생 타일을 섞습니다.");
-            yield return new WaitUntil(()=> !IsDeadlocked());
-        }
 
+            yield return new WaitUntil(() => !IsDeadlocked());
+        }
     }
 
     private void WaitFindCoroutine()
@@ -579,7 +581,7 @@ public class BoardManager : MonoBehaviour
         }
 
         //타일을 섞어줘도 데드락이면 한번 더 실행
-        if (IsDeadlocked())
+        if (IsDeadlocked() && IsMoveState())
         {
             Invoke(nameof(ShuffleBoard), 1f);
         }
@@ -759,8 +761,46 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    //타일들의 상태가 하나라도 Shifting이면 PlayerState는 WAIT인 함수
-    private void CheckMovePlayerState()
+    //플레이어가 타일을 조작할 수 있는 상태인지 확인하는 함수입니다.
+    private void CheckPlayerMoveState()
+    {
+        //어떤 타일이 움직이는 중이거나, 매칭조건을 만족한 타일이 있다면 조작할 수 없습니다.
+        if (IsTileMatchingOrShifting())
+        {
+            currentState = PlayerState.WAIT;
+            return;
+        }
+
+        //비어있는 타일이 있으면 조작할 수 없습니다.
+        if (hasEmptyTile())
+        {
+            currentState = PlayerState.WAIT;
+            return;
+        }
+
+        //몬스터가 스킬을 사용중이거나, 광폭화 상태일 경우, 혹은 변신 중일 때에는 움직일 수 없습니다.
+        if (devaSkill1.IsActive || devaSkill2.IsActive || devaSkill3.IsActive || 
+            MonsterAI.instance.Action == MonsterState.TRANSFORM ||
+            MonsterAI.instance.Action == MonsterState.BERSERK)
+        {
+            currentState = PlayerState.WAIT;
+            return;
+        }
+
+        //데드락 상태일 경우 조작할 수 없습니다.
+        if (IsDeadlocked())
+        {
+            currentState = PlayerState.WAIT;
+            return;
+        }
+
+        //위의 모든 조건을 통과할 경우, 플레이어는 조작할 수 있습니다.
+        currentState = PlayerState.MOVE;
+    }
+
+
+    //하나라도 캐릭터의 타일이 움직이고 있거나 매칭중인지를 체크하는 함수입니다.
+    public bool IsTileMatchingOrShifting()
     {
         for (int x = 0; x < width; x++)
         {
@@ -769,23 +809,17 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[x, y] != null)
                 {
                     Tile movingTile = characterTilesBox[x, y].GetComponent<Tile>();
-                    if (movingTile.isShifting || movingTile.canShifting || movingTile.isMatched || hasEmptyTile())
+                    if (movingTile.isShifting || movingTile.canShifting || movingTile.isMatched)
                     {
-                        currentState = PlayerState.WAIT;
-                        return;
+                        return true;
                     }
                 }
             }
         }
 
-        if (devaSkill1.isUsingSkill || devaSkill1.isBerserk || MonsterAI.instance.Action == MonsterState.TRANSFORM)
-        {
-            currentState = PlayerState.WAIT;
-            return;
-        }
-
-        currentState = PlayerState.MOVE;
+        return false;
     }
+
 
     public bool IsMoveState()
     {

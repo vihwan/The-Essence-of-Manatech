@@ -30,7 +30,7 @@ public class DevaSkill1 : MonoBehaviour
     [SerializeField] private float limitTime;
     [SerializeField] private float remainTime;
     public bool isRemainTimeUpdate = false;
-    public bool isUsingSkill = false;
+    private bool isActive = false;
     internal bool isBerserk = false;
 
 
@@ -38,6 +38,7 @@ public class DevaSkill1 : MonoBehaviour
     private TMP_Text remainTimeText;
     private Image limitTimeImage;
 
+    public bool IsActive { get => isActive; set => isActive = value; }
 
     public void Init()
     {
@@ -121,7 +122,7 @@ public class DevaSkill1 : MonoBehaviour
                     MonsterAI.instance.RemainGroggyTime = MonsterAI.instance.StandardGroggyTime;
                     rootUI.SetActive(false);
                     isRemainTimeUpdate = false;
-                    isUsingSkill = false;
+                    IsActive = false;
                     MonsterAI.instance.isUsingSkill = false;
                 }
             }
@@ -186,7 +187,7 @@ public class DevaSkill1 : MonoBehaviour
 
     private IEnumerator MakeMagicCircle()
     {
-        isUsingSkill = true;
+        IsActive = true;
         for (int i = 0; i < 5; i++)
         {
             int rIndex = Random.Range(0, deva1s.Count);
@@ -216,7 +217,7 @@ public class DevaSkill1 : MonoBehaviour
 
             yield return null;
         }
-        isUsingSkill = false;
+        IsActive = false;
         isRemainTimeUpdate = true;
     }
 }

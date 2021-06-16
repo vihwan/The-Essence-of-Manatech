@@ -65,6 +65,10 @@ public class FindMatches : MonoBehaviour
 
     private void CompareTile(GameObject currentTile, GameObject firstTile, GameObject secondTile)
     {
+        //비교할 타일의 태그가 폭탄이라면 매칭되지 않습니다.
+        if(currentTile.CompareTag("Bomb"))
+            return;
+
         if (firstTile != null && secondTile != null)
         {
             // 1. 현재 타일이 롤리팝 타일이면

@@ -29,6 +29,7 @@ public class PauseMenu : MonoBehaviour
         {
             exitBtn.GetComponent<Button>().onClick.AddListener(ClickExit);
         }
+
         pauseUI = transform.Find("UIRoot").gameObject;
         if (pauseUI != null)
         {
