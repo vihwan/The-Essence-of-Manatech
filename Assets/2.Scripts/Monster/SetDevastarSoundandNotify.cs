@@ -68,7 +68,7 @@ public class SetDevastarSoundandNotify : MonoBehaviour
 
     public void Initailze()
     {
-        notify = GameObject.Find("StageManager/GUIManagerCanvas/MonsterUI/Notify").GetComponent<MonsterNotify>();
+        notify = GameObject.Find("StageManager/SkillEffectCanvas/Notify").GetComponent<MonsterNotify>();
         if (notify != null)
         {
             notify.init();

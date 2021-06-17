@@ -135,11 +135,13 @@ public class DevaSkill3 : MonoBehaviour
         yield return null;
     }
 
+    //Animation Event
     private void PlaySoundChaosFusion()
     {
         MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Three_ChaosFusion);   
     }
 
+    //Animation Event
     private void BerserkEnd()
     {
         PlayerStatusController playerStatusController = FindObjectOfType<PlayerStatusController>();

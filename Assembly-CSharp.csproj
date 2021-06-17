@@ -77,6 +77,7 @@
     <Compile Include="Assets\2.Scripts\Effect\HintEffect.cs" />
     <Compile Include="Assets\2.Scripts\Effect\MissileEffect.cs" />
     <Compile Include="Assets\2.Scripts\Effect\NenEffect.cs" />
+    <Compile Include="Assets\2.Scripts\ExternalFuncManager.cs" />
     <Compile Include="Assets\2.Scripts\FindMatches.cs" />
     <Compile Include="Assets\2.Scripts\FindMatchesMonster.cs" />
     <Compile Include="Assets\2.Scripts\GUIManager.cs" />

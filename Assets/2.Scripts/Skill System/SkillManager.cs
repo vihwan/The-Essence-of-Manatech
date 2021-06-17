@@ -24,6 +24,7 @@ public class SkillManager : MonoBehaviour
     private PlayerStatusController playerStatusController;
     private HintManager hintManager;
     private SkillData skillData;
+    private SkillEffectManager skillEffectManager;
 
     public void Init()
     {
@@ -52,6 +53,13 @@ public class SkillManager : MonoBehaviour
             //skillBtns[i].skillInfo = ActSkillDic.Values.ToList()[i]; //디버그용
         }
 
+        skillEffectManager = FindObjectOfType<SkillEffectManager>();
+        if(skillEffectManager != null)
+        {
+            skillEffectManager.Init();
+        }
+
+
         hintManager = FindObjectOfType<HintManager>();
     }
 
@@ -59,8 +67,11 @@ public class SkillManager : MonoBehaviour
     {
         if (GameManager.instance.GameState == GameState.PLAYING)
         {
-            if (BoardManager.instance.currentState == PlayerState.MOVE)
+            if (BoardManager.instance.currentState == PlayerState.MOVE 
+                && MonsterAI.instance.Action != MonsterState.USESKILL)
             {
+                //몬스터가 스킬을 사용하려는 상태일때는 스킬을 사용할 수 없습니다.
+
                 UseSkill();
             }
         }
@@ -139,11 +150,9 @@ public class SkillManager : MonoBehaviour
     //1번 스킬 : 체인 플로레
     private void Skill_Chain_Fluore()
     {
-
         // 힌트 스킬
-
         if (hintManager.currentHintEffect == null)
-            hintManager.MarkHint();
+            skillEffectManager.ActiveSkillEffect(SkillEffectType.Chain);
         else
         {
             appearText("이미 사용중입니다.");
@@ -156,8 +165,7 @@ public class SkillManager : MonoBehaviour
     //2번 스킬 : 변이 파리채
     private void Skill_Flapper()
     {
-
-        BoardManager.instance.ChangePlutoTile();
+        skillEffectManager.ActiveSkillEffect(SkillEffectType.Flapper);
     }
 
     //3번 스킬 : 잭프로스트 빙수

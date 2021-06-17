@@ -21,6 +21,7 @@ public class StageManager : MonoBehaviour
     private ComboSystem comboSystem;
     private SkillManager skillManager;
     private MonsterAI monsterAI;
+    private ExternalFuncManager exFuncManager;
 
     private Animator animator;
 
@@ -134,6 +135,10 @@ public class StageManager : MonoBehaviour
         monsterAI = FindObjectOfType<MonsterAI>();
         if (monsterAI != null)
             monsterAI.Init();
+
+        exFuncManager = FindObjectOfType<ExternalFuncManager>();
+        if (exFuncManager != null)
+            exFuncManager.Init();
 
 
         info = animator.GetCurrentAnimatorStateInfo(0);

@@ -6,6 +6,7 @@ using TMPro;
 
 public class GUIManager : MonoBehaviour
 {
+    //싱글톤
     public static GUIManager instance;
 
     public GameObject gameOverPanel;
@@ -28,7 +29,6 @@ public class GUIManager : MonoBehaviour
 
     private AlertText alertText;
     private MonsterStatusController monsterStatusController;
-    private PauseMenu pauseMenu;
 
     //프로퍼티
     public float Score
@@ -74,9 +74,6 @@ public class GUIManager : MonoBehaviour
         if (monsterStatusController != null)
             monsterStatusController.Init();
 
-        pauseMenu = GetComponentInChildren<PauseMenu>(true);
-        if (pauseMenu != null)
-            pauseMenu.Init();
     }
 
     public void OnInitPauseButton()
@@ -90,7 +87,7 @@ public class GUIManager : MonoBehaviour
 
     private void OpenPauseMenu()
     {
-        pauseMenu.CallMenu();
+        ExternalFuncManager.Instance.OpenPauseMenu();
     }
 
     private void Update()

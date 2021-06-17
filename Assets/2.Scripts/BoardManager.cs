@@ -18,7 +18,8 @@ using UnityEngine.UI;
 public enum PlayerState
 {
     WAIT,
-    MOVE
+    MOVE,
+    USESKILL,
 }
 
 internal class RC
@@ -55,6 +56,7 @@ public class BoardManager : MonoBehaviour
     private DevaSkill1 devaSkill1;
     private DevaSkill2 devaSkill2;
     private DevaSkill3 devaSkill3;
+
 
     private List<RC> randomSelectList = new List<RC>();
 
@@ -419,11 +421,13 @@ public class BoardManager : MonoBehaviour
 
         if (IsDeadlocked())
         {
-            Invoke(nameof(ShuffleBoard), 1f);
             Debug.Log("<color=#FF6534> DeadLock 발생 </color> 타일들을 섞습니다.");
             SkillManager.instance.appearText("Deadlock 발생 타일을 섞습니다.");
+            yield return new WaitForSeconds(1f);
 
-            yield return new WaitUntil(() => !IsDeadlocked());
+            StartCoroutine(ShuffleBoard());
+
+            yield return new WaitForSeconds(.5f);
         }
     }
 
@@ -543,57 +547,54 @@ public class BoardManager : MonoBehaviour
     }
 
     //데드락이 걸렸을 때 타일들을 섞어주는 함수
-    private void ShuffleBoard()
+    private IEnumerator ShuffleBoard()
     {
         //사운드 재생 : 반중력 기동장치
 
         //06.17 수정
         //** 연속적인 셔플 방지를 막기 위하여, 코루틴으로 수정해본다
 
+        //
+        List<GameObject> tempBoard = new List<GameObject>();
 
-
-
-
-        List<GameObject> newBoard = new List<GameObject>();
-
-        for (int x = 0; x < width; x++)
+        while (IsDeadlocked())
         {
-            for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
             {
-                if (characterTilesBox[x, y] != null)
+                for (int y = 0; y < height; y++)
                 {
-                    newBoard.Add(characterTilesBox[x, y]);
+                    if (characterTilesBox[x, y] != null)
+                    {
+                        tempBoard.Add(characterTilesBox[x, y]);
+                    }
                 }
             }
-        }
 
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
             {
-                float newPositionX = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionX;
-                float newPositionY = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
+                for (int y = 0; y < height; y++)
+                {
+                    float newPositionX = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionX;
+                    float newPositionY = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
 
-                int randomNum = Random.Range(0, newBoard.Count);
-                Tile tile = newBoard[randomNum].GetComponent<Tile>();
-                tile.transform.SetParent(transform);
-                tile.GetComponent<Tile>().SetArrNumber(x, y);
-                tile.GetComponent<Tile>().targetX = newPositionX;
-                tile.GetComponent<Tile>().targetY = newPositionY;
-                tile.GetComponent<Tile>().canShifting = true;
-                characterTilesBox[x, y] = newBoard[randomNum];
-                newBoard.Remove(newBoard[randomNum]);
+                    int randomNum = Random.Range(0, tempBoard.Count);
+                    Tile tile = tempBoard[randomNum].GetComponent<Tile>();
+                    tile.transform.SetParent(transform);
+                    tile.GetComponent<Tile>().SetArrNumber(x, y);
+                    tile.GetComponent<Tile>().targetX = newPositionX;
+                    tile.GetComponent<Tile>().targetY = newPositionY;
+                    tile.GetComponent<Tile>().canShifting = true;
+                    characterTilesBox[x, y] = tempBoard[randomNum];
+                    tempBoard.Remove(tempBoard[randomNum]);
+                }
             }
+
+            //플레이어가 움직일 수 있는 상태 (= 타일의 움직임이 없는 상태)가 될때 까지 기다립니다.
+            yield return new WaitUntil(() => IsPlayerMoveState());
         }
 
-        //타일을 섞어줘도 데드락이면 한번 더 실행
-        if (IsDeadlocked() && IsPlayerMoveState())
-        {
-            Invoke(nameof(ShuffleBoard), 1f);
-        }
-        //아니면 매칭된 타일 파괴 한번 하기
-        else
-            DestroyMatches();
+        //타일이 전부 섞인 이후, 매칭 여부를 한번 검사하여 파괴시켜줍니다.
+        DestroyMatches();
     }
 
     // 2번 변이파리채 함수
@@ -671,6 +672,8 @@ public class BoardManager : MonoBehaviour
             Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)]; //저장된 캐릭터들을 랜덤으로 받아서
             newChangeTile.gameObject.GetComponent<Image>().sprite = newSprite; //생성된 타일에 대입한다.
         }
+
+        currentState = PlayerState.MOVE;
 
         //타일이 전부 바뀌면 매칭 검사를 한번 한다.
         findMatches.FindAllMatches();

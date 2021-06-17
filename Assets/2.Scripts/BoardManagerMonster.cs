@@ -392,7 +392,7 @@ public class BoardManagerMonster : MonoBehaviour
         return true;
     }
 
-    public bool IsMoveState()
+    public bool IsMonsterMoveState()
     {
         if (MonsterAI.instance.Action == MonsterState.WAIT)
         {
