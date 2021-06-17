@@ -547,6 +547,13 @@ public class BoardManager : MonoBehaviour
     {
         //사운드 재생 : 반중력 기동장치
 
+        //06.17 수정
+        //** 연속적인 셔플 방지를 막기 위하여, 코루틴으로 수정해본다
+
+
+
+
+
         List<GameObject> newBoard = new List<GameObject>();
 
         for (int x = 0; x < width; x++)
@@ -574,14 +581,13 @@ public class BoardManager : MonoBehaviour
                 tile.GetComponent<Tile>().targetX = newPositionX;
                 tile.GetComponent<Tile>().targetY = newPositionY;
                 tile.GetComponent<Tile>().canShifting = true;
-
                 characterTilesBox[x, y] = newBoard[randomNum];
                 newBoard.Remove(newBoard[randomNum]);
             }
         }
 
         //타일을 섞어줘도 데드락이면 한번 더 실행
-        if (IsDeadlocked() && IsMoveState())
+        if (IsDeadlocked() && IsPlayerMoveState())
         {
             Invoke(nameof(ShuffleBoard), 1f);
         }
@@ -821,7 +827,7 @@ public class BoardManager : MonoBehaviour
     }
 
 
-    public bool IsMoveState()
+    public bool IsPlayerMoveState()
     {
         if (currentState == PlayerState.WAIT)
         {

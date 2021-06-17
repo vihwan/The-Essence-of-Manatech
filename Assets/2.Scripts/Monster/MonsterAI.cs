@@ -380,7 +380,7 @@ public class MonsterAI : MonoBehaviour
     public IEnumerator WaitForStateMove()
     {
         isUpdate = true;
-        yield return new WaitUntil(() => BoardManager.instance.IsMoveState() && BoardManagerMonster.instance.IsMoveState());
+        yield return new WaitUntil(() => BoardManager.instance.IsPlayerMoveState() && BoardManagerMonster.instance.IsMoveState());
         yield return new WaitForSeconds(.25f);
 
         if (isPhase1)

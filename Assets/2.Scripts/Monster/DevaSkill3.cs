@@ -22,6 +22,8 @@ public class DevaSkill3 : MonoBehaviour
     private MonsterStatusController monster;
     private GameObject shieldGauge;
 
+    private Animator chaosFusionAni;
+
     public bool IsActive { get => isActive; set => isActive = value; }
 
     // Start is called before the first frame update
@@ -40,6 +42,8 @@ public class DevaSkill3 : MonoBehaviour
         monster = FindObjectOfType<MonsterStatusController>();
         tmp_Text_Hp = monster.transform.Find("Slider/MonsterHpSlide/BaseUI/Gauge/Text (TMP)").GetComponent<TMP_Text>();
         shieldGauge = monster.transform.Find("Slider/MonsterShieldSlide").gameObject;
+
+        chaosFusionAni = transform.Find("ChaosFusion").GetComponent<Animator>();
     }
     private void GaugeUpdate()
     {
@@ -68,6 +72,10 @@ public class DevaSkill3 : MonoBehaviour
             monster.CurrShield = 200f;
         }
 
+        //이펙트 실행
+        chaosFusionAni.SetTrigger("Init");
+        
+
         IsActive = false;
         isRemainTimeUpdate = true;
     }
@@ -80,11 +88,12 @@ public class DevaSkill3 : MonoBehaviour
 
             GaugeUpdate();
 
-            if(monster.CurrShield <= 0f)
-            {
-
-                //패턴 파훼 성공
+            //실드를 전부 부순다면, 패턴 파훼 성공
+            if (monster.CurrShield <= 0f)
+            {             
                 Debug.Log("<color=#0456F1>패턴 파훼</color> 성공!!");
+                chaosFusionAni.SetTrigger("Fail");
+
                 //그로기 타임
                 MonsterAI.instance.Action = MonsterState.GROGGY;
                 MonsterAI.instance.StandardGroggyTime = 15f;
@@ -96,7 +105,6 @@ public class DevaSkill3 : MonoBehaviour
                 MonsterAI.instance.isUsingSkill = false;
             }
 
-
             if (remainTime <= 0)
             {
                 remainTime = 0f;
@@ -104,38 +112,40 @@ public class DevaSkill3 : MonoBehaviour
 
                 if (MonsterAI.instance.Action == MonsterState.CASTING)
                 {
-                    SkillBerserk();
+                    StartCoroutine(SkillBerserk());
+                    isRemainTimeUpdate = false;
                     MonsterAI.instance.isUsingSkill = false;
                 }
             }
         }
     }
 
-    private void SkillBerserk()
+    private IEnumerator SkillBerserk()
     {
         isBerserk = true;
 
+        //혼돈 속에 처박혀라!!
         MonsterAI.instance.Action = MonsterState.BERSERK;
         MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Three_Berserk);
-
-        //임시
-        Invoke(nameof(PlaySoundChaosFusion), 5f);
-
-        PlayerStatusController playerStatusController = FindObjectOfType<PlayerStatusController>();
-        playerStatusController.DecreaseHP(500);
 
         rootUI.SetActive(false);
         shieldGauge.SetActive(false);
         tmp_Text_Hp.enabled = true;
-
-        isBerserk = false;
-        isRemainTimeUpdate = false;
-
-        MonsterAI.instance.Action = MonsterState.MOVE;
+        chaosFusionAni.SetTrigger("Berserk");
+        yield return null;
     }
 
     private void PlaySoundChaosFusion()
     {
         MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Three_ChaosFusion);   
+    }
+
+    private void BerserkEnd()
+    {
+        PlayerStatusController playerStatusController = FindObjectOfType<PlayerStatusController>();
+        playerStatusController.DecreaseHP(500);
+
+        MonsterAI.instance.Action = MonsterState.MOVE;
+        isBerserk = false;
     }
 }

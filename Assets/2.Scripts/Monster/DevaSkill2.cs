@@ -44,7 +44,7 @@ public class DevaSkill2 : MonoBehaviour
 
         player = FindObjectOfType<PlayerStatusController>();
 
-        convictionAni = GetComponentInChildren<Animator>(true);
+        convictionAni = transform.Find("Conviction").GetComponent<Animator>();
 
     }
     private void GaugeUpdate()
