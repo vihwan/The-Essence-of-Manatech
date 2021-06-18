@@ -191,6 +191,32 @@ public class SoundManager : MonoBehaviour
             Debug.Log(_name + "사운드가 SoundManager에 등록되어있지 않습니다.");
         }
     }
+
+    //스킬 효과음
+    public void PlayEffectSound(string _name)
+    {
+        AudioClip audioClip = GetPoolingAudioClip("ChararcterEffectSound", _name);
+        if (audioClip != null)
+        {
+            for (int i = 0; i < audioSourceEffects.Length; i++)
+            {
+                if (!audioSourceEffects[i].isPlaying)
+                {
+                    playSoundName[i] = _name;
+                    audioSourceEffects[i].clip = audioClip;
+                    audioSourceEffects[i].Play();
+                    return;
+                }
+            }
+            Debug.Log("모든 가용 AudioSource가 사용중입니다.");
+            return;
+        }
+        else
+        {
+            Debug.Log(_name + "사운드가 SoundManager에 등록되어있지 않습니다.");
+        }
+    }
+
     //배경음 재생
     public void PlayBGM(string _name)
     {

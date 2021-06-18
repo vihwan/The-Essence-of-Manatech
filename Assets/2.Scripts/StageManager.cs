@@ -61,7 +61,6 @@ public class StageManager : MonoBehaviour
         SoundManager.instance.PlaySE("game_start");
         //스타트 사운드 실행
 
-
         //버튼 활성화
         GUIManager.instance.OnInitPauseButton();
     }
@@ -147,6 +146,4 @@ public class StageManager : MonoBehaviour
             Invoke(nameof(GetReady), 3f);
         }
     }
-
-
 }

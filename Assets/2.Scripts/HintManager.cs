@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class HintManager : MonoBehaviour
 {
-    public GameObject hintEffectPrefab;
-    public GameObject currentHintEffect;
+    //public GameObject hintEffectPrefab;
+    private GameObject currentHintEffect;
+
+    public GameObject CurrentHintEffect { get => currentHintEffect; set => currentHintEffect = value; }
 
     //Component
 
@@ -67,9 +69,13 @@ public class HintManager : MonoBehaviour
         GameObject move = PickUpRandom();
         if (move != null)
         {
-            //Object Pool Test
-            currentHintEffect = Instantiate(hintEffectPrefab, move.transform.position, Quaternion.identity);
-            currentHintEffect.transform.SetParent(transform);
+/*            currentHintEffect = Instantiate(hintEffectPrefab, move.transform.position, Quaternion.identity);
+            currentHintEffect.transform.SetParent(transform);*/
+
+            CurrentHintEffect = Instantiate(Resources.Load<ParticleSystem>("CFXR Electrified Custom").gameObject,
+                                             move.transform.position,
+                                             Quaternion.identity,
+                                             this.transform);
         }
 
         BoardManager.instance.currentState = PlayerState.MOVE;
@@ -77,10 +83,10 @@ public class HintManager : MonoBehaviour
 
     public void DestroyHint()
     {
-        if (currentHintEffect != null)
+        if (CurrentHintEffect != null)
         {
-            Destroy(currentHintEffect);
-            currentHintEffect = null;
+            Destroy(CurrentHintEffect);
+            CurrentHintEffect = null;
         }
     }
 }

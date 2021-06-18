@@ -54,7 +54,7 @@ public class SkillManager : MonoBehaviour
         }
 
         skillEffectManager = FindObjectOfType<SkillEffectManager>();
-        if(skillEffectManager != null)
+        if (skillEffectManager != null)
         {
             skillEffectManager.Init();
         }
@@ -67,11 +67,10 @@ public class SkillManager : MonoBehaviour
     {
         if (GameManager.instance.GameState == GameState.PLAYING)
         {
-            if (BoardManager.instance.currentState == PlayerState.MOVE 
+            if (BoardManager.instance.currentState == PlayerState.MOVE
                 && MonsterAI.instance.Action != MonsterState.USESKILL)
             {
                 //몬스터가 스킬을 사용하려는 상태일때는 스킬을 사용할 수 없습니다.
-
                 UseSkill();
             }
         }
@@ -83,9 +82,14 @@ public class SkillManager : MonoBehaviour
         {
             Debug.Log("1번 스킬 사용");
 
+            if (hintManager.CurrentHintEffect != null)
+            {
+                appearText("이미 사용중입니다.");
+                return;
+            }
+
             if (CheckSkillUse("체인 플로레", 0))
                 Skill_Chain_Fluore();
-
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -99,9 +103,16 @@ public class SkillManager : MonoBehaviour
         {
             Debug.Log("3번 스킬 사용");
 
-            if (CheckSkillUse("잭프로스트 빙수", 2))
-                Skill_Jack_Frost_ShavedIce();
+            if (MonsterAI.instance.Action == MonsterState.GROGGY)
+            {
+                appearText("그로기 상태일 때는 사용해도 별로 소용이 없을 것 같다.");
+                return;
+            }
 
+            if (CheckSkillUse("잭프로스트 빙수", 2))
+            {
+                Skill_Jack_Frost_ShavedIce();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
@@ -138,11 +149,13 @@ public class SkillManager : MonoBehaviour
             }
             else
             {
+                PlayerSound.PlayCooldownOrLackManaVoice();
                 return false;
             }
         }
         else
         {
+            PlayerSound.PlayCooldownOrLackManaVoice();
             return false;
         }
     }
@@ -151,38 +164,39 @@ public class SkillManager : MonoBehaviour
     private void Skill_Chain_Fluore()
     {
         // 힌트 스킬
-        if (hintManager.currentHintEffect == null)
-            skillEffectManager.ActiveSkillEffect(SkillEffectType.Chain);
-        else
-        {
-            appearText("이미 사용중입니다.");
-            return;
-        }
         //스킬 보이스 출력
+        PlayerSound.PlayUseSkillVoice(SkillEffectType.Chain);
         //스킬 이펙트 출력
+        skillEffectManager.ActiveSkillEffect(SkillEffectType.Chain);
     }
 
     //2번 스킬 : 변이 파리채
     private void Skill_Flapper()
     {
+        //스킬 보이스 출력
+        PlayerSound.PlayUseSkillVoice(SkillEffectType.Flapper);
+        //스킬 이펙트 출력
         skillEffectManager.ActiveSkillEffect(SkillEffectType.Flapper);
     }
 
     //3번 스킬 : 잭프로스트 빙수
     private void Skill_Jack_Frost_ShavedIce()
     {
-        GUIManager.instance.OnPauseTime(ActSkillDic["잭프로스트 빙수"].EigenValue);
+        // GUIManager.instance.OnPauseTime(ActSkillDic["잭프로스트 빙수"].EigenValue);
 
         //스킬 보이스 출력
+        PlayerSound.PlayUseSkillVoice(SkillEffectType.Ice);
         //스킬 이펙트 출력
+        skillEffectManager.ActiveSkillEffect(SkillEffectType.Ice);
+        StartCoroutine(BoardManager.instance.FrostShavedIce(ActSkillDic["잭프로스트 빙수"].EigenValue));
     }
 
     //4번 스킬 : 잭 오 할로윈
     private void Skill_Jack_O_Halloween()
     {
-
-        BoardManager.instance.CreateJackBomb();
         //스킬 보이스 출력
+        PlayerSound.PlayUseSkillVoice(SkillEffectType.Halloween);
         //스킬 이펙트 출력
+        BoardManager.instance.CreateJackBomb();
     }
 }

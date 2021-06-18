@@ -19,6 +19,7 @@ public class SkillEffectManager : MonoBehaviour
     //Animator Components
     private Animator animChainFluore;
     private Animator animFlapper;
+    private Animator animShavedIce;
 
     private HintManager hintManager;
 
@@ -30,6 +31,10 @@ public class SkillEffectManager : MonoBehaviour
 
         animFlapper = transform.Find("Flapper").GetComponent<Animator>();
         if (animFlapper == null)
+            Debug.LogWarning("변이파리채 Animator가 참조되지 않았습니다.");
+
+        animShavedIce = transform.Find("JackFrostIce").GetComponent<Animator>();
+        if (animShavedIce == null)
             Debug.LogWarning("변이파리채 Animator가 참조되지 않았습니다.");
 
         hintManager = FindObjectOfType<HintManager>();
@@ -51,6 +56,7 @@ public class SkillEffectManager : MonoBehaviour
                 break;
 
             case SkillEffectType.Ice:
+                animShavedIce.SetTrigger("Active");
                 break;
 
             case SkillEffectType.Halloween:
@@ -72,5 +78,20 @@ public class SkillEffectManager : MonoBehaviour
         //플레이어는 스킬 사용중
         BoardManager.instance.currentState = PlayerState.USESKILL;
         BoardManager.instance.ChangePlutoTile();
+    }
+
+    private void ShavedIce()
+    {
+        BoardManager.instance.currentState = PlayerState.USESKILL;
+    }
+
+    private void EndCastingShavedIce()
+    {
+        BoardManager.instance.currentState = PlayerState.MOVE;
+    }
+
+    public void PlayExplodeIceAnim()
+    {
+        animShavedIce.SetTrigger("Explosion");
     }
 }

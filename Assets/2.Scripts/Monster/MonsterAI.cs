@@ -28,12 +28,13 @@ public class MonsterAI : MonoBehaviour
     [SerializeField] private float remainGroggyTime = 10f;
     private float standardGroggyTime = 10f;
 
-    private bool isUpdate = false;
-    private bool isPhase1 = false;
-    private bool isPhase2 = false;
-    private bool isTransform = false;
-    private bool isSkillTurn2 = true;
-    public bool isUsingSkill = false;
+    private bool isIEUpdate = false;  //코루틴 함수가 동작중인지를 확인하는 변수
+    private bool isPhase1 = false;    //1페이즈인지를 확인하는 변수
+    private bool isPhase2 = false;    //2페이즈인지를 확인하는 변수
+    private bool isTransform = false; //변신중인지를 확인하는 변수
+    private bool isSkillTurn2 = true; // 2번째 스킬을 사용할 순서인지를 확인하는 변수
+    public bool isUsingSkill = false; //스킬을 사용중인지 확인하는 변수
+    private bool isHolding = false;   //몬스터가 홀딩 상태이상에 걸려 아무것도 할 수 없는 상태인지를 확인하는 변수
 
     [SerializeField] private float elaspedTime = 0f;
     [SerializeField] private float timeStandard = 4f;
@@ -57,12 +58,16 @@ public class MonsterAI : MonoBehaviour
     #endregion
 
     #region Property
+
+    public bool IsHolding { get => isHolding; set => isHolding = value; }
     public float ElaspedTime { get => elaspedTime; set => elaspedTime = value; }
     public float TimeStandard { get => timeStandard; set => timeStandard = value; }
     public MonsterStatusController MonsterStatusController { get => monsterStatusController; set => monsterStatusController = value; }
     public float RemainGroggyTime { get => remainGroggyTime; set => remainGroggyTime = value; }
     public float StandardGroggyTime { get => standardGroggyTime; set => standardGroggyTime = value; }
     public SetDevastarSoundandNotify SoundandNotify { get => soundandNotify; set => soundandNotify = value; }
+
+    #endregion
 
     public MonsterState Action
     {
@@ -121,8 +126,6 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-
-    #endregion
 
     // Start is called before the first frame update
     public void Init()
@@ -183,6 +186,10 @@ public class MonsterAI : MonoBehaviour
 
     private void MOVE()
     {
+        //홀딩상태일 때는 움직일 수 없습니다.
+        if (isHolding == true)
+            return;
+
         ElaspedTime += Time.deltaTime;
         if (ElaspedTime >= TimeStandard)
         {
@@ -205,7 +212,7 @@ public class MonsterAI : MonoBehaviour
 
     private void SKILLUSE()
     {
-        if (!isUpdate)
+        if (!isIEUpdate)
             StartCoroutine(WaitForStateMove());
     }
 
@@ -218,7 +225,7 @@ public class MonsterAI : MonoBehaviour
                 groggyRootUI.SetActive(false);
 
             //벼 ㅇ 신!
-            if (!isUpdate)
+            if (!isIEUpdate)
             {
                 StartCoroutine(TransToDevil());
                 ElaspedTime = 0f;
@@ -320,7 +327,7 @@ public class MonsterAI : MonoBehaviour
     //페이즈 2가 되어 악마로 변신하는 메소드
     private IEnumerator TransToDevil()
     {
-        isUpdate = true;
+        isIEUpdate = true;
 
         //만약 데바스타르 스킬이 실행중이라면(isRemainTime)
         if (devaSkill1.isRemainTimeUpdate == true)
@@ -350,7 +357,7 @@ public class MonsterAI : MonoBehaviour
 
         Action = MonsterState.WAIT;
         Debug.Log("2페이즈 돌입");
-        isUpdate = false;
+        isIEUpdate = false;
     }
 
     private void CancelDevaSkill1(out bool state)
@@ -379,7 +386,7 @@ public class MonsterAI : MonoBehaviour
     //플레이어와 몬스터가 타일을 옮기는 중이라면, 스킬을 사용할 수 없습니다.
     public IEnumerator WaitForStateMove()
     {
-        isUpdate = true;
+        isIEUpdate = true;
         yield return new WaitUntil(() => BoardManager.instance.IsPlayerMoveState() && BoardManagerMonster.instance.IsMonsterMoveState());
         yield return new WaitForSeconds(.25f);
 
@@ -391,17 +398,17 @@ public class MonsterAI : MonoBehaviour
         {
             if (isSkillTurn2)
             {
-                isSkillTurn2 = false;
                 UseSkill_2();
+                isSkillTurn2 = false;
             }
             else
             {
-                isSkillTurn2 = true;
                 UseSkill_3();
+                isSkillTurn2 = true;
             }
         }
         yield return new WaitUntil(() => isUsingSkill == false);
-        isUpdate = false;
+        isIEUpdate = false;
     }
 
 

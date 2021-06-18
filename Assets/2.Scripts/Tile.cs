@@ -32,6 +32,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     private int previousCol; //타일 이동시 이전 Col 임시저장
     private float swapAngle; //마우스 조작 방향
 
+    private CharacterKinds kind;
+
     private Tile previousTile;
     private GameObject currentTile_GO;
     private GameObject otherCharacterTile;
@@ -76,6 +78,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         }
     }
 
+    public CharacterKinds Kind { get => kind; set => kind = value; }
+
     #endregion Field Variable
 
     private void Start()
@@ -97,38 +101,47 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     {
         if (image.sprite.name == "2잭프로스트")
         {
+            Kind = CharacterKinds.Frost;
             gameObject.tag = CharacterKinds.Frost.ToString();
         }
         else if (image.sprite.name == "3잭오랜턴")
         {
+            Kind = CharacterKinds.Lantern;
             gameObject.tag = CharacterKinds.Lantern.ToString();
         }
         else if (image.sprite.name == "1플로레")
         {
+            Kind = CharacterKinds.Fluore;
             gameObject.tag = CharacterKinds.Fluore.ToString();
         }
         else if (image.sprite.name == "4플루토")
         {
+            Kind = CharacterKinds.Pluto;
             gameObject.tag = CharacterKinds.Pluto.ToString();
         }
         else if (image.sprite.name == "7망치스패너")
         {
+            Kind = CharacterKinds.HammerSpanner;
             gameObject.tag = CharacterKinds.HammerSpanner.ToString();
         }
         else if (image.sprite.name == "9슈르르")
         {
+            Kind = CharacterKinds.Shururu;
             gameObject.tag = CharacterKinds.Shururu.ToString();
         }
         else if (image.sprite.name == "7잭오할로윈")
         {
+            Kind = CharacterKinds.Bomb;
             gameObject.tag = CharacterKinds.Bomb.ToString();
         }
         else if (image.sprite.name == "8빗자루_2")
         {
+            Kind = CharacterKinds.Bloom;
             gameObject.tag = CharacterKinds.Bloom.ToString();
         }
         else if (image.sprite.name == "Lolipop")
         {
+            Kind = CharacterKinds.Lolipop;
             gameObject.tag = CharacterKinds.Lolipop.ToString();
         }
         else

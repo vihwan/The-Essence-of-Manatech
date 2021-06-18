@@ -120,7 +120,7 @@ public class MonsterStatusController : MonoBehaviour
         float damage = 0f;
 
         if (MonsterAI.instance.Action == MonsterState.GROGGY)
-            damage = _count * 20;
+            damage = _count * 10;
         else
             damage = _count;
 

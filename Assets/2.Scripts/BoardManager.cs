@@ -159,11 +159,14 @@ public class BoardManager : MonoBehaviour
 
     private void DestroyMatchesAt(int row, int col)
     {
-        if (characterTilesBox[row, col].GetComponent<Tile>().isMatched)
+        Tile targetTile = characterTilesBox[row, col].GetComponent<Tile>();
+
+        if (targetTile.isMatched)
         {
+            PlayerSound.PlayDestroyFamiliarTile(targetTile.Kind);
+
             skillGauge.IncreaseMp(1f * findMatches.currentMatches.Count); //타일 파괴시 스킬 게이지 획득
             findMatches.currentMatches.Remove(characterTilesBox[row, col]);
-
 
             CreateDestroyEffect(row, col);
 
@@ -172,11 +175,11 @@ public class BoardManager : MonoBehaviour
 
             if (characterTilesBox[row, col].transform.childCount > 0)
             {
-                if (characterTilesBox[row, col].GetComponent<Tile>().isSealed)
+                if (targetTile.isSealed)
                 {
                     devaSkill1.go_List.Remove(characterTilesBox[row, col].GetComponentInChildren<SealedEffect>().gameObject);
                 }
-                else if (characterTilesBox[row, col].GetComponent<Tile>().isActiveNen)
+                else if (targetTile.isActiveNen)
                 {
                     devaSkill2.go_List2.Remove(characterTilesBox[row, col].GetComponentInChildren<NenEffect>().gameObject);
                 }
@@ -403,7 +406,6 @@ public class BoardManager : MonoBehaviour
     //타일 생성하여 보드 채우기 코루틴
     private IEnumerator FillBoardCoroutine()
     {
-
         currentState = PlayerState.WAIT;
 
         RefillBoard();
@@ -426,8 +428,10 @@ public class BoardManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
 
             StartCoroutine(ShuffleBoard());
-
             yield return new WaitForSeconds(.5f);
+
+            if (MatchesOnBoard())
+                DestroyMatches();
         }
     }
 
@@ -550,6 +554,7 @@ public class BoardManager : MonoBehaviour
     private IEnumerator ShuffleBoard()
     {
         //사운드 재생 : 반중력 기동장치
+        PlayerSound.PlayShuffleVoice();
 
         //06.17 수정
         //** 연속적인 셔플 방지를 막기 위하여, 코루틴으로 수정해본다
@@ -592,9 +597,6 @@ public class BoardManager : MonoBehaviour
             //플레이어가 움직일 수 있는 상태 (= 타일의 움직임이 없는 상태)가 될때 까지 기다립니다.
             yield return new WaitUntil(() => IsPlayerMoveState());
         }
-
-        //타일이 전부 섞인 이후, 매칭 여부를 한번 검사하여 파괴시켜줍니다.
-        DestroyMatches();
     }
 
     // 2번 변이파리채 함수
@@ -662,10 +664,18 @@ public class BoardManager : MonoBehaviour
             characterTilesBox[row, col] = newChangeTile;
 
             #region 타일 변환 확인 이펙트 (디버그)
+            //06.18 수정 - 변환 이펙트를 파티클로 생성합니다.
 
-            GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform, "FlashEffect");
+            //UI Particles 스크립트로 인해, 생성 이후 자동으로 파괴됩니다.
+            ParticleSystem particle = Instantiate(Resources.Load<ParticleSystem>("CFXR Magic Poof Custom"),
+                                                    characterTilesBox[row, col].GetComponent<Tile>().transform.position,
+                                                    Quaternion.identity,
+                                                    this.transform);
+
+
+/*            GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform, "FlashEffect");
             flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
-            flashEffect.GetComponent<FlashEffect>().RemoveEffect();
+            flashEffect.GetComponent<FlashEffect>().RemoveEffect();*/
 
             #endregion 타일 변환 확인 이펙트 (디버그)
 
@@ -679,6 +689,32 @@ public class BoardManager : MonoBehaviour
         findMatches.FindAllMatches();
         Invoke(nameof(WaitFindCoroutine), 1f);
     }
+
+
+    // 3번 잭프로스트 빙수 스킬 함수
+    public IEnumerator FrostShavedIce(float skillTime)
+    {
+        /*몬스터의 움직임을 일정시간동안 멈추게 하는 스킬입니다.
+	        데바스타르가 스킬을 사용중에는 사용 불가.
+
+	        데바스타르의 State에 따라서 다르게 처리를 해야할 듯 싶다.
+
+	        데바스타르가 Move 상태일 경우에는 elapsedTime을 멈추게한다.
+	        데바스타르가 UseSkill 상태일 경우에는 사용할 수 없다. => 모든 스킬에 공통적으로 해당, 해당 스크립트를 봐야할듯
+	        데바스타르가 스킬 시전중일 경우에는 남은 시간을 멈추게 한다.
+        	데바스타르가 그로기 중일 경우에는 사용할 수 없다. (그로기 상태일 때 써봐야 별로 효과가 없을 것 같다. 를 출력)
+         * 
+         * **/
+        MonsterAI.instance.IsHolding = true;
+
+        yield return new WaitForSeconds(skillTime);
+
+        MonsterAI.instance.IsHolding = false;
+        currentState = PlayerState.USESKILL;
+        SkillEffectManager skillEffectManager = FindObjectOfType<SkillEffectManager>();
+        skillEffectManager.PlayExplodeIceAnim();
+    }
+
 
     // 4번 스킬 함수 - 잭오할로윈 타일을 생성
     public void CreateJackBomb()
@@ -725,7 +761,6 @@ public class BoardManager : MonoBehaviour
                 }
             }
 
-
             Destroy(jack.gameObject);
             characterTilesBox[row, col] = null;
 
@@ -742,6 +777,26 @@ public class BoardManager : MonoBehaviour
             newJackBomb.gameObject.name = "Bomb [" + row + ", " + col + "]";
             newJackBomb.GetComponent<Image>().sprite = Resources.Load<Sprite>("7잭오할로윈");
             characterTilesBox[row, col] = newJackBomb;
+
+
+            //자동 파괴
+            ParticleSystem CreateParticle = Instantiate(Resources.Load<ParticleSystem>("JackBombCreateParticle"),
+                                                        newJackBomb.transform.position,
+                                                        Quaternion.identity,
+                                                        this.transform);
+            if (CreateParticle == null)
+                Debug.LogWarning("할로윈 생성 파티클이 null 입니다.");
+
+
+
+            //불타오르는 Particle을 생성하고, 이를 잭오할로윈 타일의 자식으로 설정한다.
+            ParticleSystem particle =  Instantiate(Resources.Load<ParticleSystem>("HalloweenFire"),
+                           newJackBomb.transform.position,
+                           Quaternion.identity);
+            if (particle == null)
+                Debug.LogWarning("할로윈 불꽃 파티클이 null입니다.");
+            else
+                particle.transform.SetParent(newJackBomb.transform);
         }
     }
 

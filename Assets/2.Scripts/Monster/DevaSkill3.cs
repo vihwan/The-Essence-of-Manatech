@@ -82,6 +82,12 @@ public class DevaSkill3 : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.instance.GameState != GameState.PLAYING)
+            return;
+
+        if (MonsterAI.instance.IsHolding == true)
+            return;
+
         if (isRemainTimeUpdate)
         {
             remainTime -= Time.deltaTime;

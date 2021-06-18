@@ -93,8 +93,9 @@ public class MissileEffect : MonoBehaviour
 
                 //데미지 주기
                 MonsterStatusController mon = FindObjectOfType<MonsterStatusController>();
-                if (mon != null) { 
-                    mon.DecreaseHP(4);
+                if (mon != null) {
+                    PlayerStatusController player = FindObjectOfType<PlayerStatusController>();
+                    mon.DecreaseHP(player.Damage);
                 }
 
                 this.gameObject.GetComponent<Image>().enabled = false;

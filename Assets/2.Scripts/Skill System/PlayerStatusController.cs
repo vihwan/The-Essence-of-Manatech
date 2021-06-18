@@ -12,12 +12,14 @@ public class PlayerStatusController : MonoBehaviour
      */
 
     #region Variable
-    private PlayerStatus playerStatus = new PlayerStatus(500, 200);
+    private PlayerStatus playerStatus = new PlayerStatus(500, 200, 4);
 
     [SerializeField] private float currHp;
     [SerializeField] private float maxHp;
     [SerializeField] private float currMp;
     [SerializeField] private float maxMp;
+    [SerializeField] private float damage;
+
     [SerializeField] private TMP_Text[] texts;
     [SerializeField] private Image[] images_Gauge;
     [SerializeField] private GameObject hpSlideUI;
@@ -38,6 +40,7 @@ public class PlayerStatusController : MonoBehaviour
     public float CurrHp { get => currHp; set => currHp = value; }
     public float MaxHp { get => maxHp; set => maxHp = value; }
     public bool IsInvincible { get => isInvincible; set => isInvincible = value; }
+    public float Damage { get => damage; set => damage = value; }
 
     #endregion Variable
 
@@ -47,6 +50,7 @@ public class PlayerStatusController : MonoBehaviour
         CurrHp = playerStatus.Hp;
         CurrMp = 0f; //시작시 마나는 0으로 설정
         MaxMp = playerStatus.Mp; //총 마나 양을 200으로 설정
+        Damage = playerStatus.Damage;
 
         prevHpBarPos = hpSlideUI.transform.localPosition;
         prevColor = hpSlideUI.transform.Find("Gauge").GetComponent<Image>().color;

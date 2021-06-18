@@ -107,6 +107,12 @@ public class DevaSkill2 : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.instance.GameState != GameState.PLAYING)
+            return;
+
+        if (MonsterAI.instance.IsHolding == true)
+            return;
+
         if (isRemainTimeUpdate)
         {
             remainTime -= Time.deltaTime;
@@ -119,7 +125,7 @@ public class DevaSkill2 : MonoBehaviour
                 {
                     player.IsInvincible = true;
                     Debug.Log("패턴을 파훼하여 무적 상태입니다.");
-
+                    SoundManager.instance.PlayCV("wz_shield");
                     NenBarrier = Instantiate(Resources.Load<GameObject>("NenBarrier")
                                  , GameObject.Find("BackgroundCanvas/BoardRoot/BoardImagePlayer").transform.position
                                  , Quaternion.identity
