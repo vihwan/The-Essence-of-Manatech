@@ -143,28 +143,30 @@ public class BoardManager : MonoBehaviour
     public void DestroyMatches()
     {
         currentState = PlayerState.WAIT;
+        Tile tile = null;
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 if (characterTilesBox[x, y] != null)
                 {
-                    DestroyMatchesAt(x, y);
+                    Tile targetTile = characterTilesBox[x, y].GetComponent<Tile>();
+                    DestroyMatchesAt(x, y, targetTile, ref tile);
                 }
             }
         }
+
+        PlayerSound.PlayDestroyFamiliarTile(tile.Kind);
+
         comboSystem.ComboCounter++; //TODO
         StartCoroutine(DecreaseColCoroutine());
     }
 
-    private void DestroyMatchesAt(int row, int col)
+    private void DestroyMatchesAt(int row, int col, Tile targetTile, ref Tile tile)
     {
-        Tile targetTile = characterTilesBox[row, col].GetComponent<Tile>();
-
         if (targetTile.isMatched)
         {
-            PlayerSound.PlayDestroyFamiliarTile(targetTile.Kind);
-
+            tile = targetTile;
             skillGauge.IncreaseMp(1f * findMatches.currentMatches.Count); //타일 파괴시 스킬 게이지 획득
             findMatches.currentMatches.Remove(characterTilesBox[row, col]);
 
@@ -184,6 +186,7 @@ public class BoardManager : MonoBehaviour
                     devaSkill2.go_List2.Remove(characterTilesBox[row, col].GetComponentInChildren<NenEffect>().gameObject);
                 }
             }
+
             Destroy(characterTilesBox[row, col].gameObject);
             characterTilesBox[row, col] = null;
 
@@ -416,22 +419,27 @@ public class BoardManager : MonoBehaviour
         {
             DestroyMatches();
             yield return new WaitForSeconds(refillDelay * 2.5f);
-
         }
         findMatches.currentMatches.Clear();
         yield return new WaitForSeconds(.5f);
 
-        if (IsDeadlocked())
+        while (IsDeadlocked())
         {
             Debug.Log("<color=#FF6534> DeadLock 발생 </color> 타일들을 섞습니다.");
             SkillManager.instance.appearText("Deadlock 발생 타일을 섞습니다.");
             yield return new WaitForSeconds(1f);
 
-            StartCoroutine(ShuffleBoard());
+            ShuffleBoard();
+
             yield return new WaitForSeconds(.5f);
+            //플레이어가 움직일 수 있는 상태 (= 타일의 움직임이 없는 상태)가 될때 까지 기다립니다.
+            yield return new WaitUntil(() => IsPlayerMoveState());
 
             if (MatchesOnBoard())
+            {
                 DestroyMatches();
+                break;
+            }
         }
     }
 
@@ -482,7 +490,7 @@ public class BoardManager : MonoBehaviour
                         if (characterTilesBox[x, y].GetComponent<Tile>().isSealed)
                             continue;
                     }
- 
+
                     if (x < width - 2)
                     {
                         if (characterTilesBox[x + 1, y] != null && characterTilesBox[x + 2, y] != null)
@@ -551,51 +559,45 @@ public class BoardManager : MonoBehaviour
     }
 
     //데드락이 걸렸을 때 타일들을 섞어주는 함수
-    private IEnumerator ShuffleBoard()
+    private void ShuffleBoard()
     {
         //사운드 재생 : 반중력 기동장치
         PlayerSound.PlayShuffleVoice();
 
-        //06.17 수정
-        //** 연속적인 셔플 방지를 막기 위하여, 코루틴으로 수정해본다
+        //06.18 수정
+        //** 일반 함수로 다시 수정하고, 반복검사문을 상위 코루틴으로 옮긴다.
 
         //
         List<GameObject> tempBoard = new List<GameObject>();
 
-        while (IsDeadlocked())
+        for (int x = 0; x < width; x++)
         {
-            for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
             {
-                for (int y = 0; y < height; y++)
+                if (characterTilesBox[x, y] != null)
                 {
-                    if (characterTilesBox[x, y] != null)
-                    {
-                        tempBoard.Add(characterTilesBox[x, y]);
-                    }
+                    tempBoard.Add(characterTilesBox[x, y]);
                 }
             }
+        }
 
-            for (int x = 0; x < width; x++)
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
             {
-                for (int y = 0; y < height; y++)
-                {
-                    float newPositionX = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionX;
-                    float newPositionY = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
+                float newPositionX = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionX;
+                float newPositionY = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
 
-                    int randomNum = Random.Range(0, tempBoard.Count);
-                    Tile tile = tempBoard[randomNum].GetComponent<Tile>();
-                    tile.transform.SetParent(transform);
-                    tile.GetComponent<Tile>().SetArrNumber(x, y);
-                    tile.GetComponent<Tile>().targetX = newPositionX;
-                    tile.GetComponent<Tile>().targetY = newPositionY;
-                    tile.GetComponent<Tile>().canShifting = true;
-                    characterTilesBox[x, y] = tempBoard[randomNum];
-                    tempBoard.Remove(tempBoard[randomNum]);
-                }
+                int randomNum = Random.Range(0, tempBoard.Count);
+                Tile tile = tempBoard[randomNum].GetComponent<Tile>();
+                tile.transform.SetParent(transform);
+                tile.GetComponent<Tile>().SetArrNumber(x, y);
+                tile.GetComponent<Tile>().targetX = newPositionX;
+                tile.GetComponent<Tile>().targetY = newPositionY;
+                tile.GetComponent<Tile>().canShifting = true;
+                characterTilesBox[x, y] = tempBoard[randomNum];
+                tempBoard.Remove(tempBoard[randomNum]);
             }
-
-            //플레이어가 움직일 수 있는 상태 (= 타일의 움직임이 없는 상태)가 될때 까지 기다립니다.
-            yield return new WaitUntil(() => IsPlayerMoveState());
         }
     }
 
@@ -673,9 +675,9 @@ public class BoardManager : MonoBehaviour
                                                     this.transform);
 
 
-/*            GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform, "FlashEffect");
-            flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
-            flashEffect.GetComponent<FlashEffect>().RemoveEffect();*/
+            /*            GameObject flashEffect = ObjectPool.GetObjectPoolEffect<FlashEffect>(transform, "FlashEffect");
+                        flashEffect.transform.position = characterTilesBox[row, col].GetComponent<Tile>().transform.position;
+                        flashEffect.GetComponent<FlashEffect>().RemoveEffect();*/
 
             #endregion 타일 변환 확인 이펙트 (디버그)
 
@@ -790,7 +792,7 @@ public class BoardManager : MonoBehaviour
 
 
             //불타오르는 Particle을 생성하고, 이를 잭오할로윈 타일의 자식으로 설정한다.
-            ParticleSystem particle =  Instantiate(Resources.Load<ParticleSystem>("HalloweenFire"),
+            ParticleSystem particle = Instantiate(Resources.Load<ParticleSystem>("HalloweenFire"),
                            newJackBomb.transform.position,
                            Quaternion.identity);
             if (particle == null)
@@ -843,7 +845,7 @@ public class BoardManager : MonoBehaviour
         }
 
         //몬스터가 스킬을 사용중이거나, 광폭화 상태일 경우, 혹은 변신 중일 때에는 움직일 수 없습니다.
-        if (devaSkill1.IsActive || devaSkill2.IsActive || devaSkill3.IsActive || 
+        if (devaSkill1.IsActive || devaSkill2.IsActive || devaSkill3.IsActive ||
             MonsterAI.instance.Action == MonsterState.TRANSFORM ||
             MonsterAI.instance.Action == MonsterState.BERSERK)
         {

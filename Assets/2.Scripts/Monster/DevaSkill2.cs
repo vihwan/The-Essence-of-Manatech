@@ -192,6 +192,8 @@ public class DevaSkill2 : MonoBehaviour
     {
         //컨빅션
         MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two_Final);
+        PlayerSound.PlayPhaseShift();
+
         //광폭화시 플레이어가 무적이 아니라면 데미지를 입는다.
         if (player.IsInvincible == false)
         {

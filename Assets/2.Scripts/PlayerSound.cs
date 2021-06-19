@@ -20,47 +20,56 @@ public static class PlayerSound
 
     public static void PlayMoveTile()
     {
-
+        int rand = Random.Range(0, 3);
+        if(rand == 0)
+            SoundManager.instance.PlayCV("wz_atk_01");
+        else if(rand == 1)
+            SoundManager.instance.PlayCV("wz_atk_02");
+        else 
+            SoundManager.instance.PlayCV("wz_jump_atk");
     }
 
+    public static void PlayFailTileMatch()
+    {
+        SoundManager.instance.PlayEffectSound("wz_dash_fall");
+    }
+
+    public static void PlayPhaseShift()
+    {
+        SoundManager.instance.PlayCV("wz_phase_shift");
+    }
 
     //타일 파괴 시 사운드
     public static void PlayDestroyFamiliarTile(CharacterKinds kind)
     {
-        
+        int rand = Random.Range(1, 6);
+        SoundManager.instance.PlayEffectSound("magic_light_bubble_0" + rand);
 
         switch (kind)
         {
-            case CharacterKinds.Frost:
-
-                break;
-
-            case CharacterKinds.Pluto:
-
-                break;
-
-            case CharacterKinds.Lantern:
-
-                break;
-
-            case CharacterKinds.Fluore:
-
-                break;
-
             case CharacterKinds.HammerSpanner:
+                SoundManager.instance.PlayEffectSound("fcraft_hammer_04");
                 break;
 
             case CharacterKinds.Shururu:
-                SoundManager.instance.PlayEffectSound("shu_die");
+                {
+                    rand = Random.Range(0, 2);
+                    if (rand == 0)
+                        SoundManager.instance.PlayEffectSound("shu_die");
+                    else
+                        SoundManager.instance.PlayEffectSound("shu_dmg");
+                }
                 break;
 
             case CharacterKinds.Bloom:
-                break;
-
-            case CharacterKinds.Bomb:
+                SoundManager.instance.PlayEffectSound("broom_spin_sweep_03");
                 break;
 
             case CharacterKinds.Lolipop:
+                SoundManager.instance.PlayEffectSound("sweetcandybar_create");
+                break;
+
+            default:
                 break;
         }
     }
@@ -70,7 +79,8 @@ public static class PlayerSound
     {
         switch (type)
         {
-            case SkillEffectType.Chain: SoundManager.instance.PlayCV("wz_enhanced_missile"); 
+            case SkillEffectType.Chain:
+                SoundManager.instance.PlayCV("wz_enhanced_missile");
                 break;
 
             case SkillEffectType.Flapper:
@@ -92,11 +102,11 @@ public static class PlayerSound
             case SkillEffectType.Halloween:
                 {
                     int rand = Random.Range(1, 3);
-                    if(rand == 1)
+                    if (rand == 1)
                         SoundManager.instance.PlayCV("wz_jackohalloween_01");
                     else
                         SoundManager.instance.PlayCV("wz_jackohalloween_02");
-                }     
+                }
                 break;
         }
     }

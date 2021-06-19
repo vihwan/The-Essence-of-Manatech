@@ -179,6 +179,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
                 //만약 클릭한 타일이 폭탄이라면 폭탄 실행
                 if (currentTile.CompareTag("Bomb"))
                 {
+                    SoundManager.instance.PlayEffectSound("jackohalloween_03");
                     BoardManager.instance.JackBombIsMatch(Row, Col);
                     BoardManager.instance.DestroyMatches();
                     return;
