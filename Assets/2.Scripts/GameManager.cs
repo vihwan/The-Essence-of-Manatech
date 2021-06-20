@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
     internal void GameWin()
     {
         GameState = GameState.END;
-        StartCoroutine(GUIManager.instance.WaitForShifting());
+        StartCoroutine(ExternalFuncManager.Instance.WaitForShifting());
     }
 
     // Load a scene with a specified string name

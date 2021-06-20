@@ -33,7 +33,7 @@ public class MonsterAI : MonoBehaviour
     private bool isPhase2 = false;    //2페이즈인지를 확인하는 변수
     private bool isTransform = false; //변신중인지를 확인하는 변수
     private bool isSkillTurn2 = true; // 2번째 스킬을 사용할 순서인지를 확인하는 변수
-    public bool isUsingSkill = false; //스킬을 사용중인지 확인하는 변수
+    public bool isUsingSkill; //스킬을 사용중인지 확인하는 변수
     private bool isHolding = false;   //몬스터가 홀딩 상태이상에 걸려 아무것도 할 수 없는 상태인지를 확인하는 변수
 
     [SerializeField] private float elaspedTime = 0f;
@@ -356,6 +356,7 @@ public class MonsterAI : MonoBehaviour
         fireParticle.Play();
 
         Action = MonsterState.WAIT;
+        isSkillTurn2 = true;
         Debug.Log("2페이즈 돌입");
         isIEUpdate = false;
     }
@@ -401,7 +402,7 @@ public class MonsterAI : MonoBehaviour
                 UseSkill_2();
                 isSkillTurn2 = false;
             }
-            else
+            else if(!isSkillTurn2)
             {
                 UseSkill_3();
                 isSkillTurn2 = true;

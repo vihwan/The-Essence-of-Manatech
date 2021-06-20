@@ -100,6 +100,7 @@
     <Compile Include="Assets\2.Scripts\PlayerData.cs" />
     <Compile Include="Assets\2.Scripts\PlayerSound.cs" />
     <Compile Include="Assets\2.Scripts\PlayerStatus.cs" />
+    <Compile Include="Assets\2.Scripts\ResultPage.cs" />
     <Compile Include="Assets\2.Scripts\SaveAndLoad.cs" />
     <Compile Include="Assets\2.Scripts\ScoreManager.cs" />
     <Compile Include="Assets\2.Scripts\Skill System\ActiveSkill.cs" />

@@ -9,14 +9,10 @@ public class GUIManager : MonoBehaviour
     //싱글톤
     public static GUIManager instance;
 
-    public GameObject gameOverPanel;
-    public Text yourScoreTxt;
-    public Text highScoreTxt;
     public TMP_Text scoreTxt;
-    public Text comboCounterTxt;
     public TMP_Text limitTimeTxt;
 
-    private Button button;
+    private Button pauseBtn;
 
     private float score = 0;
     private float limitTime;
@@ -47,10 +43,10 @@ public class GUIManager : MonoBehaviour
         set
         {
             limitTime = value;
-            if (GameManager.instance.isGameOver)
+/*            if (GameManager.instance.isGameOver)
             {
                 limitTime = 0;
-            }
+            }*/
             hour = (int)limitTime / 3600;
             min = (int)limitTime / 60 % 60;
             sec = (int)limitTime % 60;
@@ -78,10 +74,10 @@ public class GUIManager : MonoBehaviour
 
     public void OnInitPauseButton()
     {
-        button = transform.Find("LimitTimeRoot/LimitTimeImage/Button").GetComponent<Button>();
-        if(button != null)
+        pauseBtn = transform.Find("LimitTimeRoot/LimitTimeImage/Button").GetComponent<Button>();
+        if(pauseBtn != null)
         {
-            button.onClick.AddListener(OpenPauseMenu);
+            pauseBtn.onClick.AddListener(OpenPauseMenu);
         }
     }
 
@@ -116,40 +112,5 @@ public class GUIManager : MonoBehaviour
     {
         Debug.Log("멈춰 끝");
         isPauseTime = false;
-    }
-
-    // 게임오버가 되면 게임 오버 패널을 액티브
-    public void GameOverPanel()
-    {
-        StopAllCoroutines();
-
-        gameOverPanel.SetActive(true);
-
-        if (score > PlayerPrefs.GetInt("HighScore"))
-        {
-            PlayerPrefs.SetInt("HighScore", (int)score);
-            highScoreTxt.text = "New Best: " + PlayerPrefs.GetInt("HighScore").ToString();
-        }
-        else
-        {
-            highScoreTxt.text = "Best: " + PlayerPrefs.GetInt("HighScore").ToString();
-        }
-        yourScoreTxt.text = ((int)score).ToString();
-
-        SoundManager.instance.StopAllSE();
-        SoundManager.instance.StopBGM();
-        SoundManager.instance.PlaySE("DungeonResult");
-        BoardManager.instance = null; //보드 매니저 비활성화
-        BoardManagerMonster.instance = null;
-    }
-
-
-    //게임 오버 전에 대기 시간을 주는 코루틴
-    //BoardState가 MOVE가 될때 까지 기다림
-    public IEnumerator WaitForShifting()
-    {
-        yield return new WaitUntil(() => BoardManager.instance.currentState == PlayerState.MOVE);
-        yield return new WaitForSeconds(.3f);
-        GameOverPanel(); //GUI GameOver Panel
     }
 }

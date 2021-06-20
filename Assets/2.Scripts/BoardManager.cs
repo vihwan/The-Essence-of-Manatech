@@ -431,15 +431,15 @@ public class BoardManager : MonoBehaviour
 
             ShuffleBoard();
 
-            yield return new WaitForSeconds(.5f);
-            //플레이어가 움직일 수 있는 상태 (= 타일의 움직임이 없는 상태)가 될때 까지 기다립니다.
-            yield return new WaitUntil(() => IsPlayerMoveState());
+            yield return new WaitForSeconds(1f);
 
             if (MatchesOnBoard())
             {
                 DestroyMatches();
                 break;
             }
+
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -599,6 +599,8 @@ public class BoardManager : MonoBehaviour
                 tempBoard.Remove(tempBoard[randomNum]);
             }
         }
+
+
     }
 
     // 2번 변이파리채 함수
