@@ -66,7 +66,7 @@ public class DevaSkill2 : MonoBehaviour
         // 사운드 출력
         // 그 분을 대신하여 (스킬 2)
         MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two);
-
+        SoundManager.instance.PlayMonV("devastar_devil_conviction_start");
         deva2s.Clear();
 
         //타일을 랜덤하게 3개를 선택 한 후, 그 타일에 넨 이펙트를 생성한다.
@@ -192,7 +192,7 @@ public class DevaSkill2 : MonoBehaviour
     {
         //컨빅션
         MonsterAI.instance.SoundandNotify.SetVoiceAndNotify(DevastarState.Skill_Two_Final);
-        PlayerSound.PlayPhaseShift();
+        PlaySoundSpearExplosion();
 
         //광폭화시 플레이어가 무적이 아니라면 데미지를 입는다.
         if (player.IsInvincible == false)
@@ -204,11 +204,27 @@ public class DevaSkill2 : MonoBehaviour
             //무적이라면 무적을 해제한다.
             //넨가드 이펙트를 없앤다.
             player.IsInvincible = false;
+            PlayerSound.PlayPhaseShift();
         }
 
         go_List2.Clear();
         Destroy(NenBarrier);
         MonsterAI.instance.Action = MonsterState.MOVE;
         isBerserk = false;
+    }
+
+    private void PlaySoundSpearCreate()
+    {
+        SoundManager.instance.PlayMonV("devastar_devil_conviction_l_spear_create");
+    }
+
+    private void PlaySoundLandingSpear()
+    {
+        SoundManager.instance.PlayMonV("devastar_devil_conviction_l_spear_smash");
+    }
+
+    private void PlaySoundSpearExplosion()
+    {
+        SoundManager.instance.PlayMonV("devastar_devil_conviction_l_spear_exp");
     }
 }

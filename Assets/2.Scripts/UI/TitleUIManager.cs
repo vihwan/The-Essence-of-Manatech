@@ -8,7 +8,6 @@ public class TitleUIManager : MonoBehaviour
 
     private void Start()
     {
-        SoundManager.instance.PlayBGM("Title");
 
     }
 

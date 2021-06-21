@@ -152,8 +152,35 @@ public class DevaSkill3 : MonoBehaviour
     {
         PlayerStatusController playerStatusController = FindObjectOfType<PlayerStatusController>();
         playerStatusController.DecreaseHP(500);
+        PlaySoundBlackholeExplode();
 
         MonsterAI.instance.Action = MonsterState.MOVE;
         isBerserk = false;
+    }
+
+
+    private void PlaySoundBallCast()
+    {
+        SoundManager.instance.PlayMonV("devastar_devil_fusion_ball_cast");
+    }
+
+    private void PlaySoundBallMove()
+    {
+        SoundManager.instance.PlayMonV("devastar_devil_fusion_ball_move");
+    }
+
+    private void PlaySoundBallGrow()
+    {
+        SoundManager.instance.PlayMonV("devastar_devil_fusion_ball_grow");
+    }
+
+    private void PlaySoundBlackholeCreate()
+    {
+        SoundManager.instance.PlayMonV("devastar_devil_fusion_blackhole_tornado");
+    }
+
+    private void PlaySoundBlackholeExplode()
+    {
+        SoundManager.instance.PlayMonV("devastar_devil_fusion_blackhole_exp");
     }
 }

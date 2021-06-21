@@ -94,6 +94,14 @@ public class DevaSkill1 : MonoBehaviour
         if (MonsterAI.instance.IsHolding == true)
             return;
 
+        if (MonsterAI.instance.MonsterStatusController.CurrHp == 0f)
+        {
+            MonsterAI.instance.Action = MonsterState.TRANSFORM;
+            IsActive = false;
+            MonsterAI.instance.isUsingSkill = false;
+            return;
+        }
+
         if (isRemainTimeUpdate)
         {
             remainTime -= Time.deltaTime;
@@ -183,6 +191,8 @@ public class DevaSkill1 : MonoBehaviour
 
         Destroy(bombObject, 3f);
 
+        SoundManager.instance.PlayMonV("devastar_devil_bigball_exp_02");
+
         PlayerStatusController playerStatusController = FindObjectOfType<PlayerStatusController>();
         playerStatusController.DecreaseHP(400);
         go_List.Clear();
@@ -196,6 +206,8 @@ public class DevaSkill1 : MonoBehaviour
         IsActive = true;
         for (int i = 0; i < 5; i++)
         {
+            SoundManager.instance.PlayMonV("devastar_apo_cast");
+
             int rIndex = Random.Range(0, deva1s.Count);
 
             int x = deva1s[rIndex].row;

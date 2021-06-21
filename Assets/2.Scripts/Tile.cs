@@ -314,7 +314,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
             return;
         //목표로 하는 타겟을 설정
         BoardManager.instance.SetTargetPos(gameObject, otherCharacterTile);
-        SoundManager.instance.PlaySE("Swap"); //바꾸기 소리 실행
+        //SoundManager.instance.PlaySE("Swap"); //바꾸기 소리 실행
+        PlayerSound.PlayMoveTile();
 
         StartCoroutine(CheckMoveCoroutine());
     }
@@ -337,6 +338,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
                 comboSystem.PlayComboFailAnimation();
                 yield return new WaitForSeconds(.5f);
                 comboSystem.ComboCounter = 0;
+                PlayerSound.PlayFailTileMatch();
             }
             else
             {

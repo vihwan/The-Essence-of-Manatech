@@ -78,11 +78,13 @@ public class SkillEffectManager : MonoBehaviour
         //플레이어는 스킬 사용중
         BoardManager.instance.currentState = PlayerState.USESKILL;
         BoardManager.instance.ChangePlutoTile();
+        SoundManager.instance.PlayEffectSound("flapper_hit");
     }
 
     private void ShavedIce()
     {
         BoardManager.instance.currentState = PlayerState.USESKILL;
+        PlayEffectSoundJackFrostCreate();
     }
 
     private void EndCastingShavedIce()
@@ -93,5 +95,30 @@ public class SkillEffectManager : MonoBehaviour
     public void PlayExplodeIceAnim()
     {
         animShavedIce.SetTrigger("Explosion");
+    }
+
+    private void PlayEffectSoundChainFluore()
+    {
+        SoundManager.instance.PlayEffectSound("enhanced_missile_flash");
+    }
+
+    private void PlayEffectSoundFlapperCreate()
+    {
+        SoundManager.instance.PlayEffectSound("flapper_create");
+    }
+
+    private void PlayEffectSoundFlapperDisappear()
+    {
+        SoundManager.instance.PlayEffectSound("flapper_disappearance");
+    }
+
+    private void PlayEffectSoundJackFrostCreate()
+    {
+        SoundManager.instance.PlayEffectSound("jackfrost_icetwist");   
+    }
+
+    private void PlayEffectSoundJackFrostExplode()
+    {
+        SoundManager.instance.PlayEffectSound("jackfrost_icewater_exp");
     }
 }

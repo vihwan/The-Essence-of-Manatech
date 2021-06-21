@@ -31,7 +31,7 @@ public static class PlayerSound
 
     public static void PlayFailTileMatch()
     {
-        SoundManager.instance.PlayEffectSound("wz_dash_fall");
+        SoundManager.instance.PlayCV("wz_dash_fall");
     }
 
     public static void PlayPhaseShift()
@@ -137,6 +137,7 @@ public static class PlayerSound
     {
         //플루토 리버스
         SoundManager.instance.PlayCV("wz_antigravity_starter");
+        SoundManager.instance.PlayEffectSound("antigravity_steam");
     }
 
 
@@ -147,7 +148,7 @@ public static class PlayerSound
 
     public static void DeadVoice()
     {
-
+        SoundManager.instance.PlayCV("wz_die");
     }
 
 }

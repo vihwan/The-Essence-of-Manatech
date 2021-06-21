@@ -67,6 +67,10 @@ public class MonsterAI : MonoBehaviour
     public float StandardGroggyTime { get => standardGroggyTime; set => standardGroggyTime = value; }
     public SetDevastarSoundandNotify SoundandNotify { get => soundandNotify; set => soundandNotify = value; }
 
+    public DevaSkill1 DevaSkill1 { get => devaSkill1; set => devaSkill1 = value; }
+    public DevaSkill2 DevaSkill2 { get => devaSkill2; set => devaSkill2 = value; }
+    public DevaSkill3 DevaSkill3 { get => devaSkill3; set => devaSkill3 = value; }
+
     #endregion
 
     public MonsterState Action
@@ -118,6 +122,7 @@ public class MonsterAI : MonoBehaviour
                     break;
 
                 case MonsterState.DEAD:
+                    SoundManager.instance.PlaySE("finale2");
                     SoundManager.instance.PlayMonV("devastar_devil_die_01");
                     GameManager.instance.isGameOver = true;
                     GameManager.instance.GameWin();
@@ -126,24 +131,23 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-
     // Start is called before the first frame update
     public void Init()
     {
         instance = GetComponent<MonsterAI>();
         MonsterStatusController = FindObjectOfType<MonsterStatusController>();
 
-        devaSkill1 = FindObjectOfType<DevaSkill1>();
-        if (devaSkill1 != null)
-            devaSkill1.Init();
+        DevaSkill1 = FindObjectOfType<DevaSkill1>();
+        if (DevaSkill1 != null)
+            DevaSkill1.Init();
 
-        devaSkill2 = FindObjectOfType<DevaSkill2>();
-        if (devaSkill2 != null)
-            devaSkill2.Init();
+        DevaSkill2 = FindObjectOfType<DevaSkill2>();
+        if (DevaSkill2 != null)
+            DevaSkill2.Init();
 
-        devaSkill3 = FindObjectOfType<DevaSkill3>();
-        if (devaSkill3 != null)
-            devaSkill3.Init();
+        DevaSkill3 = FindObjectOfType<DevaSkill3>();
+        if (DevaSkill3 != null)
+            DevaSkill3.Init();
 
         fireParticle = transform.Find("Canvas/Fire").GetComponent<ParticleSystem>();
 
@@ -167,8 +171,8 @@ public class MonsterAI : MonoBehaviour
 
 
         isPhase1 = true;
-        devaSkill1.enabled = true;
-        devaSkill2.enabled = false;
+        DevaSkill1.enabled = true;
+        DevaSkill2.enabled = false;
         RemainGroggyTime = 10f;
 
         Action = MonsterState.MOVE;
@@ -330,7 +334,7 @@ public class MonsterAI : MonoBehaviour
         isIEUpdate = true;
 
         //만약 데바스타르 스킬이 실행중이라면(isRemainTime)
-        if (devaSkill1.isRemainTimeUpdate == true)
+        if (DevaSkill1.isRemainTimeUpdate == true)
         {
             CancelDevaSkill1(out bool isCancelSkill);
             yield return new WaitUntil(() => isCancelSkill == true);
@@ -351,8 +355,8 @@ public class MonsterAI : MonoBehaviour
 
         MonsterStatusController.CurrHp = MonsterStatusController.MaxHp;
         MonsterStatusController.CurrMp = 0;
-        devaSkill1.enabled = false;
-        devaSkill2.enabled = true;
+        DevaSkill1.enabled = false;
+        DevaSkill2.enabled = true;
         fireParticle.Play();
 
         Action = MonsterState.WAIT;
@@ -364,7 +368,7 @@ public class MonsterAI : MonoBehaviour
     private void CancelDevaSkill1(out bool state)
     {
         //데바스타르 스킬 발동중에 변신한다면 스킬을 취소해야한다.
-        devaSkill1.go_List.Clear();
+        DevaSkill1.go_List.Clear();
         for (int i = 0; i < BoardManager.instance.width; i++)
         {
             for (int j = 0; j < BoardManager.instance.height; j++)
@@ -379,7 +383,7 @@ public class MonsterAI : MonoBehaviour
                 }
             }
         }
-        devaSkill1.rootUI.SetActive(false);
+        DevaSkill1.rootUI.SetActive(false);
         state = true;
     }
 
@@ -423,7 +427,7 @@ public class MonsterAI : MonoBehaviour
             Action = MonsterState.CASTING;
             Debug.Log("<color=#1287F6>데바</color> 1스킬 사용");
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
-            devaSkill1.Execute();
+            DevaSkill1.Execute();
         }
     }
 
@@ -437,7 +441,7 @@ public class MonsterAI : MonoBehaviour
             Action = MonsterState.CASTING;
             Debug.Log("<color=#1287F6>데바</color> 2스킬 사용");
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
-            devaSkill2.Execute();
+            DevaSkill2.Execute();
         }
     }
 
@@ -452,7 +456,18 @@ public class MonsterAI : MonoBehaviour
             Action = MonsterState.CASTING;
             Debug.Log("<color=#1287F6>데바</color> 3스킬 사용");
             MonsterStatusController.DecreaseMp((int)MonsterStatusController.MaxMp);
-            devaSkill3.Execute();
+            DevaSkill3.Execute();
         }
     }
+
+    public bool IsMonsterActiveSkill()
+    {
+        if(DevaSkill1.IsActive || DevaSkill2.IsActive || devaSkill3.IsActive)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 }

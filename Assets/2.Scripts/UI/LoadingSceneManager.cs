@@ -79,8 +79,18 @@ public class LoadingSceneManager : MonoBehaviour
         }
         else if(sceneName == "InGameScene")
         {
-            print("던전로딩 배경");
-            backgroundImage.sprite = Resources.Load<Sprite>("loading1");
+            int rand = UnityEngine.Random.Range(0, 2);
+            if(rand == 0)
+            {
+                print("던전로딩 배경");
+                backgroundImage.sprite = Resources.Load<Sprite>("loading1");
+            }
+            else
+            {
+                print("던전로딩 배경2");
+                backgroundImage.sprite = Resources.Load<Sprite>("loading2");
+            }
+
         }
     }
 }

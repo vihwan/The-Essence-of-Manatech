@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
             if (!isGameOver && GUIManager.instance.LimitTime <= 0)
             {
                 isGameOver = true;
-                GameWin();
+                GameLose();
             }
         }
     }
@@ -93,6 +93,14 @@ public class GameManager : MonoBehaviour
     internal void GameWin()
     {
         GameState = GameState.END;
+        BoardManager.instance.currentState = PlayerState.WIN;
+        StartCoroutine(ExternalFuncManager.Instance.WaitForShifting());
+    }
+
+    internal void GameLose()
+    {
+        GameState = GameState.END;
+        BoardManager.instance.currentState = PlayerState.LOSE;
         StartCoroutine(ExternalFuncManager.Instance.WaitForShifting());
     }
 
@@ -171,7 +179,6 @@ public class GameManager : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
-
 
 
     public void ReturnToMenu()

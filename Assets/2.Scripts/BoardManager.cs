@@ -20,6 +20,8 @@ public enum PlayerState
     WAIT,
     MOVE,
     USESKILL,
+    WIN,
+    LOSE
 }
 
 internal class RC
@@ -606,6 +608,8 @@ public class BoardManager : MonoBehaviour
     // 2번 변이파리채 함수
     public void ChangePlutoTile()
     {
+        SoundManager.instance.PlayEffectSound("frosthead");
+
         randomSelectList.Clear();
         for (int x = 0; x < width; x++)
         {

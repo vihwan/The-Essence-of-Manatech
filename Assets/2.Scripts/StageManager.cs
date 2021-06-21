@@ -146,4 +146,9 @@ public class StageManager : MonoBehaviour
             Invoke(nameof(GetReady), 3f);
         }
     }
+
+    private void PlaySECameraMove()
+    {
+        SoundManager.instance.PlaySE("cinematic_pass_whoosh");
+    }
 }

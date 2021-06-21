@@ -95,6 +95,8 @@ public class PlayerStatusController : MonoBehaviour
             currHp = 0f;
             Debug.Log("캐릭터의 hp가 0이 되었습니다");
             //게임 오버
+            GameManager.instance.isGameOver = true;
+            GameManager.instance.GameLose();
         }
     }
 

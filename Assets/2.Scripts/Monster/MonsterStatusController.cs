@@ -8,7 +8,7 @@ using TMPro;
 public class MonsterStatusController : MonoBehaviour
 {
     // 나중에 몬스터 정보가 담긴 컴포넌트 불러오기
-    private MonsterStatus monsterStatus = new MonsterStatus(10, 30, 200);
+    private MonsterStatus monsterStatus = new MonsterStatus(3000, 30, 200);
 
     [SerializeField]
     private float maxHp;
@@ -123,6 +123,10 @@ public class MonsterStatusController : MonoBehaviour
             damage = _count * 10;
         else
             damage = _count;
+
+        //스킬 시전중에는 데미지를 받지 않습니다.
+        if (MonsterAI.instance.IsMonsterActiveSkill())
+            damage = 0f;
 
         if (shieldObject.activeSelf)
         {

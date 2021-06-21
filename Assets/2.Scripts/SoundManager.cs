@@ -22,9 +22,12 @@ public class SoundManager : MonoBehaviour
     //사운드 매니저는 반드시 '하나만' 존재해야한다.
     public static SoundManager instance;
 
-    public AudioSource[] audioSourceEffects; //여러 효과음을 출력하는 소스들을 저장하는 배열
-    public AudioSource audioSourceBGM1; //배경음악은 하나만 있어도 되니 배열이 아님
-    public AudioSource audioSourceBGM2; //또다른 배경음악소스. 배경음의 변경이 자유롭게 이루어지도록 만들기 위함.
+    [SerializeField]
+    private AudioSource[] audioSourceEffects; //여러 효과음을 출력하는 소스들을 저장하는 배열
+    [SerializeField]
+    private AudioSource audioSourceBGM1; //배경음악은 하나만 있어도 되니 배열이 아님
+    [SerializeField]
+    private AudioSource audioSourceBGM2; //또다른 배경음악소스. 배경음의 변경이 자유롭게 이루어지도록 만들기 위함.
 
     #region Deprecate variables
     /*    public Sound[] effectSounds;  //효과음 클립들을 저장하는 배열
@@ -48,6 +51,12 @@ public class SoundManager : MonoBehaviour
         {
             instance = this;
 
+/*            for (int i = 0; i <= 7; i++)
+            {
+                AudioSource audio = this.gameObject.AddComponent<AudioSource>();
+                audioSourceEffects[i] = audio;
+            }*/
+
             audioSourceBGM1 = this.gameObject.AddComponent<AudioSource>();
             audioSourceBGM2 = this.gameObject.AddComponent<AudioSource>();
             audioSourceBGM1.outputAudioMixerGroup = Resources.Load<AudioMixerGroup>("MasterMixer");
@@ -64,6 +73,7 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         playSoundName = new string[audioSourceEffects.Length];
+        instance.PlayBGM("Title");
     }
 
     private AudioClip GetPoolingAudioClip(string _folderName, string _name)
