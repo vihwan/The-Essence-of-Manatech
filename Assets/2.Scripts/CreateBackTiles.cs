@@ -14,11 +14,15 @@ public class CreateBackTiles : MonoBehaviour
     public void Init()
     {
         backTilesBox = new GameObject[width, height];
+
+        tileBackgroundPrefab.GetComponent<RectTransform>().localScale
+             = new Vector3(Screen.width / ReferScreenWidth, Screen.height / ReferScreenHeight, 1f);
+
         Vector2 offset = tileBackgroundPrefab.GetComponent<RectTransform>().sizeDelta;
         float xsize = (offset.x * Screen.width) / ReferScreenWidth;
-        float yzise = (offset.y * Screen.height) / ReferScreenHeight;
+        float ysize = (offset.y * Screen.height) / ReferScreenHeight;
 
-        SetUp(xsize, yzise);
+        SetUp(xsize, ysize);
     }
 
     // Update is called once per frame
@@ -37,7 +41,7 @@ public class CreateBackTiles : MonoBehaviour
                                                 new Vector3(startX + (xOffset * x),
                                                 startY + (yOffset * y), transform.position.z),
                                                 Quaternion.identity);
-                newBackTile.transform.SetParent(transform,false);
+                newBackTile.transform.SetParent(transform);
                 newBackTile.gameObject.name = "Tile Background [" + x + ", " + y + "]";
                 newBackTile.GetComponent<BackgroundTile>().Init(
                     newBackTile.transform.position.x, newBackTile.transform.position.y);

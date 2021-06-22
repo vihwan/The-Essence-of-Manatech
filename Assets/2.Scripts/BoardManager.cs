@@ -44,8 +44,8 @@ public class BoardManager : MonoBehaviour
     private const float ReferScreenWidth = 1920f;
     private const float ReferScreenHeight = 1080f;
 
-    //private float referTileSizeX = 0f;
-    //private float referTileSizeY = 0f;
+    private float referTileSizeX = 0f;
+    private float referTileSizeY = 0f;
 
     public List<Sprite> characters = new List<Sprite>(); //외부에서 사용할 캐릭터들을 저장하는 리스트
     public GameObject[,] characterTilesBox; //캐릭터 타일 보관하는 배열
@@ -83,11 +83,14 @@ public class BoardManager : MonoBehaviour
         // 참조해상도너비(1920) : 프리팹타일너비(80) = 스크린너비(Screen.Width) : 변경될 크기(x)
         //또한 화면 해상도에 맞게 타일 사이즈도 설정해줘야한다.
 
-        Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().sizeDelta;
-        float xsize = (offset.x * Screen.width) / ReferScreenWidth;
-        float ysize = (offset.y * Screen.height) / ReferScreenHeight;
+        characterTilePrefab.GetComponent<RectTransform>().localScale 
+            = new Vector3(Screen.width / ReferScreenWidth, Screen.height / ReferScreenHeight, 1f);
 
-        CreateTiles(xsize, ysize); //타일 프리팹의 사이즈를 매개변수로 보드 생성
+        Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().sizeDelta;
+        referTileSizeX = (offset.x * Screen.width) / ReferScreenWidth;
+        referTileSizeY = (offset.y * Screen.height) / ReferScreenHeight;
+
+        CreateTiles(referTileSizeX, referTileSizeY); //타일 프리팹의 사이즈를 매개변수로 보드 생성
     }
 
     private void Update()
@@ -123,7 +126,7 @@ public class BoardManager : MonoBehaviour
                 GameObject characterTile = Instantiate(characterTilePrefab,
                                            new Vector3(startX + (xOffset * x), startY + (yOffset * y * 2)),
                                            Quaternion.identity);
-                characterTile.transform.SetParent(transform, false);
+                characterTile.transform.SetParent(transform);
                 characterTile.gameObject.name = "Character [" + x + ", " + y + "]";
                 characterTile.GetComponent<Tile>().SetArrNumber(x, y);
                 characterTile.GetComponent<Tile>().targetX = startX + (xOffset * x);
@@ -214,7 +217,7 @@ public class BoardManager : MonoBehaviour
                                             , characterTilesBox[row, col].GetComponent<Tile>().transform.position
                                             , Quaternion.identity);
         missile.GetComponent<Image>().sprite = characterTilesBox[row, col].GetComponent<Image>().sprite;
-        missile.transform.SetParent(transform, false);
+        missile.transform.SetParent(transform);
         Destroy(missile, 10f);
         #endregion
     }
@@ -340,7 +343,7 @@ public class BoardManager : MonoBehaviour
                 else if (nullCount > 0)
                 {
                     characterTilesBox[x, y].GetComponent<Tile>().Col -= nullCount;
-                    characterTilesBox[x, y].GetComponent<Tile>().targetY -= (80 * nullCount);
+                    characterTilesBox[x, y].GetComponent<Tile>().targetY -= (referTileSizeY * nullCount);
                     characterTilesBox[x, y].GetComponent<Tile>().canShifting = true;
                     characterTilesBox[x, y] = null;
                     //  Debug.Log("정보 변경");
@@ -367,9 +370,9 @@ public class BoardManager : MonoBehaviour
                 {
                     float newPositionX = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionX;
                     float newPositionY = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
-                    Vector2 newPosition = new Vector2(newPositionX, newPositionY + characterTilePrefab.GetComponent<RectTransform>().rect.size.y);
+                    Vector2 newPosition = new Vector2(newPositionX, newPositionY + referTileSizeY);
                     GameObject newTile = Instantiate(characterTilePrefab, newPosition, Quaternion.identity);
-                    newTile.transform.SetParent(transform, false);
+                    newTile.transform.SetParent(transform);
                     newTile.GetComponent<Tile>().SetArrNumber(x, y);
                     newTile.GetComponent<Tile>().targetX = newPositionX;
                     newTile.GetComponent<Tile>().targetY = newPositionY;
@@ -437,7 +440,7 @@ public class BoardManager : MonoBehaviour
 
             ShuffleBoard();
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitUntil(() => !IsTileMatchingOrShifting());
 
             if (MatchesOnBoard())
             {
@@ -596,7 +599,7 @@ public class BoardManager : MonoBehaviour
 
                 int randomNum = Random.Range(0, tempBoard.Count);
                 Tile tile = tempBoard[randomNum].GetComponent<Tile>();
-                tile.transform.SetParent(transform, false);
+                tile.transform.SetParent(transform);
                 tile.GetComponent<Tile>().SetArrNumber(x, y);
                 tile.GetComponent<Tile>().targetX = newPositionX;
                 tile.GetComponent<Tile>().targetY = newPositionY;
@@ -671,7 +674,7 @@ public class BoardManager : MonoBehaviour
             newChangeTile.GetComponent<Tile>().SetArrNumber(row, col);
             newChangeTile.GetComponent<Tile>().targetX = newPositionX;
             newChangeTile.GetComponent<Tile>().targetY = newPositionY;
-            newChangeTile.transform.SetParent(transform, false);
+            newChangeTile.transform.SetParent(transform);
             newChangeTile.gameObject.name = "ChangeTile [" + row + ", " + col + "]";
             characterTilesBox[row, col] = newChangeTile;
 
@@ -785,7 +788,7 @@ public class BoardManager : MonoBehaviour
             newJackBomb.GetComponent<Tile>().SetArrNumber(row, col);
             newJackBomb.GetComponent<Tile>().targetX = newPositionX;
             newJackBomb.GetComponent<Tile>().targetY = newPositionY;
-            newJackBomb.transform.SetParent(transform, false);
+            newJackBomb.transform.SetParent(transform);
             newJackBomb.gameObject.name = "Bomb [" + row + ", " + col + "]";
             newJackBomb.GetComponent<Image>().sprite = Resources.Load<Sprite>("7잭오할로윈");
             characterTilesBox[row, col] = newJackBomb;
@@ -808,7 +811,7 @@ public class BoardManager : MonoBehaviour
             if (particle == null)
                 Debug.LogWarning("할로윈 불꽃 파티클이 null입니다.");
             else
-                particle.transform.SetParent(newJackBomb.transform,false);
+                particle.transform.SetParent(newJackBomb.transform);
         }
     }
 

@@ -130,6 +130,7 @@ public class DevaSkill2 : MonoBehaviour
                                  , GameObject.Find("BackgroundCanvas/BoardRoot/BoardImagePlayer").transform.position
                                  , Quaternion.identity
                                  , this.transform);
+                    NenBarrier.transform.SetParent(transform, false);
                 }
             }
 

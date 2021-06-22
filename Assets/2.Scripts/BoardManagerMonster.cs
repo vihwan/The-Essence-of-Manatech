@@ -22,6 +22,9 @@ public class BoardManagerMonster : MonoBehaviour
     private const float ReferScreenWidth = 1920f;
     private const float ReferScreenHeight = 1080f;
 
+    private float referTileSizeX = 0f;
+    private float referTileSizeY = 0f;
+
     private Vector2 moveDirF;
 
     public List<Sprite> monsterTilesList = new List<Sprite>(); //에디터에서 사용할 타일들을 저장하는 리스트
@@ -47,13 +50,16 @@ public class BoardManagerMonster : MonoBehaviour
         devaSkill2 = FindObjectOfType<DevaSkill2>();
         devaSkill3 = FindObjectOfType<DevaSkill3>();
 
-
         monsterTilesBox = new GameObject[width, height];
-        Vector2 offset = monsterTilePrefab.GetComponent<RectTransform>().rect.size;
-        float xsize = (offset.x * Screen.width) / ReferScreenWidth;
-        float ysize = (offset.y * Screen.height) / ReferScreenHeight;
 
-        CreateTiles(xsize, ysize); //타일 프리팹의 사이즈를 매개변수로 보드 생성
+        monsterTilePrefab.GetComponent<RectTransform>().localScale
+            = new Vector3(Screen.width / ReferScreenWidth, Screen.height / ReferScreenHeight, 1f);
+
+        Vector2 offset = monsterTilePrefab.GetComponent<RectTransform>().sizeDelta;
+        referTileSizeX = (offset.x * Screen.width) / ReferScreenWidth;
+        referTileSizeY = (offset.y * Screen.height) / ReferScreenHeight;
+
+        CreateTiles(referTileSizeX, referTileSizeY); //타일 프리팹의 사이즈를 매개변수로 보드 생성
     }
 
     private void Update()
@@ -81,7 +87,7 @@ public class BoardManagerMonster : MonoBehaviour
                                 startY + (yOffset * y * 2)),
                                 Quaternion.identity);
 
-                monsterTile.transform.SetParent(transform,false);
+                monsterTile.transform.SetParent(transform);
                 monsterTile.gameObject.name = "Monster [" + x + ", " + y + "]";
                 monsterTile.GetComponent<TileMonster>().SetArrNumber(x, y);
                 monsterTile.GetComponent<TileMonster>().targetX = startX + (xOffset * x);
@@ -292,7 +298,7 @@ public class BoardManagerMonster : MonoBehaviour
                 else if (nullCount > 0)
                 {
                     monsterTilesBox[x, y].GetComponent<TileMonster>().Col -= nullCount;
-                    monsterTilesBox[x, y].GetComponent<TileMonster>().targetY -= (80 * nullCount);
+                    monsterTilesBox[x, y].GetComponent<TileMonster>().targetY -= (referTileSizeY * nullCount);
                     monsterTilesBox[x, y].GetComponent<TileMonster>().canShifting = true;
                     monsterTilesBox[x, y] = null;
                     //  Debug.Log("정보 변경");
@@ -334,9 +340,9 @@ public class BoardManagerMonster : MonoBehaviour
                 {
                     float newPositionX = createBoardMonster.backTilesBox[x, y].GetComponent<BackgroundTile>().positionX;
                     float newPositionY = createBoardMonster.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
-                    Vector2 newPosition = new Vector2(newPositionX, newPositionY + monsterTilePrefab.GetComponent<RectTransform>().rect.size.y);
+                    Vector2 newPosition = new Vector2(newPositionX, newPositionY + referTileSizeY);
                     GameObject newTile = Instantiate(monsterTilePrefab, newPosition, Quaternion.identity);
-                    newTile.transform.SetParent(transform,false);
+                    newTile.transform.SetParent(transform);
                     newTile.GetComponent<TileMonster>().SetArrNumber(x, y);
                     newTile.GetComponent<TileMonster>().targetX = newPositionX;
                     newTile.GetComponent<TileMonster>().targetY = newPositionY;
