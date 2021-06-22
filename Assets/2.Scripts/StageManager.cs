@@ -33,9 +33,10 @@ public class StageManager : MonoBehaviour
         animator = GetComponent<Animator>();
         readyGoText = transform.Find("GUIManagerCanvas/ReadyGoText/Text").GetComponent<TMP_Text>();
 
-
         PlayUISlide();
         SoundManager.instance.PlayBGMWithCrossFade("resting_place_for_extinction_p1");
+
+        GameManager.instance.GameState = GameState.READY;
     }
 
     private void PlayUISlide()

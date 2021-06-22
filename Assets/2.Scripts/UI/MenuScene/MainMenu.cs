@@ -122,6 +122,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         }
 
         SoundManager.instance.PlayBGMWithCrossFade("chantri");
+        GameManager.instance.GameState = GameState.TOWN;
     }
 
     private void Update()

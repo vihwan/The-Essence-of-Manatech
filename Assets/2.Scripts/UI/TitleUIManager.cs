@@ -8,7 +8,7 @@ public class TitleUIManager : MonoBehaviour
 
     private void Start()
     {
-
+        GameManager.instance.GameState = GameState.TITLE;
     }
 
     private void Update()

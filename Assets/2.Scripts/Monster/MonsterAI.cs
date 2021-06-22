@@ -149,7 +149,9 @@ public class MonsterAI : MonoBehaviour
         if (DevaSkill3 != null)
             DevaSkill3.Init();
 
-        fireParticle = transform.Find("Canvas/Fire").GetComponent<ParticleSystem>();
+        fireParticle = GameObject.Find("StageManager/BackTileCanvas/Fire").GetComponent<ParticleSystem>();
+        if (fireParticle == null)
+            Debug.LogWarning(fireParticle.name + "가 참조되지 않았습니다.");
 
 
         SoundandNotify = GetComponent<SetDevastarSoundandNotify>();
@@ -181,15 +183,21 @@ public class MonsterAI : MonoBehaviour
 
     private void WAIT()
     {
-        if (BoardManagerMonster.instance.CanMovePlayerState())
-        {
-            Action = MonsterState.MOVE;
-        }
+        /*        if (BoardManagerMonster.instance.CanMovePlayerState())
+                {
+                    Action = MonsterState.MOVE;
+                }*/
+
+        Action = MonsterState.MOVE;
     }
 
 
     private void MOVE()
     {
+        //게임 상태가 플레이중이 아니라면 리턴합니다.
+        if (GameManager.instance.GameState != GameState.PLAYING)
+            return;
+
         //홀딩상태일 때는 움직일 수 없습니다.
         if (isHolding == true)
             return;
@@ -333,15 +341,16 @@ public class MonsterAI : MonoBehaviour
     {
         isIEUpdate = true;
 
+        //1페이즈 사망 대사
+        SoundandNotify.SetVoiceAndNotify(DevastarState.HumanDead);
+
+        yield return new WaitForSeconds(.5f);
         //만약 데바스타르 스킬이 실행중이라면(isRemainTime)
         if (DevaSkill1.isRemainTimeUpdate == true)
         {
             CancelDevaSkill1(out bool isCancelSkill);
             yield return new WaitUntil(() => isCancelSkill == true);
         }
-
-        //1페이즈 사망 대사
-        SoundandNotify.SetVoiceAndNotify(DevastarState.HumanDead);
 
         yield return new WaitForSeconds(3f);
 
@@ -351,7 +360,6 @@ public class MonsterAI : MonoBehaviour
 
         isTransform = false;
         isPhase2 = true;
-
 
         MonsterStatusController.CurrHp = MonsterStatusController.MaxHp;
         MonsterStatusController.CurrMp = 0;

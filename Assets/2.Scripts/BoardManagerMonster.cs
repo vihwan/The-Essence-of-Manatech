@@ -19,6 +19,9 @@ public class BoardManagerMonster : MonoBehaviour
 
     private const float refillDelay = 0.5f;
 
+    private const float ReferScreenWidth = 1920f;
+    private const float ReferScreenHeight = 1080f;
+
     private Vector2 moveDirF;
 
     public List<Sprite> monsterTilesList = new List<Sprite>(); //에디터에서 사용할 타일들을 저장하는 리스트
@@ -47,7 +50,10 @@ public class BoardManagerMonster : MonoBehaviour
 
         monsterTilesBox = new GameObject[width, height];
         Vector2 offset = monsterTilePrefab.GetComponent<RectTransform>().rect.size;
-        CreateTiles(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
+        float xsize = (offset.x * Screen.width) / ReferScreenWidth;
+        float ysize = (offset.y * Screen.height) / ReferScreenHeight;
+
+        CreateTiles(xsize, ysize); //타일 프리팹의 사이즈를 매개변수로 보드 생성
     }
 
     private void Update()
@@ -75,7 +81,7 @@ public class BoardManagerMonster : MonoBehaviour
                                 startY + (yOffset * y * 2)),
                                 Quaternion.identity);
 
-                monsterTile.transform.SetParent(transform);
+                monsterTile.transform.SetParent(transform,false);
                 monsterTile.gameObject.name = "Monster [" + x + ", " + y + "]";
                 monsterTile.GetComponent<TileMonster>().SetArrNumber(x, y);
                 monsterTile.GetComponent<TileMonster>().targetX = startX + (xOffset * x);
@@ -330,7 +336,7 @@ public class BoardManagerMonster : MonoBehaviour
                     float newPositionY = createBoardMonster.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
                     Vector2 newPosition = new Vector2(newPositionX, newPositionY + monsterTilePrefab.GetComponent<RectTransform>().rect.size.y);
                     GameObject newTile = Instantiate(monsterTilePrefab, newPosition, Quaternion.identity);
-                    newTile.transform.SetParent(transform);
+                    newTile.transform.SetParent(transform,false);
                     newTile.GetComponent<TileMonster>().SetArrNumber(x, y);
                     newTile.GetComponent<TileMonster>().targetX = newPositionX;
                     newTile.GetComponent<TileMonster>().targetY = newPositionY;

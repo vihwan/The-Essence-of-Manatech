@@ -41,6 +41,12 @@ public class BoardManager : MonoBehaviour
 
     private const float refillDelay = 0.5f;
 
+    private const float ReferScreenWidth = 1920f;
+    private const float ReferScreenHeight = 1080f;
+
+    //private float referTileSizeX = 0f;
+    //private float referTileSizeY = 0f;
+
     public List<Sprite> characters = new List<Sprite>(); //외부에서 사용할 캐릭터들을 저장하는 리스트
     public GameObject[,] characterTilesBox; //캐릭터 타일 보관하는 배열
     public GameObject characterTilePrefab;  //Tile Prefab
@@ -49,15 +55,11 @@ public class BoardManager : MonoBehaviour
     public PlayerState currentState = PlayerState.WAIT;
 
     //필요한 컴포넌트
-
     private FindMatches findMatches;
     private CreateBackTiles createBoard;
     private ComboSystem comboSystem;
     private PlayerStatusController skillGauge;
     private MonsterStatusController monsterStatusController;
-    private DevaSkill1 devaSkill1;
-    private DevaSkill2 devaSkill2;
-    private DevaSkill3 devaSkill3;
 
 
     private List<RC> randomSelectList = new List<RC>();
@@ -74,14 +76,18 @@ public class BoardManager : MonoBehaviour
         comboSystem = FindObjectOfType<ComboSystem>();
         skillGauge = FindObjectOfType<PlayerStatusController>();
         monsterStatusController = FindObjectOfType<MonsterStatusController>();
-        devaSkill1 = FindObjectOfType<DevaSkill1>();
-        devaSkill2 = FindObjectOfType<DevaSkill2>();
-        devaSkill3 = FindObjectOfType<DevaSkill3>();
 
         characterTilesBox = new GameObject[width, height];
 
+        //화면 해상도에 맞게 offset을 설정해줘야한다.
+        // 참조해상도너비(1920) : 프리팹타일너비(80) = 스크린너비(Screen.Width) : 변경될 크기(x)
+        //또한 화면 해상도에 맞게 타일 사이즈도 설정해줘야한다.
+
         Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().sizeDelta;
-        CreateTiles(offset.x, offset.y); //타일 프리팹의 사이즈를 매개변수로 보드 생성
+        float xsize = (offset.x * Screen.width) / ReferScreenWidth;
+        float ysize = (offset.y * Screen.height) / ReferScreenHeight;
+
+        CreateTiles(xsize, ysize); //타일 프리팹의 사이즈를 매개변수로 보드 생성
     }
 
     private void Update()
@@ -92,8 +98,6 @@ public class BoardManager : MonoBehaviour
             // PrintBoardState();
         }
     }
-
-
 
     private void PrintBoardState()
     {
@@ -119,7 +123,7 @@ public class BoardManager : MonoBehaviour
                 GameObject characterTile = Instantiate(characterTilePrefab,
                                            new Vector3(startX + (xOffset * x), startY + (yOffset * y * 2)),
                                            Quaternion.identity);
-                characterTile.transform.SetParent(transform);
+                characterTile.transform.SetParent(transform, false);
                 characterTile.gameObject.name = "Character [" + x + ", " + y + "]";
                 characterTile.GetComponent<Tile>().SetArrNumber(x, y);
                 characterTile.GetComponent<Tile>().targetX = startX + (xOffset * x);
@@ -181,11 +185,11 @@ public class BoardManager : MonoBehaviour
             {
                 if (targetTile.isSealed)
                 {
-                    devaSkill1.go_List.Remove(characterTilesBox[row, col].GetComponentInChildren<SealedEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill1.go_List.Remove(characterTilesBox[row, col].GetComponentInChildren<SealedEffect>().gameObject);
                 }
                 else if (targetTile.isActiveNen)
                 {
-                    devaSkill2.go_List2.Remove(characterTilesBox[row, col].GetComponentInChildren<NenEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill2.go_List2.Remove(characterTilesBox[row, col].GetComponentInChildren<NenEffect>().gameObject);
                 }
             }
 
@@ -210,7 +214,7 @@ public class BoardManager : MonoBehaviour
                                             , characterTilesBox[row, col].GetComponent<Tile>().transform.position
                                             , Quaternion.identity);
         missile.GetComponent<Image>().sprite = characterTilesBox[row, col].GetComponent<Image>().sprite;
-        missile.transform.SetParent(transform);
+        missile.transform.SetParent(transform, false);
         Destroy(missile, 10f);
         #endregion
     }
@@ -231,14 +235,14 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[row - 1, col].GetComponent<Tile>().isSealed)
                 {
                     CreateDestroyEffect(row - 1, col);
-                    devaSkill1.go_List.Remove(characterTilesBox[row - 1, col].GetComponentInChildren<SealedEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill1.go_List.Remove(characterTilesBox[row - 1, col].GetComponentInChildren<SealedEffect>().gameObject);
                     Destroy(characterTilesBox[row - 1, col].gameObject);
                     characterTilesBox[row - 1, col] = null;
                 }
                 else if (characterTilesBox[row - 1, col].GetComponent<Tile>().isActiveNen)
                 {
                     CreateDestroyEffect(row - 1, col);
-                    devaSkill2.go_List2.Remove(characterTilesBox[row - 1, col].GetComponentInChildren<NenEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill2.go_List2.Remove(characterTilesBox[row - 1, col].GetComponentInChildren<NenEffect>().gameObject);
                     Destroy(characterTilesBox[row - 1, col].gameObject);
                     characterTilesBox[row - 1, col] = null;
                 }
@@ -253,14 +257,14 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[row + 1, col].GetComponent<Tile>().isSealed)
                 {
                     CreateDestroyEffect(row + 1, col);
-                    devaSkill1.go_List.Remove(characterTilesBox[row + 1, col].GetComponentInChildren<SealedEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill1.go_List.Remove(characterTilesBox[row + 1, col].GetComponentInChildren<SealedEffect>().gameObject);
                     Destroy(characterTilesBox[row + 1, col].gameObject);
                     characterTilesBox[row + 1, col] = null;
                 }
                 else if (characterTilesBox[row + 1, col].GetComponent<Tile>().isActiveNen)
                 {
                     CreateDestroyEffect(row + 1, col);
-                    devaSkill2.go_List2.Remove(characterTilesBox[row + 1, col].GetComponentInChildren<NenEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill2.go_List2.Remove(characterTilesBox[row + 1, col].GetComponentInChildren<NenEffect>().gameObject);
                     Destroy(characterTilesBox[row + 1, col].gameObject);
                     characterTilesBox[row + 1, col] = null;
                 }
@@ -275,14 +279,14 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[row, col - 1].GetComponent<Tile>().isSealed)
                 {
                     CreateDestroyEffect(row, col - 1);
-                    devaSkill1.go_List.Remove(characterTilesBox[row, col - 1].GetComponentInChildren<SealedEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill1.go_List.Remove(characterTilesBox[row, col - 1].GetComponentInChildren<SealedEffect>().gameObject);
                     Destroy(characterTilesBox[row, col - 1].gameObject);
                     characterTilesBox[row, col - 1] = null;
                 }
                 else if (characterTilesBox[row, col - 1].GetComponent<Tile>().isActiveNen)
                 {
                     CreateDestroyEffect(row, col - 1);
-                    devaSkill2.go_List2.Remove(characterTilesBox[row, col - 1].GetComponentInChildren<NenEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill2.go_List2.Remove(characterTilesBox[row, col - 1].GetComponentInChildren<NenEffect>().gameObject);
                     Destroy(characterTilesBox[row, col - 1].gameObject);
                     characterTilesBox[row, col - 1] = null;
                 }
@@ -297,14 +301,14 @@ public class BoardManager : MonoBehaviour
                 if (characterTilesBox[row, col + 1].GetComponent<Tile>().isSealed)
                 {
                     CreateDestroyEffect(row, col + 1);
-                    devaSkill1.go_List.Remove(characterTilesBox[row, col + 1].GetComponentInChildren<SealedEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill1.go_List.Remove(characterTilesBox[row, col + 1].GetComponentInChildren<SealedEffect>().gameObject);
                     Destroy(characterTilesBox[row, col + 1].gameObject);
                     characterTilesBox[row, col + 1] = null;
                 }
                 else if (characterTilesBox[row, col + 1].GetComponent<Tile>().isActiveNen)
                 {
                     CreateDestroyEffect(row, col + 1);
-                    devaSkill2.go_List2.Remove(characterTilesBox[row, col + 1].GetComponentInChildren<NenEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill2.go_List2.Remove(characterTilesBox[row, col + 1].GetComponentInChildren<NenEffect>().gameObject);
                     Destroy(characterTilesBox[row, col + 1].gameObject);
                     characterTilesBox[row, col + 1] = null;
                 }
@@ -365,7 +369,7 @@ public class BoardManager : MonoBehaviour
                     float newPositionY = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
                     Vector2 newPosition = new Vector2(newPositionX, newPositionY + characterTilePrefab.GetComponent<RectTransform>().rect.size.y);
                     GameObject newTile = Instantiate(characterTilePrefab, newPosition, Quaternion.identity);
-                    newTile.transform.SetParent(transform);
+                    newTile.transform.SetParent(transform, false);
                     newTile.GetComponent<Tile>().SetArrNumber(x, y);
                     newTile.GetComponent<Tile>().targetX = newPositionX;
                     newTile.GetComponent<Tile>().targetY = newPositionY;
@@ -592,7 +596,7 @@ public class BoardManager : MonoBehaviour
 
                 int randomNum = Random.Range(0, tempBoard.Count);
                 Tile tile = tempBoard[randomNum].GetComponent<Tile>();
-                tile.transform.SetParent(transform);
+                tile.transform.SetParent(transform, false);
                 tile.GetComponent<Tile>().SetArrNumber(x, y);
                 tile.GetComponent<Tile>().targetX = newPositionX;
                 tile.GetComponent<Tile>().targetY = newPositionY;
@@ -647,11 +651,11 @@ public class BoardManager : MonoBehaviour
             {
                 if (characterTilesBox[row, col].GetComponent<Tile>().isSealed)
                 {
-                    devaSkill1.go_List.Remove(characterTilesBox[row, col].GetComponentInChildren<SealedEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill1.go_List.Remove(characterTilesBox[row, col].GetComponentInChildren<SealedEffect>().gameObject);
                 }
                 else if (characterTilesBox[row, col].GetComponent<Tile>().isActiveNen)
                 {
-                    devaSkill2.go_List2.Remove(characterTilesBox[row, col].GetComponentInChildren<NenEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill2.go_List2.Remove(characterTilesBox[row, col].GetComponentInChildren<NenEffect>().gameObject);
                 }
             }
 
@@ -667,7 +671,7 @@ public class BoardManager : MonoBehaviour
             newChangeTile.GetComponent<Tile>().SetArrNumber(row, col);
             newChangeTile.GetComponent<Tile>().targetX = newPositionX;
             newChangeTile.GetComponent<Tile>().targetY = newPositionY;
-            newChangeTile.transform.SetParent(transform);
+            newChangeTile.transform.SetParent(transform, false);
             newChangeTile.gameObject.name = "ChangeTile [" + row + ", " + col + "]";
             characterTilesBox[row, col] = newChangeTile;
 
@@ -761,11 +765,11 @@ public class BoardManager : MonoBehaviour
             {
                 if (characterTilesBox[row, col].GetComponent<Tile>().isSealed)
                 {
-                    devaSkill1.go_List.Remove(characterTilesBox[row, col].GetComponentInChildren<SealedEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill1.go_List.Remove(characterTilesBox[row, col].GetComponentInChildren<SealedEffect>().gameObject);
                 }
                 else if (characterTilesBox[row, col].GetComponent<Tile>().isActiveNen)
                 {
-                    devaSkill2.go_List2.Remove(characterTilesBox[row, col].GetComponentInChildren<NenEffect>().gameObject);
+                    MonsterAI.instance.DevaSkill2.go_List2.Remove(characterTilesBox[row, col].GetComponentInChildren<NenEffect>().gameObject);
                 }
             }
 
@@ -781,7 +785,7 @@ public class BoardManager : MonoBehaviour
             newJackBomb.GetComponent<Tile>().SetArrNumber(row, col);
             newJackBomb.GetComponent<Tile>().targetX = newPositionX;
             newJackBomb.GetComponent<Tile>().targetY = newPositionY;
-            newJackBomb.transform.SetParent(transform);
+            newJackBomb.transform.SetParent(transform, false);
             newJackBomb.gameObject.name = "Bomb [" + row + ", " + col + "]";
             newJackBomb.GetComponent<Image>().sprite = Resources.Load<Sprite>("7잭오할로윈");
             characterTilesBox[row, col] = newJackBomb;
@@ -804,7 +808,7 @@ public class BoardManager : MonoBehaviour
             if (particle == null)
                 Debug.LogWarning("할로윈 불꽃 파티클이 null입니다.");
             else
-                particle.transform.SetParent(newJackBomb.transform);
+                particle.transform.SetParent(newJackBomb.transform,false);
         }
     }
 
@@ -851,7 +855,7 @@ public class BoardManager : MonoBehaviour
         }
 
         //몬스터가 스킬을 사용중이거나, 광폭화 상태일 경우, 혹은 변신 중일 때에는 움직일 수 없습니다.
-        if (devaSkill1.IsActive || devaSkill2.IsActive || devaSkill3.IsActive ||
+        if (MonsterAI.instance.DevaSkill1.IsActive || MonsterAI.instance.DevaSkill2.IsActive || MonsterAI.instance.DevaSkill3.IsActive ||
             MonsterAI.instance.Action == MonsterState.TRANSFORM ||
             MonsterAI.instance.Action == MonsterState.BERSERK)
         {

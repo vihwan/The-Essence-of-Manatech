@@ -63,17 +63,18 @@ public class ResultPage : MonoBehaviour
 
         SoundManager.instance.StopAllSE();
         SoundManager.instance.StopBGM();
-        if (BoardManager.instance.currentState == PlayerState.WIN)
+        if (GameManager.instance.PlayerState == PlayerState.WIN)
         {
             SoundManager.instance.PlaySE("DungeonResult");
         }
-        else
+        else if(GameManager.instance.PlayerState == PlayerState.LOSE)
         {
             rankImage.sprite = Resources.Load<Sprite>("coffin");
             SoundManager.instance.PlayBGM("coffin_rene");
         }
 
-        BoardManager.instance = null; //보드 매니저 비활성화
+        //보드 매니저 비활성화
+        BoardManager.instance = null;
         BoardManagerMonster.instance = null;
         SkillManager.instance = null;
     }
@@ -90,6 +91,10 @@ public class ResultPage : MonoBehaviour
 
         if (leftLimitTime > PlayerPrefs.GetFloat("HighLimitTime"))
         {
+            //만약 플레이어가 패배상태
+            if (BoardManager.instance.currentState == PlayerState.LOSE)
+                return;
+
             PlayerPrefs.SetFloat("HighLimitTime", leftLimitTime);
             bestClearTimeTxt.text = "New 베스트타임 : " + ParseTime(PlayerPrefs.GetFloat("HighLimitTime"));
         }

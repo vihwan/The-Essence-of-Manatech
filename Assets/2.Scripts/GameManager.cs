@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 
 public enum GameState{
-    BEGIN,
+    TITLE,
+    TOWN,
+    READY,
     PLAYING,
     PAUSE,
     END
@@ -30,13 +32,17 @@ public class GameManager : MonoBehaviour
     private AsyncOperation async;
 
     [SerializeField] private GameState gameState;
+    [SerializeField] private PlayerState playerState;
 
     //제어하는 컴포넌트
     private SaveAndLoad saveAndLoad;
     private SkillData skillData;
 
     public GameState GameState { get => gameState; set => gameState = value; }
+    public PlayerState PlayerState { get => playerState; private set => playerState = value; }
 
+
+    private GUIStyle guiStyle = new GUIStyle();
 
     private void Awake()
     {
@@ -56,7 +62,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
 
-        GameState = GameState.BEGIN;
+        GameState = GameState.READY;
         saveAndLoad = FindObjectOfType<SaveAndLoad>();
         if(saveAndLoad != null)
         {
@@ -90,18 +96,35 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    //디버그용 
+    private void OnGUI()
+    {
+        guiStyle.fontSize = 20;
+        guiStyle.normal.textColor = Color.white;
+        GUI.Label(new Rect(10, 10, 300, 60), "GameState : " + instance.gameState.ToString(), guiStyle);
+        if(SceneManager.GetActiveScene().name == "InGameScene")
+        {
+            if (BoardManager.instance == null || MonsterAI.instance == null)
+                return;
+
+            GUI.Label(new Rect(10, 50, 100, 20), "PlayerState : " + BoardManager.instance.currentState.ToString(), guiStyle);
+            GUI.Label(new Rect(10, 90, 100, 20), "MonsterState : " + MonsterAI.instance.Action.ToString(), guiStyle);
+        }     
+    }
+
     internal void GameWin()
     {
         GameState = GameState.END;
-        BoardManager.instance.currentState = PlayerState.WIN;
+        PlayerState = PlayerState.WIN;
         StartCoroutine(ExternalFuncManager.Instance.WaitForShifting());
     }
 
     internal void GameLose()
     {
         GameState = GameState.END;
-        BoardManager.instance.currentState = PlayerState.LOSE;
-        StartCoroutine(ExternalFuncManager.Instance.WaitForShifting());
+        PlayerState = PlayerState.LOSE;
+        StartCoroutine(ExternalFuncManager.Instance.WaitForShifting());;
     }
 
     // Load a scene with a specified string name
@@ -164,6 +187,7 @@ public class GameManager : MonoBehaviour
             return currentScene;
         }
     }
+
 
     public void ExitGame()
     {

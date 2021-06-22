@@ -69,7 +69,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     {
         get
         {
-            if (GameManager.instance.GameState == GameState.BEGIN)
+            if (GameManager.instance.GameState == GameState.READY)
                 moveSpeed = 5f * Time.deltaTime;
             else
                 moveSpeed = 17f * Time.deltaTime;
@@ -162,19 +162,20 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if(GameManager.instance.GameState != GameState.PLAYING)
+        if (GameManager.instance.GameState != GameState.PLAYING)
             return;
 
         if (BoardManager.instance.currentState == PlayerState.MOVE)
         {
             GameObject currentTile = eventData.pointerCurrentRaycast.gameObject;
+            previousTile = currentTile.GetComponent<Tile>();
 
             if (hintManager != null)
             {
                 hintManager.DestroyHint();
             }
 
-            if(UtilHelper.HasComponent<Tile>(currentTile))
+            if (UtilHelper.HasComponent<Tile>(currentTile))
             {
                 //만약 클릭한 타일이 폭탄이라면 폭탄 실행
                 if (currentTile.CompareTag("Bomb"))
@@ -188,13 +189,13 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
                 if (currentTile.GetComponent<Tile>().isSealed)
                 {
                     Debug.Log("<color=#E36250>봉인당한 타일</color>은 옮겨지지 않습니다.");
-                    previousTile = eventData.pointerCurrentRaycast.gameObject.GetComponent<Tile>();
+                    //previousTile = eventData.pointerCurrentRaycast.gameObject.GetComponent<Tile>();
                     return;
                 }
 
                 firstTouchPosition = currentTile.transform.position;
                 SoundManager.instance.PlaySE("Select");
-            }     
+            }
         }
         else
             return;
@@ -227,8 +228,13 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
                 if (UtilHelper.HasComponent<Tile>(currentTile_GO))
                 {
+                    //만약 옮겨질 두번째 타일이 봉인 상태가 아니라면
                     if (!currentTile_GO.GetComponent<Tile>().isSealed)
                     {
+/*                        //옮겨질 두번째 타일이 인접한 타일이 아니라면
+                        if (!IsNearTile(currentTile_GO))
+                            return;*/
+
                         if (previousTile != null)
                         {
                             if (previousTile.isSealed)
@@ -239,17 +245,19 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
                             }
                         }
                     }
-                    else
+                    else //봉인 상태라면
                     {
+      
+
                         Debug.Log("<color=#E36250>봉인당한 타일</color>은 옮겨지지 않습니다.");
                         return;
                     }
 
-                    BoardManager.instance.currentState = PlayerState.WAIT; //유저 조작 대기 상태
+                    //BoardManager.instance.currentState = PlayerState.WAIT; //유저 조작 대기 상태
                     secondTouchPosition = eventData.position;
                     //Debug.Log("바꿀 타일 : " + eventData.pointerCurrentRaycast.gameObject);
                     CalculateSwapAngle();
-                }           
+                }
             }
         }
     }
@@ -263,11 +271,11 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
             swapAngle = Mathf.Atan2(secondTouchPosition.y - firstTouchPosition.y, secondTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
             //타일 바꾸기
             SwapTile();
-            BoardManager.instance.currentState = PlayerState.WAIT;
+            //BoardManager.instance.currentState = PlayerState.WAIT;
         }
         else
         {
-            BoardManager.instance.currentState = PlayerState.MOVE;
+            //BoardManager.instance.currentState = PlayerState.MOVE;
         }
     }
 
@@ -278,6 +286,12 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         {
             //오른쪽 타일과 교체
             otherCharacterTile = BoardManager.instance.characterTilesBox[Row + 1, Col];
+            if(otherCharacterTile.GetComponent<Tile>().isSealed)
+            {
+                print("인접한 봉인된 타일은 교체되지 않습니다.");
+                return;
+            }
+
             otherCharacterTile.GetComponent<Tile>().Row -= 1;
             previousRow = Row;
             previousCol = Col;
@@ -287,6 +301,11 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         {
             //위쪽 타일과 교체
             otherCharacterTile = BoardManager.instance.characterTilesBox[Row, Col + 1];
+            if (otherCharacterTile.GetComponent<Tile>().isSealed)
+            {
+                print("인접한 봉인된 타일은 교체되지 않습니다.");
+                return;
+            }
             otherCharacterTile.GetComponent<Tile>().Col -= 1;
             previousRow = Row;
             previousCol = Col;
@@ -296,6 +315,11 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         {
             //왼쪽 타일과 교체
             otherCharacterTile = BoardManager.instance.characterTilesBox[Row - 1, Col];
+            if (otherCharacterTile.GetComponent<Tile>().isSealed)
+            {
+                print("인접한 봉인된 타일은 교체되지 않습니다.");
+                return;
+            }
             otherCharacterTile.GetComponent<Tile>().Row += 1;
             previousRow = Row;
             previousCol = Col;
@@ -305,6 +329,11 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         {
             //아래쪽 타일과 교체
             otherCharacterTile = BoardManager.instance.characterTilesBox[Row, Col - 1];
+            if (otherCharacterTile.GetComponent<Tile>().isSealed)
+            {
+                print("인접한 봉인된 타일은 교체되지 않습니다.");
+                return;
+            }
             otherCharacterTile.GetComponent<Tile>().Col += 1;
             previousRow = Row;
             previousCol = Col;
@@ -312,6 +341,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         }
         else
             return;
+
+
         //목표로 하는 타겟을 설정
         BoardManager.instance.SetTargetPos(gameObject, otherCharacterTile);
         //SoundManager.instance.PlaySE("Swap"); //바꾸기 소리 실행
@@ -383,6 +414,4 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         Row = x;
         Col = y;
     }
-
-
 }

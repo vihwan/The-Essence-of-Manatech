@@ -36,6 +36,34 @@ public class SettingMenu : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+
+            resolutionDropdown = transform.Find("Background/Resolution/Dropdown").GetComponent<TMP_Dropdown>();
+            if (resolutionDropdown != null)
+            {
+                InitResolution();
+                resolutionDropdown.onValueChanged.AddListener(SetResolution);
+            }
+
+            graphicsDropdown = transform.Find("Background/Graphics/Dropdown").GetComponent<TMP_Dropdown>();
+            if (graphicsDropdown != null)
+            {
+                graphicsDropdown.onValueChanged.AddListener(SetGraphicQuality);
+            }
+
+            volumeSlider = GetComponentInChildren<Slider>(true);
+            if (volumeSlider != null)
+            {
+                volumeSlider.onValueChanged.AddListener(SetVolume);
+            }
+
+            exitBtn = GetComponentInChildren<Button>(true);
+            if (exitBtn != null)
+            {
+                exitBtn.onClick.AddListener(CloseSettingMenu);
+            }
+
+            instance.gameObject.SetActive(false);
+
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -46,32 +74,7 @@ public class SettingMenu : MonoBehaviour
 
     private void Start()
     {
-        resolutionDropdown = transform.Find("Background/Resolution/Dropdown").GetComponent<TMP_Dropdown>();
-        if (resolutionDropdown != null)
-        {
-            InitResolution();
-            resolutionDropdown.onValueChanged.AddListener(SetResolution);
-        }
 
-        graphicsDropdown = transform.Find("Background/Graphics/Dropdown").GetComponent<TMP_Dropdown>();
-        if(graphicsDropdown != null)
-        {
-            graphicsDropdown.onValueChanged.AddListener(SetGraphicQuality);
-        }
-
-        volumeSlider = GetComponentInChildren<Slider>(true);
-        if(volumeSlider != null)
-        {
-            volumeSlider.onValueChanged.AddListener(SetVolume);
-        }
-
-        exitBtn = GetComponentInChildren<Button>(true);
-        if (exitBtn != null)
-        {
-            exitBtn.onClick.AddListener(CloseSettingMenu);
-        }
-
-        instance.gameObject.SetActive(false);
     }
 
     private void CloseSettingMenu()
@@ -138,5 +141,20 @@ public class SettingMenu : MonoBehaviour
     public void SetFullScreen(bool state)
     {
         Screen.fullScreen = state;
+    }
+
+    private void OnEnable()
+    {
+        //플레이중일때는(일시정지) 해상도와 그래픽을 변경할 수 없습니다.
+        if (GameManager.instance.GameState == GameState.PAUSE)
+        {
+            resolutionDropdown.interactable = false;
+            graphicsDropdown.interactable = false;
+        }
+        else
+        {
+            resolutionDropdown.interactable = true;
+            graphicsDropdown.interactable = true;
+        }
     }
 }
