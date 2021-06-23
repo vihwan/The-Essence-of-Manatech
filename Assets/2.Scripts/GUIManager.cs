@@ -70,12 +70,8 @@ public class GUIManager : MonoBehaviour
         if (monsterStatusController != null)
             monsterStatusController.Init();
 
-    }
-
-    public void OnInitPauseButton()
-    {
         pauseBtn = transform.Find("LimitTimeRoot/LimitTimeImage/Button").GetComponent<Button>();
-        if(pauseBtn != null)
+        if (pauseBtn != null)
         {
             pauseBtn.onClick.AddListener(OpenPauseMenu);
         }
@@ -90,11 +86,20 @@ public class GUIManager : MonoBehaviour
     {
         if (GameManager.instance.GameState == GameState.PLAYING)
         {
+            if(pauseBtn != null)
+                pauseBtn.interactable = true;
+
             if (!isPauseTime)
             {
                 LimitTime -= Time.deltaTime;
             }
         }
+        else
+        {
+            if (pauseBtn != null)
+                pauseBtn.interactable = false;
+        }
+            
     }
 
     // 3번 스킬 : 잭프로스트 빙수 - 제한시간을 일정시간동안 멈추게하기

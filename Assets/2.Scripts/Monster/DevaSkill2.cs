@@ -18,9 +18,6 @@ public class DevaSkill2 : MonoBehaviour
     private bool isActive = false;
     internal bool isBerserk = false;
 
-    private const float ReferScreenWidth = 1920f;
-    private const float ReferScreenHeight = 1080f;
-
     private GameObject rootUI;
     private TMP_Text remainTimeText;
     private Image limitTimeImage;
@@ -140,7 +137,7 @@ public class DevaSkill2 : MonoBehaviour
                         , GameObject.Find("BackgroundCanvas/BoardRoot/BoardImagePlayer").transform.position
                         , Quaternion.identity
                         , this.transform);
-                    go_NenBarrier.transform.SetParent(transform, true);
+                    go_NenBarrier.transform.SetParent(GUIManager.instance.transform, true);
                 }
             }
 

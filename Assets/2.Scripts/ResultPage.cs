@@ -14,6 +14,9 @@ public class ResultPage : MonoBehaviour
     private TMP_Text highScoreTxt;
     private TMP_Text yourClearTimeTxt;
     private TMP_Text bestClearTimeTxt;
+    private TMP_Text newScoreLetterTxt;
+    private TMP_Text newTimeLetterTxt;
+
 
     private Button exitBtn;
     private Image rankImage;
@@ -50,6 +53,14 @@ public class ResultPage : MonoBehaviour
         rankImage = transform.Find("RankImage").GetComponent<Image>();
         if(rankImage == null)
             Debug.LogWarning(rankImage.name + "이 참조되지 않았습니다.");
+
+        newScoreLetterTxt = yourScoreTxt.gameObject.GetComponentInChildren<TMP_Text>();
+        if(newScoreLetterTxt == null)
+            Debug.LogWarning(newScoreLetterTxt.name + "이 참조되지 않았습니다.");
+
+        newTimeLetterTxt = yourClearTimeTxt.gameObject.GetComponentInChildren<TMP_Text>();
+        if (newTimeLetterTxt == null)
+            Debug.LogWarning(newTimeLetterTxt.name + "이 참조되지 않았습니다.");
     }
 
     // 게임오버가 되면 게임 오버 패널을 액티브
@@ -96,7 +107,8 @@ public class ResultPage : MonoBehaviour
                 return;
 
             PlayerPrefs.SetFloat("HighLimitTime", leftLimitTime);
-            bestClearTimeTxt.text = "New 베스트타임 : " + ParseTime(PlayerPrefs.GetFloat("HighLimitTime"));
+            bestClearTimeTxt.text = "베스트타임 : " + ParseTime(PlayerPrefs.GetFloat("HighLimitTime"));
+            newTimeLetterTxt.gameObject.SetActive(true);
         }
         else
             bestClearTimeTxt.text = "베스트타임 : " + ParseTime(PlayerPrefs.GetFloat("HighLimitTime"));
@@ -109,7 +121,8 @@ public class ResultPage : MonoBehaviour
         if (GUIManager.instance.Score > PlayerPrefs.GetFloat("HighScore"))
         {
             PlayerPrefs.SetFloat("HighScore", GUIManager.instance.Score);
-            highScoreTxt.text = "New 베스트점수: " + ScoreManager.instance.ScoreWithComma(PlayerPrefs.GetFloat("HighScore"));
+            highScoreTxt.text = "베스트점수: " + ScoreManager.instance.ScoreWithComma(PlayerPrefs.GetFloat("HighScore"));
+            newScoreLetterTxt.gameObject.SetActive(true);
         }
         else
         {

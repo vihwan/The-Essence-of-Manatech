@@ -383,7 +383,7 @@ public class MonsterAI : MonoBehaviour
             {
                 if(UtilHelper.HasComponent<Tile>(BoardManager.instance.characterTilesBox[i, j]))
                 {
-                    if (BoardManager.instance.characterTilesBox[i, j].transform.childCount > 0)
+                    if (BoardManager.instance.characterTilesBox[i, j].GetComponent<Tile>().isSealed == true)
                     {
                         BoardManager.instance.characterTilesBox[i, j].GetComponent<Tile>().isSealed = false;
                         if(BoardManager.instance.characterTilesBox[i, j].GetComponentInChildren<SealedEffect>().gameObject != null)
