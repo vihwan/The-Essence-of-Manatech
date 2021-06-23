@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviour
     public GameObject faderObj;
     public Image faderImg;
 
+    private float resolutionScale = 1.0f;
+    private const float ReferScreenWidth = 1920f;
+
     private AsyncOperation async;
 
     [SerializeField] private GameState gameState;
@@ -41,8 +44,17 @@ public class GameManager : MonoBehaviour
     public GameState GameState { get => gameState; set => gameState = value; }
     public PlayerState PlayerState { get => playerState; private set => playerState = value; }
 
+    public float ResolutionScale { 
+
+        get => resolutionScale;
+    }
 
     private GUIStyle guiStyle = new GUIStyle();
+
+    public void SetResolutionScale(float resolutionWidth)
+    {
+       this.resolutionScale = resolutionWidth / ReferScreenWidth;
+    }
 
     private void Awake()
     {
@@ -77,6 +89,8 @@ public class GameManager : MonoBehaviour
         }
 
         saveAndLoad.TestDataLoad();
+
+        instance.SetResolutionScale(Screen.width);
     }
 
     private void Update()
@@ -130,6 +144,7 @@ public class GameManager : MonoBehaviour
     // Load a scene with a specified string name
     public void LoadScene(string sceneName)
     {
+        StopAllCoroutines();
         instance.StartCoroutine(FadeOut(instance.faderObj, instance.faderImg, sceneName));
         //instance.StartCoroutine(Load(sceneName)); Obsolete
     }

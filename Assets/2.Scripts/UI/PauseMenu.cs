@@ -62,6 +62,12 @@ public class PauseMenu : MonoBehaviour
     public void ClickExit() //Quit
     {
         CloseMenu();
+        GameManager.instance.GameState = GameState.END;
+
+        BoardManager.instance = null;
+        BoardManagerMonster.instance = null;
+        SkillManager.instance = null;
+
         GameManager.instance.LoadScene("MenuScene");
     }
 }

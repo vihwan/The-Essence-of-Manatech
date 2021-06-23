@@ -64,6 +64,9 @@ public class BoardManager : MonoBehaviour
 
     private List<RC> randomSelectList = new List<RC>();
 
+    public float ReferTileSizeX { get => referTileSizeX; private set => referTileSizeX = value; }
+    public float ReferTileSizeY { get => referTileSizeY; private set => referTileSizeY = value; }
+
     //Property
 
     //초기화함수
@@ -83,14 +86,16 @@ public class BoardManager : MonoBehaviour
         // 참조해상도너비(1920) : 프리팹타일너비(80) = 스크린너비(Screen.Width) : 변경될 크기(x)
         //또한 화면 해상도에 맞게 타일 사이즈도 설정해줘야한다.
 
+      //  float varScale = Screen.width / ReferScreenWidth;
+
         characterTilePrefab.GetComponent<RectTransform>().localScale 
-            = new Vector3(Screen.width / ReferScreenWidth, Screen.height / ReferScreenHeight, 1f);
+            = new Vector3(GameManager.instance.ResolutionScale, GameManager.instance.ResolutionScale, 1f);
 
         Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().sizeDelta;
-        referTileSizeX = (offset.x * Screen.width) / ReferScreenWidth;
-        referTileSizeY = (offset.y * Screen.height) / ReferScreenHeight;
+        ReferTileSizeX = offset.x * GameManager.instance.ResolutionScale;
+        ReferTileSizeY = offset.y * GameManager.instance.ResolutionScale;
 
-        CreateTiles(referTileSizeX, referTileSizeY); //타일 프리팹의 사이즈를 매개변수로 보드 생성
+        CreateTiles(ReferTileSizeX, ReferTileSizeY); //타일 프리팹의 사이즈를 매개변수로 보드 생성
     }
 
     private void Update()
@@ -343,7 +348,7 @@ public class BoardManager : MonoBehaviour
                 else if (nullCount > 0)
                 {
                     characterTilesBox[x, y].GetComponent<Tile>().Col -= nullCount;
-                    characterTilesBox[x, y].GetComponent<Tile>().targetY -= (referTileSizeY * nullCount);
+                    characterTilesBox[x, y].GetComponent<Tile>().targetY -= (ReferTileSizeY * nullCount);
                     characterTilesBox[x, y].GetComponent<Tile>().canShifting = true;
                     characterTilesBox[x, y] = null;
                     //  Debug.Log("정보 변경");
@@ -370,7 +375,7 @@ public class BoardManager : MonoBehaviour
                 {
                     float newPositionX = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionX;
                     float newPositionY = createBoard.backTilesBox[x, y].GetComponent<BackgroundTile>().positionY;
-                    Vector2 newPosition = new Vector2(newPositionX, newPositionY + referTileSizeY);
+                    Vector2 newPosition = new Vector2(newPositionX, newPositionY + ReferTileSizeY);
                     GameObject newTile = Instantiate(characterTilePrefab, newPosition, Quaternion.identity);
                     newTile.transform.SetParent(transform);
                     newTile.GetComponent<Tile>().SetArrNumber(x, y);
@@ -436,11 +441,11 @@ public class BoardManager : MonoBehaviour
         {
             Debug.Log("<color=#FF6534> DeadLock 발생 </color> 타일들을 섞습니다.");
             SkillManager.instance.appearText("Deadlock 발생 타일을 섞습니다.");
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSecondsRealtime(1f);
 
             ShuffleBoard();
 
-            yield return new WaitUntil(() => !IsTileMatchingOrShifting());
+            yield return new WaitForSecondsRealtime(1f);
 
             if (MatchesOnBoard())
             {
@@ -448,7 +453,7 @@ public class BoardManager : MonoBehaviour
                 break;
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSecondsRealtime(2f);
         }
     }
 

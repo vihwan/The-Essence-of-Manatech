@@ -124,8 +124,8 @@ public class MonsterStatusController : MonoBehaviour
         else
             damage = _count;
 
-        //스킬 시전중에는 데미지를 받지 않습니다.
-        if (MonsterAI.instance.IsMonsterActiveSkill())
+        //스킬 시전중에는, 혹은 광폭화 중에는 데미지를 받지 않습니다.
+        if (MonsterAI.instance.IsMonsterActiveSkill() || MonsterAI.instance.Action == MonsterState.BERSERK)
             damage = 0f;
 
         if (shieldObject.activeSelf)

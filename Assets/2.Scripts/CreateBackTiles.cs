@@ -15,12 +15,12 @@ public class CreateBackTiles : MonoBehaviour
     {
         backTilesBox = new GameObject[width, height];
 
-        tileBackgroundPrefab.GetComponent<RectTransform>().localScale
-             = new Vector3(Screen.width / ReferScreenWidth, Screen.height / ReferScreenHeight, 1f);
+        tileBackgroundPrefab.GetComponent<RectTransform>().localScale =
+           new Vector3(GameManager.instance.ResolutionScale, GameManager.instance.ResolutionScale, 1f);
 
         Vector2 offset = tileBackgroundPrefab.GetComponent<RectTransform>().sizeDelta;
-        float xsize = (offset.x * Screen.width) / ReferScreenWidth;
-        float ysize = (offset.y * Screen.height) / ReferScreenHeight;
+        float xsize = offset.x * GameManager.instance.ResolutionScale;
+        float ysize = offset.y * GameManager.instance.ResolutionScale;
 
         SetUp(xsize, ysize);
     }

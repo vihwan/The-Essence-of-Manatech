@@ -53,11 +53,11 @@ public class BoardManagerMonster : MonoBehaviour
         monsterTilesBox = new GameObject[width, height];
 
         monsterTilePrefab.GetComponent<RectTransform>().localScale
-            = new Vector3(Screen.width / ReferScreenWidth, Screen.height / ReferScreenHeight, 1f);
+            = new Vector3(GameManager.instance.ResolutionScale, GameManager.instance.ResolutionScale, 1f);
 
         Vector2 offset = monsterTilePrefab.GetComponent<RectTransform>().sizeDelta;
-        referTileSizeX = (offset.x * Screen.width) / ReferScreenWidth;
-        referTileSizeY = (offset.y * Screen.height) / ReferScreenHeight;
+        referTileSizeX = offset.x * GameManager.instance.ResolutionScale;
+        referTileSizeY = offset.y * GameManager.instance.ResolutionScale;
 
         CreateTiles(referTileSizeX, referTileSizeY); //타일 프리팹의 사이즈를 매개변수로 보드 생성
     }

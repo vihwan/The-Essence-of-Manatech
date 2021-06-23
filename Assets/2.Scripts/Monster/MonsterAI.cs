@@ -344,7 +344,7 @@ public class MonsterAI : MonoBehaviour
         //1페이즈 사망 대사
         SoundandNotify.SetVoiceAndNotify(DevastarState.HumanDead);
 
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.25f);
         //만약 데바스타르 스킬이 실행중이라면(isRemainTime)
         if (DevaSkill1.isRemainTimeUpdate == true)
         {
@@ -386,7 +386,8 @@ public class MonsterAI : MonoBehaviour
                     if (BoardManager.instance.characterTilesBox[i, j].transform.childCount > 0)
                     {
                         BoardManager.instance.characterTilesBox[i, j].GetComponent<Tile>().isSealed = false;
-                        Destroy(BoardManager.instance.characterTilesBox[i, j].GetComponentInChildren<SealedEffect>().gameObject);
+                        if(BoardManager.instance.characterTilesBox[i, j].GetComponentInChildren<SealedEffect>().gameObject != null)
+                            Destroy(BoardManager.instance.characterTilesBox[i, j].GetComponentInChildren<SealedEffect>().gameObject);
                     }
                 }
             }

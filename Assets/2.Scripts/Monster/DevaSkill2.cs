@@ -18,12 +18,16 @@ public class DevaSkill2 : MonoBehaviour
     private bool isActive = false;
     internal bool isBerserk = false;
 
+    private const float ReferScreenWidth = 1920f;
+    private const float ReferScreenHeight = 1080f;
+
     private GameObject rootUI;
     private TMP_Text remainTimeText;
     private Image limitTimeImage;
     private PlayerStatusController player;
 
-    private GameObject NenBarrier;
+    private GameObject NenBarrierPrefab;
+    private GameObject go_NenBarrier;
 
     private Animator convictionAni;
 
@@ -46,6 +50,11 @@ public class DevaSkill2 : MonoBehaviour
 
         convictionAni = transform.Find("Conviction").GetComponent<Animator>();
 
+        NenBarrierPrefab = Resources.Load<GameObject>("NenBarrier");
+        if (NenBarrierPrefab == null)
+        {
+            Debug.LogWarning(NenBarrierPrefab.name + "이 참조되지 않았습니다.");
+        }
     }
     private void GaugeUpdate()
     {
@@ -126,11 +135,12 @@ public class DevaSkill2 : MonoBehaviour
                     player.IsInvincible = true;
                     Debug.Log("패턴을 파훼하여 무적 상태입니다.");
                     SoundManager.instance.PlayCV("wz_shield");
-                    NenBarrier = Instantiate(Resources.Load<GameObject>("NenBarrier")
-                                 , GameObject.Find("BackgroundCanvas/BoardRoot/BoardImagePlayer").transform.position
-                                 , Quaternion.identity
-                                 , this.transform);
-                    NenBarrier.transform.SetParent(transform, false);
+
+                    go_NenBarrier = Instantiate(NenBarrierPrefab
+                        , GameObject.Find("BackgroundCanvas/BoardRoot/BoardImagePlayer").transform.position
+                        , Quaternion.identity
+                        , this.transform);
+                    go_NenBarrier.transform.SetParent(transform, true);
                 }
             }
 
@@ -209,7 +219,9 @@ public class DevaSkill2 : MonoBehaviour
         }
 
         go_List2.Clear();
-        Destroy(NenBarrier);
+        if(go_NenBarrier != null)
+            Destroy(go_NenBarrier);
+
         MonsterAI.instance.Action = MonsterState.MOVE;
         isBerserk = false;
     }

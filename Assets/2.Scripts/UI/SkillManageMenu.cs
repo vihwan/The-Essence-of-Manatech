@@ -65,7 +65,7 @@ public class SkillManageMenu : MonoBehaviour
             Debug.Log("스킬 데이터를 참조하지 못했습니다.");
         }
 
-        spText = transform.Find("SPText").GetComponent<Text>();
+        spText = transform.Find("Background/SPText").GetComponent<Text>();
         if (spText != null)
         {
             UpdateSpText();

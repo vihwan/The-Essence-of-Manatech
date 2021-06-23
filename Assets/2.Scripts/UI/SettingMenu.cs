@@ -72,11 +72,6 @@ public class SettingMenu : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-
-    }
-
     private void CloseSettingMenu()
     {
         if(SceneManager.GetActiveScene().name == "MenuScene")
@@ -123,6 +118,7 @@ public class SettingMenu : MonoBehaviour
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        GameManager.instance.SetResolutionScale(resolution.width);
     }
 
 

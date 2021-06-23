@@ -406,6 +406,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
             isShifting = false;
             canShifting = false;
             findMatches.FindAllMatches();
+
+            //2021.06.23 가끔씩 간헐적으로 PlayerState가 WAIT에서 멈추는 버그로 인해 임시로 추가한 코드
+            BoardManager.instance.currentState = PlayerState.MOVE;
         }
     }
 

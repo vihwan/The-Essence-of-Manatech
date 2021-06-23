@@ -60,6 +60,7 @@ public class LoadingSceneManager : MonoBehaviour
                     operation.allowSceneActivation = true; //씬 동작을 활성화
                     loadingTime = 0.0f;
                     print("NextScene Activate");
+                    isLoading = false;
                     yield break;
                 }
             }
