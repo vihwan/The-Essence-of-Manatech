@@ -153,6 +153,7 @@ public class SetDevastarSoundandNotify : MonoBehaviour
             case DevastarState.Transform:
                 {
                     SoundManager.instance.PlayMonV("devastar_skill_02_5");
+                    SoundManager.instance.PlayMonV("devastar_trans_awake");
                     notify.NotifyImage.sprite = Resources.Load<Sprite>("notify2");
                     notify.SetText("진정한 혼돈의 힘을 보여주마!!!");
                     notify.PlayAnim();
@@ -302,6 +303,7 @@ public class SetDevastarSoundandNotify : MonoBehaviour
                         return;
 
                     notify.PlayAnim();
+                    SoundManager.instance.PlayMonV("devastar_crossbeam_end");
                 }
                 break;
 

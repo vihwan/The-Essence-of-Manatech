@@ -165,7 +165,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         if (GameManager.instance.GameState != GameState.PLAYING)
             return;
 
-        if (BoardManager.instance.currentState == PlayerState.MOVE)
+        //21.06.23 추가 - 타일의 이중이동 조작을 막기 위함
+        if (BoardManager.instance.currentState == PlayerState.MOVE 
+            && BoardManager.instance.IsCanControlTile == true)
         {
             GameObject currentTile = eventData.pointerCurrentRaycast.gameObject;
             previousTile = currentTile.GetComponent<Tile>();
@@ -212,7 +214,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         if (GameManager.instance.GameState != GameState.PLAYING)
             return;
 
-        if (BoardManager.instance.currentState == PlayerState.MOVE)
+        if (BoardManager.instance.currentState == PlayerState.MOVE 
+            && BoardManager.instance.IsCanControlTile == true)
         {
             currentTile_GO = eventData.pointerCurrentRaycast.gameObject;
 
@@ -347,7 +350,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         BoardManager.instance.SetTargetPos(gameObject, otherCharacterTile);
         //SoundManager.instance.PlaySE("Swap"); //바꾸기 소리 실행
         PlayerSound.PlayMoveTile();
-
+        //21.06.23 추가 
+        BoardManager.instance.IsCanControlTile = false;
         StartCoroutine(CheckMoveCoroutine());
     }
 
@@ -378,6 +382,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
             }
             otherCharacterTile = null;
         }
+        BoardManager.instance.IsCanControlTile = true;
         isCheckMoveUpdate = false;
     }
 

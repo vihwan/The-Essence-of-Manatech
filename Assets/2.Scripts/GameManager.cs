@@ -116,14 +116,15 @@ public class GameManager : MonoBehaviour
     {
         guiStyle.fontSize = 20;
         guiStyle.normal.textColor = Color.white;
-        GUI.Label(new Rect(10, 10, 300, 60), "GameState : " + instance.gameState.ToString(), guiStyle);
+        GUI.Label(new Rect(10, 10, 100, 20), "GameState : " + instance.gameState.ToString(), guiStyle);
         if(SceneManager.GetActiveScene().name == "InGameScene")
         {
             if (BoardManager.instance == null || MonsterAI.instance == null)
                 return;
 
-            GUI.Label(new Rect(10, 50, 100, 20), "PlayerState : " + BoardManager.instance.currentState.ToString(), guiStyle);
-            GUI.Label(new Rect(10, 90, 100, 20), "MonsterState : " + MonsterAI.instance.Action.ToString(), guiStyle);
+            GUI.Label(new Rect(10, 40, 100, 20), "PlayerState : " + BoardManager.instance.currentState.ToString(), guiStyle);
+            GUI.Label(new Rect(10, 70, 100, 20), "MonsterState : " + MonsterAI.instance.Action.ToString(), guiStyle);
+            GUI.Label(new Rect(10, 100, 100, 20), "IsControlTileState : " + BoardManager.instance.IsCanControlTile.ToString(), guiStyle);
         }     
     }
 

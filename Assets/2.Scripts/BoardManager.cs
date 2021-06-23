@@ -41,8 +41,9 @@ public class BoardManager : MonoBehaviour
 
     private const float refillDelay = 0.5f;
 
-    private const float ReferScreenWidth = 1920f;
-    private const float ReferScreenHeight = 1080f;
+    //21.06.23
+    //타일이 연속으로 두번 옮길 수 있는 문제를 해결하기 위해 추가한 bool 변수
+    private bool isCanControlTileState;
 
     private float referTileSizeX = 0f;
     private float referTileSizeY = 0f;
@@ -64,10 +65,12 @@ public class BoardManager : MonoBehaviour
 
     private List<RC> randomSelectList = new List<RC>();
 
+    //Property
+
     public float ReferTileSizeX { get => referTileSizeX; private set => referTileSizeX = value; }
     public float ReferTileSizeY { get => referTileSizeY; private set => referTileSizeY = value; }
 
-    //Property
+    public bool IsCanControlTile { get => isCanControlTileState; internal set => isCanControlTileState = value; }
 
     //초기화함수
     public void Init()
@@ -82,20 +85,19 @@ public class BoardManager : MonoBehaviour
 
         characterTilesBox = new GameObject[width, height];
 
-        //화면 해상도에 맞게 offset을 설정해줘야한다.
-        // 참조해상도너비(1920) : 프리팹타일너비(80) = 스크린너비(Screen.Width) : 변경될 크기(x)
-        //또한 화면 해상도에 맞게 타일 사이즈도 설정해줘야한다.
 
-      //  float varScale = Screen.width / ReferScreenWidth;
 
-        characterTilePrefab.GetComponent<RectTransform>().localScale 
+        characterTilePrefab.GetComponent<RectTransform>().localScale
             = new Vector3(GameManager.instance.ResolutionScale, GameManager.instance.ResolutionScale, 1f);
 
+        //화면 해상도에 맞게 offset을 설정해줘야한다.
+        //게임 매니저에서 설정되어있는 ResolutionScale을 가져와 오프셋을 설정
         Vector2 offset = characterTilePrefab.GetComponent<RectTransform>().sizeDelta;
         ReferTileSizeX = offset.x * GameManager.instance.ResolutionScale;
         ReferTileSizeY = offset.y * GameManager.instance.ResolutionScale;
 
         CreateTiles(ReferTileSizeX, ReferTileSizeY); //타일 프리팹의 사이즈를 매개변수로 보드 생성
+        isCanControlTileState = true;
     }
 
     private void Update()
@@ -327,8 +329,11 @@ public class BoardManager : MonoBehaviour
     private bool CheckIndexOutOfRange(int row, int col)
     {
         //IndexOutOfRange 예외 처리
-        if (row - 1 < 0 || row + 1 > width - 1 || col - 1 < 0 || col + 1 > height - 1)
+        if (row < 0 || row >= width || col < 0 || col >= height)
             return false;
+
+        //if (row - 1 < 0 || row + 1 > width - 1 || col - 1 < 0 || col + 1 > height - 1)
+        //    return false;
 
         return true;
     }
