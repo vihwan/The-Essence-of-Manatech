@@ -11,6 +11,7 @@ public class GUIManager : MonoBehaviour
 
     public TMP_Text scoreTxt;
     public TMP_Text limitTimeTxt;
+    private TMP_Text rankLetterTxt;
 
     private Button pauseBtn;
 
@@ -23,6 +24,7 @@ public class GUIManager : MonoBehaviour
 
     public bool isPauseTime = false;
 
+    private Animator rankVariationAnim;
     private AlertText alertText;
     private MonsterStatusController monsterStatusController;
 
@@ -34,6 +36,7 @@ public class GUIManager : MonoBehaviour
         {
             score = value;
             scoreTxt.text = ScoreManager.instance.ScoreWithComma(score);
+            SetRankLetter();
         }
     }
 
@@ -55,6 +58,8 @@ public class GUIManager : MonoBehaviour
         }
     }
 
+    public TMP_Text RankLetterTxt { get => rankLetterTxt; }
+
     //초기화함수
     public void Init()
     {
@@ -75,6 +80,18 @@ public class GUIManager : MonoBehaviour
         {
             pauseBtn.onClick.AddListener(OpenPauseMenu);
         }
+
+        rankLetterTxt = transform.Find("ScorePanel/Text (TMP) Rank").GetComponent<TMP_Text>();
+        if(RankLetterTxt == null)
+        {
+            Debug.LogWarning(RankLetterTxt.name = "이 참조되지 않았습니다");
+        }
+
+        rankVariationAnim = rankLetterTxt.GetComponentInChildren<Animator>();
+        if(rankVariationAnim == null)
+        {
+            Debug.LogWarning(rankVariationAnim.name = "이 참조되지 않았습니다");
+        }
     }
 
     private void OpenPauseMenu()
@@ -86,7 +103,7 @@ public class GUIManager : MonoBehaviour
     {
         if (GameManager.instance.GameState == GameState.PLAYING)
         {
-            if(pauseBtn != null)
+            if (pauseBtn != null)
                 pauseBtn.interactable = true;
 
             if (!isPauseTime)
@@ -99,8 +116,58 @@ public class GUIManager : MonoBehaviour
             if (pauseBtn != null)
                 pauseBtn.interactable = false;
         }
-            
+
     }
+
+    //플레이어의 획득 점수에 따라 랭크 표시를 다르게 세팅해주는 함수입니다.
+    private void SetRankLetter()
+    {
+        if (Score > 100000f)
+        {
+            RankLetterTxt.text = "SSS";
+        }
+        else if (Score > 85000f)
+        {
+            RankLetterTxt.text = "SS";
+        }
+        else if (Score > 70000f)
+        {
+            RankLetterTxt.text = "S";
+        }
+        else if (Score > 55000f)
+        {
+            RankLetterTxt.text = "A";
+        }
+        else if (Score > 40000f)
+        {
+            RankLetterTxt.text = "B";
+        }
+        else if (Score > 25000f)
+        {
+            RankLetterTxt.text = "C";
+        }
+        else if (Score > 15000f)
+        {
+            RankLetterTxt.text = "D";
+        }
+        else if (Score > 5000f)
+        {
+            RankLetterTxt.text = "E";
+        }
+        else
+        {
+            RankLetterTxt.text = "F";
+        }
+
+        //Text의 속성이 바뀌었는지 검사하는 함수. 
+        //참이라면 애니메이션 실행
+        if (rankLetterTxt.havePropertiesChanged)
+        {
+            rankVariationAnim.SetTrigger("Active");
+            return;
+        }
+    }
+
 
     // 3번 스킬 : 잭프로스트 빙수 - 제한시간을 일정시간동안 멈추게하기
     public void OnPauseTime(float skillTime)

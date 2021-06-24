@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     private float resolutionScale = 1.0f;
     private const float ReferScreenWidth = 1920f;
 
+    public static bool isTutorialAct = true;
+
     private AsyncOperation async;
 
     [SerializeField] private GameState gameState;

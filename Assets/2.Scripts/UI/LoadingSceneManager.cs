@@ -11,10 +11,9 @@ public class LoadingSceneManager : MonoBehaviour
 
     private bool isLoading = false;
 
-    [SerializeField]
-    private Image theLoadingSlider;
-    [SerializeField]
-    private Text loadingText;
+    [SerializeField] private Image theLoadingSlider;
+    [SerializeField] private Text loadingText;
+    [SerializeField] private Text toolTipText;
 
     public static float loadingTime = 0.0f;
 
@@ -23,6 +22,7 @@ public class LoadingSceneManager : MonoBehaviour
         if (isLoading == false)
         {
             ChangeLoadingBg(nextscene);
+            RandomSetTooltipText();
             StartCoroutine(LoadSceneCoroutine());
         }
     }
@@ -93,5 +93,31 @@ public class LoadingSceneManager : MonoBehaviour
             }
 
         }
+    }
+
+    //로딩 화면으로 넘어올 때마다 랜덤하게 툴팁을 출력시켜주는 함수입니다.
+    private void RandomSetTooltipText()
+    {
+        int rand = UnityEngine.Random.Range(1, 6);
+        string contents = string.Empty;
+        switch (rand)
+        {
+            case 1:
+                contents = "잭 오 할로윈은 너무 뜨거운 나머지 옮길 수 없습니다.";
+                break;
+            case 2:
+                contents = "캔디바 타일은 어떤 타일과도 매칭시킬 수 있는 특수한 타일입니다.";
+                break;
+            case 3:
+                contents = "데바스타르에게 봉인된 타일은 옮길 수 없습니다. 대신 스킬을 적극적으로 활용하세요.";
+                break;
+            case 4:
+                contents = "상대가 무력화 상태일때는, 10배만큼 강한 데미지를 줄 수 있습니다.";
+                break;
+            default:
+                contents = "개발자는 피곤해서 잠을 자고 싶습니다.";
+                break;
+        }
+        toolTipText.text = "※Tip. " + contents;
     }
 }

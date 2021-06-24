@@ -13,6 +13,9 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
     private float ambTime = 30f;
     private float elapsedTime = 0f;
 
+
+    private Image tutorialPanel;
+
     private NPC_DruidMia mia;
     private NPC_Ikki ikki;
     private NPC_Michelle michelle;
@@ -32,8 +35,8 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
     private Fungus.SayDialog sayDialog;
     private SkillManageMenu skillManageMenu;
 
-    public ConfirmMenu Confirm_Menu { get => confirm_Menu;}
-    public SkillManageMenu SkillManageMenu { get => skillManageMenu;}
+    public ConfirmMenu Confirm_Menu { get => confirm_Menu; }
+    public SkillManageMenu SkillManageMenu { get => skillManageMenu; }
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +44,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         instance = this;
 
         sayDialog = FindObjectOfType<Fungus.SayDialog>();
-        if(sayDialog != null)
+        if (sayDialog != null)
         {
             print("Success Refer SayDialog");
         }
@@ -84,7 +87,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         }
 
         mia_Popup = go_Mia.transform.Find("PopupMenu").GetComponent<PopupMenu>();
-        if(mia_Popup != null)
+        if (mia_Popup != null)
         {
             mia_Popup.Init();
         }
@@ -104,21 +107,30 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         startAni = transform.Find("StartUI").GetComponent<Animator>();
 
         confirm_Menu = transform.Find("Confirm_Popup").GetComponent<ConfirmMenu>();
-        if(Confirm_Menu != null)
+        if (Confirm_Menu != null)
         {
             confirm_Menu.Init();
         }
 
         gamequit_Menu = transform.Find("GameQuit_Popup").GetComponent<GameQuitMenu>();
-        if(gamequit_Menu != null)
+        if (gamequit_Menu != null)
         {
             gamequit_Menu.Init();
         }
 
         skillManageMenu = FindObjectOfType<SkillManageMenu>();
-        if(skillManageMenu != null)
+        if (skillManageMenu != null)
         {
             skillManageMenu.Init();
+        }
+
+        tutorialPanel = GameObject.Find("GameCanvas/TutorialPanel").GetComponent<Image>();
+        if(tutorialPanel != null)
+        {
+            if(GameManager.isTutorialAct == true)
+                tutorialPanel.gameObject.SetActive(true);
+            else
+                tutorialPanel.gameObject.SetActive(false);
         }
 
         SoundManager.instance.PlayBGMWithCrossFade("chantri");
@@ -128,7 +140,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
     private void Update()
     {
         elapsedTime += Time.deltaTime;
-        if(elapsedTime > ambTime)
+        if (elapsedTime > ambTime)
         {
             int randnum = Random.Range(0, 3);
             if (randnum == 0)
@@ -145,12 +157,23 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         if (isActiveSayDialog())
             ActiveNPCButton(false);
         else
-            ActiveNPCButton(true);
-
-        //메인 메뉴에서 Escape 키를 누르면, 게임 종료 여부 팝업창이 나온다
-        if (Input.GetKeyDown(KeyCode.Escape) && gamequit_Menu.gameObject.activeSelf == false)
         {
-            gamequit_Menu.gameObject.SetActive(true);
+            ActiveNPCButton(true);
+            //대화창이 꺼진 상태에서 Escape 키를 누르면, 게임 종료 여부 팝업창이 나온다
+            if (Input.GetKeyDown(KeyCode.Escape) && gamequit_Menu.gameObject.activeSelf == false)
+            {
+                gamequit_Menu.gameObject.SetActive(true);
+            }
+        }
+
+        if(tutorialPanel.gameObject.activeSelf == true)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                tutorialPanel.gameObject.SetActive(false);
+                GameManager.isTutorialAct = false;
+                return;
+            }
         }
     }
 
@@ -220,7 +243,7 @@ public class MainMenu : MonoBehaviour, IPointerClickHandler
         //print(eventData.pointerCurrentRaycast.gameObject);
 
         PopupMenu[] popupMenus = FindObjectsOfType<PopupMenu>();
-        if(popupMenus != null && eventData.pointerCurrentRaycast.gameObject != null)
+        if (popupMenus != null && eventData.pointerCurrentRaycast.gameObject != null)
         {
             SetPopupMenuFalse();
         }

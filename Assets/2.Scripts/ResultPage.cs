@@ -71,12 +71,15 @@ public class ResultPage : MonoBehaviour
 
         DisplayScore();
         DisplayTime();
+        SetRankImage();
 
         SoundManager.instance.StopAllSE();
         SoundManager.instance.StopBGM();
+
         if (GameManager.instance.PlayerState == PlayerState.WIN)
         {
             SoundManager.instance.PlaySE("DungeonResult");
+            Invoke(nameof(PlayWinBGM), 7.5f);
         }
         else if(GameManager.instance.PlayerState == PlayerState.LOSE)
         {
@@ -88,6 +91,17 @@ public class ResultPage : MonoBehaviour
         BoardManager.instance = null;
         BoardManagerMonster.instance = null;
         SkillManager.instance = null;
+    }
+
+    private void SetRankImage()
+    {
+        string rank = GUIManager.instance.RankLetterTxt.text;
+        rankImage.sprite = Resources.Load<Sprite>("RankLetter/" + rank);
+    }
+
+    private void PlayWinBGM()
+    {
+        SoundManager.instance.PlayBGM("silver_crown_old");
     }
 
     private void GoToMainScene()

@@ -455,6 +455,7 @@ public class BoardManager : MonoBehaviour
             if (MatchesOnBoard())
             {
                 DestroyMatches();
+                yield return new WaitForSecondsRealtime(2f);
                 break;
             }
 

@@ -275,7 +275,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -248, y: 213}
+  m_AnchoredPosition: {x: -248, y: 246}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &439023753
@@ -820,7 +820,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 456}
+  m_AnchoredPosition: {x: 0, y: 480}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1490174075
@@ -1001,7 +1001,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 43, y: 198}
+  m_AnchoredPosition: {x: 43, y: 231}
   m_SizeDelta: {x: 432.33362, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1615512583
@@ -1192,7 +1192,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1915491923
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1207,10 +1207,10 @@ RectTransform:
   m_Father: {fileID: 1594560388}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1200.026, y: 619.3002}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 50}
+  m_SizeDelta: {x: 160.14514, y: 82.646484}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1915491924
 MonoBehaviour:
@@ -1225,18 +1225,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
   m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 128
+    m_Font: {fileID: 12800000, guid: b42434f099b8ba84fb67e9410929e7f4, type: 3}
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 3
     m_MaxSize: 180
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -1244,7 +1244,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uB300\uCDA9 \uB85C\uB529\uC911\uC774\uB77C\uB294 \uB0B4\uC6A9"
+  m_Text: "\u203BTip. \uB370\uBC14\uC2A4\uD0C0\uB974\uC5D0\uAC8C \uBD09\uC778\uB41C
+    \uD0C0\uC77C\uC740 \uC62E\uAE38 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uB300\uC2E0
+    \uC2A4\uD0AC\uC744 \uC801\uADF9\uC801\uC73C\uB85C \uD65C\uC6A9\uD558\uC138\uC694."
 --- !u!222 &1915491925
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1265,7 +1267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5}
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.9019608}
   m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 1
 --- !u!1 &1946617251
@@ -1456,3 +1458,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   theLoadingSlider: {fileID: 699895873}
   loadingText: {fileID: 1131901789}
+  toolTipText: {fileID: 1915491924}
