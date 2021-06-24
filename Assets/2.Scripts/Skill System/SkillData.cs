@@ -63,7 +63,7 @@ public class SkillData : MonoBehaviour
         }
         //패시브 스킬 레벨업
         PasSkillDic[skillName].Level++;
-        skillConversion.ConvertActiveSkill();
+        skillConversion.ConvertPassiveSkill();
         //레벨업이 되면 플레이어 데이터의 스킬포인트와 스킬포인트 텍스트를 갱신합니다.
         PlayerData.DecreaseSkillPoint();
         SkillManageMenu.UpdateSpText();

@@ -43,14 +43,6 @@ public class ExternalFuncManager : MonoBehaviour
         fadebg = transform.Find("GameEndUI/fadebg").GetComponent<Image>();
         if (fadebg == null)
             Debug.LogWarning(fadebg.name + "가 참조되지 않았습니다.");
-
-/*        monsterkillParticle = Resources.Load<GameObject>("MonsterKillParticle");
-        if (monsterkillParticle != null)
-        {
-            GameObject go = Instantiate(monsterkillParticle, new Vector2(460, 20), Quaternion.identity, this.transform);
-            go.SetActive(false);
-        }*/
-
     }
 
 
@@ -63,10 +55,12 @@ public class ExternalFuncManager : MonoBehaviour
     //BoardState가 MOVE가 될때 까지 기다림
     public IEnumerator WaitForShifting()
     {
-        //일단 임시로 5초를 기다림
-        //5초면 충분히 나머지 모든 처리가 끝날 수 있다고 생각
-        monsterkillParticle.SetActive(true);
-        monsterkillParticle.GetComponent<ParticleSystem>().Play();
+        if(GameManager.instance.PlayerState == PlayerState.WIN)
+        {
+            monsterkillParticle.SetActive(true);
+            monsterkillParticle.GetComponent<ParticleSystem>().Play();
+        }
+
         yield return new WaitForSeconds(1f);
 
         if (GameManager.instance.PlayerState == PlayerState.LOSE)
@@ -82,6 +76,7 @@ public class ExternalFuncManager : MonoBehaviour
         else if (GameManager.instance.PlayerState == PlayerState.LOSE)
         {
             gameEndUIAnim.SetTrigger("Lose");
+            fadebgOut();
             SoundManager.instance.PlaySE("aradpvp_result_lose");
 
         }
@@ -104,5 +99,4 @@ public class ExternalFuncManager : MonoBehaviour
             yield return new WaitForSeconds(.02f);
         }
     }
-
 }

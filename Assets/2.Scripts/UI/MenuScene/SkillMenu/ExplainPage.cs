@@ -14,6 +14,7 @@ public class ExplainPage : MonoBehaviour
     private Text coolDownText;
     private Text mpText;
     private Text explainText;
+    private Text propertyText;
 
     //Button 컴포넌트
 
@@ -65,17 +66,39 @@ public class ExplainPage : MonoBehaviour
     {
         this.skillName = skillName;
     }
+    
+    //액티브 스킬 세팅 
     public void SetExplainPage(ActiveSkill activeSkill)
     {
-        skillLevelText.text = "스킬 레벨 : " + activeSkill.Level.ToString();
-        coolDownText.text = "쿨타임 : " + activeSkill.CoolTime.ToString();
-        mpText.text = "MP 소모량 : " + activeSkill.Mana.ToString();
+        skillLevelText.text = "스킬 레벨 : <color=#20F6EE>" + activeSkill.Level.ToString() + "</color>";
+        coolDownText.text = "쿨타임 : <color=#20F6EE>" + activeSkill.CoolTime.ToString() + "</color>";
+        mpText.text = "MP 소모량 : <color=#20F6EE>" + activeSkill.Mana.ToString() + "</color>";
         explainText.text = activeSkill.Description;
     }
+
+    //패시브 스킬 세팅 - 메소드 오버로딩
     public void SetExplainPage(PassiveSkill passiveSkill)
     {
-        skillLevelText.text = "스킬 레벨 : " + passiveSkill.Level.ToString();
+        skillLevelText.text = "스킬 레벨 : <color=#20F6EE>" + passiveSkill.Level.ToString() + "</color>";
         explainText.text = passiveSkill.Description;
+        switch (passiveSkill.Name)
+        {
+            case "고대의 도서관":
+                coolDownText.text = "추가 시간 : <color=#20F6EE>" + passiveSkill.EigenValue + "</color> 초";
+                break;
+
+            case "쇼타임":
+                coolDownText.text = "플레이어 데미지 : <color=#20F6EE>" + passiveSkill.EigenValue + "</color>";
+                break;
+
+            case "현자의 돌":
+                coolDownText.text = "점수 배율 : <color=#20F6EE>" + passiveSkill.EigenValue + "</color> 배";
+                break;
+
+            case "붉은 사탕":
+                coolDownText.text = "캔디바 타일 등장 확률 : <color=#20F6EE>" + passiveSkill.EigenValue + "</color>%";
+                break;
+        }
     }
     private void LevelUp(string skillName)
     {

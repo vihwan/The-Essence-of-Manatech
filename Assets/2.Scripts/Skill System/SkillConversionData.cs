@@ -38,7 +38,7 @@ public class SkillConversionData
         //"잭프로스트 빙수"
         if (SkillData.instance.ActSkillDic["잭프로스트 빙수"].Level == 2)
         {
-            SkillData.instance.ActSkillDic["잭프로스트 빙수"].Mana = 70;
+            SkillData.instance.ActSkillDic["잭프로스트 빙수"].Mana = 60;
             SkillData.instance.ActSkillDic["잭프로스트 빙수"].CoolTime = 35;
             SkillData.instance.ActSkillDic["잭프로스트 빙수"].EigenValue = 7;
         }
@@ -72,21 +72,21 @@ public class SkillConversionData
         //"고대의 도서관" - 지속시간 증가
         if (SkillData.instance.PasSkillDic["고대의 도서관"].Level == 2)
         {
-            SkillData.instance.PasSkillDic["고대의 도서관"].EigenValue = 20;
+            SkillData.instance.PasSkillDic["고대의 도서관"].EigenValue = 60;
         }
         else if (SkillData.instance.PasSkillDic["고대의 도서관"].Level == 3)
         {
-            SkillData.instance.PasSkillDic["고대의 도서관"].EigenValue = 30;
+            SkillData.instance.PasSkillDic["고대의 도서관"].EigenValue = 120;
         }
 
         //"쇼타임" - 점수 추가 배율
         if (SkillData.instance.PasSkillDic["쇼타임"].Level == 2)
         {
-            SkillData.instance.PasSkillDic["쇼타임"].EigenValue = 0.5f;
+            SkillData.instance.PasSkillDic["쇼타임"].EigenValue = 5f;
         }
         else if (SkillData.instance.PasSkillDic["쇼타임"].Level == 3)
         {
-            SkillData.instance.PasSkillDic["쇼타임"].EigenValue = 1f;
+            SkillData.instance.PasSkillDic["쇼타임"].EigenValue = 6f;
         }
 
         //"현자의 돌" - 점수 추가 배율

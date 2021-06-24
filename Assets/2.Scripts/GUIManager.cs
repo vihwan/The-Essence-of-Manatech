@@ -67,7 +67,7 @@ public class GUIManager : MonoBehaviour
         LimitTime = 600;
       //  limitTimeTxt.text = LimitTime.ToString();
 
-        alertText = FindObjectOfType<AlertText>();
+        alertText = GetComponentInChildren<AlertText>(true);
         if (alertText != null)
             alertText.Init();
 
@@ -122,35 +122,35 @@ public class GUIManager : MonoBehaviour
     //플레이어의 획득 점수에 따라 랭크 표시를 다르게 세팅해주는 함수입니다.
     private void SetRankLetter()
     {
-        if (Score > 100000f)
+        if (Score >= 150000f)
         {
             RankLetterTxt.text = "SSS";
         }
-        else if (Score > 85000f)
+        else if (Score >= 100000f)
         {
             RankLetterTxt.text = "SS";
         }
-        else if (Score > 70000f)
+        else if (Score >= 70000f)
         {
             RankLetterTxt.text = "S";
         }
-        else if (Score > 55000f)
+        else if (Score >= 55000f)
         {
             RankLetterTxt.text = "A";
         }
-        else if (Score > 40000f)
+        else if (Score >= 40000f)
         {
             RankLetterTxt.text = "B";
         }
-        else if (Score > 25000f)
+        else if (Score >= 25000f)
         {
             RankLetterTxt.text = "C";
         }
-        else if (Score > 15000f)
+        else if (Score >= 15000f)
         {
             RankLetterTxt.text = "D";
         }
-        else if (Score > 5000f)
+        else if (Score >= 5000f)
         {
             RankLetterTxt.text = "E";
         }

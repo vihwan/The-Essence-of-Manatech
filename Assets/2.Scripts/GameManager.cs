@@ -134,6 +134,7 @@ public class GameManager : MonoBehaviour
     {
         GameState = GameState.END;
         PlayerState = PlayerState.WIN;
+        StopAllCoroutines();
         StartCoroutine(ExternalFuncManager.Instance.WaitForShifting());
     }
 
@@ -141,6 +142,7 @@ public class GameManager : MonoBehaviour
     {
         GameState = GameState.END;
         PlayerState = PlayerState.LOSE;
+        StopAllCoroutines();
         StartCoroutine(ExternalFuncManager.Instance.WaitForShifting());;
     }
 

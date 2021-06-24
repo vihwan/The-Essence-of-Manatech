@@ -49,6 +49,8 @@ public class StageManager : MonoBehaviour
         animator.SetBool("UseLibrary", true);
         SoundManager.instance.PlayCV("wz_ancient_library");
         SoundManager.instance.PlaySE("cherry_blossom_sunlight");
+        //고대의 도서관 효과 적용
+        GUIManager.instance.LimitTime += SkillManager.instance.PasSkillDic["고대의 도서관"].EigenValue;
     }
 
     private void PlayReadySound()
@@ -93,6 +95,7 @@ public class StageManager : MonoBehaviour
     private void ChangeGameStateStart()
     {
         GameManager.instance.GameState = GameState.PLAYING;
+        BoardManager.instance.currentState = PlayerState.MOVE;
     }
 
     private void FindObjects()

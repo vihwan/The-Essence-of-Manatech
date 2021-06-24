@@ -42,7 +42,7 @@ public class MonsterStatusController : MonoBehaviour
     //색상을 Tween 하기 위한 변수
     private Tween<Color> colorTween = new Tween<Color>();
 
-    public float MaxHp { get => maxHp; }
+    public float MaxHp { get => maxHp; internal set => maxHp = value; }
     public float CurrHp { get => currHp; set => currHp = value; }
     public float MaxMp { get => maxMp;}
     public float CurrMp { get => currMp; set => currMp = value; }

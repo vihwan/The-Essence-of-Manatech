@@ -51,17 +51,22 @@ public class ResultPage : MonoBehaviour
             exitBtn.onClick.AddListener(GoToMainScene);
 
         rankImage = transform.Find("RankImage").GetComponent<Image>();
-        if(rankImage == null)
+        if (rankImage == null)
             Debug.LogWarning(rankImage.name + "이 참조되지 않았습니다.");
 
-        newScoreLetterTxt = yourScoreTxt.gameObject.GetComponentInChildren<TMP_Text>();
-        if(newScoreLetterTxt == null)
-            Debug.LogWarning(newScoreLetterTxt.name + "이 참조되지 않았습니다.");
+        newScoreLetterTxt = yourScoreTxt.gameObject.GetComponentInChildren<TMP_Text>(true);
+        if (newScoreLetterTxt != null)
+        {
+            newScoreLetterTxt.gameObject.SetActive(false);
+        }
 
-        newTimeLetterTxt = yourClearTimeTxt.gameObject.GetComponentInChildren<TMP_Text>();
-        if (newTimeLetterTxt == null)
-            Debug.LogWarning(newTimeLetterTxt.name + "이 참조되지 않았습니다.");
+        newTimeLetterTxt = yourClearTimeTxt.gameObject.GetComponentInChildren<TMP_Text>(true);
+        if (newTimeLetterTxt != null)
+        {
+            newTimeLetterTxt.gameObject.SetActive(false);
+        }
     }
+            
 
     // 게임오버가 되면 게임 오버 패널을 액티브
     public void GameOverPanel()
@@ -83,8 +88,18 @@ public class ResultPage : MonoBehaviour
         }
         else if(GameManager.instance.PlayerState == PlayerState.LOSE)
         {
-            rankImage.sprite = Resources.Load<Sprite>("coffin");
-            SoundManager.instance.PlayBGM("coffin_rene");
+
+            int rand = UnityEngine.Random.Range(0, 100);
+            if(rand > 5)
+            {
+                SoundManager.instance.PlaySE("funnyfailure");
+            }
+            else
+            {
+                //갑자기 분위기 관짝춤
+                rankImage.sprite = Resources.Load<Sprite>("coffin");
+                SoundManager.instance.PlayBGM("coffin_rene");
+            }      
         }
 
         //보드 매니저 비활성화
@@ -135,14 +150,14 @@ public class ResultPage : MonoBehaviour
         if (GUIManager.instance.Score > PlayerPrefs.GetFloat("HighScore"))
         {
             PlayerPrefs.SetFloat("HighScore", GUIManager.instance.Score);
-            highScoreTxt.text = "베스트점수: " + ScoreManager.instance.ScoreWithComma(PlayerPrefs.GetFloat("HighScore"));
+            highScoreTxt.text = "베스트점수: " + ScoreManager.instance.ScoreWithComma(PlayerPrefs.GetFloat("HighScore")) + "점";
             newScoreLetterTxt.gameObject.SetActive(true);
         }
         else
         {
-            highScoreTxt.text = "베스트점수: " + ScoreManager.instance.ScoreWithComma(PlayerPrefs.GetFloat("HighScore"));
+            highScoreTxt.text = "베스트점수: " + ScoreManager.instance.ScoreWithComma(PlayerPrefs.GetFloat("HighScore")) + "점";
         }
-        yourScoreTxt.text = "클리어점수 : " + ScoreManager.instance.ScoreWithComma(GUIManager.instance.Score);
+        yourScoreTxt.text = "클리어점수 : " + ScoreManager.instance.ScoreWithComma(GUIManager.instance.Score) + "점";
     }
 
 

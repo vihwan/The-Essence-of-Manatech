@@ -6,14 +6,14 @@ using TMPro;
 
 public class AlertText : MonoBehaviour
 {
-    private TMP_Text textContents;
+    [SerializeField] private TMP_Text textContents;
     private Animator animator;
     private SkillManager skillManager;
 
 
     public void Init()
     {
-        textContents = GetComponent<TMP_Text>();
+        textContents = GetComponentInChildren<TMP_Text>(true);
         animator = GetComponent<Animator>();
         skillManager = FindObjectOfType<SkillManager>();
         skillManager.appearText += ActiveText;

@@ -32,7 +32,7 @@ public class MonsterAI : MonoBehaviour
     private bool isPhase1 = false;    //1페이즈인지를 확인하는 변수
     private bool isPhase2 = false;    //2페이즈인지를 확인하는 변수
     private bool isTransform = false; //변신중인지를 확인하는 변수
-    private bool isSkillTurn2 = true; // 2번째 스킬을 사용할 순서인지를 확인하는 변수
+    [SerializeField] private bool isSkillTurn2 = true; // 2번째 스킬을 사용할 순서인지를 확인하는 변수
     public bool isUsingSkill; //스킬을 사용중인지 확인하는 변수
     private bool isHolding = false;   //몬스터가 홀딩 상태이상에 걸려 아무것도 할 수 없는 상태인지를 확인하는 변수
 
@@ -173,8 +173,9 @@ public class MonsterAI : MonoBehaviour
 
 
         isPhase1 = true;
-        DevaSkill1.enabled = true;
-        DevaSkill2.enabled = false;
+        devaSkill1.enabled = true;
+        devaSkill2.enabled = false;
+        devaSkill3.enabled = false;
         RemainGroggyTime = 10f;
 
         Action = MonsterState.MOVE;
@@ -361,6 +362,7 @@ public class MonsterAI : MonoBehaviour
         isTransform = false;
         isPhase2 = true;
 
+        MonsterStatusController.MaxHp = 5000f;
         MonsterStatusController.CurrHp = MonsterStatusController.MaxHp;
         MonsterStatusController.CurrMp = 0;
         DevaSkill1.enabled = false;
@@ -412,11 +414,14 @@ public class MonsterAI : MonoBehaviour
         {
             if (isSkillTurn2)
             {
+                ChangeSkillEnable();
                 UseSkill_2();
                 isSkillTurn2 = false;
+
             }
             else if(!isSkillTurn2)
             {
+                ChangeSkillEnable();
                 UseSkill_3();
                 isSkillTurn2 = true;
             }
@@ -425,7 +430,19 @@ public class MonsterAI : MonoBehaviour
         isIEUpdate = false;
     }
 
-
+    private void ChangeSkillEnable()
+    {
+        if (isSkillTurn2)
+        {
+            devaSkill2.enabled = true;
+            devaSkill3.enabled = false;
+        }
+        else
+        {
+            devaSkill2.enabled = false;
+            devaSkill3.enabled = true;
+        }
+    }
 
     private void UseSkill_1()
     {

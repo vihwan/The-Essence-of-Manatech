@@ -157,6 +157,6 @@ public class SkillManageMenu : MonoBehaviour
 
     public static void UpdateSpText()
     {
-        spText.text = "스킬 포인트 : " + PlayerData.SkillPoint.ToString();
+        spText.text = "스킬 포인트 : <color=#ECC82C>" + PlayerData.SkillPoint.ToString() + "</color>";
     }
 }

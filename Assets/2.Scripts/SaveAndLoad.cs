@@ -190,13 +190,13 @@ public class SaveAndLoad : MonoBehaviour
         saveData.PskillDic.Add(name, new PassiveSkill(name,
                                                     "고대의 지식을 빌려, 게임 시작 시에 주어지는 제한 시간을 소폭 상승 시킵니다.",
                                                     1,
-                                                    10f));
+                                                    30f));
 
         name = "쇼타임";
         saveData.PskillDic.Add(name, new PassiveSkill(name,
-                                                    "제한 시간이 60초 이하로 남았을 경우 발동. 모든 점수 획득량이 증가합니다",
+                                                    "타일 매칭 시, 적에게 주는 데미지를 소폭 상승합니다.",
                                                     1,
-                                                    0.2f));
+                                                    4f));
 
         name = "현자의 돌";
         saveData.PskillDic.Add(name, new PassiveSkill(name,
@@ -211,6 +211,6 @@ public class SaveAndLoad : MonoBehaviour
                                                     "스위트 캔디바 타일의 등장 확률이 상승하고, " +
                                                     "스위트 캔디바 타일과 매칭 시 점수 획득량이 크게 상승합니다.",
                                                     1,
-                                                    10f));
+                                                    3f));
     }
 }

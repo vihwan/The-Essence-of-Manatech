@@ -13,14 +13,14 @@ public class SkillLevelSystem : MonoBehaviour
     List<PassiveSkill> passiveSkills;
 
     private SkillConversionData skillConversion;
-    TestSkillLevelText testSkillLevelText;
+    //TestSkillLevelText testSkillLevelText;
 
     public void Init()
     {
         activeSkills = SkillManager.instance.ActSkillDic.Values.ToList();
         passiveSkills = SkillManager.instance.PasSkillDic.Values.ToList();
         skillConversion = new SkillConversionData();
-        testSkillLevelText = FindObjectOfType<TestSkillLevelText>();
+       // testSkillLevelText = FindObjectOfType<TestSkillLevelText>();
         CreateCustomBtn();
     }
 
@@ -58,7 +58,7 @@ public class SkillLevelSystem : MonoBehaviour
        // SkillManager.instance.appearText("<color=#B31405>스킬 레벨업</color>");
         activeSkills[index].Level++;
         skillConversion.ConvertActiveSkill();
-        testSkillLevelText.ConvertText();
+        //testSkillLevelText.ConvertText();
     }
 
     public void PassSkillLevelUp(int index)
@@ -71,6 +71,6 @@ public class SkillLevelSystem : MonoBehaviour
        // SkillManager.instance.appearText("<color=#B31405>스킬 레벨업</color>");
         passiveSkills[index].Level++;
         skillConversion.ConvertPassiveSkill();
-        testSkillLevelText.ConvertText();
+        //testSkillLevelText.ConvertText();
     }
 }

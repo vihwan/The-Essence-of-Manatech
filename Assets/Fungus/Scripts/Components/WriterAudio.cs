@@ -88,7 +88,7 @@ namespace Fungus
                 }
             }
 
-            targetAudioSource.volume = 0f;
+            targetAudioSource.volume = 0.8f;
         }
 
         protected virtual void Play(AudioClip audioClip)
@@ -101,7 +101,7 @@ namespace Fungus
             }
 
             playingVoiceover = false;
-            targetAudioSource.volume = 0f;
+            targetAudioSource.volume = 0.8f;
             targetVolume = volume;
 
             if (audioClip != null)
@@ -166,7 +166,7 @@ namespace Fungus
 
         protected virtual void Update()
         {
-            targetAudioSource.volume = Mathf.MoveTowards(targetAudioSource.volume, targetVolume, Time.deltaTime * 5f);
+           // targetAudioSource.volume = Mathf.MoveTowards(targetAudioSource.volume, targetVolume, Time.deltaTime * 1f);
         }
 
         #region IWriterListener implementation

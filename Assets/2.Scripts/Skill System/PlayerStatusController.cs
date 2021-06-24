@@ -12,7 +12,7 @@ public class PlayerStatusController : MonoBehaviour
      */
 
     #region Variable
-    private PlayerStatus playerStatus = new PlayerStatus(500, 200, 4);
+    private PlayerStatus playerStatus = new PlayerStatus(500, 200);
 
     [SerializeField] private float currHp;
     [SerializeField] private float maxHp;
@@ -50,7 +50,7 @@ public class PlayerStatusController : MonoBehaviour
         CurrHp = playerStatus.Hp;
         CurrMp = 0f; //시작시 마나는 0으로 설정
         MaxMp = playerStatus.Mp; //총 마나 양을 200으로 설정
-        Damage = playerStatus.Damage;
+        Damage = SkillManager.instance.PasSkillDic["쇼타임"].EigenValue;
 
         prevHpBarPos = hpSlideUI.transform.localPosition;
         prevColor = hpSlideUI.transform.Find("Gauge").GetComponent<Image>().color;

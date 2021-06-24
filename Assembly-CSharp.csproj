@@ -129,6 +129,7 @@
     <Compile Include="Assets\2.Scripts\Test\State\MoveTile.cs" />
     <Compile Include="Assets\2.Scripts\Test\State\UseSkill.cs" />
     <Compile Include="Assets\2.Scripts\Test\TestPingpong.cs" />
+    <Compile Include="Assets\2.Scripts\Test\TestPointerChange.cs" />
     <Compile Include="Assets\2.Scripts\Tile.cs" />
     <Compile Include="Assets\2.Scripts\TileMonster.cs" />
     <Compile Include="Assets\2.Scripts\Tween.cs" />
