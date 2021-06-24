@@ -58,28 +58,7 @@ public class PassivePage : MonoBehaviour
         CreateGoldBorder(skillName);
         UISound.ClickButton();
     }
-    /*
-        private void OpenExplainPage02()
-        {
-            ExplainPage.gameObject.SetActive(true);
-            ExplainPage.SetSkillName("쇼타임");
-            ExplainPage.SetExplainPage(SkillData.instance.PasSkillDic["쇼타임"]);
-        }
-
-        private void OpenExplainPage03()
-        {
-            ExplainPage.gameObject.SetActive(true);
-            ExplainPage.SetSkillName("현자의 돌");
-            ExplainPage.SetExplainPage(SkillData.instance.PasSkillDic["현자의 돌"]);
-        }
-
-        private void OpenExplainPage04()
-        {
-            ExplainPage.gameObject.SetActive(true);
-            ExplainPage.SetSkillName("붉은 사탕");
-            ExplainPage.SetExplainPage(SkillData.instance.PasSkillDic["붉은 사탕"]);
-        }*/
-
+    
 
     private void CreateGoldBorder(string skillname)
     {

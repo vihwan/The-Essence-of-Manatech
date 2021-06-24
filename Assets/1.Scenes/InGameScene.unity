@@ -205,7 +205,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 554352}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 367292972}
+        m_MethodName: OnClickBtnUseSkill
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &554352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5284,7 +5295,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 652870909}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 367292972}
+        m_MethodName: OnClickBtnUseSkill
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &652870909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7217,7 +7239,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &934868847
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7256,7 +7278,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Alert Text
+  m_text: "\uC2A4\uD0AC \uC0AC\uC6A9 \uBD88\uAC00 \uC548\uB0B4, \uCFE8\uD0C0\uC784
+    \uC5EC\uBD80 \uB4F1\uC744 \uC54C\uB824\uC8FC\uB294\n\uC54C\uB78C \uD14D\uC2A4\uD2B8
+    \uC785\uB2C8\uB2E4."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0f6db4cffa122184a90fe8ab2bd7e7c8, type: 2}
   m_sharedMaterial: {fileID: -8748673491004540916, guid: 0f6db4cffa122184a90fe8ab2bd7e7c8,
@@ -7290,11 +7314,11 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -6.86
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -8986,7 +9010,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1213937393}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 367292972}
+        m_MethodName: OnClickBtnUseSkill
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1213937393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14574,7 +14609,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2092775258}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 367292972}
+        m_MethodName: OnClickBtnUseSkill
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2092775258
 MonoBehaviour:
   m_ObjectHideFlags: 0

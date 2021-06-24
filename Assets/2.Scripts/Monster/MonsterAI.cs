@@ -362,7 +362,7 @@ public class MonsterAI : MonoBehaviour
         isTransform = false;
         isPhase2 = true;
 
-        MonsterStatusController.MaxHp = 5000f;
+        MonsterStatusController.MaxHp = 30f;
         MonsterStatusController.CurrHp = MonsterStatusController.MaxHp;
         MonsterStatusController.CurrMp = 0;
         DevaSkill1.enabled = false;

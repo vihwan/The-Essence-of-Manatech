@@ -54,13 +54,13 @@ public class ResultPage : MonoBehaviour
         if (rankImage == null)
             Debug.LogWarning(rankImage.name + "이 참조되지 않았습니다.");
 
-        newScoreLetterTxt = yourScoreTxt.gameObject.GetComponentInChildren<TMP_Text>(true);
+        newScoreLetterTxt = transform.Find("YourScore/NewLetter (TMP)").GetComponent<TMP_Text>();
         if (newScoreLetterTxt != null)
         {
             newScoreLetterTxt.gameObject.SetActive(false);
         }
 
-        newTimeLetterTxt = yourClearTimeTxt.gameObject.GetComponentInChildren<TMP_Text>(true);
+        newTimeLetterTxt = transform.Find("YourClearTime/NewLetter (TMP)").GetComponent<TMP_Text>();
         if (newTimeLetterTxt != null)
         {
             newTimeLetterTxt.gameObject.SetActive(false);
@@ -88,7 +88,6 @@ public class ResultPage : MonoBehaviour
         }
         else if(GameManager.instance.PlayerState == PlayerState.LOSE)
         {
-
             int rand = UnityEngine.Random.Range(0, 100);
             if(rand > 5)
             {
@@ -129,34 +128,35 @@ public class ResultPage : MonoBehaviour
     {
         leftLimitTime = GUIManager.instance.LimitTime;
 
+        //저장되어있는 기록보다 좋다면 기록 갱신
         if (leftLimitTime > PlayerPrefs.GetFloat("HighLimitTime"))
-        {
-            //만약 플레이어가 패배상태
+        {   
+            //만약 플레이어가 패배상태라면 기록을 갱신하지 않습니다.
             if (BoardManager.instance.currentState == PlayerState.LOSE)
                 return;
 
             PlayerPrefs.SetFloat("HighLimitTime", leftLimitTime);
-            bestClearTimeTxt.text = "베스트타임 : " + ParseTime(PlayerPrefs.GetFloat("HighLimitTime"));
             newTimeLetterTxt.gameObject.SetActive(true);
         }
-        else
-            bestClearTimeTxt.text = "베스트타임 : " + ParseTime(PlayerPrefs.GetFloat("HighLimitTime"));
 
+        bestClearTimeTxt.text = "베스트타임 : " + ParseTime(PlayerPrefs.GetFloat("HighLimitTime"));
         yourClearTimeTxt.text = "클리어타임 : " + ParseTime(leftLimitTime);
     }
 
     private void DisplayScore()
     {
+        //저장되어있는 기록보다 좋다면 기록 갱신
         if (GUIManager.instance.Score > PlayerPrefs.GetFloat("HighScore"))
         {
+            //만약 플레이어가 패배상태라면 기록을 갱신하지 않습니다.
+            if (BoardManager.instance.currentState == PlayerState.LOSE)
+                return;
+
             PlayerPrefs.SetFloat("HighScore", GUIManager.instance.Score);
-            highScoreTxt.text = "베스트점수: " + ScoreManager.instance.ScoreWithComma(PlayerPrefs.GetFloat("HighScore")) + "점";
             newScoreLetterTxt.gameObject.SetActive(true);
         }
-        else
-        {
-            highScoreTxt.text = "베스트점수: " + ScoreManager.instance.ScoreWithComma(PlayerPrefs.GetFloat("HighScore")) + "점";
-        }
+
+        highScoreTxt.text = "베스트점수: " + ScoreManager.instance.ScoreWithComma(PlayerPrefs.GetFloat("HighScore")) + "점";
         yourScoreTxt.text = "클리어점수 : " + ScoreManager.instance.ScoreWithComma(GUIManager.instance.Score) + "점";
     }
 
@@ -165,7 +165,7 @@ public class ResultPage : MonoBehaviour
 
     private string ParseTime(float limitTime)
     {
-        float limit = 600f - limitTime;
+        float limit = GUIManager.instance.maxLimitTime - limitTime;
 
         int hour = (int)limit / 3600;
         int min = (int)limit / 60 % 60;

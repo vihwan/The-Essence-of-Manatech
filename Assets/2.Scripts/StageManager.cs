@@ -51,6 +51,7 @@ public class StageManager : MonoBehaviour
         SoundManager.instance.PlaySE("cherry_blossom_sunlight");
         //고대의 도서관 효과 적용
         GUIManager.instance.LimitTime += SkillManager.instance.PasSkillDic["고대의 도서관"].EigenValue;
+        GUIManager.instance.maxLimitTime = GUIManager.instance.LimitTime;
     }
 
     private void PlayReadySound()

@@ -15,7 +15,6 @@ public class SkillManager : MonoBehaviour
     public CantSkill appearText;
 
     //Variable
-
     [SerializeField] private List<SkillButton> skillBtns = new List<SkillButton>();
     [SerializeField] public Dictionary<string, ActiveSkill> ActSkillDic = new Dictionary<string, ActiveSkill>();
     [SerializeField] public Dictionary<string, PassiveSkill> PasSkillDic = new Dictionary<string, PassiveSkill>();
@@ -49,8 +48,7 @@ public class SkillManager : MonoBehaviour
         skillBtns.AddRange(btns);
         for (int i = 0; i < skillBtns.Count; i++)
         {
-            skillBtns[i].Init();
-            //skillBtns[i].skillInfo = ActSkillDic.Values.ToList()[i]; //디버그용
+            skillBtns[i].Init();   
         }
 
         skillEffectManager = FindObjectOfType<SkillEffectManager>();
@@ -59,9 +57,41 @@ public class SkillManager : MonoBehaviour
             skillEffectManager.Init();
         }
 
-
         hintManager = FindObjectOfType<HintManager>();
     }
+
+    //OnclickEvent (에디터상에 추가)
+    public void OnClickBtnUseSkill(int i)
+    {
+        if (GameManager.instance.GameState != GameState.PLAYING)
+            return;
+
+        if (BoardManager.instance.currentState != PlayerState.MOVE
+            || MonsterAI.instance.Action == MonsterState.USESKILL)
+        {
+            return;
+        }
+
+        switch (i)
+        {
+            case 0:
+                UseFirstSkill();
+                break;
+
+            case 1:
+                UseSecondSkill();
+                break;
+
+            case 2:
+                UseThirdSkill();
+                break;
+
+            case 3:
+                UseFourthSkill();
+                break;
+        }
+    }
+
 
     private void Update()
     {
@@ -71,57 +101,78 @@ public class SkillManager : MonoBehaviour
                 && MonsterAI.instance.Action != MonsterState.USESKILL)
             {
                 //몬스터가 스킬을 사용하려는 상태일때는 스킬을 사용할 수 없습니다.
-                UseSkill();
+                UseSkillKeyBoard();
             }
         }
     }
 
-    private void UseSkill()
+    private void UseSkillKeyBoard()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Debug.Log("1번 스킬 사용");
-
-            if (hintManager.CurrentHintEffect != null)
-            {
-                appearText("이미 사용중입니다.");
-                return;
-            }
-
-            if (CheckSkillUse("체인 플로레", 0))
-                Skill_Chain_Fluore();
+            UseFirstSkill();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Debug.Log("2번 스킬 사용");
-
-            if (CheckSkillUse("변이 파리채", 1))
-                Skill_Flapper();
+            UseSecondSkill();
 
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            Debug.Log("3번 스킬 사용");
-
-            if (MonsterAI.instance.Action == MonsterState.GROGGY)
-            {
-                appearText("그로기 상태일 때는 사용해도 별로 소용이 없을 것 같다.");
-                return;
-            }
-
-            if (CheckSkillUse("잭프로스트 빙수", 2))
-            {
-                Skill_Jack_Frost_ShavedIce();
-            }
+            UseThirdSkill();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            Debug.Log("4번 스킬 사용");
-
-            if (CheckSkillUse("잭 오 할로윈", 3))
-                Skill_Jack_O_Halloween();
+            UseFourthSkill();
         }
     }
+
+    private void UseFirstSkill()
+    {
+        Debug.Log("1번 스킬 사용");
+
+        if (hintManager.CurrentHintEffect != null)
+        {
+            appearText("이미 사용중입니다.");
+            return;
+        }
+
+        if (CheckSkillUse("체인 플로레", 0))
+            Skill_Chain_Fluore();
+    }
+
+    private void UseSecondSkill()
+    {
+        Debug.Log("2번 스킬 사용");
+
+        if (CheckSkillUse("변이 파리채", 1))
+            Skill_Flapper();
+    }
+
+    private void UseThirdSkill()
+    {
+        Debug.Log("3번 스킬 사용");
+
+        if (MonsterAI.instance.Action == MonsterState.GROGGY)
+        {
+            appearText("그로기 상태일 때는 사용해도 별로 소용이 없을 것 같다.");
+            return;
+        }
+
+        if (CheckSkillUse("잭프로스트 빙수", 2))
+        {
+            Skill_Jack_Frost_ShavedIce();
+        }
+    }
+
+    private void UseFourthSkill()
+    {
+        Debug.Log("4번 스킬 사용");
+
+        if (CheckSkillUse("잭 오 할로윈", 3))
+            Skill_Jack_O_Halloween();
+    }
+
 
     //스킬 사용 여부를 확인. 마나와 쿨타임을 비교한다.
     private bool CheckSkillUse(string text, int btnNum)

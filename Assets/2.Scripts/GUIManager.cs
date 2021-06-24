@@ -17,6 +17,7 @@ public class GUIManager : MonoBehaviour
 
     private float score = 0;
     private float limitTime;
+    internal float maxLimitTime;
 
     private int hour;
     private int min;

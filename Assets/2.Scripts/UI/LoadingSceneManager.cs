@@ -98,7 +98,7 @@ public class LoadingSceneManager : MonoBehaviour
     //로딩 화면으로 넘어올 때마다 랜덤하게 툴팁을 출력시켜주는 함수입니다.
     private void RandomSetTooltipText()
     {
-        int rand = UnityEngine.Random.Range(1, 6);
+        int rand = UnityEngine.Random.Range(1, 7);
         string contents = string.Empty;
         switch (rand)
         {
@@ -113,6 +113,9 @@ public class LoadingSceneManager : MonoBehaviour
                 break;
             case 4:
                 contents = "상대가 무력화 상태일때는, 10배만큼 강한 데미지를 줄 수 있습니다.";
+                break;
+            case 5:
+                contents = "키보드 1,2,3,4 혹은 스킬 아이콘을 클릭하여, 해당 스킬을 사용할 수 있습니다.";
                 break;
             default:
                 contents = "개발자는 피곤해서 잠을 자고 싶습니다.";
