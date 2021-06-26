@@ -289,9 +289,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         {
             //오른쪽 타일과 교체
             otherCharacterTile = BoardManager.instance.characterTilesBox[Row + 1, Col];
-            if(otherCharacterTile.GetComponent<Tile>().isSealed)
+            if(otherCharacterTile.GetComponent<Tile>().isSealed || otherCharacterTile.CompareTag("Bomb"))
             {
-                print("인접한 봉인된 타일은 교체되지 않습니다.");
+                print("인접한 봉인된 타일 혹은 할로윈 타일은 교체되지 않습니다.");
                 return;
             }
 
@@ -304,9 +304,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         {
             //위쪽 타일과 교체
             otherCharacterTile = BoardManager.instance.characterTilesBox[Row, Col + 1];
-            if (otherCharacterTile.GetComponent<Tile>().isSealed)
+            if (otherCharacterTile.GetComponent<Tile>().isSealed || otherCharacterTile.CompareTag("Bomb"))
             {
-                print("인접한 봉인된 타일은 교체되지 않습니다.");
+                print("인접한 봉인된 타일 혹은 할로윈 타일은 교체되지 않습니다.");
                 return;
             }
             otherCharacterTile.GetComponent<Tile>().Col -= 1;
@@ -318,9 +318,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         {
             //왼쪽 타일과 교체
             otherCharacterTile = BoardManager.instance.characterTilesBox[Row - 1, Col];
-            if (otherCharacterTile.GetComponent<Tile>().isSealed)
+            if (otherCharacterTile.GetComponent<Tile>().isSealed || otherCharacterTile.CompareTag("Bomb"))
             {
-                print("인접한 봉인된 타일은 교체되지 않습니다.");
+                print("인접한 봉인된 타일 혹은 할로윈 타일은 교체되지 않습니다.");
                 return;
             }
             otherCharacterTile.GetComponent<Tile>().Row += 1;
@@ -332,9 +332,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         {
             //아래쪽 타일과 교체
             otherCharacterTile = BoardManager.instance.characterTilesBox[Row, Col - 1];
-            if (otherCharacterTile.GetComponent<Tile>().isSealed)
+            if (otherCharacterTile.GetComponent<Tile>().isSealed || otherCharacterTile.CompareTag("Bomb"))
             {
-                print("인접한 봉인된 타일은 교체되지 않습니다.");
+                print("인접한 봉인된 타일 혹은 할로윈 타일은 교체되지 않습니다.");
                 return;
             }
             otherCharacterTile.GetComponent<Tile>().Col += 1;
@@ -373,7 +373,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
                 comboSystem.PlayComboFailAnimation();
                 yield return new WaitForSeconds(.5f);
                 comboSystem.ComboCounter = 0;
-                PlayerSound.PlayFailTileMatch();
             }
             else
             {

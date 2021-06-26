@@ -156,7 +156,7 @@ public class ResultPage : MonoBehaviour
             newScoreLetterTxt.gameObject.SetActive(true);
         }
 
-        highScoreTxt.text = "베스트점수: " + ScoreManager.instance.ScoreWithComma(PlayerPrefs.GetFloat("HighScore")) + "점";
+        highScoreTxt.text = "베스트점수 : " + ScoreManager.instance.ScoreWithComma(PlayerPrefs.GetFloat("HighScore")) + "점";
         yourScoreTxt.text = "클리어점수 : " + ScoreManager.instance.ScoreWithComma(GUIManager.instance.Score) + "점";
     }
 

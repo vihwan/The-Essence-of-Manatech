@@ -1529,16 +1529,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MonsterKillParticle
       objectReference: {fileID: 0}
-    - target: {fileID: 1288295955671710688, guid: 7631f8024fb702e4e951b67175f1507d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1391074369441292887, guid: 7631f8024fb702e4e951b67175f1507d,
-        type: 3}
-      propertyPath: m_Intensity
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6893185438256330993, guid: 7631f8024fb702e4e951b67175f1507d,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4915,7 +4905,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b8f571e09dfb202488e821770bd58618, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f1b69c0e17764ae488dcbec52f03c775, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

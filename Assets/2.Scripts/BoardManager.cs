@@ -641,6 +641,13 @@ public class BoardManager : MonoBehaviour
             }
         }
 
+        //만약 바꿔야하는 플루토타일의 갯수가 0개라면 리턴합니다.
+        if(randomSelectList.Count == 0)
+        {
+            SkillManager.instance.appearText("플루토 타일이 하나도 없어 효과가 없는 듯 하다.");
+            return;
+        }
+
         //randomSelectList.Count < 변환 가능 갯수(3) 라면,
         //pluto 변환가능 갯수 = randomSelectList.Count
         int ableChangeTileCount = SkillManager.instance.ActSkillDic["변이 파리채"].EigenValue;

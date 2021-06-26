@@ -188,6 +188,7 @@
     <None Include="Assets\SpriteOutline\Shaders\SpriteOutline.shader" />
     <None Include="Assets\FantasySpellsEffectsPack\Shader_ForEffects\Object Skin\Shader_RimLight(TextureAnimation).shader" />
     <None Include="Assets\FantasySpellsEffectsPack\Shader_ForEffects\Object Skin\Shader_ObjectBorder(SimpleBorder).shader" />
+    <None Include="Assets\5.Audio\MoveToResourcesFolder.txt" />
     <None Include="Assets\UIParticles\Shaders\Ui Particle Add.shader" />
     <None Include="Assets\UIParticles\version.txt" />
     <None Include="Assets\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR.cginc" />

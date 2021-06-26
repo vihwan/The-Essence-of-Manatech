@@ -98,12 +98,12 @@ public class LoadingSceneManager : MonoBehaviour
     //로딩 화면으로 넘어올 때마다 랜덤하게 툴팁을 출력시켜주는 함수입니다.
     private void RandomSetTooltipText()
     {
-        int rand = UnityEngine.Random.Range(1, 7);
+        int rand = UnityEngine.Random.Range(1, 10);
         string contents = string.Empty;
         switch (rand)
         {
             case 1:
-                contents = "잭 오 할로윈은 너무 뜨거운 나머지 옮길 수 없습니다.";
+                contents = "잭 오 할로윈은 너무 뜨거워서 옮길 수 없습니다. 대신 직접 클릭하여 파괴시켜보세요.";
                 break;
             case 2:
                 contents = "캔디바 타일은 어떤 타일과도 매칭시킬 수 있는 특수한 타일입니다.";
@@ -117,8 +117,17 @@ public class LoadingSceneManager : MonoBehaviour
             case 5:
                 contents = "키보드 1,2,3,4 혹은 스킬 아이콘을 클릭하여, 해당 스킬을 사용할 수 있습니다.";
                 break;
-            default:
-                contents = "개발자는 피곤해서 잠을 자고 싶습니다.";
+            case 6:
+                contents = "너무 피곤해서 잠을 푹 자고 싶습니다.";
+                break;
+            case 7:
+                contents = "타일을 매칭시켜 마나를 획득하여, 적극적으로 스킬을 사용해보세요.";
+                break;
+            case 8:
+                contents = "플레이어의 스킬 레벨을 최대 3레벨까지 올릴 수 있습니다. 마을의 이키를 찾아가보세요.";
+                break;
+            case 9:
+                contents = "패배 시, 낮은 확률로 특수한 결과 화면이 출력됩니다.";
                 break;
         }
         toolTipText.text = "※Tip. " + contents;

@@ -96,7 +96,7 @@ public class ExplainPage : MonoBehaviour
                 break;
 
             case "붉은 사탕":
-                coolDownText.text = "캔디바 타일 등장 확률 : <color=#00BAFF>" + passiveSkill.EigenValue + "</color>%";
+                coolDownText.text = "캔디바 타일 등장 확률 : <color=#00BAFF>" + passiveSkill.EigenValue + "</color> %";
                 break;
         }
     }

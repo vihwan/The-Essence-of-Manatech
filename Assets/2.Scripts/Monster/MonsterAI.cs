@@ -362,7 +362,7 @@ public class MonsterAI : MonoBehaviour
         isTransform = false;
         isPhase2 = true;
 
-        MonsterStatusController.MaxHp = 30f;
+        MonsterStatusController.MaxHp = 5000f;
         MonsterStatusController.CurrHp = MonsterStatusController.MaxHp;
         MonsterStatusController.CurrMp = 0;
         DevaSkill1.enabled = false;
@@ -383,7 +383,11 @@ public class MonsterAI : MonoBehaviour
         {
             for (int j = 0; j < BoardManager.instance.height; j++)
             {
-                if(UtilHelper.HasComponent<Tile>(BoardManager.instance.characterTilesBox[i, j]))
+                //21.06.25 추가 - NullReferenceException
+                if (BoardManager.instance.characterTilesBox[i, j] == null)
+                    continue;
+
+                if (UtilHelper.HasComponent<Tile>(BoardManager.instance.characterTilesBox[i, j]))
                 {
                     if (BoardManager.instance.characterTilesBox[i, j].GetComponent<Tile>().isSealed == true)
                     {

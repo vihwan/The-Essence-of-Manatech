@@ -47,5 +47,6 @@ public class ComboSystem : MonoBehaviour
     internal void PlayComboFailAnimation()
     {
         animator.SetTrigger("combofail");
+        PlayerSound.PlayFailTileMatch();
     }
 }
