@@ -1,1 +1,7 @@
+#folder
 Library/
+obj/
+Logs/
+Packages/
+Temp/
+Assets/8.Extensions/

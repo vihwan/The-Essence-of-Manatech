@@ -47,10 +47,7 @@ public class GUIManager : MonoBehaviour
         set
         {
             limitTime = value;
-/*            if (GameManager.instance.isGameOver)
-            {
-                limitTime = 0;
-            }*/
+
             hour = (int)limitTime / 3600;
             min = (int)limitTime / 60 % 60;
             sec = (int)limitTime % 60;
